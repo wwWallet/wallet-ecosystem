@@ -198,10 +198,10 @@ then
 	cp ./keys/issuer-did.uoa.keys $PWD/wallet-enterprise-diploma-issuer/keys/issuer-did.uoa.keys
 fi
 
-if [ ! -e "$PWD/wallet-enterprise-vid-issuer/keys/vid-issuer.keys" ]
+if [ ! -e "$PWD/wallet-enterprise-vid-issuer/keys/vid-issuer.vid.keys" ]
 then
 	mkdir -p $PWD/wallet-enterprise-vid-issuer/keys
-	cp ./keys/vid-issuer.keys $PWD/wallet-enterprise-vid-issuer/keys/vid-issuer.keys
+	cp ./keys/vid-issuer.keys $PWD/wallet-enterprise-vid-issuer/keys/vid-issuer.vid.keys
 fi
 
 
