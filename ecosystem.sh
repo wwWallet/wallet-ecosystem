@@ -1,13 +1,16 @@
 #!/bin/bash
 
+base_url="http://127.0.0.1"
+
 help() {
 	echo "Usage: ./ecosystem <up or down> <OPTIONS>"
 	echo "OPTIONS:"
-	echo "   -m             Redirection will be directed to the openid:// URL. Note: It will be applied only in the first execution of the script and every time '-c' is given"
-	echo "   -d             Start the ecosystem in deamonized mode"
-	echo "   -c             Force update of the configurations to the defaults for the development environment"
-	echo "   -b <url>       Set the base URL"
-	echo "   -t             Force the usege of the docker-compose.template.yml"
+	echo "   -m                Redirection will be directed to the openid:// URL. Note: It will be applied only in the first execution of the script and every time '-c' is given"
+	echo "   -d                Start the ecosystem in deamonized mode"
+	echo "   -c                Force update of the configurations to the defaults for the development environment"
+	echo "   -b <url>          Set the base URL"
+	echo "   -t                Force the usage of the docker-compose.template.yml"
+	echo "   --react-frontend  Use wallet client at http://localhost:3000/cb instead of ${base_url}:7777"
 	echo ""
 	echo "Example:"
 	echo "./ecosystem up -m -c"
@@ -15,7 +18,6 @@ help() {
 	echo ""
 }
 
-base_url="http://127.0.0.1"
 action=$1		# up or down
 use_openid_url="false"
 daemon_mode="false"
@@ -47,6 +49,11 @@ for arg in "$@"; do
 		echo "Changed the base url to $base_url"
 	fi
 
+	if [[ $arg == '--react-frontend' ]]; then
+		wallet_client_url="http://localhost:3000/cb"
+		echo "Changed the wallet client URL to $wallet_client_url"
+	fi
+
 	if [[ $arg == '--help' ]]; then
 		help
 		exit
@@ -54,7 +61,7 @@ for arg in "$@"; do
 	prev_arg=$arg
 done
 
-wallet_client_url="$base_url:7777"
+wallet_client_url="${wallet_client_url:-${base_url}:7777}"
 
 if [ ! -f "$PWD/docker-compose.yml" ] || [ "$use_compose_template" = "true" ]
 then
