@@ -3,11 +3,11 @@
 help() {
 	echo "Usage: ./ecosystem <up or down> <OPTIONS>"
 	echo "OPTIONS:"
-	echo "   -m           Redirection will be directed to the openid:// URL. Note: It will be applied only in the first execution of the script and every time '-c' is given"
-	echo "   -d           Start the ecosystem in deamonized mode"
-	echo "   -c           Force update of the configurations to the defaults for the development environment"
-	echo "   -b <url>     Set the base URL"
-	echo "   -t           Force the usege of the docker-compose.template.yml"
+	echo "   -m             Redirection will be directed to the openid:// URL. Note: It will be applied only in the first execution of the script and every time '-c' is given"
+	echo "   -d             Start the ecosystem in deamonized mode"
+	echo "   -c             Force update of the configurations to the defaults for the development environment"
+	echo "   -b <url>       Set the base URL"
+	echo "   -t             Force the usege of the docker-compose.template.yml"
 	echo ""
 	echo "Example:"
 	echo "./ecosystem up -m -c"
@@ -23,38 +23,35 @@ force_update_configs="false"
 use_compose_template="false"
 
 for arg in "$@"; do
+	if [[ $arg == '-t' ]]; then
+		use_compose_template="true"
+		echo "Refreshed docker-compose.yml using the template docker-compose.template.yml"
+	fi
 
+	if [[ $arg == '-m' ]]; then
+		use_openid_url="true"
+		echo "Wallet URL is now openid:// in all configurations"
+	fi
 
-    if [[ $arg == '-t' ]]; then
-			use_compose_template="true"
-			echo "Refreshed docker-compose.yml using the template docker-compose.template.yml"
-    fi
+	if [[ $arg == '-d' ]]; then
+		daemon_mode="true"
+	fi
 
-    if [[ $arg == '-m' ]]; then
-			use_openid_url="true"
-			echo "Wallet URL is now openid:// in all configurations"
-    fi
+	if [[ $arg == '-c' ]]; then
+		force_update_configs="true"
+		echo "Forcing update in configs"
+	fi
 
-		if [[ $arg == '-d' ]]; then
-			daemon_mode="true"
-    fi
+	if [[ $prev_arg == '-b' ]]; then
+		base_url=$arg
+		echo "Changed the base url to $base_url"
+	fi
 
-		if [[ $arg == '-c' ]]; then
-			force_update_configs="true"
-			echo "Forcing update in configs"
-    fi
-
-		if [[ $prev_arg == '-b' ]]; then
-			base_url=$arg
-			echo "Changed the base url to $base_url"
-    fi
-
-		if [[ $arg == '--help' ]]; then
-			help
-			exit
-    fi
-		prev_arg=$arg
-
+	if [[ $arg == '--help' ]]; then
+		help
+		exit
+	fi
+	prev_arg=$arg
 done
 
 wallet_client_url="$base_url:7777"
@@ -72,14 +69,14 @@ fi
 if [ "$action" = "down" ]
 then
 	docker compose down
-  exit
+	exit
 fi
 
 if [ "$action" != "up" ]
 then
 	echo "Error: First argument must be 'up' or 'down'"
 	help
-  exit
+	exit
 fi
 
 
@@ -90,7 +87,7 @@ secret=dsfkwfkwfwdfdsfSaSe2e34r4frwr42rAFdsf2lfmfsmklfwmer
 # Enterprise wallet core configuration
 if [ -f "$PWD/wallet-enterprise-diploma-issuer/config/config.development.ts" ] && [ "$force_update_configs" = "false" ]
 then
-  echo "enterprise-verifier-core/config/config.development.ts was not changed"
+	echo "enterprise-verifier-core/config/config.development.ts was not changed"
 else
 	cp enterprise-verifier-core/config/config.template.ts enterprise-verifier-core/config/config.development.ts
 	wallet_core_port="9000"
@@ -115,7 +112,7 @@ fi
 # Enterprise issuer configuration
 if [ -e "$PWD/wallet-enterprise-diploma-issuer/config/config.development.ts" ] && [ "$force_update_configs" = "false" ]
 then
-  echo "wallet-enterprise-diploma-issuer/config/config.development.ts was not changed"
+	echo "wallet-enterprise-diploma-issuer/config/config.development.ts was not changed"
 else
 	cp wallet-enterprise-diploma-issuer/config/config.template.ts wallet-enterprise-diploma-issuer/config/config.development.ts
 
@@ -140,7 +137,7 @@ fi
 # Enterprise VID Issuer configuration
 if [ -e "$PWD/wallet-enterprise-vid-issuer/config/config.development.ts" ] && [ "$force_update_configs" = "false" ]
 then
-  echo "wallet-enterprise-vid-issuer/config/config.development.ts was not changed"
+	echo "wallet-enterprise-vid-issuer/config/config.development.ts was not changed"
 else
 	cp wallet-enterprise-vid-issuer/config/config.template.ts wallet-enterprise-vid-issuer/config/config.development.ts
 
@@ -167,7 +164,7 @@ fi
 # Wallet backend configuration
 if [ -e "$PWD/wallet-backend-server/config/config.development.ts" ] && [ "$force_update_configs" = "false" ]
 then
-  echo "wallet-backend-server/config/config.development.ts was not changed"
+	echo "wallet-backend-server/config/config.development.ts was not changed"
 else
 	cp wallet-backend-server/config/config.template.ts wallet-backend-server/config/config.development.ts
 
