@@ -6,10 +6,12 @@ services:
     container_name: wallet-db
     hostname: wallet-db
     restart: always
-    network_mode: host
+    ports:
+      - 3307:3307
     expose: 
       - 3307
     environment:
+      MARIADB_HOST: wallet-db
       MARIADB_ROOT_PASSWORD: root
       MARIADB_USER: myuser
       MARIADB_PASSWORD:
@@ -25,17 +27,19 @@ services:
     image: phpmyadmin/phpmyadmin:latest
     container_name: wallet-phpmyadmin
     hostname: wallet-phpmyadmin
-    network_mode: host
+    ports:
+      - 8081:8081
     environment:
       APACHE_PORT: 8081
-      PMA_HOST: 127.0.0.1
+      PMA_HOST: wallet-db
       PMA_PORT: 3307
 
   wallet-cache:
-    image: redis:6.2-alpine
+    image: redis:7.0-alpine
     container_name: wallet-cache
     hostname: wallet-cache
-    network_mode: host
+    ports:
+      - 6379:6379
     restart: always  
     command: redis-server --save 20 1 --loglevel warning
     volumes: 
@@ -50,7 +54,8 @@ services:
       dockerfile: development.Dockerfile
     image: wallet-enterprise-diploma-issuer
     restart: always
-    network_mode: host
+    ports:
+      - 8000:8000
     volumes:
       - ./wallet-enterprise-diploma-issuer:/home/node/app
       - /home/node/app/dist
@@ -68,7 +73,8 @@ services:
       dockerfile: development.Dockerfile
     image: wallet-enterprise-vid-issuer
     restart: always
-    network_mode: host
+    ports:
+      - 8003:8003
     volumes:
       - ./wallet-enterprise-vid-issuer:/home/node/app
       - /home/node/app/dist
@@ -84,9 +90,10 @@ services:
     build:
       context: $PWD/wallet-backend-server
       dockerfile: development.Dockerfile
-    image: wallet
+    image: wallet-backend-server
     restart: always
-    network_mode: host
+    ports:
+      - 8002:8002
     volumes:
       - ./wallet-backend-server:/home/node/app
       - /home/node/app/dist
@@ -104,7 +111,8 @@ services:
       dockerfile: development.Dockerfile
     image: wallet-mock
     restart: always
-    network_mode: host
+    ports:
+      - 7777:7777
     volumes:
       - ./wallet-backend-server/samples/wallet-mock:/home/node/app
       - /home/node/app/node_modules
@@ -121,7 +129,8 @@ services:
       dockerfile: development.Dockerfile
     image: enterprise-verifier-core
     restart: always
-    network_mode: host
+    ports:
+      - 9000:9000
     volumes:
       - ./enterprise-verifier-core:/home/node/app
       - /home/node/app/dist
