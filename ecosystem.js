@@ -5,11 +5,33 @@ const path = require('path');
 const { execSync } = require('child_process');
 
 function copyKeys(srcPath, destPath) {
+	const fileName = path.basename(srcPath);
 	if (!fs.existsSync(destPath)) {
 		fs.mkdirSync(destPath, { recursive: true });
-		const keysFile = path.join(srcPath, path.basename(destPath));
-		fs.copyFileSync(keysFile, path.join(destPath, path.basename(destPath)));
 	}
+	fs.copyFileSync(srcPath, path.join(destPath, fileName));
+}
+
+function findFilesWithExtension(dir, extension) {
+  const files = [];
+  const items = fs.readdirSync(dir);
+
+  for (const item of items) {
+    const fullPath = path.join(dir, item);
+
+    if (fs.statSync(fullPath).isDirectory()) {
+      files.push(...findFilesWithExtension(fullPath, extension));
+    } else if (item.endsWith(extension)) {
+      files.push(fullPath);
+    }
+  }
+
+  return files;
+}
+
+function replaceTokenInTemplate(templateFile, token) {
+  const templateContent = fs.readFileSync(templateFile, 'utf8');
+  return templateContent.replace(/\${GITHUB_AUTH_TOKEN}/g, token);
 }
 
 function help() {
@@ -33,6 +55,7 @@ let useOpenIdUrl = false;
 let daemonMode = false;
 let forceUpdateConfigs = false;
 let useComposeTemplate = false;
+let walletClientUrl = "http://wallet-mock:7777";
 
 for (const arg of args) {
 	if (arg === '-t') {
@@ -54,6 +77,11 @@ for (const arg of args) {
 		console.log("Forcing update in configs");
 	}
 
+	if (arg === '--react-frontend') {
+		walletClientUrl = "http://localhost:3000/cb";
+		console.log(`Changed client url to ${walletClientUrl}`);
+	}
+
 	if (arg === '--help') {
 		help();
 		process.exit();
@@ -62,8 +90,34 @@ for (const arg of args) {
 
 const secret = "dsfkwfkwfwdfdsfSaSe2e34r4frwr42rAFdsf2lfmfsmklfwmer";
 
+const githubTokenFile = '.github-token';
+let githubToken;
 
-let walletClientUrl = "http://wallet-mock:7777";
+try {
+  githubToken = fs.readFileSync(githubTokenFile, 'utf8').trim();
+  fs.chmodSync(githubTokenFile, 0o600);
+} catch (error) {
+  console.error(`Error: ${error.message}`);
+  console.error(`Write GitHub token to '${githubTokenFile}' before running this script.`);
+  process.exit(1);
+}
+
+if (fs.existsSync(githubTokenFile)) {
+  const npmrcTemplateFiles = findFilesWithExtension('.', '.npmrc.template');
+  for (const npmrcTemplateFile of npmrcTemplateFiles) {
+    const npmrcFile = npmrcTemplateFile.replace('.template', '');
+
+    if (!fs.existsSync(npmrcFile) || forceUpdateConfigs === 'false') {
+      fs.writeFileSync(npmrcFile, '', { mode: 0o600 });
+      fs.writeFileSync(npmrcFile, replaceTokenInTemplate(npmrcTemplateFile, githubToken));
+    }
+  }
+} else {
+  console.error(`Error: No such file: ${githubTokenFile}`);
+  console.error(`Write GitHub token to '${githubTokenFile}' before running this script.`);
+  process.exit(1);
+}
+
 const walletCoreUrl = "http://enterprise-verifier-core:9000";
 
 // Redis cache configuration
@@ -227,12 +281,12 @@ if (action !== "up") {
 
 // Copy DID keys for VID issuer
 const vidIssuerKeysSrc = path.resolve(__dirname, './keys/vid-issuer.keys');
-const vidIssuerKeysDest = path.resolve(__dirname, 'wallet-enterprise-vid-issuer/keys/vid-issuer.vid.keys');
+const vidIssuerKeysDest = path.resolve(__dirname, 'wallet-enterprise-vid-issuer/keys');
 copyKeys(vidIssuerKeysSrc, vidIssuerKeysDest);
 
 // Copy DID keys for Diploma issuer
 const issuerKeysSrc = path.resolve(__dirname, './keys/issuer-did.uoa.keys');
-const issuerKeysDest = path.resolve(__dirname, 'wallet-enterprise-diploma-issuer/keys/issuer-did.uoa.keys');
+const issuerKeysDest = path.resolve(__dirname, 'wallet-enterprise-diploma-issuer/keys');
 copyKeys(issuerKeysSrc, issuerKeysDest);
 
 
