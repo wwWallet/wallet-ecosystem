@@ -90,6 +90,25 @@ fi
 secret=dsfkwfkwfwdfdsfSaSe2e34r4frwr42rAFdsf2lfmfsmklfwmer
 
 
+# Set up GitHub token in .npmrc files
+github_token_file=".github-token"
+github_token=$(cat ${github_token_file})
+chmod 600 "${github_token_file}"
+if [[ -f "${github_token_file}" ]]; then
+	github_token=$(cat ${github_token_file})
+	for npmrc_template_file in $(find . -name '.npmrc.template'); do
+		npmrc_file="${npmrc_template_file%.template}"
+		if ! [[ -f "${npmrc_file}" ]] || [ "$force_update_configs" = "false" ]; then
+			touch "${npmrc_file}"
+			chmod 600 "${npmrc_file}"
+			sed "s/\${GITHUB_AUTH_TOKEN}/${github_token}/" "${npmrc_template_file}" > "${npmrc_file}"
+		fi
+	done
+else
+	echo "Error: No such file: ${github_token_file} . Write GitHub token to this file before running this script."
+	exit 1
+fi
+
 
 # Enterprise wallet core configuration
 if [ -f "$PWD/wallet-enterprise-diploma-issuer/config/config.development.ts" ] && [ "$force_update_configs" = "false" ]
