@@ -1,0 +1,25 @@
+name: Set up .npmrc to access GitHub NPM registry
+
+inputs:
+  token:
+    required: true
+    description: GitHub token with `read:packages` permission
+
+  template-file:
+    default: ".npmrc.template"
+    description: Template file for the output file
+
+  output-file:
+    default: ".npmrc"
+    description: Path to write output file to.
+
+runs:
+  using: "composite"
+
+  steps:
+    - name: Create npmrc file
+      shell: bash
+      run: |
+        touch "${{ inputs.output-file }}"
+        chmod 600 "${{ inputs.output-file }}"
+        sed "s/\${GITHUB_AUTH_TOKEN}/${{ inputs.token }}/" "${{ inputs.template-file }}" > "${{ inputs.output-file }}"
