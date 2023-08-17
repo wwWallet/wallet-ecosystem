@@ -50,7 +50,8 @@ for arg in "$@"; do
 	fi
 
 	if [[ $arg == '--react-frontend' ]]; then
-		wallet_client_url="http://localhost:3000/cb"
+		wallet_client_origin="http://localhost:3000"
+		wallet_client_url="${wallet_client_origin}/cb"
 		echo "Changed the wallet client URL to $wallet_client_url"
 	fi
 
@@ -61,6 +62,7 @@ for arg in "$@"; do
 	prev_arg=$arg
 done
 
+wallet_client_origin="${wallet_client_origin:-${base_url}:7777}"
 wallet_client_url="${wallet_client_url:-${base_url}:7777}"
 
 if [ ! -f "$PWD/docker-compose.yml" ] || [ "$use_compose_template" = "true" ]
@@ -210,6 +212,8 @@ else
 	sed -i "s#REDIS_URL#redis://127.0.0.1#g" wallet-backend-server/config/config.development.ts
 	sed -i "s#WALLET_CLIENT_URL#$wallet_client_url#g" wallet-backend-server/config/config.development.ts
 
+	sed -i "s#WEBAUTHN_RP_ID#localhost#g" wallet-backend-server/config/config.development.ts
+	sed -i "s#WEBAUTHN_ORIGIN#${wallet_client_origin}#g" wallet-backend-server/config/config.development.ts
 fi
 
 

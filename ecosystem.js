@@ -40,8 +40,10 @@ let useOpenIdUrl = false;
 let daemonMode = false;
 let forceUpdateConfigs = false;
 let useComposeTemplate = false;
-let walletClientUrl = "http://wallet-mock:7777";
-const reactWalletClientUrl = "http://localhost:3000/cb";
+let walletClientOrigin = "http://wallet-mock:7777";
+let walletClientUrl = walletClientOrigin;
+const reactWalletClientOrigin = "http://localhost:3000";
+const reactWalletClientUrl = `${reactWalletClientOrigin}/cb`;
 
 function help() {
 	console.log("Usage: node ecosystem.js <up or down> <OPTIONS>");
@@ -79,6 +81,7 @@ for (const arg of args) {
 	}
 
 	if (arg === '--react-frontend') {
+		walletClientOrigin = reactWalletClientOrigin;
 		walletClientUrl = reactWalletClientUrl;
 		console.log(`Changed client url to ${walletClientUrl}`);
 	}
@@ -179,6 +182,9 @@ if (action !== "up") {
 	configContent = configContent.replace(/DB_NAME/g, dbName);
 	configContent = configContent.replace(/REDIS_URL/g, redisUrl);
 	configContent = configContent.replace(/WALLET_CLIENT_URL/g, walletClientUrl);
+
+	configContent = configContent.replace(/WEBAUTHN_RP_ID/g, "localhost");
+	configContent = configContent.replace(/WEBAUTHN_ORIGIN/g, walletClientOrigin);
 
 	fs.writeFileSync(configPath, configContent);
 }
