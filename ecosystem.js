@@ -34,20 +34,6 @@ function replaceTokenInTemplate(templateFile, token) {
   return templateContent.replace(/\${GITHUB_AUTH_TOKEN}/g, token);
 }
 
-function help() {
-	console.log("Usage: node ecosystem.js <up or down> <OPTIONS>");
-	console.log("OPTIONS:");
-	console.log("   -m           Redirection will be directed to the openid:// URL. Note: It will be applied only in the first execution of the script and every time '-c' is given");
-	console.log("   -d           Start the ecosystem in daemonized mode");
-	console.log("   -c           Force update of the configurations to the defaults for the development environment");
-	console.log("   -t           Force the usage of the docker-compose.template.yml");
-	console.log("");
-	console.log("Example:");
-	console.log("node ecosystem.js up -m -c");
-	console.log("");
-	console.log("");
-}
-
 const args = process.argv.slice(2);
 let action = args[0]; // up or down
 let useOpenIdUrl = false;
@@ -55,6 +41,22 @@ let daemonMode = false;
 let forceUpdateConfigs = false;
 let useComposeTemplate = false;
 let walletClientUrl = "http://wallet-mock:7777";
+const reactWalletClientUrl = "http://localhost:3000/cb";
+
+function help() {
+	console.log("Usage: node ecosystem.js <up or down> <OPTIONS>");
+	console.log("OPTIONS:");
+	console.log("   -m                Redirection will be directed to the openid:// URL. Note: It will be applied only in the first execution of the script and every time '-c' is given");
+	console.log("   -d                Start the ecosystem in daemonized mode");
+	console.log("   -c                Force update of the configurations to the defaults for the development environment");
+	console.log("   -t                Force the usage of the docker-compose.template.yml");
+	console.log(`   --react-frontend  Use wallet client at ${reactWalletClientUrl} instead of ${walletClientUrl}`);
+	console.log("");
+	console.log("Example:");
+	console.log("node ecosystem.js up -m -c");
+	console.log("");
+	console.log("");
+}
 
 for (const arg of args) {
 	if (arg === '-t') {
@@ -77,7 +79,7 @@ for (const arg of args) {
 	}
 
 	if (arg === '--react-frontend') {
-		walletClientUrl = "http://localhost:3000/cb";
+		walletClientUrl = reactWalletClientUrl;
 		console.log(`Changed client url to ${walletClientUrl}`);
 	}
 
