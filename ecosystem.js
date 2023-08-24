@@ -40,7 +40,6 @@ function help() {
 	console.log("   -m           Redirection will be directed to the openid:// URL. Note: It will be applied only in the first execution of the script and every time '-c' is given");
 	console.log("   -d           Start the ecosystem in daemonized mode");
 	console.log("   -c           Force update of the configurations to the defaults for the development environment");
-	console.log("   -b <url>     Set the base URL");
 	console.log("   -t           Force the usage of the docker-compose.template.yml");
 	console.log("");
 	console.log("Example:");
