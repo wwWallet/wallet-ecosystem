@@ -122,6 +122,24 @@ services:
           limits:
             memory: 1G
 
+  wallet-frontend:
+    build:
+      context: $PWD/wallet-frontend
+      dockerfile: development.Dockerfile
+    image: wallet-frontend
+    container_name: wallet-frontend
+    hostname: wallet-frontend
+    ports:
+      - 3000:3000
+    volumes:
+      - $PWD/wallet-frontend:/home/node/app
+      - /home/node/app/node_modules
+      - ./.vscode/:/home/node/app/.vscode
+    deploy:
+      resources:
+          limits:
+            memory: 1G
+
   enterprise-verifier-core:
     container_name: enterprise-verifier-core
     build:
