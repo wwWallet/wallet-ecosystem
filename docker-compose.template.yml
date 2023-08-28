@@ -135,10 +135,6 @@ services:
       - $PWD/wallet-frontend:/home/node/app
       - /home/node/app/node_modules
       - ./.vscode/:/home/node/app/.vscode
-    deploy:
-      resources:
-          limits:
-            memory: 1G
 
   enterprise-verifier-core:
     container_name: enterprise-verifier-core
