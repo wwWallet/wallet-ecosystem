@@ -111,7 +111,7 @@ fi
 
 
 # Enterprise wallet core configuration
-if [ -f "$PWD/wallet-enterprise-diploma-issuer/config/config.development.ts" ] && [ "$force_update_configs" = "false" ]
+if [ -f "$PWD/enterprise-verifier-core/config/config.development.ts" ] && [ "$force_update_configs" = "false" ]
 then
 	echo "enterprise-verifier-core/config/config.development.ts was not changed"
 else
@@ -119,23 +119,23 @@ else
 	wallet_core_port="9000"
 	wallet_core_url="$base_url:$wallet_core_port"
 
-	sed -i "s#SERVICE_URL#$wallet_core_url#g" enterprise-verifier-core/config/config.development.ts
-	sed -i "s#SERVICE_SECRET#$secret#g" enterprise-verifier-core/config/config.development.ts
+	sed -i -e "s#SERVICE_URL#$wallet_core_url#g" enterprise-verifier-core/config/config.development.ts
+	sed -i -e "s#SERVICE_SECRET#$secret#g" enterprise-verifier-core/config/config.development.ts
 
-	sed -i "s#SERVICE_PORT#$wallet_core_port#g" enterprise-verifier-core/config/config.development.ts
+	sed -i -e "s#SERVICE_PORT#$wallet_core_port#g" enterprise-verifier-core/config/config.development.ts
 
-	sed -i "s#DB_HOST#127.0.0.1#g" enterprise-verifier-core/config/config.development.ts
-	sed -i "s#DB_PORT#3307#g" enterprise-verifier-core/config/config.development.ts
-	sed -i "s#DB_USER#root#g" enterprise-verifier-core/config/config.development.ts
-	sed -i "s#DB_PASSWORD#root#g" enterprise-verifier-core/config/config.development.ts
-	sed -i "s#DB_NAME#core#g" enterprise-verifier-core/config/config.development.ts
+	sed -i -e "s#DB_HOST#wallet-db#g" enterprise-verifier-core/config/config.development.ts
+	sed -i -e "s#DB_PORT#3307#g" enterprise-verifier-core/config/config.development.ts
+	sed -i -e "s#DB_USER#root#g" enterprise-verifier-core/config/config.development.ts
+	sed -i -e "s#DB_PASSWORD#root#g" enterprise-verifier-core/config/config.development.ts
+	sed -i -e "s#DB_NAME#core#g" enterprise-verifier-core/config/config.development.ts
 
-	sed -i "s#REDIS_URL#redis://127.0.0.1#g" enterprise-verifier-core/config/config.development.ts
-	sed -i "s#WALLET_CLIENT_URL#$wallet_client_url#g" enterprise-verifier-core/config/config.development.ts
+	sed -i -e "s#REDIS_URL#redis://wallet-cache#g" enterprise-verifier-core/config/config.development.ts
+	sed -i -e "s#WALLET_CLIENT_URL#$wallet_client_url#g" enterprise-verifier-core/config/config.development.ts
 fi
 
 
-# Enterprise issuer configuration
+# Enterprise diploma issuer configuration
 if [ -e "$PWD/wallet-enterprise-diploma-issuer/config/config.development.ts" ] && [ "$force_update_configs" = "false" ]
 then
 	echo "wallet-enterprise-diploma-issuer/config/config.development.ts was not changed"
@@ -144,20 +144,20 @@ else
 
 	service_port="8000"
 	service_url="$base_url:$service_port"
-	sed -i "s#SERVICE_URL#$service_url#g" wallet-enterprise-diploma-issuer/config/config.development.ts
-	sed -i "s#SERVICE_SECRET#$secret#g" wallet-enterprise-diploma-issuer/config/config.development.ts
+	sed -i -e "s#SERVICE_URL#$service_url#g" wallet-enterprise-diploma-issuer/config/config.development.ts
+	sed -i -e "s#SERVICE_SECRET#$secret#g" wallet-enterprise-diploma-issuer/config/config.development.ts
 
-	sed -i "s#SERVICE_PORT#$service_port#g" wallet-enterprise-diploma-issuer/config/config.development.ts
+	sed -i -e "s#SERVICE_PORT#$service_port#g" wallet-enterprise-diploma-issuer/config/config.development.ts
 
-	sed -i "s#DB_HOST#127.0.0.1#g" wallet-enterprise-diploma-issuer/config/config.development.ts
-	sed -i "s#DB_PORT#3307#g" wallet-enterprise-diploma-issuer/config/config.development.ts
-	sed -i "s#DB_USER#root#g" wallet-enterprise-diploma-issuer/config/config.development.ts
-	sed -i "s#DB_PASSWORD#root#g" wallet-enterprise-diploma-issuer/config/config.development.ts
-	sed -i "s#DB_NAME#issuer#g" wallet-enterprise-diploma-issuer/config/config.development.ts
+	sed -i -e "s#DB_HOST#wallet-db#g" wallet-enterprise-diploma-issuer/config/config.development.ts
+	sed -i -e "s#DB_PORT#3307#g" wallet-enterprise-diploma-issuer/config/config.development.ts
+	sed -i -e "s#DB_USER#root#g" wallet-enterprise-diploma-issuer/config/config.development.ts
+	sed -i -e "s#DB_PASSWORD#root#g" wallet-enterprise-diploma-issuer/config/config.development.ts
+	sed -i -e "s#DB_NAME#issuer#g" wallet-enterprise-diploma-issuer/config/config.development.ts
 
-	sed -i "s#REDIS_URL#redis://127.0.0.1#g" wallet-enterprise-diploma-issuer/config/config.development.ts
-	sed -i "s#WALLET_CLIENT_URL#$wallet_client_url#g" wallet-enterprise-diploma-issuer/config/config.development.ts
-	sed -i "s#WALLET_CORE_URL#$wallet_core_url#g" wallet-enterprise-diploma-issuer/config/config.development.ts
+	sed -i -e "s#REDIS_URL#redis://wallet-cache#g" wallet-enterprise-diploma-issuer/config/config.development.ts
+	sed -i -e "s#WALLET_CLIENT_URL#$wallet_client_url#g" wallet-enterprise-diploma-issuer/config/config.development.ts
+	sed -i -e "s#WALLET_CORE_URL#$wallet_core_url#g" wallet-enterprise-diploma-issuer/config/config.development.ts
 fi
 
 # Enterprise VID Issuer configuration
@@ -169,20 +169,20 @@ else
 
 	service_port="8003"
 	service_url="$base_url:$service_port"
-	sed -i "s#SERVICE_URL#$service_url#g" wallet-enterprise-vid-issuer/config/config.development.ts
-	sed -i "s#SERVICE_SECRET#$secret#g" wallet-enterprise-vid-issuer/config/config.development.ts
+	sed -i -e "s#SERVICE_URL#$service_url#g" wallet-enterprise-vid-issuer/config/config.development.ts
+	sed -i -e "s#SERVICE_SECRET#$secret#g" wallet-enterprise-vid-issuer/config/config.development.ts
 
-	sed -i "s#SERVICE_PORT#$service_port#g" wallet-enterprise-vid-issuer/config/config.development.ts
+	sed -i -e "s#SERVICE_PORT#$service_port#g" wallet-enterprise-vid-issuer/config/config.development.ts
 
-	sed -i "s#DB_HOST#127.0.0.1#g" wallet-enterprise-vid-issuer/config/config.development.ts
-	sed -i "s#DB_PORT#3307#g" wallet-enterprise-vid-issuer/config/config.development.ts
-	sed -i "s#DB_USER#root#g" wallet-enterprise-vid-issuer/config/config.development.ts
-	sed -i "s#DB_PASSWORD#root#g" wallet-enterprise-vid-issuer/config/config.development.ts
-	sed -i "s#DB_NAME#vidissuer#g" wallet-enterprise-vid-issuer/config/config.development.ts
+	sed -i -e "s#DB_HOST#wallet-db#g" wallet-enterprise-vid-issuer/config/config.development.ts
+	sed -i -e "s#DB_PORT#3307#g" wallet-enterprise-vid-issuer/config/config.development.ts
+	sed -i -e "s#DB_USER#root#g" wallet-enterprise-vid-issuer/config/config.development.ts
+	sed -i -e "s#DB_PASSWORD#root#g" wallet-enterprise-vid-issuer/config/config.development.ts
+	sed -i -e "s#DB_NAME#vidissuer#g" wallet-enterprise-vid-issuer/config/config.development.ts
 
-	sed -i "s#REDIS_URL#redis://127.0.0.1#g" wallet-enterprise-vid-issuer/config/config.development.ts
-	sed -i "s#WALLET_CLIENT_URL#$wallet_client_url#g" wallet-enterprise-vid-issuer/config/config.development.ts
-	sed -i "s#WALLET_CORE_URL#$wallet_core_url#g" wallet-enterprise-vid-issuer/config/config.development.ts
+	sed -i -e "s#REDIS_URL#redis://wallet-cache#g" wallet-enterprise-vid-issuer/config/config.development.ts
+	sed -i -e "s#WALLET_CLIENT_URL#$wallet_client_url#g" wallet-enterprise-vid-issuer/config/config.development.ts
+	sed -i -e "s#WALLET_CORE_URL#$wallet_core_url#g" wallet-enterprise-vid-issuer/config/config.development.ts
 fi
 
 
@@ -196,19 +196,19 @@ else
 
 	service_port="8002"
 	service_url="$base_url:$service_port"
-	sed -i "s#SERVICE_URL#$service_url#g" wallet-backend-server/config/config.development.ts
-	sed -i "s#SERVICE_SECRET#$secret#g" wallet-backend-server/config/config.development.ts
+	sed -i -e "s#SERVICE_URL#$service_url#g" wallet-backend-server/config/config.development.ts
+	sed -i -e "s#SERVICE_SECRET#$secret#g" wallet-backend-server/config/config.development.ts
 
-	sed -i "s#SERVICE_PORT#$service_port#g" wallet-backend-server/config/config.development.ts
+	sed -i -e "s#SERVICE_PORT#$service_port#g" wallet-backend-server/config/config.development.ts
 
-	sed -i "s#DB_HOST#127.0.0.1#g" wallet-backend-server/config/config.development.ts
-	sed -i "s#DB_PORT#3307#g" wallet-backend-server/config/config.development.ts
-	sed -i "s#DB_USER#root#g" wallet-backend-server/config/config.development.ts
-	sed -i "s#DB_PASSWORD#root#g" wallet-backend-server/config/config.development.ts
-	sed -i "s#DB_NAME#wallet#g" wallet-backend-server/config/config.development.ts
+	sed -i -e "s#DB_HOST#wallet-db#g" wallet-backend-server/config/config.development.ts
+	sed -i -e "s#DB_PORT#3307#g" wallet-backend-server/config/config.development.ts
+	sed -i -e "s#DB_USER#root#g" wallet-backend-server/config/config.development.ts
+	sed -i -e "s#DB_PASSWORD#root#g" wallet-backend-server/config/config.development.ts
+	sed -i -e "s#DB_NAME#wallet#g" wallet-backend-server/config/config.development.ts
 
-	sed -i "s#REDIS_URL#redis://127.0.0.1#g" wallet-backend-server/config/config.development.ts
-	sed -i "s#WALLET_CLIENT_URL#$wallet_client_url#g" wallet-backend-server/config/config.development.ts
+	sed -i -e "s#REDIS_URL#redis://wallet-cache#g" wallet-backend-server/config/config.development.ts
+	sed -i -e "s#WALLET_CLIENT_URL#$wallet_client_url#g" wallet-backend-server/config/config.development.ts
 
 fi
 
