@@ -35,13 +35,13 @@ function replaceTokenInTemplate(templateFile, token) {
 }
 
 function help() {
-	console.log("Usage: node ecosystem.js <up or down> <OPTIONS>");
+	console.log("Usage: node ecosystem.js <up | down | init> <OPTIONS>");
 	console.log("OPTIONS:");
-	console.log("   -m           Redirection will be directed to the openid:// URL. Note: It will be applied only in the first execution of the script and every time '-c' is given");
-	console.log("   -d           Start the ecosystem in daemonized mode");
-	console.log("   -c           Force update of the configurations to the defaults for the development environment");
-	console.log("   -b <url>     Set the base URL");
-	console.log("   -t           Force the usage of the docker-compose.template.yml");
+	console.log("   -m                Redirection will be directed to the openid:// URL. Note: It will be applied only in the first execution of the script and every time '-c' is given");
+	console.log("   -d                Start the ecosystem in daemonized mode");
+	console.log("   -c                Force update of the configurations to the defaults for the development environment");
+	console.log("   -t                Force the usage of the docker-compose.template.yml");
+	console.log(`   --react-frontend  Use wallet client at ${reactWalletClientUrl} instead of ${walletClientUrl}`);
 	console.log("");
 	console.log("Example:");
 	console.log("node ecosystem.js up -m -c");
@@ -49,14 +49,17 @@ function help() {
 	console.log("");
 }
 
+
 let args = process.argv.slice(2);
-let action = args[0]; // up or down
+let action = args[0]; // up or down or init
 args = args.slice(1); // get the rest of the arguments aside from action argument
 let useOpenIdUrl = false;
 let daemonMode = false;
 let forceUpdateConfigs = false;
 let useComposeTemplate = false;
 let walletClientUrl = "http://wallet-mock:7777";
+const reactWalletClientUrl = "http://localhost:3000/cb";
+
 
 for (const arg of args) {
 	if (arg === '-t') {
@@ -79,7 +82,7 @@ for (const arg of args) {
 	}
 
 	if (arg === '--react-frontend') {
-		walletClientUrl = "http://localhost:3000/cb";
+		walletClientUrl = reactWalletClientUrl;
 		console.log(`Changed client url to ${walletClientUrl}`);
 	}
 
@@ -139,10 +142,51 @@ if (useOpenIdUrl) {
 	walletClientUrl = "openid://cb";
 }
 
+let dockerComposeCommand = 'docker-compose';
+try {
+	execSync('docker compose version').toString();
+	dockerComposeCommand = 'docker compose'
+} catch (error) {
+	// Fall back to default value
+}
+
 if (action === "down") {
 	console.log("Performing 'docker compose down'");
 	// Implement the logic to stop Docker services here
-	execSync('docker compose down', { stdio: 'inherit' });
+	execSync(`${dockerComposeCommand} down`, { stdio: 'inherit' });
+	process.exit();
+}
+
+if (action === "init") {
+	execSync(`${dockerComposeCommand} run --rm -t --workdir /home/node/app/cli wallet-backend-server sh -c '
+		set -e # Exit on error
+		yarn install
+		export DB_HOST="wallet-db"
+		export DB_PORT="3307"
+		export DB_USER="root"
+		export DB_PASSWORD="root"
+		export DB_NAME="wallet"
+		./configwallet.js create issuer \
+			--friendlyName "National VID Issuer" \
+			--url http://wallet-enterprise-vid-issuer:8003 \
+			--did did:ebsi:zyhE5cJ7VVqYT4gZmoKadFt \
+			--client_id did:ebsi:zyhE5cJ7VVqYT4gZmoKadFt
+		./configwallet.js create issuer \
+			--friendlyName "University of Athens" \
+			--url http://wallet-enterprise-diploma-issuer:8000 \
+			--did did:ebsi:zpq1XFkNWgsGB6MuvJp21vA \
+			--client_id did:ebsi:zpq1XFkNWgsGB6MuvJp21vA
+	'`, { stdio: 'inherit' });
+
+	execSync(`${dockerComposeCommand} run --rm -t --workdir /home/node/app/cli enterprise-verifier-core sh -c '
+		yarn install
+		export SERVICE_URL=http://enterprise-verifier-core:9000
+		export ENTERPRISE_CORE_USER=""
+		export ENTERPRISE_CORE_SECRET=""
+		./configver.js clear  # clear old configuration
+		./configver.js        # send the new configuration
+	'`, { stdio: 'inherit' });
+
 	process.exit();
 }
 
@@ -298,8 +342,8 @@ copyKeys(issuerKeysSrc, issuerKeysDest);
 
 if (daemonMode === false) {
 	console.log("Performing 'docker compose up'");
-	execSync('docker compose up', { stdio: 'inherit' });
+	execSync(`${dockerComposeCommand} up`, { stdio: 'inherit' });
 } else {
 	console.log("Performing 'docker compose up -d'");
-	execSync('docker compose up -d', { stdio: 'inherit' });
+	execSync(`${dockerComposeCommand} up -d`, { stdio: 'inherit' });
 }

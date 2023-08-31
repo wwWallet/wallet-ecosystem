@@ -79,6 +79,40 @@ then
 	exit
 fi
 
+if [ "$action" = "init" ]
+then
+	docker-compose run --rm -t --workdir /home/node/app/cli wallet-backend-server sh -c '
+		set -e # Exit on error
+		yarn install
+		export DB_HOST="127.0.0.1"
+		export DB_PORT="3307"
+		export DB_USER="root"
+		export DB_PASSWORD="root"
+		export DB_NAME="wallet"
+		./configwallet.js create issuer \
+			--friendlyName "National VID Issuer" \
+			--url http://127.0.0.1:8003 \
+			--did did:ebsi:zyhE5cJ7VVqYT4gZmoKadFt \
+			--client_id did:ebsi:zyhE5cJ7VVqYT4gZmoKadFt
+		./configwallet.js create issuer \
+			--friendlyName "University of Athens" \
+			--url http://127.0.0.1:8000 \
+			--did did:ebsi:zpq1XFkNWgsGB6MuvJp21vA \
+			--client_id did:ebsi:zpq1XFkNWgsGB6MuvJp21vA
+	'
+
+	docker-compose run --rm -t --workdir /home/node/app/cli enterprise-verifier-core sh -c '
+		yarn install
+		export SERVICE_URL=http://127.0.0.1:9000
+		export ENTERPRISE_CORE_USER=""
+		export ENTERPRISE_CORE_SECRET=""
+		./configver.js clear  # clear old configuration
+		./configver.js        # send the new configuration
+	'
+
+	exit
+fi
+
 if [ "$action" != "up" ]
 then
 	echo "Error: First argument must be 'up' or 'down'"
