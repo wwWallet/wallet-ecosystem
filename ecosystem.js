@@ -34,15 +34,6 @@ function replaceTokenInTemplate(templateFile, token) {
   return templateContent.replace(/\${GITHUB_AUTH_TOKEN}/g, token);
 }
 
-const args = process.argv.slice(2);
-let action = args[0]; // up or down
-let useOpenIdUrl = false;
-let daemonMode = false;
-let forceUpdateConfigs = false;
-let useComposeTemplate = false;
-let walletClientUrl = "http://wallet-mock:7777";
-const reactWalletClientUrl = "http://localhost:3000/cb";
-
 function help() {
 	console.log("Usage: node ecosystem.js <up | down | init> <OPTIONS>");
 	console.log("OPTIONS:");
@@ -57,6 +48,18 @@ function help() {
 	console.log("");
 	console.log("");
 }
+
+
+let args = process.argv.slice(2);
+let action = args[0]; // up or down or init
+args = args.slice(1); // get the rest of the arguments aside from action argument
+let useOpenIdUrl = false;
+let daemonMode = false;
+let forceUpdateConfigs = false;
+let useComposeTemplate = false;
+let walletClientUrl = "http://wallet-mock:7777";
+const reactWalletClientUrl = "http://localhost:3000/cb";
+
 
 for (const arg of args) {
 	if (arg === '-t') {
@@ -200,28 +203,30 @@ if (action !== "up") {
 
 	if (fs.existsSync(configPath) && forceUpdateConfigs === false) {
 		console.log("wallet-backend-server/config/config.development.ts was not changed");
-		return;
+	}
+	else {
+		fs.copyFileSync(templatePath, configPath);
+
+		const servicePort = 8002;
+		const serviceUrl = `http://wallet-backend-server:${servicePort}`;
+		const dbName = 'wallet';
+	
+		let configContent = fs.readFileSync(configPath, 'utf-8');
+		configContent = configContent.replace(/SERVICE_URL/g, serviceUrl);
+		configContent = configContent.replace(/SERVICE_SECRET/g, secret);
+		configContent = configContent.replace(/SERVICE_PORT/g, servicePort);
+		configContent = configContent.replace(/DB_HOST/g, dbHost);
+		configContent = configContent.replace(/DB_PORT/g, dbPort);
+		configContent = configContent.replace(/DB_USER/g, dbUser);
+		configContent = configContent.replace(/DB_PASSWORD/g, dbPassword);
+		configContent = configContent.replace(/DB_NAME/g, dbName);
+		configContent = configContent.replace(/REDIS_URL/g, redisUrl);
+		configContent = configContent.replace(/WALLET_CLIENT_URL/g, walletClientUrl);
+	
+		fs.writeFileSync(configPath, configContent);
 	}
 
-	fs.copyFileSync(templatePath, configPath);
 
-	const servicePort = 8002;
-	const serviceUrl = `http://wallet-backend-server:${servicePort}`;
-	const dbName = 'wallet';
-
-	let configContent = fs.readFileSync(configPath, 'utf-8');
-	configContent = configContent.replace(/SERVICE_URL/g, serviceUrl);
-	configContent = configContent.replace(/SERVICE_SECRET/g, secret);
-	configContent = configContent.replace(/SERVICE_PORT/g, servicePort);
-	configContent = configContent.replace(/DB_HOST/g, dbHost);
-	configContent = configContent.replace(/DB_PORT/g, dbPort);
-	configContent = configContent.replace(/DB_USER/g, dbUser);
-	configContent = configContent.replace(/DB_PASSWORD/g, dbPassword);
-	configContent = configContent.replace(/DB_NAME/g, dbName);
-	configContent = configContent.replace(/REDIS_URL/g, redisUrl);
-	configContent = configContent.replace(/WALLET_CLIENT_URL/g, walletClientUrl);
-
-	fs.writeFileSync(configPath, configContent);
 }
 
 
@@ -231,29 +236,29 @@ if (action !== "up") {
 
 	if (fs.existsSync(configPath) && forceUpdateConfigs === false) {
 		console.log("wallet-enterprise-vid-issuer/config/config.development.ts was not changed");
-		return;
 	}
+	else {
+		fs.copyFileSync(templatePath, configPath);
 
-	fs.copyFileSync(templatePath, configPath);
-
-	const servicePort = 8003;
-	const serviceUrl = `http://wallet-enterprise-vid-issuer:${servicePort}`;
-	const dbName = 'vidissuer';
-
-	let configContent = fs.readFileSync(configPath, 'utf-8');
-	configContent = configContent.replace(/SERVICE_URL/g, serviceUrl);
-	configContent = configContent.replace(/SERVICE_SECRET/g, secret);
-	configContent = configContent.replace(/SERVICE_PORT/g, servicePort);
-	configContent = configContent.replace(/DB_HOST/g, dbHost);
-	configContent = configContent.replace(/DB_PORT/g, dbPort);
-	configContent = configContent.replace(/DB_USER/g, dbUser);
-	configContent = configContent.replace(/DB_PASSWORD/g, dbPassword);
-	configContent = configContent.replace(/DB_NAME/g, dbName);
-	configContent = configContent.replace(/REDIS_URL/g, redisUrl);
-	configContent = configContent.replace(/WALLET_CLIENT_URL/g, walletClientUrl);
-	configContent = configContent.replace(/WALLET_CORE_URL/g, walletCoreUrl);
-
-	fs.writeFileSync(configPath, configContent);
+		const servicePort = 8003;
+		const serviceUrl = `http://wallet-enterprise-vid-issuer:${servicePort}`;
+		const dbName = 'vidissuer';
+	
+		let configContent = fs.readFileSync(configPath, 'utf-8');
+		configContent = configContent.replace(/SERVICE_URL/g, serviceUrl);
+		configContent = configContent.replace(/SERVICE_SECRET/g, secret);
+		configContent = configContent.replace(/SERVICE_PORT/g, servicePort);
+		configContent = configContent.replace(/DB_HOST/g, dbHost);
+		configContent = configContent.replace(/DB_PORT/g, dbPort);
+		configContent = configContent.replace(/DB_USER/g, dbUser);
+		configContent = configContent.replace(/DB_PASSWORD/g, dbPassword);
+		configContent = configContent.replace(/DB_NAME/g, dbName);
+		configContent = configContent.replace(/REDIS_URL/g, redisUrl);
+		configContent = configContent.replace(/WALLET_CLIENT_URL/g, walletClientUrl);
+		configContent = configContent.replace(/WALLET_CORE_URL/g, walletCoreUrl);
+	
+		fs.writeFileSync(configPath, configContent);
+	}
 }
 
 
@@ -263,62 +268,65 @@ if (action !== "up") {
 
 	if (fs.existsSync(configPath) && forceUpdateConfigs === false) {
 		console.log("wallet-enterprise-diploma-issuer/config/config.development.ts was not changed");
-		return;
+	}
+	else {
+		fs.copyFileSync(templatePath, configPath);
+
+		const servicePort = 8000;
+		const serviceUrl = `http://wallet-enterprise-diploma-issuer:${servicePort}`;
+		const dbName = 'issuer';
+	
+		let configContent = fs.readFileSync(configPath, 'utf-8');
+		configContent = configContent.replace(/SERVICE_URL/g, serviceUrl);
+		configContent = configContent.replace(/SERVICE_SECRET/g, secret);
+		configContent = configContent.replace(/SERVICE_PORT/g, servicePort);
+		configContent = configContent.replace(/DB_HOST/g, dbHost);
+		configContent = configContent.replace(/DB_PORT/g, dbPort);
+		configContent = configContent.replace(/DB_USER/g, dbUser);
+		configContent = configContent.replace(/DB_PASSWORD/g, dbPassword);
+		configContent = configContent.replace(/DB_NAME/g, dbName);
+		configContent = configContent.replace(/REDIS_URL/g, redisUrl);
+		configContent = configContent.replace(/WALLET_CLIENT_URL/g, walletClientUrl);
+		configContent = configContent.replace(/WALLET_CORE_URL/g, walletCoreUrl);
+	
+		fs.writeFileSync(configPath, configContent);
 	}
 
-	fs.copyFileSync(templatePath, configPath);
-
-	const servicePort = 8000;
-	const serviceUrl = `http://wallet-enterprise-diploma-issuer:${servicePort}`;
-	const dbName = 'issuer';
-
-	let configContent = fs.readFileSync(configPath, 'utf-8');
-	configContent = configContent.replace(/SERVICE_URL/g, serviceUrl);
-	configContent = configContent.replace(/SERVICE_SECRET/g, secret);
-	configContent = configContent.replace(/SERVICE_PORT/g, servicePort);
-	configContent = configContent.replace(/DB_HOST/g, dbHost);
-	configContent = configContent.replace(/DB_PORT/g, dbPort);
-	configContent = configContent.replace(/DB_USER/g, dbUser);
-	configContent = configContent.replace(/DB_PASSWORD/g, dbPassword);
-	configContent = configContent.replace(/DB_NAME/g, dbName);
-	configContent = configContent.replace(/REDIS_URL/g, redisUrl);
-	configContent = configContent.replace(/WALLET_CLIENT_URL/g, walletClientUrl);
-	configContent = configContent.replace(/WALLET_CORE_URL/g, walletCoreUrl);
-
-	fs.writeFileSync(configPath, configContent);
-}
+};
 
 
-{ // wallet enterprise diploma issuer configuration
+{ // verifier core configuration
 	const configPath = 'enterprise-verifier-core/config/config.development.ts';
 	const templatePath = 'enterprise-verifier-core/config/config.template.ts';
 
 	if (fs.existsSync(configPath) && forceUpdateConfigs === false) {
 		console.log("enterprise-verifier-core/config/config.development.ts was not changed");
-		return;
+	}
+	else {
+		fs.copyFileSync(templatePath, configPath);
+
+		const servicePort = 9000;
+		const serviceUrl = `http://enterprise-verifier-core:${servicePort}`;
+		const dbName = 'core';
+	
+		let configContent = fs.readFileSync(configPath, 'utf-8');
+		configContent = configContent.replace(/SERVICE_URL/g, serviceUrl);
+		configContent = configContent.replace(/SERVICE_SECRET/g, secret);
+		configContent = configContent.replace(/SERVICE_PORT/g, servicePort);
+		configContent = configContent.replace(/DB_HOST/g, dbHost);
+		configContent = configContent.replace(/DB_PORT/g, dbPort);
+		configContent = configContent.replace(/DB_USER/g, dbUser);
+		configContent = configContent.replace(/DB_PASSWORD/g, dbPassword);
+		configContent = configContent.replace(/DB_NAME/g, dbName);
+		configContent = configContent.replace(/REDIS_URL/g, redisUrl);
+		configContent = configContent.replace(/WALLET_CLIENT_URL/g, walletClientUrl);
+		configContent = configContent.replace(/WALLET_CORE_URL/g, walletCoreUrl);
+	
+		fs.writeFileSync(configPath, configContent);
 	}
 
-	fs.copyFileSync(templatePath, configPath);
 
-	const servicePort = 9000;
-	const serviceUrl = `http://enterprise-verifier-core:${servicePort}`;
-	const dbName = 'core';
-
-	let configContent = fs.readFileSync(configPath, 'utf-8');
-	configContent = configContent.replace(/SERVICE_URL/g, serviceUrl);
-	configContent = configContent.replace(/SERVICE_SECRET/g, secret);
-	configContent = configContent.replace(/SERVICE_PORT/g, servicePort);
-	configContent = configContent.replace(/DB_HOST/g, dbHost);
-	configContent = configContent.replace(/DB_PORT/g, dbPort);
-	configContent = configContent.replace(/DB_USER/g, dbUser);
-	configContent = configContent.replace(/DB_PASSWORD/g, dbPassword);
-	configContent = configContent.replace(/DB_NAME/g, dbName);
-	configContent = configContent.replace(/REDIS_URL/g, redisUrl);
-	configContent = configContent.replace(/WALLET_CLIENT_URL/g, walletClientUrl);
-	configContent = configContent.replace(/WALLET_CORE_URL/g, walletCoreUrl);
-
-	fs.writeFileSync(configPath, configContent);
-}
+};
 
 
 // Copy DID keys for VID issuer
@@ -330,7 +338,6 @@ copyKeys(vidIssuerKeysSrc, vidIssuerKeysDest);
 const issuerKeysSrc = path.resolve(__dirname, './keys/issuer-did.uoa.keys');
 const issuerKeysDest = path.resolve(__dirname, 'wallet-enterprise-diploma-issuer/keys');
 copyKeys(issuerKeysSrc, issuerKeysDest);
-
 
 
 if (daemonMode === false) {
