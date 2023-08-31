@@ -94,6 +94,8 @@ services:
     restart: always
     ports:
       - 8002:8002
+    depends_on:
+      - wallet-db
     volumes:
       - ./wallet-backend-server:/home/node/app
       - /home/node/app/dist
