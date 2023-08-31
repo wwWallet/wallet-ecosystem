@@ -139,15 +139,23 @@ if (useOpenIdUrl) {
 	walletClientUrl = "openid://cb";
 }
 
+let dockerComposeCommand = 'docker-compose';
+try {
+	execSync('docker compose version').toString();
+	dockerComposeCommand = 'docker compose'
+} catch (error) {
+	// Fall back to default value
+}
+
 if (action === "down") {
 	console.log("Performing 'docker compose down'");
 	// Implement the logic to stop Docker services here
-	execSync('docker compose down', { stdio: 'inherit' });
+	execSync(`${dockerComposeCommand} down`, { stdio: 'inherit' });
 	process.exit();
 }
 
 if (action === "init") {
-	execSync(`docker-compose run --rm -t --workdir /home/node/app/cli wallet-backend-server sh -c '
+	execSync(`${dockerComposeCommand} run --rm -t --workdir /home/node/app/cli wallet-backend-server sh -c '
 		set -e # Exit on error
 		yarn install
 		export DB_HOST="wallet-db"
@@ -167,7 +175,7 @@ if (action === "init") {
 			--client_id did:ebsi:zpq1XFkNWgsGB6MuvJp21vA
 	'`, { stdio: 'inherit' });
 
-	execSync(`docker-compose run --rm -t --workdir /home/node/app/cli enterprise-verifier-core sh -c '
+	execSync(`${dockerComposeCommand} run --rm -t --workdir /home/node/app/cli enterprise-verifier-core sh -c '
 		yarn install
 		export SERVICE_URL=http://enterprise-verifier-core:9000
 		export ENTERPRISE_CORE_USER=""
@@ -327,8 +335,8 @@ copyKeys(issuerKeysSrc, issuerKeysDest);
 
 if (daemonMode === false) {
 	console.log("Performing 'docker compose up'");
-	execSync('docker compose up', { stdio: 'inherit' });
+	execSync(`${dockerComposeCommand} up`, { stdio: 'inherit' });
 } else {
 	console.log("Performing 'docker compose up -d'");
-	execSync('docker compose up -d', { stdio: 'inherit' });
+	execSync(`${dockerComposeCommand} up -d`, { stdio: 'inherit' });
 }
