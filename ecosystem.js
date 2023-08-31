@@ -144,7 +144,7 @@ try {
 	execSync('docker compose version').toString();
 	dockerComposeCommand = 'docker compose'
 } catch (error) {
-	console.log(error.status, error.message)
+	// Fall back to default value
 }
 
 if (action === "down") {
