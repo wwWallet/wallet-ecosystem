@@ -1,5 +1,6 @@
 version: '3.9'
 
+name: wallet-ecosystem
 services:
   wallet-db:
     image: mariadb
@@ -22,6 +23,10 @@ services:
       - datadir:/var/lib/mysql
       # bind-mount any sql files that should be run while initializing
       - ./db-setup/scripts/:/docker-entrypoint-initdb.d/
+    healthcheck:
+      test: ["CMD", "mariadb" ,"-uroot", "-proot", "--protocol=TCP", "-hlocalhost", "--port=3307",  "-estatus"]
+      timeout: 20s
+      retries: 10
 
   wallet-phpmyadmin:
     image: phpmyadmin/phpmyadmin:latest
@@ -95,7 +100,8 @@ services:
     ports:
       - 8002:8002
     depends_on:
-      - wallet-db
+      wallet-db:
+        condition: service_healthy
     volumes:
       - ./wallet-backend-server:/home/node/app
       - /home/node/app/dist
