@@ -9,6 +9,8 @@ services:
     build:
       context: $PWD/wallet-enterprise
       dockerfile: development.Dockerfile
+      secrets:
+        - npmrc
     image: wallet-enterprise
     restart: always
     ports:
@@ -37,6 +39,8 @@ services:
     build:
       context: $PWD/wallet-enterprise
       dockerfile: development.Dockerfile
+      secrets:
+        - npmrc
     image: wallet-enterprise
     restart: always
     ports:
@@ -65,6 +69,8 @@ services:
     build:
       context: $PWD/wallet-enterprise
       dockerfile: development.Dockerfile
+      secrets:
+        - npmrc
     image: wallet-enterprise
     restart: always
     ports:
@@ -130,7 +136,7 @@ services:
       context: $PWD/wallet-backend-server
       dockerfile: development.Dockerfile
       secrets:
-        - wallet-backend-server-npmrc
+        - npmrc
     image: wallet-backend-server
     restart: always
     ports:
@@ -153,6 +159,8 @@ services:
     build:
       context: $PWD/wallet-frontend
       dockerfile: development.Dockerfile
+      secrets:
+        - npmrc
     image: wallet-frontend
     container_name: wallet-frontend
     hostname: wallet-frontend
@@ -174,5 +182,5 @@ volumes:
     driver: local
 
 secrets:
-  wallet-backend-server-npmrc:
-    file: $PWD/wallet-backend-server/.npmrc
+  npmrc:
+    file: ./.npmrc
