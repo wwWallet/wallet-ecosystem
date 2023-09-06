@@ -43,7 +43,7 @@ let forceUpdateConfigs = false;
 let useComposeTemplate = false;
 let walletClientOrigin = "http://wallet-mock:7777";
 let walletClientUrl = walletClientOrigin;
-const reactWalletClientOrigin = "http://127.0.0.1:3000";
+const reactWalletClientOrigin = "http://localhost:3000";
 const reactWalletClientUrl = `${reactWalletClientOrigin}/cb`;
 
 function help() {
