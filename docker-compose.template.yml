@@ -39,56 +39,7 @@ services:
       PMA_HOST: wallet-db
       PMA_PORT: 3307
 
-  wallet-cache:
-    image: redis:7.0-alpine
-    container_name: wallet-cache
-    hostname: wallet-cache
-    ports:
-      - 6379:6379
-    restart: always  
-    command: redis-server --save 20 1 --loglevel warning
-    volumes: 
-      - cache:/data
-    environment:
-      - ALLOW_EMPTY_PASSWORD=yes
 
-  wallet-enterprise-diploma-issuer:
-    container_name: wallet-enterprise-diploma-issuer
-    build:
-      context: $PWD/wallet-enterprise-diploma-issuer
-      dockerfile: development.Dockerfile
-    image: wallet-enterprise-diploma-issuer
-    restart: always
-    ports:
-      - 8000:8000
-    volumes:
-      - ./wallet-enterprise-diploma-issuer:/home/node/app
-      - /home/node/app/dist
-      - /home/node/app/node_modules
-      - ./.vscode/:/home/node/app/.vscode
-    deploy:
-      resources:
-          limits:
-            memory: 1G
-
-  wallet-enterprise-vid-issuer:
-    container_name: wallet-enterprise-vid-issuer
-    build:
-      context: $PWD/wallet-enterprise-vid-issuer
-      dockerfile: development.Dockerfile
-    image: wallet-enterprise-vid-issuer
-    restart: always
-    ports:
-      - 8003:8003
-    volumes:
-      - ./wallet-enterprise-vid-issuer:/home/node/app
-      - /home/node/app/dist
-      - /home/node/app/node_modules
-      - ./.vscode/:/home/node/app/.vscode
-    deploy:
-      resources:
-          limits:
-            memory: 1G
 
   wallet-backend-server:
     container_name: wallet-backend-server
@@ -112,24 +63,6 @@ services:
           limits:
             memory: 1G
 
-  wallet-mock:
-    container_name: wallet-mock
-    build:
-      context: $PWD/wallet-backend-server/samples/wallet-mock
-      dockerfile: development.Dockerfile
-    image: wallet-mock
-    restart: always
-    ports:
-      - 7777:7777
-    volumes:
-      - ./wallet-backend-server/samples/wallet-mock:/home/node/app
-      - /home/node/app/node_modules
-      - ./.vscode/:/home/node/app/.vscode
-    deploy:
-      resources:
-          limits:
-            memory: 1G
-
   wallet-frontend:
     build:
       context: $PWD/wallet-frontend
@@ -144,17 +77,48 @@ services:
       - /home/node/app/node_modules
       - ./.vscode/:/home/node/app/.vscode
 
-  enterprise-verifier-core:
-    container_name: enterprise-verifier-core
+  wallet-enterprise-vid-issuer:
+    container_name: wallet-enterprise-vid-issuer
+    hostname: wallet-enterprise-vid-issuer
     build:
-      context: $PWD/enterprise-verifier-core
+      context: $PWD/wallet-enterprise-issuer
       dockerfile: development.Dockerfile
-    image: enterprise-verifier-core
+    image: wallet-enterprise-issuer
     restart: always
     ports:
-      - 9000:9000
+      - 8003:8003
     volumes:
-      - ./enterprise-verifier-core:/home/node/app
+      - ./wallet-enterprise-issuer:/home/node/app
+      - ./wallet-enterprise-configurations/vid-issuer/config:/home/node/app/config
+      - ./wallet-enterprise-configurations/vid-issuer/keys:/home/node/app/keys
+      - ./wallet-enterprise-configurations/vid-issuer/src/configuration:/home/node/app/src/configuration
+      - ./wallet-enterprise-configurations/vid-issuer/public/styles/styles.css:/home/node/app/public/styles/styles.css
+      - ./wallet-enterprise-configurations/vid-issuer/public/images:/home/node/app/public/images
+      - /home/node/app/dist
+      - /home/node/app/node_modules
+      - ./.vscode/:/home/node/app/.vscode
+    deploy:
+      resources:
+          limits:
+            memory: 1G
+
+  wallet-enterprise-diploma-issuer:
+    container_name: wallet-enterprise-diploma-issuer
+    hostname: wallet-enterprise-diploma-issuer
+    build:
+      context: $PWD/wallet-enterprise-issuer
+      dockerfile: development.Dockerfile
+    image: wallet-enterprise-issuer
+    restart: always
+    ports:
+      - 8000:8000
+    volumes:
+      - ./wallet-enterprise-issuer:/home/node/app
+      - ./wallet-enterprise-configurations/diploma-issuer/config:/home/node/app/config
+      - ./wallet-enterprise-configurations/diploma-issuer/keys:/home/node/app/keys
+      - ./wallet-enterprise-configurations/diploma-issuer/src/configuration:/home/node/app/src/configuration
+      - ./wallet-enterprise-configurations/diploma-issuer/public/styles/styles.css:/home/node/app/public/styles/styles.css
+      - ./wallet-enterprise-configurations/diploma-issuer/public/images:/home/node/app/public/images
       - /home/node/app/dist
       - /home/node/app/node_modules
       - ./.vscode/:/home/node/app/.vscode

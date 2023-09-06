@@ -43,7 +43,7 @@ let forceUpdateConfigs = false;
 let useComposeTemplate = false;
 let walletClientOrigin = "http://wallet-mock:7777";
 let walletClientUrl = walletClientOrigin;
-const reactWalletClientOrigin = "http://127.0.0.1:3000";
+const reactWalletClientOrigin = "http://localhost:3000";
 const reactWalletClientUrl = `${reactWalletClientOrigin}/cb`;
 
 function help() {
@@ -204,7 +204,6 @@ if (action !== "up") {
 
 	if (fs.existsSync(configPath) && forceUpdateConfigs === false) {
 		console.log("wallet-backend-server/config/config.development.ts was not changed");
-    return
 	}
 
 	fs.copyFileSync(templatePath, configPath);
@@ -239,7 +238,6 @@ if (action !== "up") {
 
 	if (fs.existsSync(configPath) && forceUpdateConfigs === false) {
 		console.log("wallet-enterprise-vid-issuer/config/config.development.ts was not changed");
-    return
 	}
 
   fs.copyFileSync(templatePath, configPath);
@@ -271,7 +269,6 @@ if (action !== "up") {
 
 	if (fs.existsSync(configPath) && forceUpdateConfigs === false) {
 		console.log("wallet-enterprise-diploma-issuer/config/config.development.ts was not changed");
-    return
 	}
 
   fs.copyFileSync(templatePath, configPath);
@@ -304,7 +301,6 @@ if (action !== "up") {
 
 	if (fs.existsSync(configPath) && forceUpdateConfigs === false) {
 		console.log("enterprise-verifier-core/config/config.development.ts was not changed");
-    return
 	}
   fs.copyFileSync(templatePath, configPath);
 
