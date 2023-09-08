@@ -9,6 +9,7 @@ import { VerifierAuthenticationComponent } from "./VerifierAuthenticationCompone
 
 export const authChain = new AuthenticationChainBuilder()
 	.addAuthenticationComponent(new LocalAuthenticationComponent("1-local", CONSENT_ENTRYPOINT))
+	// .addAuthenticationComponent(new LocalAuthenticationComponent2("2-local", CONSENT_ENTRYPOINT))
 	.build();
 
 export const verifierPanelAuthChain = new AuthenticationChainBuilder()

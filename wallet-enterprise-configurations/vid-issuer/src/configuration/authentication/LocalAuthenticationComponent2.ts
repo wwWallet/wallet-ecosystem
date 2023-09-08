@@ -11,13 +11,13 @@ import locale from "../locale";
 
 
 
-export class LocalAuthenticationComponent extends AuthenticationComponent {
+export class LocalAuthenticationComponent2 extends AuthenticationComponent {
 
 	constructor(
 		override identifier: string,
 		override protectedEndpoint: string,
 		private secret = config.appSecret,
-		private users = [ { username: "user", password: "secret", taxis_id: "432432432423" },]
+		private users = [ { username: "user2", password: "secret", taxis_id: "432432432423" }]
 	) { super(identifier, protectedEndpoint) }
 
 	public override async authenticate(
@@ -44,7 +44,7 @@ export class LocalAuthenticationComponent extends AuthenticationComponent {
 
 	
 	private async isAuthenticated(req: Request): Promise<boolean> {
-		const jws = req.cookies['jws'];
+		const jws = req.cookies['jws2'];
 		if (!jws) {
 			return false;
 		}
@@ -82,7 +82,7 @@ export class LocalAuthenticationComponent extends AuthenticationComponent {
 				.setIssuedAt()
 				.setExpirationTime('1h')
 				.sign(new TextEncoder().encode(this.secret));
-			res.cookie('jws', jws);
+			res.cookie('jws2', jws);
 
 			req.authorizationServerState.taxis_id = usersFound[0].taxis_id;
 			await AppDataSource.getRepository(AuthorizationServerState).save(req.authorizationServerState);

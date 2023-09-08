@@ -18,7 +18,7 @@ export class CredentialIssuersConfigurationService {
 			.setCredentialEndpoint(config.url + "/openid4vci/credential")
 			// .setDeferredCredentialEndpoint(config.url + "/openid4vci/deferred")
 
-		diplomaIssuer.addSupportedCredential(new EdiplomasBlueprint(diplomaIssuer, "123"));
+		diplomaIssuer.addSupportedCredential(new EdiplomasBlueprint(diplomaIssuer, "75"));
 
 		return new CredentialIssuersRepository([
 			diplomaIssuer

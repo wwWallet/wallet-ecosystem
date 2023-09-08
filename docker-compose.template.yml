@@ -15,7 +15,7 @@ services:
       - 8003:8003
     volumes:
       - ./wallet-enterprise-issuer:/home/node/app
-      - ./wallet-enterprise-configurations/vid-issuer/config:/home/node/app/config
+      - ./wallet-enterprise-configurations/vid-issuer/config/config.development.ts:/home/node/app/config/config.development.ts
       - ./wallet-enterprise-configurations/vid-issuer/keys:/home/node/app/keys
       - ./wallet-enterprise-configurations/vid-issuer/src/configuration:/home/node/app/src/configuration
       - ./wallet-enterprise-configurations/vid-issuer/public/styles/styles.css:/home/node/app/public/styles/styles.css
@@ -40,7 +40,7 @@ services:
       - 8000:8000
     volumes:
       - ./wallet-enterprise-issuer:/home/node/app
-      - ./wallet-enterprise-configurations/diploma-issuer/config:/home/node/app/config
+      - ./wallet-enterprise-configurations/diploma-issuer/config/config.development.ts:/home/node/app/config/config.development.ts
       - ./wallet-enterprise-configurations/diploma-issuer/keys:/home/node/app/keys
       - ./wallet-enterprise-configurations/diploma-issuer/src/configuration:/home/node/app/src/configuration
       - ./wallet-enterprise-configurations/diploma-issuer/public/styles/styles.css:/home/node/app/public/styles/styles.css
@@ -65,7 +65,7 @@ services:
       - 8005:8005
     volumes:
       - ./wallet-enterprise-issuer:/home/node/app
-      - ./wallet-enterprise-configurations/acme-verifier/config:/home/node/app/config
+      - ./wallet-enterprise-configurations/acme-verifier/config/config.development.ts:/home/node/app/config/config.development.ts
       - ./wallet-enterprise-configurations/acme-verifier/keys:/home/node/app/keys
       - ./wallet-enterprise-configurations/acme-verifier/src/configuration:/home/node/app/src/configuration
       - ./wallet-enterprise-configurations/acme-verifier/public/styles/styles.css:/home/node/app/public/styles/styles.css

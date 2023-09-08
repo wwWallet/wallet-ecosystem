@@ -10,10 +10,4 @@ export = {
 		password: "root",
 		dbname: "vidissuer"
 	},
-	redis: {
-		url: "redis://wallet-cache"
-	},
-	walletCore: {
-		url: "http://enterprise-verifier-core:9000"
-	}
 }

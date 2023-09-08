@@ -98,7 +98,6 @@ export class VerifierConfigurationService implements VerifierConfigurationInterf
 			baseUrl: config.url,
 			client_id: authorizationServerMetadataConfiguration.authorization_endpoint,
 			redirect_uri: config.url + "/verification/direct_post",
-			responseTypeSetting: "id_token",
 			authorizationServerWalletIdentifier: "authorization_server",
 		}
 	}

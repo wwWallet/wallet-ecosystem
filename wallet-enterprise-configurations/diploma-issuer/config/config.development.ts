@@ -10,10 +10,4 @@ export = {
 		password: "root",
 		dbname: "issuer"
 	},
-	redis: {
-		url: "redis://wallet-cache"
-	},
-	walletCore: {
-		url: "http://enterprise-verifier-core:9000"
-	}
 }

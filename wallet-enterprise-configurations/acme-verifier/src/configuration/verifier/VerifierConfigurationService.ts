@@ -14,6 +14,7 @@ export type PresentationDefinitionTypeWithFormat = {
 @injectable()
 export class VerifierConfigurationService implements VerifierConfigurationInterface {
 
+
 	getPresentationDefinitions(): PresentationDefinitionTypeWithFormat[] {
 		return [{
 			"id": "vid", // scope name
@@ -90,15 +91,37 @@ export class VerifierConfigurationService implements VerifierConfigurationInterf
 					}
 				}
 			]
-		}]
+		},
+		{
+			"id": "diploma", // scope name
+			"format": { jwt_vc: { alg: [ 'ES256' ] }, jwt_vp: { alg: [ 'ES256' ] } },
+			"input_descriptors": [
+				{
+					"id": "VID",
+					"constraints": {
+						"fields": [
+							{
+								"path": [
+									"$.credentialSchema.id"
+								],
+								"filter": {
+									"type": "string",
+									"const": "https://api-pilot.ebsi.eu/trusted-schemas-registry/v2/schemas/z8Y6JJnebU2UuQQNc2R8GYqkEiAMj3Hd861rQhsoNWxsM"
+								}
+							}
+						]
+					}
+				}
+			]
+		},]
 	}
+
 
 	getConfiguration(): OpenidForPresentationsConfiguration {
 		return {
 			baseUrl: config.url,
 			client_id: authorizationServerMetadataConfiguration.authorization_endpoint,
 			redirect_uri: config.url + "/verification/direct_post",
-			responseTypeSetting: "id_token",
 			authorizationServerWalletIdentifier: "authorization_server",
 		}
 	}
