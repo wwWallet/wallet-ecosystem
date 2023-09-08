@@ -1,18 +1,9 @@
-[submodule "enterprise-verifier-core"]
-	path = enterprise-verifier-core
-	url = git@github.com:gunet/enterprise-verifier-core.git
 [submodule "wallet-backend-server"]
 	path = wallet-backend-server
 	url = git@github.com:gunet/wallet-backend-server.git
-[submodule "wallet-enterprise-diploma-issuer"]
-	path = wallet-enterprise-diploma-issuer
-	url = git@github.com:gunet/wallet-enterprise-diploma-issuer.git
-[submodule "wallet-enterprise-vid-issuer"]
-	path = wallet-enterprise-vid-issuer
-	url = git@github.com:gunet/wallet-enterprise-vid-issuer.git
-[submodule "wallet-enterprise-issuer"]
-	path = wallet-enterprise-issuer
-	url = git@github.com:gunet/wallet-enterprise-issuer.git
 [submodule "wallet-frontend"]
 	path = wallet-frontend
 	url = git@github.com:gunet/wallet-frontend.git
+[submodule "wallet-enterprise"]
+	path = wallet-enterprise
+	url = git@github.com:gunet/wallet-enterprise.git

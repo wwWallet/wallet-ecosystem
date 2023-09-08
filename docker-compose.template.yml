@@ -7,14 +7,14 @@ services:
     container_name: wallet-enterprise-vid-issuer
     hostname: wallet-enterprise-vid-issuer
     build:
-      context: $PWD/wallet-enterprise-issuer
+      context: $PWD/wallet-enterprise
       dockerfile: development.Dockerfile
     image: wallet-enterprise-issuer
     restart: always
     ports:
       - 8003:8003
     volumes:
-      - ./wallet-enterprise-issuer:/home/node/app
+      - ./wallet-enterprise:/home/node/app
       - ./wallet-enterprise-configurations/vid-issuer/config/config.development.ts:/home/node/app/config/config.development.ts
       - ./wallet-enterprise-configurations/vid-issuer/keys:/home/node/app/keys
       - ./wallet-enterprise-configurations/vid-issuer/src/configuration:/home/node/app/src/configuration
@@ -32,14 +32,14 @@ services:
     container_name: wallet-enterprise-diploma-issuer
     hostname: wallet-enterprise-diploma-issuer
     build:
-      context: $PWD/wallet-enterprise-issuer
+      context: $PWD/wallet-enterprise
       dockerfile: development.Dockerfile
     image: wallet-enterprise-issuer
     restart: always
     ports:
       - 8000:8000
     volumes:
-      - ./wallet-enterprise-issuer:/home/node/app
+      - ./wallet-enterprise:/home/node/app
       - ./wallet-enterprise-configurations/diploma-issuer/config/config.development.ts:/home/node/app/config/config.development.ts
       - ./wallet-enterprise-configurations/diploma-issuer/keys:/home/node/app/keys
       - ./wallet-enterprise-configurations/diploma-issuer/src/configuration:/home/node/app/src/configuration
@@ -57,14 +57,14 @@ services:
     container_name: wallet-enterprise-acme-verifier
     hostname: wallet-enterprise-acme-verifier
     build:
-      context: $PWD/wallet-enterprise-issuer
+      context: $PWD/wallet-enterprise
       dockerfile: development.Dockerfile
     image: wallet-enterprise-issuer
     restart: always
     ports:
       - 8005:8005
     volumes:
-      - ./wallet-enterprise-issuer:/home/node/app
+      - ./wallet-enterprise:/home/node/app
       - ./wallet-enterprise-configurations/acme-verifier/config/config.development.ts:/home/node/app/config/config.development.ts
       - ./wallet-enterprise-configurations/acme-verifier/keys:/home/node/app/keys
       - ./wallet-enterprise-configurations/acme-verifier/src/configuration:/home/node/app/src/configuration
@@ -129,6 +129,19 @@ services:
       resources:
           limits:
             memory: 1G
+  wallet-frontend:
+    build:
+      context: $PWD/wallet-frontend
+      dockerfile: development.Dockerfile
+    image: wallet-frontend
+    container_name: wallet-frontend
+    hostname: wallet-frontend
+    ports:
+      - 3000:3000
+    volumes:
+      - $PWD/wallet-frontend:/home/node/app
+      - /home/node/app/node_modules
+      - ./.vscode/:/home/node/app/.vscode
 
 volumes:
   datadir:

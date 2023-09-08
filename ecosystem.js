@@ -115,9 +115,6 @@ if (fs.existsSync(githubTokenFile)) {
   process.exit(1);
 }
 
-// Redis cache configuration
-const redisUrl = 'redis://wallet-cache';
-
 // MariaDB configuration
 const dbHost = 'wallet-db';
 const dbPort = 3307;
@@ -202,7 +199,6 @@ if (action !== "up") {
 	configContent = configContent.replace(/DB_USER/g, dbUser);
 	configContent = configContent.replace(/DB_PASSWORD/g, dbPassword);
 	configContent = configContent.replace(/DB_NAME/g, dbName);
-	configContent = configContent.replace(/REDIS_URL/g, redisUrl);
 	configContent = configContent.replace(/WALLET_CLIENT_URL/g, walletClientUrl);
 
 	configContent = configContent.replace(/WEBAUTHN_RP_ID/g, "localhost");
@@ -211,18 +207,6 @@ if (action !== "up") {
 	fs.writeFileSync(configPath, configContent);
 
 }
-
-
-
-// Copy DID keys for VID issuer
-const vidIssuerKeysSrc = path.resolve(__dirname, './keys/vid-issuer.keys');
-const vidIssuerKeysDest = path.resolve(__dirname, 'wallet-enterprise-configurations/vid-issuer/keys');
-copyKeys(vidIssuerKeysSrc, vidIssuerKeysDest);
-
-// Copy DID keys for Diploma issuer
-const issuerKeysSrc = path.resolve(__dirname, './keys/issuer-did.uoa.keys');
-const issuerKeysDest = path.resolve(__dirname, 'wallet-enterprise-configurations/diploma-issuer/keys');
-copyKeys(issuerKeysSrc, issuerKeysDest);
 
 
 if (daemonMode === false) {
