@@ -2,6 +2,82 @@ version: '3.9'
 
 name: wallet-ecosystem
 services:
+
+  wallet-enterprise-vid-issuer:
+    container_name: wallet-enterprise-vid-issuer
+    hostname: wallet-enterprise-vid-issuer
+    build:
+      context: $PWD/wallet-enterprise
+      dockerfile: development.Dockerfile
+    image: wallet-enterprise-issuer
+    restart: always
+    ports:
+      - 8003:8003
+    volumes:
+      - ./wallet-enterprise:/home/node/app
+      - ./wallet-enterprise-configurations/vid-issuer/config/config.development.ts:/home/node/app/config/config.development.ts
+      - ./wallet-enterprise-configurations/vid-issuer/keys:/home/node/app/keys
+      - ./wallet-enterprise-configurations/vid-issuer/src/configuration:/home/node/app/src/configuration
+      - ./wallet-enterprise-configurations/vid-issuer/public/styles/styles.css:/home/node/app/public/styles/styles.css
+      - ./wallet-enterprise-configurations/vid-issuer/public/images:/home/node/app/public/images
+      - /home/node/app/dist
+      - /home/node/app/node_modules
+      - ./.vscode/:/home/node/app/.vscode
+    deploy:
+      resources:
+          limits:
+            memory: 1G
+
+  wallet-enterprise-diploma-issuer:
+    container_name: wallet-enterprise-diploma-issuer
+    hostname: wallet-enterprise-diploma-issuer
+    build:
+      context: $PWD/wallet-enterprise
+      dockerfile: development.Dockerfile
+    image: wallet-enterprise-issuer
+    restart: always
+    ports:
+      - 8000:8000
+    volumes:
+      - ./wallet-enterprise:/home/node/app
+      - ./wallet-enterprise-configurations/diploma-issuer/config/config.development.ts:/home/node/app/config/config.development.ts
+      - ./wallet-enterprise-configurations/diploma-issuer/keys:/home/node/app/keys
+      - ./wallet-enterprise-configurations/diploma-issuer/src/configuration:/home/node/app/src/configuration
+      - ./wallet-enterprise-configurations/diploma-issuer/public/styles/styles.css:/home/node/app/public/styles/styles.css
+      - ./wallet-enterprise-configurations/diploma-issuer/public/images:/home/node/app/public/images
+      - /home/node/app/dist
+      - /home/node/app/node_modules
+      - ./.vscode/:/home/node/app/.vscode
+    deploy:
+      resources:
+          limits:
+            memory: 1G
+
+  wallet-enterprise-acme-verifier:
+    container_name: wallet-enterprise-acme-verifier
+    hostname: wallet-enterprise-acme-verifier
+    build:
+      context: $PWD/wallet-enterprise
+      dockerfile: development.Dockerfile
+    image: wallet-enterprise-issuer
+    restart: always
+    ports:
+      - 8005:8005
+    volumes:
+      - ./wallet-enterprise:/home/node/app
+      - ./wallet-enterprise-configurations/acme-verifier/config/config.development.ts:/home/node/app/config/config.development.ts
+      - ./wallet-enterprise-configurations/acme-verifier/keys:/home/node/app/keys
+      - ./wallet-enterprise-configurations/acme-verifier/src/configuration:/home/node/app/src/configuration
+      - ./wallet-enterprise-configurations/acme-verifier/public/styles/styles.css:/home/node/app/public/styles/styles.css
+      - ./wallet-enterprise-configurations/acme-verifier/public/images:/home/node/app/public/images
+      - /home/node/app/dist
+      - /home/node/app/node_modules
+      - ./.vscode/:/home/node/app/.vscode
+    deploy:
+      resources:
+          limits:
+            memory: 1G
+  
   wallet-db:
     image: mariadb
     container_name: wallet-db
@@ -23,10 +99,6 @@ services:
       - datadir:/var/lib/mysql
       # bind-mount any sql files that should be run while initializing
       - ./db-setup/scripts/:/docker-entrypoint-initdb.d/
-    healthcheck:
-      test: ["CMD", "mariadb" ,"-uroot", "-proot", "--protocol=TCP", "-hlocalhost", "--port=3307",  "-estatus"]
-      timeout: 20s
-      retries: 10
 
   wallet-phpmyadmin:
     image: phpmyadmin/phpmyadmin:latest
@@ -39,57 +111,6 @@ services:
       PMA_HOST: wallet-db
       PMA_PORT: 3307
 
-  wallet-cache:
-    image: redis:7.0-alpine
-    container_name: wallet-cache
-    hostname: wallet-cache
-    ports:
-      - 6379:6379
-    restart: always  
-    command: redis-server --save 20 1 --loglevel warning
-    volumes: 
-      - cache:/data
-    environment:
-      - ALLOW_EMPTY_PASSWORD=yes
-
-  wallet-enterprise-diploma-issuer:
-    container_name: wallet-enterprise-diploma-issuer
-    build:
-      context: $PWD/wallet-enterprise-diploma-issuer
-      dockerfile: development.Dockerfile
-    image: wallet-enterprise-diploma-issuer
-    restart: always
-    ports:
-      - 8000:8000
-    volumes:
-      - ./wallet-enterprise-diploma-issuer:/home/node/app
-      - /home/node/app/dist
-      - /home/node/app/node_modules
-      - ./.vscode/:/home/node/app/.vscode
-    deploy:
-      resources:
-          limits:
-            memory: 1G
-
-  wallet-enterprise-vid-issuer:
-    container_name: wallet-enterprise-vid-issuer
-    build:
-      context: $PWD/wallet-enterprise-vid-issuer
-      dockerfile: development.Dockerfile
-    image: wallet-enterprise-vid-issuer
-    restart: always
-    ports:
-      - 8003:8003
-    volumes:
-      - ./wallet-enterprise-vid-issuer:/home/node/app
-      - /home/node/app/dist
-      - /home/node/app/node_modules
-      - ./.vscode/:/home/node/app/.vscode
-    deploy:
-      resources:
-          limits:
-            memory: 1G
-
   wallet-backend-server:
     container_name: wallet-backend-server
     build:
@@ -99,9 +120,6 @@ services:
     restart: always
     ports:
       - 8002:8002
-    depends_on:
-      wallet-db:
-        condition: service_healthy
     volumes:
       - ./wallet-backend-server:/home/node/app
       - /home/node/app/dist
@@ -111,25 +129,6 @@ services:
       resources:
           limits:
             memory: 1G
-
-  wallet-mock:
-    container_name: wallet-mock
-    build:
-      context: $PWD/wallet-backend-server/samples/wallet-mock
-      dockerfile: development.Dockerfile
-    image: wallet-mock
-    restart: always
-    ports:
-      - 7777:7777
-    volumes:
-      - ./wallet-backend-server/samples/wallet-mock:/home/node/app
-      - /home/node/app/node_modules
-      - ./.vscode/:/home/node/app/.vscode
-    deploy:
-      resources:
-          limits:
-            memory: 1G
-
   wallet-frontend:
     build:
       context: $PWD/wallet-frontend
@@ -144,24 +143,6 @@ services:
       - /home/node/app/node_modules
       - ./.vscode/:/home/node/app/.vscode
 
-  enterprise-verifier-core:
-    container_name: enterprise-verifier-core
-    build:
-      context: $PWD/enterprise-verifier-core
-      dockerfile: development.Dockerfile
-    image: enterprise-verifier-core
-    restart: always
-    ports:
-      - 9000:9000
-    volumes:
-      - ./enterprise-verifier-core:/home/node/app
-      - /home/node/app/dist
-      - /home/node/app/node_modules
-      - ./.vscode/:/home/node/app/.vscode
-    deploy:
-      resources:
-          limits:
-            memory: 1G
 volumes:
   datadir:
   cache:
