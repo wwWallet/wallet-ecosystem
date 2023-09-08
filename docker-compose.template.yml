@@ -13,6 +13,9 @@ services:
     restart: always
     ports:
       - 8003:8003
+    depends_on:
+      wallet-db:
+        condition: service_healthy
     volumes:
       - ./wallet-enterprise:/home/node/app
       - ./wallet-enterprise-configurations/vid-issuer/config/config.development.ts:/home/node/app/config/config.development.ts
@@ -38,6 +41,9 @@ services:
     restart: always
     ports:
       - 8000:8000
+    depends_on:
+      wallet-db:
+        condition: service_healthy
     volumes:
       - ./wallet-enterprise:/home/node/app
       - ./wallet-enterprise-configurations/diploma-issuer/config/config.development.ts:/home/node/app/config/config.development.ts
@@ -63,6 +69,9 @@ services:
     restart: always
     ports:
       - 8005:8005
+    depends_on:
+      wallet-db:
+        condition: service_healthy
     volumes:
       - ./wallet-enterprise:/home/node/app
       - ./wallet-enterprise-configurations/acme-verifier/config/config.development.ts:/home/node/app/config/config.development.ts
@@ -94,6 +103,10 @@ services:
       MARIADB_PASSWORD:
       MYSQL_TCP_PORT: 3307
       MYSQL_UNIX_PORT: 3307
+    healthcheck:
+      test: ["CMD", "mariadb" ,"-uroot", "-proot", "--protocol=TCP", "-hlocalhost", "--port=3307",  "-estatus"]
+      timeout: 20s
+      retries: 10
     volumes:
       # persist data files into `datadir` volume managed by docker
       - datadir:/var/lib/mysql
@@ -120,6 +133,9 @@ services:
     restart: always
     ports:
       - 8002:8002
+    depends_on:
+      wallet-db:
+        condition: service_healthy
     volumes:
       - ./wallet-backend-server:/home/node/app
       - /home/node/app/dist
