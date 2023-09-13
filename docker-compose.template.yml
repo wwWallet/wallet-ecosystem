@@ -9,7 +9,7 @@ services:
     build:
       context: $PWD/wallet-enterprise
       dockerfile: development.Dockerfile
-    image: wallet-enterprise-issuer
+    image: wallet-enterprise
     restart: always
     ports:
       - 8003:8003
@@ -37,7 +37,7 @@ services:
     build:
       context: $PWD/wallet-enterprise
       dockerfile: development.Dockerfile
-    image: wallet-enterprise-issuer
+    image: wallet-enterprise
     restart: always
     ports:
       - 8000:8000
@@ -65,7 +65,7 @@ services:
     build:
       context: $PWD/wallet-enterprise
       dockerfile: development.Dockerfile
-    image: wallet-enterprise-issuer
+    image: wallet-enterprise
     restart: always
     ports:
       - 8005:8005
