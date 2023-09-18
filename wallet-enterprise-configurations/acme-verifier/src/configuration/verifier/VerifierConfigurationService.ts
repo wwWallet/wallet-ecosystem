@@ -106,7 +106,7 @@ export class VerifierConfigurationService implements VerifierConfigurationInterf
 								],
 								"filter": {
 									"type": "string",
-									"const": "https://api-pilot.ebsi.eu/trusted-schemas-registry/v2/schemas/z8Y6JJnebU2UuQQNc2R8GYqkEiAMj3Hd861rQhsoNWxsM"
+									"const": "https://api-pilot.ebsi.eu/trusted-schemas-registry/v1/schemas/0x4dd3926cd92bb3cb64fa6c837539ed31fc30dd38a11266a91678efa7268cde09"
 								}
 							}
 						]
