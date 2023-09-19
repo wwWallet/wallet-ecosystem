@@ -159,6 +159,7 @@ services:
     volumes:
       - ./wallet-frontend/public:/app/public:ro
       - ./wallet-frontend/src:/app/src:ro
+      - ./wallet-frontend/.env:/app/.env:ro
       - ./.vscode/:/app/.vscode:ro
       - type: tmpfs
         target: /app/node_modules/.cache
