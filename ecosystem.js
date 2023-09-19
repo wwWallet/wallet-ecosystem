@@ -146,9 +146,8 @@ if (action === "down") {
 }
 
 if (action === "init") {
-	execSync(`${dockerComposeCommand} run --rm -t --workdir /home/node/app/cli wallet-backend-server sh -c '
+	execSync(`${dockerComposeCommand} run --rm -t --workdir /app/cli --env NODE_PATH=/cli_node_modules wallet-backend-server sh -c '
 		set -e # Exit on error
-		yarn install
 		export DB_HOST="wallet-db"
 		export DB_PORT="3307"
 		export DB_USER="root"
