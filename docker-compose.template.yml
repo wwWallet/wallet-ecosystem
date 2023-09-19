@@ -157,9 +157,8 @@ services:
     ports:
       - 3000:3000
     volumes:
-      - $PWD/wallet-frontend:/home/node/app
-      - /home/node/app/node_modules
-      - ./.vscode/:/home/node/app/.vscode
+      - ./wallet-frontend:/app:ro
+      - ./.vscode/:/app/.vscode:ro
 
 volumes:
   datadir:
