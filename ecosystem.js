@@ -35,7 +35,7 @@ function replaceTokenInTemplate(templateFile, token) {
 }
 
 let args = process.argv.slice(2);
-let action = args[0]; // up or down or init
+let action = args[0]; // up or down
 args = args.slice(1); // get the rest of the arguments aside from action argument
 let useOpenIdUrl = false;
 let daemonMode = false;
@@ -45,7 +45,7 @@ const walletClientOrigin = "http://localhost:3000";
 const walletClientUrl = `${walletClientOrigin}/cb`;
 
 function help() {
-	console.log("Usage: node ecosystem.js <up | down | init> <OPTIONS>");
+	console.log("Usage: node ecosystem.js <up | down> <OPTIONS>");
 	console.log("OPTIONS:");
 	console.log("   -m                Redirection will be directed to the openid:// URL. Note: It will be applied only in the first execution of the script and every time '-c' is given");
 	console.log("   -d                Start the ecosystem in daemonized mode");
@@ -145,8 +145,8 @@ if (action === "down") {
 	process.exit();
 }
 
-if (action === "init") {
-	execSync(`${dockerComposeCommand} run --rm -t --workdir /app/cli --env NODE_PATH=/cli_node_modules wallet-backend-server sh -c '
+function init() {
+	return execSync(`${dockerComposeCommand} run --rm -t --workdir /app/cli --env NODE_PATH=/cli_node_modules wallet-backend-server sh -c '
 		set -e # Exit on error
 		export DB_HOST="wallet-db"
 		export DB_PORT="3307"
@@ -164,8 +164,6 @@ if (action === "init") {
 			--did did:ebsi:zpq1XFkNWgsGB6MuvJp21vA \
 			--client_id did:ebsi:zpq1XFkNWgsGB6MuvJp21vA
 	'`, { stdio: 'inherit' });
-
-	process.exit();
 }
 
 if (action !== "up") {
@@ -209,6 +207,8 @@ if (action !== "up") {
 
 
 if (daemonMode === false) {
+	console.log("Initializing database");
+	init();
 	console.log("Performing 'docker compose up'");
 	execSync(`${dockerComposeCommand} up --build`, { stdio: 'inherit' });
 } else {
