@@ -4,10 +4,11 @@ import config from "../../config";
 import { CredentialIssuersRepository } from "../lib/CredentialIssuersRepository";
 import { CredentialIssuer } from "../lib/CredentialIssuerConfig/CredentialIssuer";
 import { VIDSupportedCredential } from "./SupportedCredentialsConfiguration/VIDSupportedCredential";
+import { CredentialIssuersConfiguration } from "../services/interfaces";
 
 
 @injectable()
-export class CredentialIssuersConfigurationService {
+export class CredentialIssuersConfigurationService implements CredentialIssuersConfiguration {
 
 
 	public registeredCredentialIssuerRepository(): CredentialIssuersRepository {
@@ -37,5 +38,9 @@ export class CredentialIssuersConfigurationService {
 			vidIssuer,
 			// vidIssuer2
 		]);
+	}
+
+	public defaultCredentialIssuerIdentifier(): string {
+		return config.url;
 	}
 }

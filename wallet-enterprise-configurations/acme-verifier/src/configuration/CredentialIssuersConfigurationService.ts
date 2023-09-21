@@ -1,13 +1,18 @@
 import { injectable } from "inversify";
 import 'reflect-metadata';
 import { CredentialIssuersRepository } from "../lib/CredentialIssuersRepository";
+import { CredentialIssuersConfiguration } from "../services/interfaces";
 
 
 @injectable()
-export class CredentialIssuersConfigurationService {
+export class CredentialIssuersConfigurationService implements CredentialIssuersConfiguration {
 
 
 	public registeredCredentialIssuerRepository(): CredentialIssuersRepository {
 		return new CredentialIssuersRepository([]);
+	}
+
+	public defaultCredentialIssuerIdentifier(): string {
+		return "";
 	}
 }
