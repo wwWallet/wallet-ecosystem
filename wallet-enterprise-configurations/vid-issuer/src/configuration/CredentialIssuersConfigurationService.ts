@@ -3,8 +3,8 @@ import 'reflect-metadata';
 import config from "../../config";
 import { CredentialIssuersRepository } from "../lib/CredentialIssuersRepository";
 import { CredentialIssuer } from "../lib/CredentialIssuerConfig/CredentialIssuer";
-import { VIDSupportedCredential } from "./SupportedCredentialsConfiguration/VIDSupportedCredential";
 import { CredentialIssuersConfiguration } from "../services/interfaces";
+import { VIDSupportedCredentialJwtVcJson } from "./SupportedCredentialsConfiguration/VIDSupportedCredentialJwtVcJson";
 
 
 @injectable()
@@ -22,7 +22,7 @@ export class CredentialIssuersConfigurationService implements CredentialIssuersC
 		// vidIssuer.addSupportedCredential(new CTWalletSameInTimeSupportedCredential(vidIssuer));
 		// vidIssuer.addSupportedCredential(new CTWalletSameDeferredSupportedCredential(vidIssuer));
 		// vidIssuer.addSupportedCredential(new CTWalletSamePreAuthorisedSupportedCredential(vidIssuer));
-		vidIssuer.addSupportedCredential(new VIDSupportedCredential(vidIssuer));
+		vidIssuer.addSupportedCredential(new VIDSupportedCredentialJwtVcJson(vidIssuer));
 
 		// const vidIssuer2 = new CredentialIssuer()
 		// 	.setCredentialIssuerIdentifier(config.url + "/vid")

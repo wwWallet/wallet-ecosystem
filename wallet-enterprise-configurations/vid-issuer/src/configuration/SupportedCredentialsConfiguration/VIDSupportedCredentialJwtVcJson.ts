@@ -11,7 +11,7 @@ import { AuthorizationServerState } from "../../entities/AuthorizationServerStat
 import { CredentialView } from "../../authorization/types";
 
 
-export class VIDSupportedCredential implements SupportedCredentialProtocol {
+export class VIDSupportedCredentialJwtVcJson implements SupportedCredentialProtocol {
 
 
   constructor(private credentialIssuerConfig: CredentialIssuer) { }
