@@ -10,23 +10,24 @@ import locale from "../locale";
 export class EdiplomasAuthenticationComponent extends AuthenticationComponent {
 
 	private readonly configuration = {
-		'authorizationEndpoint': '',
-    'tokenEndpoint': '',
-    'resourceServer': '',
+		'authorizationEndpoint': 'http://localhost:4096/oauth/',
+		'tokenEndpoint': "http://localhost:4096/oauth/token",
+		'resourceServer': "https://localhost:4097/data",
     'documentEndpoint': '',
-    'callbackEndpoint': '',
+		'callbackEndpoint': "http://wallet-enterprise-diploma-issuer:8000/callback/",
     'publicEndpoint': '',
-    'clientID': 'emrexclient',
-    'clientSecret': '',
+		'clientID': "3aba99",
+		'clientSecret': "o9scygdm",
 		'scopes': ['dates', 'grade', 'issuer', 'level', 'title', 'identifiers'],
 	};
 
 	private readonly authorizationRequestParams = {
 		scope: this.configuration.scopes.join(' '),
-		client_id: this.configuration.authorizationEndpoint,
+		client_id: this.configuration.clientID,
 		redirect_uri: this.configuration.callbackEndpoint,
 		response_type: 'code',
 		fixed_time: 1,
+		lang: 'en'
 	}	
 
 	private secret = config.appSecret;
