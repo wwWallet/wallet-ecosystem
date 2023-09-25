@@ -1,11 +1,10 @@
 import { NextFunction, Request, Response } from "express";
 import { ParamsDictionary } from "express-serve-static-core";
-import { SignJWT, jwtVerify } from "jose";
+import { jwtVerify } from "jose";
 import QueryString, { ParsedQs } from "qs";
 import { AuthenticationComponent } from "../../authentication/AuthenticationComponent";
 import config from "../../../config";
 import locale from "../locale";
-import axios from "axios";
 
 
 export class EdiplomasAuthenticationComponent extends AuthenticationComponent {
@@ -63,7 +62,8 @@ export class EdiplomasAuthenticationComponent extends AuthenticationComponent {
 			return false;
 		}
 		return jwtVerify(jws, new TextEncoder().encode(this.secret)).then(() => {
-			return (req.authorizationServerState.ediplomas_response != undefined)
+			return (false) // change for ediplomas authentication
+			// return (req.authorizationServerState.ediplomas_response != undefined)
 		}).catch(err => {
 			console.error(err);
 			return false;
@@ -85,39 +85,39 @@ export class EdiplomasAuthenticationComponent extends AuthenticationComponent {
 			});
 		}
 
-		const tokenRequestBody = {
-			scope: this.configuration.scopes.join(' '),
-			username: this.configuration.clientID,
-			password: this.configuration.clientSecret,
-			code: code,
-			grant_type: 'authorization_code'
-		};
+		// const tokenRequestBody = {
+		// 	scope: this.configuration.scopes.join(' '),
+		// 	username: this.configuration.clientID,
+		// 	password: this.configuration.clientSecret,
+		// 	code: code,
+		// 	grant_type: 'authorization_code'
+		// };
 
-		const tokenRequestHeaders = {
-			'Authorization': `Basic ${Buffer.from(this.configuration.clientID+':'+this.configuration.clientSecret).toString('base64')}`,
-			'Content-Type': 'application/x-www-form-urlencoded'
-		};
-		const tokenRequestQueryString = QueryString.stringify(tokenRequestBody);
+		// const tokenRequestHeaders = {
+		// 	'Authorization': `Basic ${Buffer.from(this.configuration.clientID+':'+this.configuration.clientSecret).toString('base64')}`,
+		// 	'Content-Type': 'application/x-www-form-urlencoded'
+		// };
+		// const tokenRequestQueryString = QueryString.stringify(tokenRequestBody);
 
-		const tokenResponseAxiosRes = await axios.post(this.configuration.tokenEndpoint, tokenRequestQueryString, { headers: tokenRequestHeaders });
-		const { access_token, sub } = tokenResponseAxiosRes.data;
+		// const tokenResponseAxiosRes = await axios.post(this.configuration.tokenEndpoint, tokenRequestQueryString, { headers: tokenRequestHeaders });
+		// const { access_token, sub } = tokenResponseAxiosRes.data;
 		
 
-		const resourceEndpointRequestHeaders = {
-			'Authorization': `Bearer ${access_token}`
-		};
+		// const resourceEndpointRequestHeaders = {
+		// 	'Authorization': `Bearer ${access_token}`
+		// };
 
-		const resourceEndpointResponseAxiosRes = await axios.get(this.configuration.resourceServer, { headers: resourceEndpointRequestHeaders });
+		// const resourceEndpointResponseAxiosRes = await axios.get(this.configuration.resourceServer, { headers: resourceEndpointRequestHeaders });
 
-		req.authorizationServerState.ediplomas_response = resourceEndpointResponseAxiosRes.data;
+		// req.authorizationServerState.ediplomas_response = resourceEndpointResponseAxiosRes.data;
 		// sign a token and send it to the client
-		const jws = await new SignJWT({ })
-			.setSubject(sub)
-			.setProtectedHeader({ alg: 'HS256' })
-			.setIssuedAt()
-			.setExpirationTime('1h')
-			.sign(new TextEncoder().encode(this.secret));
-		res.cookie('ediplomas_authentication_jws', jws);
+		// const jws = await new SignJWT({ })
+		// 	.setSubject(sub)
+		// 	.setProtectedHeader({ alg: 'HS256' })
+		// 	.setIssuedAt()
+		// 	.setExpirationTime('1h')
+		// 	.sign(new TextEncoder().encode(this.secret));
+		// res.cookie('ediplomas_authentication_jws', jws);
 		return res.redirect(this.protectedEndpoint);
 
 	}
