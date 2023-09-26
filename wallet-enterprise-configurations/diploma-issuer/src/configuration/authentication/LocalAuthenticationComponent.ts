@@ -17,7 +17,7 @@ export class LocalAuthenticationComponent extends AuthenticationComponent {
 		override identifier: string,
 		override protectedEndpoint: string,
 		private secret = config.appSecret,
-		private users = [{ username: "user", password: "secret", taxis_id: "432432432423", ssn: '032429484252432' }, { username: "user2", password: "secret", taxis_id: "032429484252432" }]
+		private users = [{ username: "user", password: "secret", taxis_id: "432432432423", ssn: '032429484252432' }, { username: "user2", password: "secret", taxis_id: "432432432423", ssn: "032429484252433" }]
 	) { super(identifier, protectedEndpoint) }
 
 	public override async authenticate(
