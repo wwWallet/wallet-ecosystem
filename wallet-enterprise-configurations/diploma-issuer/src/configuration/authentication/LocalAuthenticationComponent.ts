@@ -17,7 +17,7 @@ export class LocalAuthenticationComponent extends AuthenticationComponent {
 		override identifier: string,
 		override protectedEndpoint: string,
 		private secret = config.appSecret,
-		private users = [{ username: "user", password: "secret", taxis_id: "432432432423", ssn: '032429484252432' }, { username: "user2", password: "secret", taxis_id: "032429484252432" }]
+		private users = [ { username: "user", password: "secret", taxis_id: "432432432423" }, { username: "user2", password: "secret", taxis_id: "user" }]
 	) { super(identifier, protectedEndpoint) }
 
 	public override async authenticate(
@@ -85,7 +85,6 @@ export class LocalAuthenticationComponent extends AuthenticationComponent {
 			res.cookie('jws', jws);
 
 			req.authorizationServerState.taxis_id = usersFound[0].taxis_id;
-			req.authorizationServerState.ssn = usersFound[0].ssn;
 			await AppDataSource.getRepository(AuthorizationServerState).save(req.authorizationServerState);
 			return res.redirect(this.protectedEndpoint);
 		}
