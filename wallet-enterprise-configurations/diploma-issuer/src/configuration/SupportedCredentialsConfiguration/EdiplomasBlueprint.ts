@@ -1,7 +1,7 @@
 import config from "../../../config";
 import { VerifiableCredentialFormat, Display, CredentialSupportedJwtVcJson } from "../../types/oid4vci";
 import { CredentialSubject } from "../CredentialSubjectBuilders/CredentialSubject.type";
-import { getDiplomasBySSN } from "../resources/data";
+import { getDiplomasBySSNAndBlueprintID } from "../resources/data";
 import { CredentialIssuer } from "../../lib/CredentialIssuerConfig/CredentialIssuer";
 import { SupportedCredentialProtocol } from "../../lib/CredentialIssuerConfig/SupportedCredentialProtocol";
 import { SignVerifiableCredentialJWT } from "@gunet/ssi-sdk";
@@ -44,7 +44,7 @@ export class EdiplomasBlueprint implements SupportedCredentialProtocol {
     }
 
 
-		const diplomaEntries = await getDiplomasBySSN(userSession.ssn);
+		const diplomaEntries = await getDiplomasBySSNAndBlueprintID(userSession.ssn, this.blueprintID);
 		if (diplomaEntries.length == 0) {
 			throw new Error("No diploma entries found");
 		}
@@ -74,7 +74,7 @@ export class EdiplomasBlueprint implements SupportedCredentialProtocol {
 			throw new Error("Cannot generate credential: Taxis id is missing");
 		}
 		
-		const diplomaEntries = await getDiplomasBySSN(userSession.ssn);
+		const diplomaEntries = await getDiplomasBySSNAndBlueprintID(userSession.ssn, this.blueprintID);
 		if (diplomaEntries.length == 0) {
 			throw new Error("No diploma entries found");
 		}

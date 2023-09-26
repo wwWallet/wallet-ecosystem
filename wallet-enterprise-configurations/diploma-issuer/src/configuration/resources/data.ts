@@ -50,8 +50,8 @@ const diplomasRepository: DiplomaEntry[] = [
 
 
 
-async function getDiplomasBySSN(ssn: string) {
-	return diplomasRepository.filter(d => d.ssn == ssn);
+async function getDiplomasBySSNAndBlueprintID(ssn: string, blueprintID: string) {
+	return diplomasRepository.filter(d => d.ssn == ssn && d.blueprintID == blueprintID);
 }
 
 
@@ -59,7 +59,7 @@ async function getDiplomasBySSN(ssn: string) {
 
 
 export { 
-	getDiplomasBySSN,
+	getDiplomasBySSNAndBlueprintID,
 	DiplomaEntry,
 	VIDEntry
 }
