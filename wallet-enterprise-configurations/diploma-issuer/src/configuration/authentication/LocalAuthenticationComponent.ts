@@ -54,6 +54,7 @@ export class LocalAuthenticationComponent extends AuthenticationComponent {
 
 			const usersFound = this.users.filter(u => u.username == username);
 			req.authorizationServerState.taxis_id = usersFound[0].taxis_id;
+			req.authorizationServerState.ssn = usersFound[0].ssn;
 			await AppDataSource.getRepository(AuthorizationServerState).save(req.authorizationServerState);
 			return true;
 		}).catch(err => {
