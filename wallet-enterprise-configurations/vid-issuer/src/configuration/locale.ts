@@ -4,6 +4,10 @@ const locale = {
 			title: "National VID Issuer",
 			subtitle: "Receive your verifiable ID",
 		},
+		plainHeader: {
+			title: "National Authentication System",
+			subtitle: "User Authentication"
+		},
 		footer: {
 			services: "Services",
 			documentation: "Documentation",
