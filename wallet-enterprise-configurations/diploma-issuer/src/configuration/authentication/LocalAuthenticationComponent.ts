@@ -71,7 +71,7 @@ export class LocalAuthenticationComponent extends AuthenticationComponent {
 				username: username
 			};
 
-			req.authorizationServerState.taxis_id = usersFound[0].ssn;
+			req.authorizationServerState.ssn = usersFound[0].ssn;
 			await AppDataSource.getRepository(AuthorizationServerState).save(req.authorizationServerState);
 			return res.redirect(this.protectedEndpoint);
 		}
