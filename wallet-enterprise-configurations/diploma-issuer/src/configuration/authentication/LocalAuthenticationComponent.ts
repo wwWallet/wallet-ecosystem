@@ -86,6 +86,7 @@ export class LocalAuthenticationComponent extends AuthenticationComponent {
 			res.cookie('jws', jws);
 
 			req.authorizationServerState.taxis_id = usersFound[0].taxis_id;
+			req.authorizationServerState.ssn = usersFound[0].ssn;
 			await AppDataSource.getRepository(AuthorizationServerState).save(req.authorizationServerState);
 			return res.redirect(this.protectedEndpoint);
 		}
