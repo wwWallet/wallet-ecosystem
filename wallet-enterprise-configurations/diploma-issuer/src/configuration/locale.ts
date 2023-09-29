@@ -1,5 +1,6 @@
 const locale = {
 	en: {
+		landingPageFaClass: "fa-graduation-cap",
 		header: {
 			title: "eDiplomas Issuer",
 			subtitle: "Receive your Bachelor diplomas",

@@ -102,7 +102,13 @@ export class EdiplomasBlueprint implements SupportedCredentialProtocol {
       .setContext([])
       .setType(this.getTypes())
       .setCredentialSubject(diploma)
-      .setCredentialSchema("https://api-pilot.ebsi.eu/trusted-schemas-registry/v1/schemas/0x4dd3926cd92bb3cb64fa6c837539ed31fc30dd38a11266a91678efa7268cde09");    
+      .setCredentialSchema("https://api-pilot.ebsi.eu/trusted-schemas-registry/v1/schemas/0x4dd3926cd92bb3cb64fa6c837539ed31fc30dd38a11266a91678efa7268cde09")
+			.setAttribute("name", "University Degree Credential")   
+			.setAttribute("description", "A Europass Diploma issued by the University of Athens")
+			.setAttribute("credentialBranding", {
+				backgroundColor: "#8ebeeb",
+				textColor: "#ffffff"
+			})
 
 		const { credential } = await keystoreService.signVcJwt(this.getCredentialIssuerConfig().walletId, nonSignedJwt);
     const response = {
