@@ -33,15 +33,17 @@ export class InspectPersonalInfoComponent extends AuthenticationComponent {
 	}
 
 	private hasProceeded(req: Request): boolean {
-		const proceed = req.cookies['proceed'];
-		if (!proceed) {
+		if (!req.session.authenticationChain.inspectPersonalInfoComponent?.proceed) {
 			return false;
 		}
 		return true
 	}
 
 	private async handleProceed(req: Request, res: Response): Promise<any> {
-		res.cookie('proceed', true);
+		req.session.authenticationChain.inspectPersonalInfoComponent = {
+			proceed: true
+		};
+		
 		if (req.body.has('proceed')) {
 			return res.redirect(this.protectedEndpoint);
 		}
