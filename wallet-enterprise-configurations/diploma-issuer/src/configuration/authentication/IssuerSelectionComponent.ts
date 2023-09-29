@@ -5,6 +5,7 @@ import { AuthenticationComponent } from "../../authentication/AuthenticationComp
 import AppDataSource from "../../AppDataSource";
 import { AuthorizationServerState } from "../../entities/AuthorizationServerState.entity";
 import locale from "../locale";
+import config from "../../../config";
 
 export class IssuerSelectionComponent extends AuthenticationComponent {
 
@@ -37,8 +38,7 @@ export class IssuerSelectionComponent extends AuthenticationComponent {
 
 	
 	private async hasSelectedIssuer(req: Request): Promise<boolean> {
-		const issuer = req.cookies['issuer_identifier'];
-		if (!issuer) {
+		if (!req.session.authenticationChain?.issuerSelectionComponent?.institutionId) {
 			return false;
 		}
 		return true;
@@ -47,8 +47,11 @@ export class IssuerSelectionComponent extends AuthenticationComponent {
 	private async handleIssuerSelectionSubmission(req: Request, res: Response): Promise<any> {
 		const { issuer } = req.body;
 		if (issuer) {
-			res.cookie("issuer_identifier", issuer)
-			req.authorizationServerState.credential_issuer_identifier = issuer;
+			req.session.authenticationChain.issuerSelectionComponent = {
+				institutionId: issuer
+			};
+
+			req.authorizationServerState.credential_issuer_identifier = config.url + '/' + issuer;
 			await AppDataSource.getRepository(AuthorizationServerState).save(req.authorizationServerState);
 			return res.redirect(this.protectedEndpoint);
 		}
