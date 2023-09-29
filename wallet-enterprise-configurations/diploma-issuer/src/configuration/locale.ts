@@ -4,6 +4,10 @@ const locale = {
 			title: "eDiplomas Issuer",
 			subtitle: "Receive your Bachelor diplomas",
 		},
+		plainHeader: {
+			title: "National Authentication System",
+			subtitle: "User Authentication"
+		},
 		footer: {
 			services: "Services",
 			documentation: "Documentation",
@@ -24,7 +28,7 @@ const locale = {
 			demo_text: ""
 		},
 		login: {
-			title: "Login",
+			title: "National Authentication System",
 			description: "",
 			btnText: "Login",
 			error: {
@@ -33,6 +37,17 @@ const locale = {
 				invalidCredentials: "Invalid credentials",
 				networkError: "Network error occured",
 			}
+		},
+		personalInfo: {
+			title: "Personal Identifiable Information",
+			subtitle: "Please review the following personal identifiable information (PII) that has been retrieved for you by the National Authentication System.",
+			acknowledgement: "By continuing, you acknowledge that the information is correct and that you agree with its use for the retrieval of your University Degrees.",
+			back: "Back",
+			proceed: "Confirm and Proceed",
+			firstName: "First Name",
+			lastName: "Last Name",
+			ssn: "Social Security Number",
+			taxisId: "Tax Identification"
 		}
 	}
 }

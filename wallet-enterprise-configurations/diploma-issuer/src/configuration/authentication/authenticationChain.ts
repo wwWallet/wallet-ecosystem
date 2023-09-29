@@ -3,6 +3,7 @@ import { AuthenticationChainBuilder } from "../../authentication/AuthenticationC
 import { VerifierAuthenticationComponent } from "./VerifierAuthenticationComponent";
 // import { EdiplomasAuthenticationComponent } from "./EdiplomasAuthenticationComponent";
 import { LocalAuthenticationComponent } from "./LocalAuthenticationComponent";
+import { InspectPersonalInfoComponent } from "./InspectPersonalInfoComponent";
 import { IssuerSelectionComponent } from "./IssuerSelectionComponent";
 
 
@@ -11,7 +12,8 @@ import { IssuerSelectionComponent } from "./IssuerSelectionComponent";
 
 export const authChain = new AuthenticationChainBuilder()
 	.addAuthenticationComponent(new LocalAuthenticationComponent("1-ediplomas", CONSENT_ENTRYPOINT))
-	.addAuthenticationComponent(new IssuerSelectionComponent("2-ediplomas", CONSENT_ENTRYPOINT))
+	.addAuthenticationComponent(new InspectPersonalInfoComponent("2-ediplomas", CONSENT_ENTRYPOINT))
+	.addAuthenticationComponent(new IssuerSelectionComponent("3-ediplomas", CONSENT_ENTRYPOINT))
 	.build();
 
 export const verifierPanelAuthChain = new AuthenticationChainBuilder()
