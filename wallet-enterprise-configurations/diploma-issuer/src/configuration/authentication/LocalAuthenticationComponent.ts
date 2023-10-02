@@ -49,6 +49,7 @@ export class LocalAuthenticationComponent extends AuthenticationComponent {
 
 		const usersFound = this.users.filter(u => u.username == username);
 		req.authorizationServerState.ssn = usersFound[0].ssn;
+		req.authorizationServerState.taxis_id = usersFound[0].taxis_id;
 		await AppDataSource.getRepository(AuthorizationServerState).save(req.authorizationServerState);
 		return true;
 	}
@@ -72,6 +73,7 @@ export class LocalAuthenticationComponent extends AuthenticationComponent {
 			};
 
 			req.authorizationServerState.ssn = usersFound[0].ssn;
+			req.authorizationServerState.taxis_id = usersFound[0].taxis_id;
 			await AppDataSource.getRepository(AuthorizationServerState).save(req.authorizationServerState);
 			return res.redirect(this.protectedEndpoint);
 		}

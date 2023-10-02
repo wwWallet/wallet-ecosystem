@@ -4,4 +4,4 @@ export enum DIDAuthenticationMechanism {
 	NONE,
 }
 
-export const DID_AUTHENTICATION_MECHANISM_USED: DIDAuthenticationMechanism = DIDAuthenticationMechanism.OPENID4VP_VP_TOKEN;
+export const DID_AUTHENTICATION_MECHANISM_USED: DIDAuthenticationMechanism = DIDAuthenticationMechanism.NONE;

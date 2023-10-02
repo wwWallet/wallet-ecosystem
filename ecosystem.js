@@ -161,7 +161,7 @@ if (action === "init") {
 			--client_id did:ebsi:zyhE5cJ7VVqYT4gZmoKadFt
 		./configwallet.js create issuer \
 			--friendlyName "University of Athens" \
-			--url http://wallet-enterprise-diploma-issuer:8000 \
+			--url http://wallet-enterprise-diploma-issuer:8000/uoa \
 			--did did:ebsi:zpq1XFkNWgsGB6MuvJp21vA \
 			--client_id did:ebsi:zpq1XFkNWgsGB6MuvJp21vA
 	'`, { stdio: 'inherit' });
