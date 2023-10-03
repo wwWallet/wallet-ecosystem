@@ -287,6 +287,17 @@ section.layout {
 	margin: 60px 30px;
 }
 
+.centered {
+	display: flex;
+	justify-content: center;
+	padding: 3% 1% 1% 1%;
+}
+
+.centered .Btn.Small {
+	margin: 5px auto;
+	padding: 10px 40px;
+	font-size: 16px;
+}
 /* Profile Page */
 
 .personal-container {
