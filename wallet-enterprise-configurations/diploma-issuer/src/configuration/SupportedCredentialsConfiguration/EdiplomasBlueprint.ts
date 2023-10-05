@@ -101,8 +101,17 @@ export class EdiplomasBlueprint implements SupportedCredentialProtocol {
       .setExpirationTime('1y')
       .setContext([])
       .setType(this.getTypes())
-      .setCredentialSubject(diploma)
-      .setCredentialSchema("https://api-pilot.ebsi.eu/trusted-schemas-registry/v1/schemas/0x4dd3926cd92bb3cb64fa6c837539ed31fc30dd38a11266a91678efa7268cde09")
+      .setCredentialSubject({
+				...diploma,
+				id: diplomaEntry.certificateId,
+				achievement: {
+					name: "University Degree Credential",
+					description: "A Europass Diploma issued by the University of Athens",
+					type: "Bachelor",
+					image: config.url + "/images/EuropassUoaCard.png"
+				}
+			} as any)
+      // .setCredentialSchema("https://api-pilot.ebsi.eu/trusted-schemas-registry/v1/schemas/0x4dd3926cd92bb3cb64fa6c837539ed31fc30dd38a11266a91678efa7268cde09")
 			.setAttribute("name", "University Degree Credential")   
 			.setAttribute("description", "A Europass Diploma issued by the University of Athens")
 			.setAttribute("credentialBranding", {
@@ -125,7 +134,7 @@ export class EdiplomasBlueprint implements SupportedCredentialProtocol {
 			format: this.getFormat(),
 			display: [ this.getDisplay() ],
 			types: this.getTypes(),
-			cryptographic_binding_methods_supported: ["ES256"]
+			cryptographic_binding_methods_supported: ["EdDSA", "ES256"]
 		}
 	}
 

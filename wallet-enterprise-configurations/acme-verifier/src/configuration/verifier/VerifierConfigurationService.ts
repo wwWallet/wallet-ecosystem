@@ -16,104 +16,28 @@ export class VerifierConfigurationService implements VerifierConfigurationInterf
 
 
 	getPresentationDefinitions(): PresentationDefinitionTypeWithFormat[] {
-		return [{
-			"id": "vid", // scope name
-			"format": { jwt_vc: { alg: [ 'ES256' ] }, jwt_vp: { alg: [ 'ES256' ] } },
-			"input_descriptors": [
-				{
-					"id": "VID",
-					"constraints": {
-						"fields": [
-							{
-								"path": [
-									"$.credentialSubject.personalIdentifier"
-								],
-								"filter": {}
-							},
-							{
-								"path": [
-									"$.credentialSchema.id"
-								],
-								"filter": {
-									"type": "string",
-									"const": "https://api-pilot.ebsi.eu/trusted-schemas-registry/v2/schemas/z8Y6JJnebU2UuQQNc2R8GYqkEiAMj3Hd861rQhsoNWxsM"
-								}
-							}
-						]
-					}
-				}
-			]
-		},
-		{
-			id: 'ver_test:vp_token', // scope name
-			format: { jwt_vc: { alg: [ 'ES256' ] }, jwt_vp: { alg: [ 'ES256' ] } },
-			input_descriptors: [
-				{
-					id: '<any id, random or static>',
-					constraints: {
-						fields: [
-							{
-								path: [ '$.type' ],
-								filter: {
-									type: 'array',
-									contains: { const: 'VerifiableAttestation' }
-								}
-							}
-						]
-					}
-				},
-				{
-					id: '123456',
-					constraints: {
-						fields: [
-							{
-								path: [ '$.type' ],
-								filter: {
-									type: 'array',
-									contains: { const: 'VerifiableAttestation' }
-								}
-							}
-						]
-					}
-				},
-				{
-					id: '1234',
-					constraints: {
-						fields: [
-							{
-								path: [ '$.type' ],
-								filter: {
-									type: 'array',
-									contains: { const: 'VerifiableAttestation' }
-								}
-							}
-						]
-					}
-				}
-			]
-		},
+		return [
 		{
 			"id": "diploma", // scope name
-			"format": { jwt_vc: { alg: [ 'ES256' ] }, jwt_vp: { alg: [ 'ES256' ] } },
+			"format": { jwt_vc: { alg: [ 'ES256' ] },jwt_vc_json: { alg: [ 'EdDSA' ] }, jwt_vp: { alg: [ 'ES256' ] } },
 			"input_descriptors": [
 				{
-					"id": "VID",
+					"id": "University Diploma",
 					"constraints": {
 						"fields": [
 							{
-								"path": [
-									"$.credentialSchema.id"
-								],
+								"path": [ '$.vc.type' ],
 								"filter": {
-									"type": "string",
-									"const": "https://api-pilot.ebsi.eu/trusted-schemas-registry/v1/schemas/0x4dd3926cd92bb3cb64fa6c837539ed31fc30dd38a11266a91678efa7268cde09"
+									"type": 'array',
+									"items": { type: 'string' },
+									"contains": { const: 'Bachelor' }
 								}
 							}
 						]
 					}
 				}
 			]
-		},]
+		}]
 	}
 
 

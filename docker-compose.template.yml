@@ -76,6 +76,7 @@ services:
       - ./wallet-enterprise:/home/node/app
       - ./wallet-enterprise-configurations/acme-verifier/config/config.development.ts:/home/node/app/config/config.development.ts
       - ./wallet-enterprise-configurations/acme-verifier/keys:/home/node/app/keys
+      - ./wallet-enterprise-configurations/acme-verifier/views/index.pug:/home/node/app/views/index.pug
       - ./wallet-enterprise-configurations/acme-verifier/src/configuration:/home/node/app/src/configuration
       - ./wallet-enterprise-configurations/acme-verifier/public/styles/styles.css:/home/node/app/public/styles/styles.css
       - ./wallet-enterprise-configurations/acme-verifier/public/images:/home/node/app/public/images
