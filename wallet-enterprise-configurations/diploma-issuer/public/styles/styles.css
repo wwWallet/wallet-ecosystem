@@ -385,3 +385,50 @@ hr {
 .personal-container .gray:hover {
 	background-color: #e0e0e0;
 }
+
+/* Spinner */
+#DiplomaSelection #spinner-container {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	z-index: 9999;
+	/* Ensure the spinner is on top of other content */
+}
+
+#DiplomaSelection .spinner {
+	position: absolute;
+	top: 45%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	width: 80px;
+	height: 80px;
+	border: 3px solid black;
+	/* Border color of the spinner */
+	border-top: 3px solid #01b8fa;
+	/* Border color of the spinner top */
+	border-radius: 50%;
+	animation: spin 4s linear infinite;
+	/* Spin animation for 2 seconds */
+}
+
+#DiplomaSelection .spinner-circle {
+	width: 100%;
+	height: 100%;
+}
+
+/* Keyframes for the spin animation */
+@keyframes spin {
+	0% {
+		transform: translate(-50%, -50%) rotate(0deg);
+	}
+
+	100% {
+		transform: translate(-50%, -50%) rotate(360deg);
+	}
+}
+
+.container2 {
+	height: 60vh;
+}
