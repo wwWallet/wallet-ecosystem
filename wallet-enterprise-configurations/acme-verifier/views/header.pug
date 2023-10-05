@@ -1,0 +1,30 @@
+#Header
+  .header
+    //- .ribbon
+    //- a.ribbonText EBSI DEMO
+    //- span.language-switch
+    //- if lang == "en"
+    //-   button#lang-el EL
+    //-   span |
+    //-   button#lang-en.active EN
+    //- if lang == "el"
+    //-   button#lang-el.active EL
+    //-   span |
+    //-   button#lang-en EN
+    .header-content
+      a.logo-area(href="/")
+        img#acmelogo(src='/images/acmelogo.png' alt='acme Logo')
+      ul.menu
+        li.menu-item
+          a(href="#") Home
+        li.menu-item
+          a(href="#") About
+        li.menu-item
+          a(href="#") Services
+        li.menu-item
+          a(href="#") Contact
+    //- p.header-subtitle #{locale.header.subtitle}
+    .header-border
+
+link(rel="stylesheet" href="/styles/header.css")
+script(src="/js/header.js")

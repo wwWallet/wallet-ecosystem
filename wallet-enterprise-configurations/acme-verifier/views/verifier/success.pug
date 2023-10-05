@@ -1,0 +1,41 @@
+extends ../layout.pug
+block layout-content
+
+  // Container for the spinner (initially hidden)
+  #spinner-container
+    .spinner
+      .spinner-circle
+
+  // Loading text with dots (initially visible)
+  #loading-text
+    .container2
+      .centered-layout
+        h1 Loading
+
+  // Container for the success content (initially hidden)
+  #success-container(style="display: none;")
+    .container2
+      .centered-layout
+        h1 Success
+
+  // JavaScript to show the spinner for 2 seconds and then hide it
+  script.
+    setTimeout(() => {
+      const spinnerContainer = document.getElementById('spinner-container');
+      const successContainer = document.getElementById('success-container');
+      const loadingText = document.getElementById('loading-text');
+
+      if (spinnerContainer && successContainer && loadingText) {
+        spinnerContainer.style.display = 'none'; // Hide the spinner
+        successContainer.style.display = 'block'; // Show the success content
+        loadingText.style.display = 'none'; // Hide the loading text
+      }
+    }, 4000); // Hide the spinner after 2000 milliseconds (2 seconds)
+
+  block footer
+    include ../footer.pug
+
+  link(rel="stylesheet" href="/styles/index.css")
+  script(src="/js/index.js")
+
+  script(src="/js/presentation-request.js")
