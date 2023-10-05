@@ -23,7 +23,7 @@ const locale = {
 		index: {
 			header: "eDiplomas Issuer",
 			phrase: "I am the owner of a University Degree",
-			subtitle: "I want to issue a University Degree Verifiable Credential",
+			subtitle: "I want to receive a University Degree Verifiable Credential",
 			proceed: "Proceed",
 			heading: "Overview",
 			paragraph: "The eDiplomas issuing platform has been developed by the Greek Universities Network (GUnet) for the purposes of 'JFF & VC-EDU Interoperability Plugfest 3' and continues to evolve, leveraging the technical expertise and digital infrastructure of the country's institutions.",
