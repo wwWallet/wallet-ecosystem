@@ -502,3 +502,21 @@ height:60vh;
 #successicon{
 	width:300px;
 }
+
+
+table {
+  border-collapse: collapse;
+  width: 30%;
+  margin: 0 auto;
+}
+
+th, td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: left;
+}
+
+th {
+  background-color: #4d7e3e;
+	color:white;
+}
