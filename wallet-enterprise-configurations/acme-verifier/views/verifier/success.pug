@@ -15,7 +15,14 @@ block layout-content
     .container2
       .centered-layout
         h1 Success
-        img#successicon(src='../images/success.png' alt='success icon')
+        table
+          tr
+            th Column 1
+            th Column 2
+          each row in [1, 2, 3, 4, 5]
+            tr
+              td Row #{row}
+              td Data #{row * 2}
 
   // JavaScript to show the spinner for 2 seconds and then hide it
   script.
