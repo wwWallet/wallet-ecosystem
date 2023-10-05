@@ -51,7 +51,13 @@ export class IssuerSelectionComponent extends AuthenticationComponent {
 				institutionId: issuer
 			};
 
-			req.authorizationServerState.credential_issuer_identifier = config.url + '/' + issuer;
+			if (issuer == 'uoa') {
+				req.authorizationServerState.credential_issuer_identifier = config.url;
+			}
+			else {
+				req.authorizationServerState.credential_issuer_identifier = config.url + '/' + issuer;
+
+			}
 			await AppDataSource.getRepository(AuthorizationServerState).save(req.authorizationServerState);
 			return res.redirect(this.protectedEndpoint);
 		}

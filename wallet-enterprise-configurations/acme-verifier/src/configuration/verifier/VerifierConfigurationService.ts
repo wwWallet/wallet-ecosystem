@@ -6,6 +6,8 @@ import { VerifierConfigurationInterface } from "../../services/interfaces";
 import { InputDescriptorType } from "@gunet/ssi-sdk";
 
 export type PresentationDefinitionTypeWithFormat = {
+	title: string;
+	description: string;
 	id: string;
 	format?: any;
 	input_descriptors: InputDescriptorType[];
@@ -17,27 +19,83 @@ export class VerifierConfigurationService implements VerifierConfigurationInterf
 
 	getPresentationDefinitions(): PresentationDefinitionTypeWithFormat[] {
 		return [
-		{
-			"id": "diploma", // scope name
-			"format": { jwt_vc: { alg: [ 'ES256' ] },jwt_vc_json: { alg: [ 'EdDSA' ] }, jwt_vp: { alg: [ 'ES256' ] } },
-			"input_descriptors": [
-				{
-					"id": "University Diploma",
-					"constraints": {
-						"fields": [
-							{
-								"path": [ '$.vc.type' ],
-								"filter": {
-									"type": 'array',
-									"items": { type: 'string' },
-									"contains": { const: 'Bachelor' }
+			{
+				"id": "diploma", // scope name
+				"title": "Software Engineer - Core",
+				"description": "Send your Bachelor Diploma to apply for 'Software Engineer - Core'",
+				"format": { jwt_vc: { alg: [ 'ES256' ] },jwt_vc_json: { alg: [ 'EdDSA' ] }, jwt_vp: { alg: [ 'ES256' ] } },
+				"input_descriptors": [
+					{
+						"id": "University Diploma",
+						"constraints": {
+							"fields": [
+								{
+									"path": [ '$.vc.type' ],
+									"filter": {
+										"type": 'array',
+										"items": { type: 'string' },
+										"contains": { const: 'Bachelor' }
+									}
 								}
-							}
-						]
+							]
+						}
 					}
-				}
-			]
-		}]
+				]
+			},
+			{
+				"id": "Multiple", // scope name
+				"title": "Project Manager",
+				"description": "Apply for Project Manager",
+				"format": { jwt_vc: { alg: [ 'ES256' ] },jwt_vc_json: { alg: [ 'EdDSA' ] }, jwt_vp: { alg: [ 'ES256' ] } },
+				"input_descriptors": [
+					{
+						"id": "Open Badge",
+						"constraints": {
+							"fields": [
+								{
+									"path": [ '$.vc.type' ],
+									"filter": {
+										"type": 'array',
+										"items": { type: 'string' },
+										"contains": { const: 'OpenBadgeCredential' }
+									}
+								}
+							]
+						}
+					},
+					{
+						"id": "Residence",
+						"constraints": {
+							"fields": [
+								{
+									"path": [ '$.vc.type' ],
+									"filter": {
+										"type": 'array',
+										"items": { type: 'string' },
+										"contains": { const: 'PermanentResidentCard' }
+									}
+								}
+							]
+						}
+					},
+					{
+						"id": "Bachelor",
+						"constraints": {
+							"fields": [
+								{
+									"path": [ '$.vc.type' ],
+									"filter": {
+										"type": 'array',
+										"items": { type: 'string' },
+										"contains": { const: 'Bachelor' }
+									}
+								}
+							]
+						}
+					}
+				]
+			}
+		]
 	}
 
 

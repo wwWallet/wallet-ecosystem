@@ -5,3 +5,4 @@ docker-compose.yml
 .github-token
 *.production.ts
 *.production*
+*.tar

@@ -7,6 +7,9 @@ export type SimpleDiplomaCredentialSubject = {
 	grade?: string;
 	eqfLevel?: string;
 	certificateId?: string;
+	dateOfBirth?: string;
+	awardingDate?: string;
+	completionDate?: string;
 }
 
 
@@ -46,6 +49,21 @@ export class SimpleDiplomaCredentialSubjectBuilder {
 
 	setCertificateId(certificateId: string): this {
 		this.credentialSubject.certificateId = certificateId;
+		return this;
+	}
+
+	setDateOfBirth(dateOfBirth: string): this {
+		this.credentialSubject.dateOfBirth = dateOfBirth;
+		return this;
+	}
+
+	setAwardingDate(awardingDate: string): this {
+		this.credentialSubject.awardingDate = awardingDate;
+		return this;
+	}
+
+	setCompletionDate(completionDate: string): this {
+		this.credentialSubject.completionDate = completionDate;
 		return this;
 	}
 

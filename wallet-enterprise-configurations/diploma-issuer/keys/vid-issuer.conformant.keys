@@ -1,6 +1,6 @@
 {
 	"did": "did:key:z6MkwcjHDtnV8hjYbJHL9dDDiVmhwGcZdid4sp3m46VB4HVZ",
-	"alg": "ES256",
+	"alg": "EdDSA",
 	"key": {
 		"id": "did:key:z6MkwcjHDtnV8hjYbJHL9dDDiVmhwGcZdid4sp3m46VB4HVZ#z6MkwcjHDtnV8hjYbJHL9dDDiVmhwGcZdid4sp3m46VB4HVZ",
 		"kid": "did:key:z6MkwcjHDtnV8hjYbJHL9dDDiVmhwGcZdid4sp3m46VB4HVZ#z6MkwcjHDtnV8hjYbJHL9dDDiVmhwGcZdid4sp3m46VB4HVZ",

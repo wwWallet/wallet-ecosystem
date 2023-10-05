@@ -11,6 +11,9 @@ type DiplomaEntry = {
 	grade: string;
 	ssn: string;
 	level: string;
+	dateOfBirth: string;
+	completionDate: string;
+	awardingDate: string;
 }
 
 type VIDEntry = {
@@ -32,7 +35,10 @@ const diplomasRepository: DiplomaEntry[] = [
 		institutionCode: "uoa",
 		institutionName: "National and Kapodistrian University of Athens",
 		grade: "8.1",
-		level: "6"
+		level: "6",
+		dateOfBirth: "1990-07-01",
+		completionDate: "2020-09-01",
+		awardingDate: "2020-06-01",
 	},
 	{
 		blueprintID: "75",
@@ -44,7 +50,10 @@ const diplomasRepository: DiplomaEntry[] = [
 		institutionCode: "uoa",
 		institutionName: "National and Kapodistrian University of Athens",
 		grade: "9.0",
-		level: "6"
+		level: "6",
+		dateOfBirth: "1990-07-01",
+		completionDate: "2020-09-01",
+		awardingDate: "2020-06-01",
 	}
 ]
 

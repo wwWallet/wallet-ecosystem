@@ -6,8 +6,8 @@ block layout-content
     .card-container
       for definition in presentationDefinitions
         .card
-          .card-title Software Engineer - Core
-          p.card-text Send your Bachelor Diploma to apply for "Software Engineer - Core"
+          .card-title #{definition.title}
+          p.card-text #{definition.description}
           .card-buttons
             button.btn.btn-primary(onclick=`window.location.href = "/verifier/public/definitions/presentation-request/${definition.id}"`) Present
 
