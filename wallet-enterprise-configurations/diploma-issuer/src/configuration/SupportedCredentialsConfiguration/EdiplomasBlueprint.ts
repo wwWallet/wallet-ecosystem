@@ -63,6 +63,10 @@ export class EdiplomasBlueprint implements SupportedCredentialProtocol {
 					{ name: "Family Name", value: diplomaEntry.familyName },
 					{ name: "Title", value: diplomaEntry.title },
 					{ name: "Grade", value: diplomaEntry.grade },
+					{ name: "Date of birth", value: diplomaEntry.dateOfBirth },
+					{ name: "Completion date", value: diplomaEntry.completionDate },
+					{ name: "Awarding date", value: diplomaEntry.awardingDate },
+
 				]
 			}
 		};
@@ -92,6 +96,9 @@ export class EdiplomasBlueprint implements SupportedCredentialProtocol {
 			.setLevel(diplomaEntry.level)
 			.setDiplomaTitle(diplomaEntry.title)
 			.setCertificateId(diplomaEntry.certificateId)
+			.setDateOfBirth(diplomaEntry.dateOfBirth)
+			.setCompletionDate(diplomaEntry.completionDate)
+			.setAwardingDate(diplomaEntry.awardingDate)
 			.build();
 
     const nonSignedJwt = new SignVerifiableCredentialJWT()
@@ -109,7 +116,7 @@ export class EdiplomasBlueprint implements SupportedCredentialProtocol {
 					description: "A Europass Diploma issued by the University of Athens",
 					type: "Bachelor",
 					image: config.url + "/images/EuropassUoaCard.png"
-				}
+				},
 			} as any)
       // .setCredentialSchema("https://api-pilot.ebsi.eu/trusted-schemas-registry/v1/schemas/0x4dd3926cd92bb3cb64fa6c837539ed31fc30dd38a11266a91678efa7268cde09")
 			.setAttribute("name", "University Degree Credential")   
@@ -117,6 +124,14 @@ export class EdiplomasBlueprint implements SupportedCredentialProtocol {
 			.setAttribute("credentialBranding", {
 				backgroundColor: "#8ebeeb",
 				textColor: "#ffffff"
+			})
+			.setIssuer("did:key:z6MkwcjHDtnV8hjYbJHL9dDDiVmhwGcZdid4sp3m46VB4HVZ")
+			.setAttribute("issuer", {
+				id: "did:key:z6MkwcjHDtnV8hjYbJHL9dDDiVmhwGcZdid4sp3m46VB4HVZ",
+				name: "University of Athens",
+				iconUrl: `${config.url}/images/uoa.svg`,
+				image: `${config.url}/images/uoa.svg`,
+				logoUrl: `${config.url}/images/uoa.svg`
 			})
 
 		const { credential } = await keystoreService.signVcJwt(this.getCredentialIssuerConfig().walletId, nonSignedJwt);

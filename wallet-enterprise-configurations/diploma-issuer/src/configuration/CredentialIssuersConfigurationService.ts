@@ -10,7 +10,7 @@ import { CredentialIssuersConfiguration } from "../services/interfaces";
 @injectable()
 export class CredentialIssuersConfigurationService implements CredentialIssuersConfiguration {
 
-	readonly credentialIssuerIdentifierUOA = config.url + '/uoa';
+	readonly credentialIssuerIdentifierUOA = config.url;
 
 	public registeredCredentialIssuerRepository(): CredentialIssuersRepository {
 		const diplomaIssuer = new CredentialIssuer()
@@ -20,7 +20,7 @@ export class CredentialIssuersConfigurationService implements CredentialIssuersC
 			.setCredentialEndpoint(this.credentialIssuerIdentifierUOA + "/openid4vci/credential")
 			// .setDeferredCredentialEndpoint(config.url + "/openid4vci/deferred")
 
-		diplomaIssuer.addSupportedCredential(new EdiplomasBlueprint(diplomaIssuer, "75"));
+		// diplomaIssuer.addSupportedCredential(new EdiplomasBlueprint(diplomaIssuer, "75"));
 		diplomaIssuer.addSupportedCredential(new EdiplomasBlueprint(diplomaIssuer, "46"));
 
 		return new CredentialIssuersRepository([
