@@ -26,8 +26,8 @@ type VIDEntry = {
 const vidRepository: VIDEntry[] = [
 	{
 		personalIdentifier: "032429484252432",
-		firstName: "George",
-		familyName: "Dokimastikos",
+		firstName: "John",
+		familyName: "Doe",
 		taxisId: "432432432423",
 		birthdate: "18-5-1990"
 	}

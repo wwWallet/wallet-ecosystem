@@ -28,8 +28,8 @@ const diplomasRepository: DiplomaEntry[] = [
 	{
 		blueprintID: "46",
 		certificateId: "1",
-		firstName: "George",
-		familyName: "Dokimastikos",
+		firstName: "John",
+		familyName: "Doe",
 		title: "Informatics and Telecommunications",
 		ssn: "032429484252432",
 		institutionCode: "uoa",
@@ -43,8 +43,8 @@ const diplomasRepository: DiplomaEntry[] = [
 	{
 		blueprintID: "75",
 		certificateId: "1233314134",
-		firstName: "George",
-		familyName: "Dokimastikos",
+		firstName: "John",
+		familyName: "Doe",
 		title: "Physics",
 		ssn: "032429484252432",
 		institutionCode: "uoa",
