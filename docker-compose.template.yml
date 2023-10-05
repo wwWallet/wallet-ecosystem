@@ -59,7 +59,7 @@ services:
           limits:
             memory: 1G
 
-wallet-enterprise-acme-verifier:
+  wallet-enterprise-acme-verifier:
     container_name: wallet-enterprise-acme-verifier
     hostname: wallet-enterprise-acme-verifier
     build:
