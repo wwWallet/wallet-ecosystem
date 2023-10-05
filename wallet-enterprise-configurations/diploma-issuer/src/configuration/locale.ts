@@ -26,7 +26,9 @@ const locale = {
 			subtitle: "I want to issue a University Degree Verifiable Credential",
 			proceed: "Proceed",
 			heading: "Overview",
-			paragraph: "The eDiplomas issuing platform has been developed by the Greek Universities Network (GUnet) for the purposes of 'JFF & VC-EDU Interoperability Plugfest 3' and continues to evolve, leveraging the technical expertise and digital infrastructure of the country's institutions.",
+			paragraph: "The eDiplomas issuing platform has been developed by the Greek Universities Network (GUnet) for the purposes of",
+			jff: "JFF & VC-EDU Interoperability Plugfest 3",
+			paragraph1: "and continues to evolve, leveraging the technical expertise and digital infrastructure of the country's institutions.",
 			paragraph2: "Through eDiplomas, the citizen and owner of degrees issued by greek HEIs is able, by using their National Tax account, to receive Verifiable Credentials (VCs) of their degrees. Citizens have the option to explicitly select the data to be included in the VC, ensuring privacy.",
 			paragraph3: "The platform employs cutting-edge technologies to safeguard private information and verify the authenticity of degrees. By streamlining the degree submission and verification processes for both degree holders and institutions, eDiplomas aims to combat the proliferation of fake and counterfeit degrees.",
 			demo_text: ""

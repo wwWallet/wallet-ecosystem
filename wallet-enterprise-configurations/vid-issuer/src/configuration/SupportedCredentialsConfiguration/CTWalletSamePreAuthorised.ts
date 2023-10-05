@@ -39,8 +39,8 @@ export class CTWalletSamePreAuthorisedSupportedCredential implements SupportedCr
   async getProfile(_userSession: AuthorizationServerState): Promise<CredentialView | null> {
 
 		const rows: CategorizedRawCredentialViewRow[] = [
-			{ name: "Family Name", value: "Dokimastikos" },
-			{ name: "First Name", value: "Christos" },
+			{ name: "Family Name", value: "Doe" },
+			{ name: "First Name", value: "John" },
 			{ name: "Personal Identifier", value: "123xxx" },
 			{ name: "Date of Birth", value: "18/06/1990" },
 		];
