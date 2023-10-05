@@ -59,7 +59,7 @@ services:
           limits:
             memory: 1G
 
-  wallet-enterprise-acme-verifier:
+wallet-enterprise-acme-verifier:
     container_name: wallet-enterprise-acme-verifier
     hostname: wallet-enterprise-acme-verifier
     build:
@@ -77,6 +77,10 @@ services:
       - ./wallet-enterprise-configurations/acme-verifier/config/config.development.ts:/home/node/app/config/config.development.ts
       - ./wallet-enterprise-configurations/acme-verifier/keys:/home/node/app/keys
       - ./wallet-enterprise-configurations/acme-verifier/views/index.pug:/home/node/app/views/index.pug
+      - ./wallet-enterprise-configurations/acme-verifier/views/header.pug:/home/node/app/views/header.pug
+      - ./wallet-enterprise-configurations/acme-verifier/views/verifier/public_definitions.pug:/home/node/app/views/verifier/public_definitions.pug
+      - ./wallet-enterprise-configurations/acme-verifier/views/verifier/QR.pug:/home/node/app/views/verifier/QR.pug
+      - ./wallet-enterprise-configurations/acme-verifier/views/verifier/success.pug:/home/node/app/views/verifier/success.pug
       - ./wallet-enterprise-configurations/acme-verifier/src/configuration:/home/node/app/src/configuration
       - ./wallet-enterprise-configurations/acme-verifier/public/styles/styles.css:/home/node/app/public/styles/styles.css
       - ./wallet-enterprise-configurations/acme-verifier/public/images:/home/node/app/public/images
