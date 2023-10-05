@@ -60,6 +60,9 @@ p {
 	margin-bottom: 100px;
 	/* padding: 40px 60px; */
 }
+#IssuerSelection .main-container {
+	margin-bottom: 45px;
+}
 
 /* @media only screen and (max-width: 600px) {
 	.main-container {
@@ -298,6 +301,13 @@ section.layout {
 	padding: 10px 40px;
 	font-size: 16px;
 }
+
+#DiplomaSelection p {
+	font-size: 35px;
+	color: #003476;
+	font-weight: 700;
+	margin-bottom: 20px;
+}
 /* Profile Page */
 
 .personal-container {
@@ -308,7 +318,7 @@ section.layout {
 	width: 80vw;
 	max-width: 750px;
 	display: block;
-	margin: 50px auto auto auto;
+	margin: 50px auto 70px auto;
 	padding: 10px 40px;
 }
 

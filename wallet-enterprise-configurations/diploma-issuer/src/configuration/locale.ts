@@ -6,7 +6,7 @@ const locale = {
 			subtitle: "Receive your Bachelor diplomas",
 		},
 		plainHeader: {
-			title: "National Authentication System",
+			title: "National Authentication Service",
 			subtitle: "User Authentication"
 		},
 		footer: {
@@ -22,14 +22,17 @@ const locale = {
 		},
 		index: {
 			header: "eDiplomas Issuer",
-			phrase: "I am a university graduate",
+			phrase: "I am the owner of a University Degree",
+			subtitle: "I want to issue a University Degree Verifiable Credential",
 			proceed: "Proceed",
-			heading: "Ediplomas Issuer",
-			paragraph: "This is a portal where Greek citizen can receive their digital diploma in their wallet. To proceed you must first have an conformant digital wallet. This diploma will contain a the details of the diploma of the graduate.",
+			heading: "Overview",
+			paragraph: "The eDiplomas issuing platform has been developed by the Greek Universities Network (GUnet) for the purposes of 'JFF & VC-EDU Interoperability Plugfest 3' and continues to evolve, leveraging the technical expertise and digital infrastructure of the country's institutions.",
+			paragraph2: "Through eDiplomas, the citizen and owner of degrees issued by greek HEIs is able, by using their National Tax account, to receive Verifiable Credentials (VCs) of their degrees. Citizens have the option to explicitly select the data to be included in the VC, ensuring privacy.",
+			paragraph3: "The platform employs cutting-edge technologies to safeguard private information and verify the authenticity of degrees. By streamlining the degree submission and verification processes for both degree holders and institutions, eDiplomas aims to combat the proliferation of fake and counterfeit degrees.",
 			demo_text: ""
 		},
 		login: {
-			title: "National Authentication System",
+			title: "National Authentication Service",
 			description: "",
 			btnText: "Login",
 			error: {
@@ -41,7 +44,7 @@ const locale = {
 		},
 		personalInfo: {
 			title: "Personal Identifiable Information",
-			subtitle: "Please review the following personal identifiable information (PII) that has been retrieved for you by the National Authentication System.",
+			subtitle: "Please review the following personal identifiable information (PII) that has been retrieved for you by the National Authentication Service.",
 			acknowledgement: "By continuing, you acknowledge that the information is correct and that you agree with its use for the retrieval of your University Degrees.",
 			back: "Back",
 			proceed: "Confirm and Proceed",

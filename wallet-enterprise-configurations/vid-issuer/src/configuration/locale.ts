@@ -5,7 +5,7 @@ const locale = {
 			subtitle: "Receive your verifiable ID",
 		},
 		plainHeader: {
-			title: "National Authentication System",
+			title: "National Authentication Service",
 			subtitle: "User Authentication"
 		},
 		footer: {
