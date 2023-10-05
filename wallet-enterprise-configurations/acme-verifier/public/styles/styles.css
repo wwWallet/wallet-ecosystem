@@ -492,3 +492,13 @@ height:60vh;
   0% { transform: translate(-50%, -50%) rotate(0deg); }
   100% { transform: translate(-50%, -50%) rotate(360deg); }
 }
+
+.container-positions{
+	padding-left: 5%;
+	padding-right:5%;
+}
+
+
+#successicon{
+	width:300px;
+}
