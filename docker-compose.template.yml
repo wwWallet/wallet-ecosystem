@@ -49,6 +49,7 @@ services:
       - ./wallet-enterprise-configurations/diploma-issuer/config/config.development.ts:/home/node/app/config/config.development.ts
       - ./wallet-enterprise-configurations/diploma-issuer/keys:/home/node/app/keys
       - ./wallet-enterprise-configurations/diploma-issuer/src/configuration:/home/node/app/src/configuration
+      - ./wallet-enterprise-configurations/diploma-issuer/views/issuer/login.pug:/home/node/app/views/issuer/login.pug
       - ./wallet-enterprise-configurations/diploma-issuer/public/styles/styles.css:/home/node/app/public/styles/styles.css
       - ./wallet-enterprise-configurations/diploma-issuer/public/images:/home/node/app/public/images
       - /home/node/app/dist
