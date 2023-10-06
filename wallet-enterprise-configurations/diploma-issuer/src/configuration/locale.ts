@@ -26,11 +26,13 @@ const locale = {
 			subtitle: "I want to receive a University Degree Verifiable Credential",
 			proceed: "Proceed",
 			heading: "Overview",
-			paragraph: "The eDiplomas issuing platform has been developed by the Greek Universities Network (GUnet) for the purposes of",
+			paragraph: "The eDiplomas VC EDU Issuer has been developed in the framework of the",
 			jff: "JFF & VC-EDU Interoperability Plugfest 3",
-			paragraph1: "and continues to evolve, leveraging the technical expertise and digital infrastructure of the country's institutions.",
-			paragraph2: "Through eDiplomas, the citizen and owner of degrees issued by greek HEIs is able, by using their National Tax account, to receive Verifiable Credentials (VCs) of their degrees. Citizens have the option to explicitly select the data to be included in the VC, ensuring privacy.",
-			paragraph3: "The platform employs cutting-edge technologies to safeguard private information and verify the authenticity of degrees. By streamlining the degree submission and verification processes for both degree holders and institutions, eDiplomas aims to combat the proliferation of fake and counterfeit degrees.",
+			paragraph1: "and aims to provide a Verifiable Credentials technology preview based on the OID4VCI spec (draft 11) and OID4VP(draft 18). It showcases the user experience of a diploma holder that wants to receive her educational credentials into her wallet and present to a 3rd party verifier in a privacy preserving way.",
+			paragraph2: "Through the eDiplomas VC-EDU Issuer platform, the citizen and holder of degrees issued by Greek HEIs, using her National ID account, is able to retrieve and see the details of her degrees from one or more Greek Universities and then request for the selected diploma(s) or subset of them, the issuance of the Verifiable Credential(s) to her wallet.",
+			paragraph3: "While the technologies used by the eDiplomas VC EDU Issuer to attest an education credential differ from the ones used by the production platform (",
+			ediplomas: "eDiplomas.gr",
+			paragraph4: "), both share the same core functionalities and goals regarding the privacy of users data.",
 			demo_text: ""
 		},
 		login: {
