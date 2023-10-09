@@ -106,7 +106,7 @@ export class EdiplomasBlueprint implements SupportedCredentialProtocol {
 			.setSubject(holderDID)
       .setIssuedAt()
       .setExpirationTime('1y')
-      .setContext([])
+      .setContext(["https://www.w3.org/2018/credentials/v1"])
       .setType(this.getTypes())
       .setCredentialSubject({
 				...diploma,
@@ -133,6 +133,8 @@ export class EdiplomasBlueprint implements SupportedCredentialProtocol {
 				image: `${config.url}/images/uoa.svg`,
 				logoUrl: `${config.url}/images/uoa.svg`
 			})
+			.setAttribute("credentialSchema", undefined)
+		
 
 		const { credential } = await keystoreService.signVcJwt(this.getCredentialIssuerConfig().walletId, nonSignedJwt);
     const response = {
