@@ -26,9 +26,9 @@ git submodule update --remote  # to get update all submodules from the remote re
 
 ## Documentation
 
-Visit https://open.gunet.gr/wallet-docs/
+Visit https://wwwallet.github.io/wallet-docs/
 
 
 ## Contribution Guidelines
 
-Visit https://open.gunet.gr/wallet-docs/docs/development-environment-setup/contribution-guidelines
+Visit https://wwwallet.github.io/wallet-docs/docs/development-environment-setup/contribution-guidelines
