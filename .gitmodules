@@ -1,9 +1,9 @@
 [submodule "wallet-backend-server"]
 	path = wallet-backend-server
-	url = git@github.com:gunet/wallet-backend-server.git
+	url = git@github.com:wwWallet/wallet-backend-server.git
 [submodule "wallet-frontend"]
 	path = wallet-frontend
-	url = git@github.com:gunet/wallet-frontend.git
+	url = git@github.com:wwWallet/wallet-frontend.git
 [submodule "wallet-enterprise"]
 	path = wallet-enterprise
-	url = git@github.com:gunet/wallet-enterprise.git
+	url = git@github.com:wwWallet/wallet-enterprise.git
