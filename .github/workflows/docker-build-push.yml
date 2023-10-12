@@ -25,7 +25,7 @@ jobs:
          password: ${{secrets.GITHUB_TOKEN}}
 
     - name: Set up .npmrc to access GitHub NPM registry
-      uses: gunet/wallet-ecosystem/.github/actions/setup-npmrc@master
+      uses: wwWallet/wallet-ecosystem/.github/actions/setup-npmrc@master
       with:
         token: ${{ secrets.GITHUB_TOKEN }}
 
