@@ -3,7 +3,7 @@ import { CategorizedRawCredentialViewRow } from "../../openid4vci/Metadata";
 import { VerifiableCredentialFormat, Display, CredentialSupportedJwtVcJson } from "../../types/oid4vci";
 import { CredentialIssuer } from "../../lib/CredentialIssuerConfig/CredentialIssuer";
 import { SupportedCredentialProtocol } from "../../lib/CredentialIssuerConfig/SupportedCredentialProtocol";
-import { SignVerifiableCredentialJWT } from "@wwWallet/ssi-sdk";
+import { SignVerifiableCredentialJWT } from "@wwwallet/ssi-sdk";
 import { randomUUID } from 'node:crypto';
 import { keystoreService } from "../../services/instances";
 import { AuthorizationServerState } from "../../entities/AuthorizationServerState.entity";
