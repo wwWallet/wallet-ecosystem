@@ -18,11 +18,13 @@ services:
         condition: service_healthy
     volumes:
       - ./wallet-enterprise:/home/node/app
-      - ./wallet-enterprise-configurations/vid-issuer/config/config.development.ts:/home/node/app/config/config.development.ts
-      - ./wallet-enterprise-configurations/vid-issuer/keys:/home/node/app/keys
-      - ./wallet-enterprise-configurations/vid-issuer/src/configuration:/home/node/app/src/configuration
-      - ./wallet-enterprise-configurations/vid-issuer/public/styles/styles.css:/home/node/app/public/styles/styles.css
-      - ./wallet-enterprise-configurations/vid-issuer/public/images:/home/node/app/public/images
+      - ./wallet-enterprise-configurations/acme-verifier/config/config.development.ts:/home/node/app/config/config.development.ts
+      - ./wallet-enterprise-configurations/acme-verifier/keys:/home/node/app/keys
+      - ./wallet-enterprise-configurations/acme-verifier/views/index.pug:/home/node/app/views/index.pug
+      - ./wallet-enterprise-configurations/acme-verifier/views/header.pug:/home/node/app/views/header.pug
+      - ./wallet-enterprise-configurations/acme-verifier/src/configuration:/home/node/app/src/configuration
+      - ./wallet-enterprise-configurations/acme-verifier/public/styles/styles.css:/home/node/app/public/styles/styles.css
+      - ./wallet-enterprise-configurations/acme-verifier/public/images:/home/node/app/public/images
       - /home/node/app/dist
       - /home/node/app/node_modules
       - ./.vscode/:/home/node/app/.vscode
@@ -78,10 +80,10 @@ services:
       - ./wallet-enterprise-configurations/acme-verifier/config/config.development.ts:/home/node/app/config/config.development.ts
       - ./wallet-enterprise-configurations/acme-verifier/keys:/home/node/app/keys
       - ./wallet-enterprise-configurations/acme-verifier/views/index.pug:/home/node/app/views/index.pug
-      - ./wallet-enterprise-configurations/acme-verifier/views/header.pug:/home/node/app/views/header.pug
-      - ./wallet-enterprise-configurations/acme-verifier/views/verifier/public_definitions.pug:/home/node/app/views/verifier/public_definitions.pug
-      - ./wallet-enterprise-configurations/acme-verifier/views/verifier/QR.pug:/home/node/app/views/verifier/QR.pug
-      - ./wallet-enterprise-configurations/acme-verifier/views/verifier/success.pug:/home/node/app/views/verifier/success.pug
+      # - ./wallet-enterprise-configurations/acme-verifier/views/header.pug:/home/node/app/views/header.pug
+      # - ./wallet-enterprise-configurations/acme-verifier/views/verifier/public_definitions.pug:/home/node/app/views/verifier/public_definitions.pug
+      # - ./wallet-enterprise-configurations/acme-verifier/views/verifier/QR.pug:/home/node/app/views/verifier/QR.pug
+      # - ./wallet-enterprise-configurations/acme-verifier/views/verifier/success.pug:/home/node/app/views/verifier/success.pug
       - ./wallet-enterprise-configurations/acme-verifier/src/configuration:/home/node/app/src/configuration
       - ./wallet-enterprise-configurations/acme-verifier/public/styles/styles.css:/home/node/app/public/styles/styles.css
       - ./wallet-enterprise-configurations/acme-verifier/public/images:/home/node/app/public/images

@@ -288,7 +288,7 @@ section.layout {
 	margin: 60px 30px;
 }
 
-
+/* 
 .centered-layout {
 	display: flex;
 	flex-direction: column;
@@ -316,8 +316,8 @@ a.logo-area{
 }
 .header-content {
   display: flex;
-  justify-content: space-between; /* Align items horizontally */
-  align-items: center; /* Align items vertically */
+  justify-content: space-between;
+  align-items: center; 
   padding-left: 10% !important;
   padding-right: 10% !important;
   padding-top: 1% !important;
@@ -327,20 +327,21 @@ a.logo-area{
 
 ul.menu {
 	display: flex;
-  list-style: none; /* Remove bullet points */
-  padding: 0; /* Remove default padding */
-  margin: 0; /* Remove default margin */
+  list-style: none; 
+  padding: 0; 
+  margin: 0; 
 }
+
 
 li.menu-item {
 	color:#4d7e3e;
-  margin-right: 20px; /* Adjust the spacing between menu items */
+  margin-right: 20px; 
 }
 
 a.menu-link {
 	color:#4d7e3e!important;
-  text-decoration: none; /* Remove underlines from links */
-  font-weight: bold; /* Set font weight to bold */
+  text-decoration: none; 
+  font-weight: bold; 
 }
 
 .header-border {
@@ -354,45 +355,41 @@ a.menu-link {
 }
 
 
-/* Flex container for the layout */
 .flex-container {
 	padding: 5%;
   display: flex;
-  align-items: center; /* Vertically center items within the flex container */
-  justify-content: space-between; /* Create space between columns */
+  align-items: center; 
+  justify-content: space-between; 
 }
 
-/* Styling for the image column */
+
 .image-column {
 	text-align: center;
-  width: 50%; /* Set the width of the image column */
+  width: 50%;
 }
 
-/* Styling for the content column */
 .content-column {
 	height: 100%;
-  width:50%; /* Set the width of the content column */
+  width:50%; 
 }
 
-/* Styling for the image */
 .image-column img {
-  max-width: 70%; /* Ensure the image doesn't exceed its container */
+  max-width: 70%; 
 }
 
-/* Additional styling for the content elements */
 .content-column h1 {
-  font-size: 35px; /* Adjust the font size as needed */
-  margin-bottom: 15px; /* Add spacing below the title */
+  font-size: 35px; 
+  margin-bottom: 15px; 
 }
 
 .content-column p {
-  font-size: 16px; /* Adjust the font size as needed */
-  margin-bottom: 15px; /* Add spacing below paragraphs */
+  font-size: 16px; 
+  margin-bottom: 15px;
 }
 
 .content-column .demo-text {
-  font-size: 14px; /* Adjust the font size as needed */
-  color: #888; /* Set the text color for the demo text */
+  font-size: 14px; 
+  color: #888; 
 }
 
 
@@ -408,7 +405,7 @@ a.menu-link {
 
 }
 body{
-	background-color: rgba(77, 126, 62, 0.15) !important; /* Adjust the opacity value (0.8) as needed */
+	background-color: rgba(77, 126, 62, 0.15) !important; 
 
 }
 .container{
@@ -459,14 +456,13 @@ min-height:60vh;
 }
 
 
-/* CSS for the spinner */
 #spinner-container {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  z-index: 9999; /* Ensure the spinner is on top of other content */
+  z-index: 9999; 
 }
 
 .spinner {
@@ -476,10 +472,10 @@ min-height:60vh;
   transform: translate(-50%, -50%);
   width: 80px;
   height: 80px;
-  border: 10px solid #333; /* Border color of the spinner */
-  border-top: 10px solid #4d7e3e; /* Border color of the spinner top */
+  border: 10px solid #333; 
+  border-top: 10px solid #4d7e3e; 
   border-radius: 50%;
-  animation: spin 4s linear infinite; /* Spin animation for 2 seconds */
+  animation: spin 4s linear infinite; 
 }
 
 .spinner-circle {
@@ -487,7 +483,6 @@ min-height:60vh;
   height: 100%;
 }
 
-/* Keyframes for the spin animation */
 @keyframes spin {
   0% { transform: translate(-50%, -50%) rotate(0deg); }
   100% { transform: translate(-50%, -50%) rotate(360deg); }
@@ -519,4 +514,4 @@ th, td {
 th {
   background-color: #4d7e3e;
 	color:white;
-}
+} */
