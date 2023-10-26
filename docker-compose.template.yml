@@ -9,7 +9,7 @@ services:
     build:
       context: $PWD/wallet-enterprise
       dockerfile: development.Dockerfile
-    image: wallet-enterprise
+    image: wallet-enterprise:dev-vid
     restart: always
     ports:
       - 8003:8003
@@ -37,7 +37,7 @@ services:
     build:
       context: $PWD/wallet-enterprise
       dockerfile: development.Dockerfile
-    image: wallet-enterprise
+    image: wallet-enterprise:dev-diploma
     restart: always
     ports:
       - 8000:8000
@@ -65,7 +65,7 @@ services:
     build:
       context: $PWD/wallet-enterprise
       dockerfile: development.Dockerfile
-    image: wallet-enterprise
+    image: wallet-enterprise:dev-verifier
     restart: always
     ports:
       - 8005:8005
@@ -129,7 +129,7 @@ services:
     build:
       context: $PWD/wallet-backend-server
       dockerfile: development.Dockerfile
-    image: wallet-backend-server
+    image: wallet-backend-server:dev
     restart: always
     ports:
       - 8002:8002
@@ -149,7 +149,7 @@ services:
     build:
       context: $PWD/wallet-frontend
       dockerfile: development.Dockerfile
-    image: wallet-frontend
+    image: wallet-frontend:dev
     container_name: wallet-frontend
     hostname: wallet-frontend
     ports:
