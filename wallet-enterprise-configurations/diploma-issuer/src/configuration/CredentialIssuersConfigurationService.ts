@@ -10,7 +10,7 @@ import { CredentialIssuersConfiguration } from "../services/interfaces";
 @injectable()
 export class CredentialIssuersConfigurationService implements CredentialIssuersConfiguration {
 
-	readonly credentialIssuerIdentifierUOA = config.url;
+	readonly credentialIssuerIdentifierUOA = config.url + "/uoa";
 
 	public registeredCredentialIssuerRepository(): CredentialIssuersRepository {
 		const diplomaIssuer = new CredentialIssuer()

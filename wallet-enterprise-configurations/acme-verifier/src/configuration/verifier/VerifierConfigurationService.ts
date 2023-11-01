@@ -30,7 +30,7 @@ export class VerifierConfigurationService implements VerifierConfigurationInterf
 						"constraints": {
 							"fields": [
 								{
-									"path": [ '$.vc.type' ],
+									"path": [ '$.type' ],
 									"filter": {
 										"type": 'array',
 										"items": { type: 'string' },

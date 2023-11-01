@@ -23,6 +23,8 @@ services:
       - ./wallet-enterprise-configurations/vid-issuer/src/configuration:/home/node/app/src/configuration
       - ./wallet-enterprise-configurations/vid-issuer/public/styles/styles.css:/home/node/app/public/styles/styles.css
       - ./wallet-enterprise-configurations/vid-issuer/public/images:/home/node/app/public/images
+      - ./wallet-enterprise-configurations/vid-issuer/views/header.pug:/home/node/app/views/header.pug
+      - ./wallet-enterprise-configurations/vid-issuer/views/index.pug:/home/node/app/views/index.pug
       - /home/node/app/dist
       - /home/node/app/node_modules
       - ./.vscode/:/home/node/app/.vscode
@@ -52,6 +54,8 @@ services:
       - ./wallet-enterprise-configurations/diploma-issuer/views/issuer/login.pug:/home/node/app/views/issuer/login.pug
       - ./wallet-enterprise-configurations/diploma-issuer/public/styles/styles.css:/home/node/app/public/styles/styles.css
       - ./wallet-enterprise-configurations/diploma-issuer/public/images:/home/node/app/public/images
+      - ./wallet-enterprise-configurations/diploma-issuer/views/header.pug:/home/node/app/views/header.pug
+      - ./wallet-enterprise-configurations/diploma-issuer/views/index.pug:/home/node/app/views/index.pug
       - /home/node/app/dist
       - /home/node/app/node_modules
       - ./.vscode/:/home/node/app/.vscode

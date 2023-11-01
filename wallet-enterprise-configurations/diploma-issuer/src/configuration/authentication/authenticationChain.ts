@@ -1,16 +1,17 @@
 import { CONSENT_ENTRYPOINT, VERIFIER_PANEL_ENTRYPOINT } from "../../authorization/constants";
 import { AuthenticationChainBuilder } from "../../authentication/AuthenticationComponent";
 import { VerifierAuthenticationComponent } from "./VerifierAuthenticationComponent";
-// import { EdiplomasAuthenticationComponent } from "./EdiplomasAuthenticationComponent";
 import { LocalAuthenticationComponent } from "./LocalAuthenticationComponent";
 import { InspectPersonalInfoComponent } from "./InspectPersonalInfoComponent";
 import { IssuerSelectionComponent } from "./IssuerSelectionComponent";
+import { VIDAuthenticationComponent } from "./VIDAuthenticationComponent";
 
 
 
 
 
 export const authChain = new AuthenticationChainBuilder()
+	.addAuthenticationComponent(new VIDAuthenticationComponent("vid-authentication", CONSENT_ENTRYPOINT))
 	.addAuthenticationComponent(new LocalAuthenticationComponent("1-ediplomas", CONSENT_ENTRYPOINT))
 	.addAuthenticationComponent(new InspectPersonalInfoComponent("2-ediplomas", CONSENT_ENTRYPOINT))
 	.addAuthenticationComponent(new IssuerSelectionComponent("3-ediplomas", CONSENT_ENTRYPOINT))

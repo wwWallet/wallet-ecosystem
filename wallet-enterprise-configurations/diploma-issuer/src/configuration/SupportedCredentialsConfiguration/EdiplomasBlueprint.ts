@@ -125,14 +125,6 @@ export class EdiplomasBlueprint implements SupportedCredentialProtocol {
 				backgroundColor: "#8ebeeb",
 				textColor: "#ffffff"
 			})
-			.setIssuer("did:key:z6MkwcjHDtnV8hjYbJHL9dDDiVmhwGcZdid4sp3m46VB4HVZ")
-			.setAttribute("issuer", {
-				id: "did:key:z6MkwcjHDtnV8hjYbJHL9dDDiVmhwGcZdid4sp3m46VB4HVZ",
-				name: "University of Athens",
-				iconUrl: `${config.url}/images/uoa.svg`,
-				image: `${config.url}/images/uoa.svg`,
-				logoUrl: `${config.url}/images/uoa.svg`
-			})
 			.setAttribute("credentialSchema", undefined)
 		
 

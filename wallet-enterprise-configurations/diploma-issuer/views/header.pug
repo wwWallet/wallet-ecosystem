@@ -1,0 +1,26 @@
+#Header
+	.header
+		//- .ribbon
+		//- 	a.ribbonText EBSI DEMO
+		//- span.language-switch
+		//- 	if lang == "en"
+		//- 		button#lang-el EL
+		//- 		span |
+		//- 		button#lang-en.active EN
+		//- 	if lang == "el"
+		//- 		button#lang-el.active EL
+		//- 		span |
+		//- 		button#lang-en EN
+		.header-content
+			a.logo-area(href="/")
+				img.img-logo(src="/ediplomasLogo.svg" alt="eDiplomas Logo")
+				span(class="logo-text") eDiplomas
+				//- span.logo-text #{locale.header.title}
+			img#img-gunet(src="/gunetLogoTransparent.png" alt='gunet logo')
+				//- span.logo-split
+				//- img.img-uni(src="/uniLogo.png" alt="eDiplomas Logo")
+		//- p.header-subtitle #{locale.header.subtitle}
+		.header-border
+
+	link(rel="stylesheet" href="/styles/header.css")
+	script(src="/js/header.js")
