@@ -104,7 +104,7 @@ if (fs.existsSync(githubTokenFile)) {
   for (const npmrcTemplateFile of npmrcTemplateFiles) {
     const npmrcFile = npmrcTemplateFile.replace('.template', '');
 
-    if (!fs.existsSync(npmrcFile) || forceUpdateConfigs === 'false') {
+    if (!fs.existsSync(npmrcFile) || forceUpdateConfigs) {
       fs.writeFileSync(npmrcFile, '', { mode: 0o600 });
       fs.writeFileSync(npmrcFile, replaceTokenInTemplate(npmrcTemplateFile, githubToken));
     }
