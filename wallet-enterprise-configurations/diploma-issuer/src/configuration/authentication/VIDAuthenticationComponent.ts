@@ -2,17 +2,19 @@ import { NextFunction, Request, Response } from "express";
 import { ParamsDictionary } from "express-serve-static-core";
 import { ParsedQs } from "qs";
 import { AuthenticationComponent } from "../../authentication/AuthenticationComponent";
-import { appContainer } from "../../services/inversify.config";
-import { OpenidForPresentationsReceivingService } from "../../services/OpenidForPresentationReceivingService";
 import AppDataSource from "../../AppDataSource";
 import { AuthorizationServerState } from "../../entities/AuthorizationServerState.entity";
 import base64url from "base64url";
 import { VerifiablePresentationEntity } from "../../entities/VerifiablePresentation.entity";
 import config from "../../../config";
 import { CONSENT_ENTRYPOINT } from "../../authorization/constants";
+import { GrantType } from "../../types/oid4vci";
+import locale from "../locale";
+import * as qrcode from 'qrcode';
+import { openidForPresentationReceivingService } from "../../services/instances";
 
 export class VIDAuthenticationComponent extends AuthenticationComponent {
-	private presentationReceivingService = appContainer.resolve(OpenidForPresentationsReceivingService)
+
 	constructor(
 		override identifier: string,
 		override protectedEndpoint: string,
@@ -83,11 +85,54 @@ export class VIDAuthenticationComponent extends AuthenticationComponent {
 	}
 
 	private async askForPresentation(req: Request, res: Response): Promise<any> {
-		const { url, stateId } = await this.presentationReceivingService.generateAuthorizationRequestURL("vid", config.url + CONSENT_ENTRYPOINT);
+		if (req.body.state && req.method == "POST") {
+			console.log("Got state = ", req.body.state)
+			const { status } = await openidForPresentationReceivingService.getPresentationByState(req.body.state as string);
+			if (status) {
+				return res.redirect(`${CONSENT_ENTRYPOINT}?state=${req.body.state}`);
+			}
+			else {
+				return res.render('verifier/QR.pug', {
+					state: req.body.state,
+					authorizationRequestURL: req.body.authorizationRequestURL,
+					authorizationRequestQR: req.body.authorizationRequestQR,
+					lang: req.lang,
+					locale: locale[req.lang],
+				})
+			}
+		}
+
+
+
+		const { url, stateId } = await openidForPresentationReceivingService.generateAuthorizationRequestURL({req, res}, "vid", config.url + CONSENT_ENTRYPOINT);
 	
 		// attach the vid_auth_state with an authorization server state
 		req.authorizationServerState.vid_auth_state = stateId;
 		await AppDataSource.getRepository(AuthorizationServerState).save(req.authorizationServerState);
+		console.log("Authz state = ", req.authorizationServerState)
+		if (req.authorizationServerState.grant_type && req.authorizationServerState.grant_type == GrantType.PRE_AUTHORIZED_CODE) {
+			// render a page which shows a QR code and a button with the url for same device authentication
+
+			let authorizationRequestQR = await new Promise((resolve) => {
+				qrcode.toDataURL(url.toString(), {
+					margin: 1,
+					errorCorrectionLevel: 'L',
+					type: 'image/png'
+				}, 
+				(err, data) => {
+					if (err) return resolve("NO_QR");
+					return resolve(data);
+				});
+			}) as string;
+			return res.render('issuer/vid-auth-component', {
+				title: "VID authentication",
+				authorizationRequestURL: url.toString(),
+				authorizationRequestQR: authorizationRequestQR,
+				state: url.searchParams.get('state'),
+				lang: req.lang,
+				locale: locale[req.lang]
+			});
+		}
 		return res.redirect(url.toString());
 	}
 	
