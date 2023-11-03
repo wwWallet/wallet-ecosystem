@@ -129,6 +129,8 @@ services:
     build:
       context: $PWD/wallet-backend-server
       dockerfile: development.Dockerfile
+      secrets:
+        - wallet-backend-server-npmrc
     image: wallet-backend-server
     restart: always
     ports:
@@ -170,3 +172,7 @@ volumes:
   datadir:
   cache:
     driver: local
+
+secrets:
+  wallet-backend-server-npmrc:
+    file: $PWD/wallet-backend-server/.npmrc
