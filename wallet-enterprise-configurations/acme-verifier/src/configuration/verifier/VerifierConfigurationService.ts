@@ -3,7 +3,7 @@ import { OpenidForPresentationsConfiguration } from "../../services/types/Openid
 import { authorizationServerMetadataConfiguration } from "../../authorizationServiceConfiguration";
 import config from "../../../config";
 import { VerifierConfigurationInterface } from "../../services/interfaces";
-import { InputDescriptorType } from "@gunet/ssi-sdk";
+import { InputDescriptorType } from "@wwwallet/ssi-sdk";
 
 export type PresentationDefinitionTypeWithFormat = {
 	id: string;

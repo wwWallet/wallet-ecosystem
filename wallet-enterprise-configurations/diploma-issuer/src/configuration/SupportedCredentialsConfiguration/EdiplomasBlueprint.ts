@@ -4,7 +4,7 @@ import { CredentialSubject } from "../CredentialSubjectBuilders/CredentialSubjec
 import { getDiplomasBySSN } from "../resources/data";
 import { CredentialIssuer } from "../../lib/CredentialIssuerConfig/CredentialIssuer";
 import { SupportedCredentialProtocol } from "../../lib/CredentialIssuerConfig/SupportedCredentialProtocol";
-import { SignVerifiableCredentialJWT } from "@gunet/ssi-sdk";
+import { SignVerifiableCredentialJWT } from "@wwwallet/ssi-sdk";
 import { keystoreService } from "../../services/instances";
 import { AuthorizationServerState } from "../../entities/AuthorizationServerState.entity";
 import { CredentialView } from "../../authorization/types";
