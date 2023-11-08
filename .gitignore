@@ -3,4 +3,5 @@ node_modules
 build
 docker-compose.yml
 .github-token
+.npmrc
 *.production.ts

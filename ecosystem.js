@@ -146,9 +146,8 @@ if (action === "down") {
 }
 
 if (action === "init") {
-	execSync(`${dockerComposeCommand} run --rm -t --workdir /home/node/app/cli wallet-backend-server sh -c '
+	execSync(`${dockerComposeCommand} run --rm -t --workdir /app/cli --env NODE_PATH=/cli_node_modules wallet-backend-server sh -c '
 		set -e # Exit on error
-		yarn install
 		export DB_HOST="wallet-db"
 		export DB_PORT="3307"
 		export DB_USER="root"
@@ -211,8 +210,8 @@ if (action !== "up") {
 
 if (daemonMode === false) {
 	console.log("Performing 'docker compose up'");
-	execSync(`${dockerComposeCommand} up`, { stdio: 'inherit' });
+	execSync(`${dockerComposeCommand} up --build`, { stdio: 'inherit' });
 } else {
 	console.log("Performing 'docker compose up -d'");
-	execSync(`${dockerComposeCommand} up -d`, { stdio: 'inherit' });
+	execSync(`${dockerComposeCommand} up --build -d`, { stdio: 'inherit' });
 }

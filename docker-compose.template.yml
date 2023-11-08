@@ -9,6 +9,8 @@ services:
     build:
       context: $PWD/wallet-enterprise
       dockerfile: development.Dockerfile
+      secrets:
+        - npmrc
     image: wallet-enterprise
     restart: always
     ports:
@@ -17,15 +19,17 @@ services:
       wallet-db:
         condition: service_healthy
     volumes:
-      - ./wallet-enterprise:/home/node/app
-      - ./wallet-enterprise-configurations/vid-issuer/config/config.development.ts:/home/node/app/config/config.development.ts
-      - ./wallet-enterprise-configurations/vid-issuer/keys:/home/node/app/keys
-      - ./wallet-enterprise-configurations/vid-issuer/src/configuration:/home/node/app/src/configuration
-      - ./wallet-enterprise-configurations/vid-issuer/public/styles/styles.css:/home/node/app/public/styles/styles.css
-      - ./wallet-enterprise-configurations/vid-issuer/public/images:/home/node/app/public/images
-      - /home/node/app/dist
-      - /home/node/app/node_modules
-      - ./.vscode/:/home/node/app/.vscode
+      - ./wallet-enterprise:/app:ro
+      - ./wallet-enterprise-configurations/vid-issuer/config/config.development.ts:/app/config/config.development.ts:ro
+      - ./wallet-enterprise-configurations/vid-issuer/keys:/app/keys:ro
+      - ./wallet-enterprise-configurations/vid-issuer/src/configuration:/app/src/configuration:ro
+      - ./wallet-enterprise-configurations/vid-issuer/public/styles/styles.css:/app/public/styles/styles.css:ro
+      - ./wallet-enterprise-configurations/vid-issuer/public/images:/app/public/images:ro
+      - ./.vscode/:/app/.vscode:ro
+      - type: tmpfs
+        target: /app/dist  # Not /dist here because of relative imports that assume dist/ and keys/, views/ etc. are sibling dirs
+        tmpfs:
+          mode: 01777
     deploy:
       resources:
           limits:
@@ -37,6 +41,8 @@ services:
     build:
       context: $PWD/wallet-enterprise
       dockerfile: development.Dockerfile
+      secrets:
+        - npmrc
     image: wallet-enterprise
     restart: always
     ports:
@@ -45,15 +51,17 @@ services:
       wallet-db:
         condition: service_healthy
     volumes:
-      - ./wallet-enterprise:/home/node/app
-      - ./wallet-enterprise-configurations/diploma-issuer/config/config.development.ts:/home/node/app/config/config.development.ts
-      - ./wallet-enterprise-configurations/diploma-issuer/keys:/home/node/app/keys
-      - ./wallet-enterprise-configurations/diploma-issuer/src/configuration:/home/node/app/src/configuration
-      - ./wallet-enterprise-configurations/diploma-issuer/public/styles/styles.css:/home/node/app/public/styles/styles.css
-      - ./wallet-enterprise-configurations/diploma-issuer/public/images:/home/node/app/public/images
-      - /home/node/app/dist
-      - /home/node/app/node_modules
-      - ./.vscode/:/home/node/app/.vscode
+      - ./wallet-enterprise:/app:ro
+      - ./wallet-enterprise-configurations/diploma-issuer/config/config.development.ts:/app/config/config.development.ts:ro
+      - ./wallet-enterprise-configurations/diploma-issuer/keys:/app/keys:ro
+      - ./wallet-enterprise-configurations/diploma-issuer/src/configuration:/app/src/configuration:ro
+      - ./wallet-enterprise-configurations/diploma-issuer/public/styles/styles.css:/app/public/styles/styles.css:ro
+      - ./wallet-enterprise-configurations/diploma-issuer/public/images:/app/public/images:ro
+      - ./.vscode/:/app/.vscode:ro
+      - type: tmpfs
+        target: /app/dist
+        tmpfs:
+          mode: 01777
     deploy:
       resources:
           limits:
@@ -65,6 +73,8 @@ services:
     build:
       context: $PWD/wallet-enterprise
       dockerfile: development.Dockerfile
+      secrets:
+        - npmrc
     image: wallet-enterprise
     restart: always
     ports:
@@ -73,15 +83,17 @@ services:
       wallet-db:
         condition: service_healthy
     volumes:
-      - ./wallet-enterprise:/home/node/app
-      - ./wallet-enterprise-configurations/acme-verifier/config/config.development.ts:/home/node/app/config/config.development.ts
-      - ./wallet-enterprise-configurations/acme-verifier/keys:/home/node/app/keys
-      - ./wallet-enterprise-configurations/acme-verifier/src/configuration:/home/node/app/src/configuration
-      - ./wallet-enterprise-configurations/acme-verifier/public/styles/styles.css:/home/node/app/public/styles/styles.css
-      - ./wallet-enterprise-configurations/acme-verifier/public/images:/home/node/app/public/images
-      - /home/node/app/dist
-      - /home/node/app/node_modules
-      - ./.vscode/:/home/node/app/.vscode
+      - ./wallet-enterprise:/app:ro
+      - ./wallet-enterprise-configurations/acme-verifier/config/config.development.ts:/app/config/config.development.ts:ro
+      - ./wallet-enterprise-configurations/acme-verifier/keys:/app/keys:ro
+      - ./wallet-enterprise-configurations/acme-verifier/src/configuration:/app/src/configuration:ro
+      - ./wallet-enterprise-configurations/acme-verifier/public/styles/styles.css:/app/public/styles/styles.css:ro
+      - ./wallet-enterprise-configurations/acme-verifier/public/images:/app/public/images:ro
+      - ./.vscode/:/app/.vscode:ro
+      - type: tmpfs
+        target: /app/dist
+        tmpfs:
+          mode: 01777
     deploy:
       resources:
           limits:
@@ -131,6 +143,8 @@ services:
     build:
       context: $PWD/wallet-backend-server
       dockerfile: development.Dockerfile
+      secrets:
+        - npmrc
     image: wallet-backend-server
     restart: always
     ports:
@@ -139,10 +153,12 @@ services:
       wallet-db:
         condition: service_healthy
     volumes:
-      - ./wallet-backend-server:/home/node/app
-      - /home/node/app/dist
-      - /home/node/app/node_modules
-      - ./.vscode/:/home/node/app/.vscode
+      - ./wallet-backend-server:/app:ro
+      - ./.vscode/:/app/.vscode:ro
+      - type: tmpfs
+        target: /dist
+        tmpfs:
+          mode: 01777
     deploy:
       resources:
           limits:
@@ -151,17 +167,28 @@ services:
     build:
       context: $PWD/wallet-frontend
       dockerfile: development.Dockerfile
+      secrets:
+        - npmrc
     image: wallet-frontend
     container_name: wallet-frontend
     hostname: wallet-frontend
     ports:
       - 3000:3000
     volumes:
-      - $PWD/wallet-frontend:/home/node/app
-      - /home/node/app/node_modules
-      - ./.vscode/:/home/node/app/.vscode
+      - ./wallet-frontend/public:/app/public:ro
+      - ./wallet-frontend/src:/app/src:ro
+      - ./wallet-frontend/.env:/app/.env:ro
+      - ./.vscode/:/app/.vscode:ro
+      - type: tmpfs
+        target: /app/node_modules/.cache
+        tmpfs:
+          mode: 01777
 
 volumes:
   datadir:
   cache:
     driver: local
+
+secrets:
+  npmrc:
+    file: ./.npmrc
