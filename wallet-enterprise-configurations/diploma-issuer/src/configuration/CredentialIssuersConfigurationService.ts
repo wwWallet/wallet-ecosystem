@@ -28,6 +28,31 @@ export class CredentialIssuersConfigurationService implements CredentialIssuersC
 		]);
 	}
 
+	public registeredClients(): { client_id: string; friendlyName: string; redirectUri: string; }[] {
+		const openidGenericClient = {
+			client_id: "123",
+			friendlyName: "Agnostic Client",
+			redirectUri: "openid://cb"
+		};
+
+		const localWWWalletClient = {
+			client_id: "343242",
+			friendlyName: "Dev wwwWallet Client",
+			redirectUri: "http://localhost:3000/cb"
+		};
+
+		const deployedWWWalletClient = {
+			client_id: "1232132131232131",
+			friendlyName: "wwwWallet",
+			redirectUri: "https://demo.wwwallet.org/cb"
+		};
+		return [
+			openidGenericClient,
+			localWWWalletClient,
+			deployedWWWalletClient
+		]
+	}
+
 	public defaultCredentialIssuerIdentifier(): string {
 		return this.credentialIssuerIdentifierUOA;
 	}

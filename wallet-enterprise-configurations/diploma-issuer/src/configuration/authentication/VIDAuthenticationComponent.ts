@@ -92,7 +92,7 @@ export class VIDAuthenticationComponent extends AuthenticationComponent {
 				return res.redirect(`${CONSENT_ENTRYPOINT}?state=${req.body.state}`);
 			}
 			else {
-				return res.render('verifier/QR.pug', {
+				return res.render('issuer/vid-auth-component', {
 					state: req.body.state,
 					authorizationRequestURL: req.body.authorizationRequestURL,
 					authorizationRequestQR: req.body.authorizationRequestQR,

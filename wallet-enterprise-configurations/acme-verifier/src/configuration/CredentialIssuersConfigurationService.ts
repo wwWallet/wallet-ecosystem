@@ -12,6 +12,12 @@ export class CredentialIssuersConfigurationService implements CredentialIssuersC
 		return new CredentialIssuersRepository([]);
 	}
 
+
+	public registeredClients(): { client_id: string; friendlyName: string; redirectUri: string; }[] {
+		return [];
+	}
+
+
 	public defaultCredentialIssuerIdentifier(): string {
 		return "";
 	}

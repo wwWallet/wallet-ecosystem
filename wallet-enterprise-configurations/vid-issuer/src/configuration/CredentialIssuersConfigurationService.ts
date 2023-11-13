@@ -40,6 +40,10 @@ export class CredentialIssuersConfigurationService implements CredentialIssuersC
 		]);
 	}
 
+	public registeredClients(): { client_id: string; friendlyName: string; redirectUri: string; }[] {
+		return [];
+	}
+
 	public defaultCredentialIssuerIdentifier(): string {
 		return config.url;
 	}

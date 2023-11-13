@@ -5,12 +5,14 @@ import { LocalAuthenticationComponent } from "./LocalAuthenticationComponent";
 import { InspectPersonalInfoComponent } from "./InspectPersonalInfoComponent";
 import { IssuerSelectionComponent } from "./IssuerSelectionComponent";
 import { VIDAuthenticationComponent } from "./VIDAuthenticationComponent";
+// import { ClientSelectionComponent } from "./ClientSelectionComponent";
 
 
 
 
 
 export const authChain = new AuthenticationChainBuilder()
+	// .addAuthenticationComponent(new ClientSelectionComponent("client-selection", CONSENT_ENTRYPOINT))
 	.addAuthenticationComponent(new VIDAuthenticationComponent("vid-authentication", CONSENT_ENTRYPOINT))
 	.addAuthenticationComponent(new LocalAuthenticationComponent("1-ediplomas", CONSENT_ENTRYPOINT))
 	.addAuthenticationComponent(new InspectPersonalInfoComponent("2-ediplomas", CONSENT_ENTRYPOINT))
