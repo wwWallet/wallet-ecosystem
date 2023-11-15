@@ -12,6 +12,7 @@ import { GrantType } from "../../types/oid4vci";
 import locale from "../locale";
 import * as qrcode from 'qrcode';
 import { openidForPresentationReceivingService } from "../../services/instances";
+import { UserAuthenticationMethod } from "../../types/UserAuthenticationMethod.enum";
 
 export class VIDAuthenticationComponent extends AuthenticationComponent {
 
@@ -27,6 +28,11 @@ export class VIDAuthenticationComponent extends AuthenticationComponent {
 
 		return super.authenticate(req, res, async () => {
 			if (this.personalIdentifierHasBeenExtracted(req)) {
+				return next();
+			}
+
+			if (req.authorizationServerState.authenticationMethod &&
+					req.authorizationServerState.authenticationMethod != UserAuthenticationMethod.VID_AUTH) {
 				return next();
 			}
 
@@ -75,10 +81,15 @@ export class VIDAuthenticationComponent extends AuthenticationComponent {
 		const vcPayload = JSON.parse(base64url.decode(credential.split('.')[1])) as { vc: any };
 		const personalIdentifier = vcPayload.vc.credentialSubject.personalIdentifier as string;
 		authorizationServerState.personalIdentifier = personalIdentifier;
+		authorizationServerState.ssn = personalIdentifier; // update the ssn as well, because this will be used to fetch the diplomas
 
 		req.session.authenticationChain.vidAuthenticationComponent = {
 			personalIdentifier: personalIdentifier
 		};
+
+		console.log("Personal identifier = ", personalIdentifier)
+		req.authorizationServerState.ssn = personalIdentifier;
+
 		await AppDataSource.getRepository(AuthorizationServerState).save(authorizationServerState);
 		return res.redirect(this.protectedEndpoint);
 
