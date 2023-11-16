@@ -6,3 +6,4 @@ docker-compose.yml
 *.production.ts
 *.production*
 *.tar
+.npmrc
