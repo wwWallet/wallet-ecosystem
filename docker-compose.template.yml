@@ -19,17 +19,15 @@ services:
       wallet-db:
         condition: service_healthy
     volumes:
-      - ./wallet-enterprise:/home/node/app:ro
-      - ./wallet-enterprise-configurations/vid-issuer/config/config.development.ts:/home/node/app/config/config.development.ts:ro
-      - ./wallet-enterprise-configurations/vid-issuer/src/configuration:/home/node/app/src/configuration:ro
-      - ./wallet-enterprise-configurations/vid-issuer/public/styles/styles.css:/home/node/app/public/styles/styles.css:ro
-      - ./wallet-enterprise-configurations/vid-issuer/public/images/:/home/node/app/public/images/:ro
-      - ./wallet-enterprise-configurations/vid-issuer/views/header.pug:/home/node/app/views/header.pug:ro
-      - ./wallet-enterprise-configurations/vid-issuer/views/index.pug:/home/node/app/views/index.pug:ro
-      - ./wallet-enterprise-configurations/vid-issuer/keys/:/home/node/app/keys/:ro
-      - /home/node/app/dist:ro
-      - /home/node/app/node_modules:ro
-      - ./.vscode/:/home/node/app/.vscode:ro
+      - ./wallet-enterprise:/app:ro
+      - ./wallet-enterprise-configurations/vid-issuer/config/config.development.ts:/app/config/config.development.ts:ro
+      - ./wallet-enterprise-configurations/vid-issuer/keys:/app/keys:ro
+      - ./wallet-enterprise-configurations/vid-issuer/src/configuration:/app/src/configuration:ro
+      - ./wallet-enterprise-configurations/vid-issuer/public/styles/styles.css:/app/public/styles/styles.css:ro
+      - ./wallet-enterprise-configurations/vid-issuer/public/images:/app/public/images:ro
+      - ./wallet-enterprise-configurations/vid-issuer/views/header.pug:/app/views/header.pug:ro
+      - ./wallet-enterprise-configurations/vid-issuer/views/index.pug:/app/views/index.pug:ro
+      - ./.vscode/:/app/.vscode:ro
       - type: tmpfs
         target: /app/dist  # Not /dist here because of relative imports that assume dist/ and keys/, views/ etc. are sibling dirs
         tmpfs:
@@ -55,18 +53,16 @@ services:
       wallet-db:
         condition: service_healthy
     volumes:
-      - ./wallet-enterprise:/home/node/app:ro
-      - ./wallet-enterprise-configurations/diploma-issuer/config/config.development.ts:/home/node/app/config/config.development.ts:ro
-      - ./wallet-enterprise-configurations/diploma-issuer/keys:/home/node/app/keys:ro
-      - ./wallet-enterprise-configurations/diploma-issuer/src/configuration:/home/node/app/src/configuration:ro
-      - ./wallet-enterprise-configurations/diploma-issuer/views/issuer/login.pug:/home/node/app/views/issuer/login.pug:ro
-      - ./wallet-enterprise-configurations/diploma-issuer/public/styles/styles.css:/home/node/app/public/styles/styles.css:ro
-      - ./wallet-enterprise-configurations/diploma-issuer/public/images:/home/node/app/public/images:ro
-      - ./wallet-enterprise-configurations/diploma-issuer/views/header.pug:/home/node/app/views/header.pug:ro
-      - ./wallet-enterprise-configurations/diploma-issuer/views/index.pug:/home/node/app/views/index.pug:ro
-      - /home/node/app/dist:ro
-      - /home/node/app/node_modules:ro
-      - ./.vscode/:/home/node/app/.vscode:ro
+      - ./wallet-enterprise:/app:ro
+      - ./wallet-enterprise-configurations/diploma-issuer/config/config.development.ts:/app/config/config.development.ts:ro
+      - ./wallet-enterprise-configurations/diploma-issuer/keys:/app/keys:ro
+      - ./wallet-enterprise-configurations/diploma-issuer/src/configuration:/app/src/configuration:ro
+      - ./wallet-enterprise-configurations/diploma-issuer/views/issuer/login.pug:/app/views/issuer/login.pug:ro
+      - ./wallet-enterprise-configurations/diploma-issuer/views/header.pug:/app/views/header.pug:ro
+      - ./wallet-enterprise-configurations/diploma-issuer/views/index.pug:/app/views/index.pug:ro
+      - ./wallet-enterprise-configurations/diploma-issuer/public/styles/styles.css:/app/public/styles/styles.css:ro
+      - ./wallet-enterprise-configurations/diploma-issuer/public/images:/app/public/images:ro
+      - ./.vscode/:/app/.vscode:ro
       - type: tmpfs
         target: /app/dist
         tmpfs:
@@ -92,20 +88,18 @@ services:
       wallet-db:
         condition: service_healthy
     volumes:
-      - ./wallet-enterprise:/home/node/app:ro
-      - ./wallet-enterprise-configurations/acme-verifier/config/config.development.ts:/home/node/app/config/config.development.ts:ro
-      - ./wallet-enterprise-configurations/acme-verifier/keys:/home/node/app/keys:ro
-      - ./wallet-enterprise-configurations/acme-verifier/views/index.pug:/home/node/app/views/index.pug:ro
-      - ./wallet-enterprise-configurations/acme-verifier/views/header.pug:/home/node/app/views/header.pug:ro
-      - ./wallet-enterprise-configurations/acme-verifier/views/verifier/public_definitions.pug:/home/node/app/views/verifier/public_definitions.pug:ro
-      - ./wallet-enterprise-configurations/acme-verifier/views/verifier/QR.pug:/home/node/app/views/verifier/QR.pug:ro
-      - ./wallet-enterprise-configurations/acme-verifier/views/verifier/success.pug:/home/node/app/views/verifier/success.pug:ro
-      - ./wallet-enterprise-configurations/acme-verifier/src/configuration:/home/node/app/src/configuration:ro
-      - ./wallet-enterprise-configurations/acme-verifier/public/styles/styles.css:/home/node/app/public/styles/styles.css:ro
-      - ./wallet-enterprise-configurations/acme-verifier/public/images:/home/node/app/public/images:ro
-      - /home/node/app/dist:ro
-      - /home/node/app/node_modules:ro
-      - ./.vscode/:/home/node/app/.vscode:ro
+      - ./wallet-enterprise:/app:ro
+      - ./wallet-enterprise-configurations/acme-verifier/config/config.development.ts:/app/config/config.development.ts:ro
+      - ./wallet-enterprise-configurations/acme-verifier/keys:/app/keys:ro
+      - ./wallet-enterprise-configurations/acme-verifier/src/configuration:/app/src/configuration:ro
+      - ./wallet-enterprise-configurations/acme-verifier/public/styles/styles.css:/app/public/styles/styles.css:ro
+      - ./wallet-enterprise-configurations/acme-verifier/views/index.pug:/app/views/index.pug:ro
+      - ./wallet-enterprise-configurations/acme-verifier/views/header.pug:/app/views/header.pug:ro
+      - ./wallet-enterprise-configurations/acme-verifier/views/verifier/public_definitions.pug:/app/views/verifier/public_definitions.pug:ro
+      - ./wallet-enterprise-configurations/acme-verifier/views/verifier/QR.pug:/app/views/verifier/QR.pug:ro
+      - ./wallet-enterprise-configurations/acme-verifier/views/verifier/success.pug:/app/views/verifier/success.pug:ro
+      - ./wallet-enterprise-configurations/acme-verifier/public/images:/app/public/images:ro
+      - ./.vscode/:/app/.vscode:ro
       - type: tmpfs
         target: /app/dist
         tmpfs:
@@ -179,6 +173,7 @@ services:
       resources:
           limits:
             memory: 1G
+
   wallet-frontend:
     build:
       context: $PWD/wallet-frontend
