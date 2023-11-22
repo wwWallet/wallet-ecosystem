@@ -235,6 +235,7 @@ section.layout {
 .card {
   flex: 0 1 calc(33.33% - 20px);
   margin: 10px;
+	margin-left: 0;
   border: 1px solid #ccc;
   border-radius: 5px;
   padding: 10px;
@@ -285,4 +286,237 @@ section.layout {
 
 .container {
 	margin: 60px 30px;
+}
+
+
+.centered-layout {
+	display: flex;
+	flex-direction: column;
+	gap: 16px;
+
+	justify-content: center;
+	align-items: center;
+}
+
+
+#acmelogo{
+	height: 70px;
+}
+
+a.logo-area{
+	padding:0px!important;
+}
+
+.header{
+	background-color: white!important;
+}
+
+#contact .header h3{
+	background-color: transparent!important;
+}
+.header-content {
+  display: flex;
+  justify-content: space-between; /* Align items horizontally */
+  align-items: center; /* Align items vertically */
+  padding-left: 10% !important;
+  padding-right: 10% !important;
+  padding-top: 1% !important;
+  padding-bottom: 1% !important;
+}
+
+
+ul.menu {
+	display: flex;
+  list-style: none; /* Remove bullet points */
+  padding: 0; /* Remove default padding */
+  margin: 0; /* Remove default margin */
+}
+
+li.menu-item {
+	color:#4d7e3e;
+  margin-right: 20px; /* Adjust the spacing between menu items */
+}
+
+a.menu-link {
+	color:#4d7e3e!important;
+  text-decoration: none; /* Remove underlines from links */
+  font-weight: bold; /* Set font weight to bold */
+}
+
+.header-border {
+  display: none;
+}
+
+#Header .header-content a{
+	color:#4d7e3e!important;
+	font-size: 	20px!important;
+
+}
+
+
+/* Flex container for the layout */
+.flex-container {
+	padding: 5%;
+  display: flex;
+  align-items: center; /* Vertically center items within the flex container */
+  justify-content: space-between; /* Create space between columns */
+}
+
+/* Styling for the image column */
+.image-column {
+	text-align: center;
+  width: 50%; /* Set the width of the image column */
+}
+
+/* Styling for the content column */
+.content-column {
+	height: 100%;
+  width:50%; /* Set the width of the content column */
+}
+
+/* Styling for the image */
+.image-column img {
+  max-width: 70%; /* Ensure the image doesn't exceed its container */
+}
+
+/* Additional styling for the content elements */
+.content-column h1 {
+  font-size: 35px; /* Adjust the font size as needed */
+  margin-bottom: 15px; /* Add spacing below the title */
+}
+
+.content-column p {
+  font-size: 16px; /* Adjust the font size as needed */
+  margin-bottom: 15px; /* Add spacing below paragraphs */
+}
+
+.content-column .demo-text {
+  font-size: 14px; /* Adjust the font size as needed */
+  color: #888; /* Set the text color for the demo text */
+}
+
+
+
+#Header{
+	height:12vh;
+}
+
+#Index{
+	display: flex;
+	height:60vh;
+	margin: 0px;
+
+}
+body{
+	background-color: rgba(77, 126, 62, 0.15) !important; /* Adjust the opacity value (0.8) as needed */
+
+}
+.container{
+	padding:5%;
+	padding-top: 2%;
+	margin: 0!important;
+
+}
+.btn-primary{
+background-color: #4d7e3e!important;
+}
+.footer{
+	height: 28vh;
+	margin:0!important;
+	background-color: #4d7e3e!important;
+}
+
+#FooterLogo{
+	filter: brightness(0) invert(1);
+
+}
+
+.Footer .left.content .header{
+	background-color: transparent!important;
+}
+
+.Btn.Large.Landing, .Btn.Medium{
+	background-color: #4d7e3e;
+}
+
+
+.btn-primary {
+	padding: 10px 40px;
+	font-weight: 700;
+	border-radius: 6px;
+	max-width: 220px;
+	font-size: 16px;
+}
+
+.CenteredLayout{
+	background-color: white;
+	padding: 20px;
+}
+
+
+.container2{
+min-height:60vh;
+}
+
+
+/* CSS for the spinner */
+#spinner-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 9999; /* Ensure the spinner is on top of other content */
+}
+
+.spinner {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 80px;
+  height: 80px;
+  border: 10px solid #333; /* Border color of the spinner */
+  border-top: 10px solid #4d7e3e; /* Border color of the spinner top */
+  border-radius: 50%;
+  animation: spin 4s linear infinite; /* Spin animation for 2 seconds */
+}
+
+.spinner-circle {
+  width: 100%;
+  height: 100%;
+}
+
+/* Keyframes for the spin animation */
+@keyframes spin {
+  0% { transform: translate(-50%, -50%) rotate(0deg); }
+  100% { transform: translate(-50%, -50%) rotate(360deg); }
+}
+
+.container-positions{
+	padding-left: 5%;
+	padding-right:5%;
+}
+
+
+#successicon{
+	width:300px;
+}
+
+
+table {
+  border-collapse: collapse;
+  width: 30%;
+  margin: 0 auto;
+}
+
+th, td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: left;
+}
+
+th {
+  background-color: #4d7e3e;
+	color:white;
 }

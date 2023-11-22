@@ -1,0 +1,18 @@
+extends ../layout.pug
+
+block layout-content
+  .container2.container-positions
+    h1 Job positions
+    .card-container
+      for definition in presentationDefinitions
+        .card
+          .card-title #{definition.title}
+          p.card-text #{definition.description}
+          .card-buttons
+            button.btn.btn-primary(onclick=`window.location.href = "/verifier/public/definitions/presentation-request/${definition.id}"`) Present
+
+  block footer
+    include ../footer.pug
+
+  link(rel="stylesheet" href="/styles/index.css")
+  script(src="/js/index.js")

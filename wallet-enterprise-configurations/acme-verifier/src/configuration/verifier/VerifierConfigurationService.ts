@@ -6,6 +6,8 @@ import { VerifierConfigurationInterface } from "../../services/interfaces";
 import { InputDescriptorType } from "@wwwallet/ssi-sdk";
 
 export type PresentationDefinitionTypeWithFormat = {
+	title: string;
+	description: string;
 	id: string;
 	format?: any;
 	input_descriptors: InputDescriptorType[];
@@ -16,104 +18,84 @@ export class VerifierConfigurationService implements VerifierConfigurationInterf
 
 
 	getPresentationDefinitions(): PresentationDefinitionTypeWithFormat[] {
-		return [{
-			"id": "vid", // scope name
-			"format": { jwt_vc: { alg: [ 'ES256' ] }, jwt_vp: { alg: [ 'ES256' ] } },
-			"input_descriptors": [
-				{
-					"id": "VID",
-					"constraints": {
-						"fields": [
-							{
-								"path": [
-									"$.credentialSubject.personalIdentifier"
-								],
-								"filter": {}
-							},
-							{
-								"path": [
-									"$.credentialSchema.id"
-								],
-								"filter": {
-									"type": "string",
-									"const": "https://api-pilot.ebsi.eu/trusted-schemas-registry/v2/schemas/z8Y6JJnebU2UuQQNc2R8GYqkEiAMj3Hd861rQhsoNWxsM"
+		return [
+			{
+				"id": "diploma", // scope name
+				"title": "Software Engineer - Core",
+				"description": "Send your Bachelor Diploma to apply for 'Software Engineer - Core'",
+				"format": { jwt_vc: { alg: [ 'ES256' ] },jwt_vc_json: { alg: [ 'EdDSA' ] }, jwt_vp: { alg: [ 'ES256' ] } },
+				"input_descriptors": [
+					{
+						"id": "University Diploma",
+						"constraints": {
+							"fields": [
+								{
+									"path": [ '$.type' ],
+									"filter": {
+										"type": 'array',
+										"items": { type: 'string' },
+										"contains": { const: 'Bachelor' }
+									}
 								}
-							}
-						]
+							]
+						}
 					}
-				}
-			]
-		},
-		{
-			id: 'ver_test:vp_token', // scope name
-			format: { jwt_vc: { alg: [ 'ES256' ] }, jwt_vp: { alg: [ 'ES256' ] } },
-			input_descriptors: [
-				{
-					id: '<any id, random or static>',
-					constraints: {
-						fields: [
-							{
-								path: [ '$.type' ],
-								filter: {
-									type: 'array',
-									contains: { const: 'VerifiableAttestation' }
+				]
+			},
+			{
+				"id": "Multiple", // scope name
+				"title": "Project Manager",
+				"description": "Apply for Project Manager",
+				"format": { jwt_vc: { alg: [ 'ES256' ] },jwt_vc_json: { alg: [ 'EdDSA' ] }, jwt_vp: { alg: [ 'ES256' ] } },
+				"input_descriptors": [
+					{
+						"id": "Open Badge",
+						"constraints": {
+							"fields": [
+								{
+									"path": [ '$.vc.type' ],
+									"filter": {
+										"type": 'array',
+										"items": { type: 'string' },
+										"contains": { const: 'OpenBadgeCredential' }
+									}
 								}
-							}
-						]
-					}
-				},
-				{
-					id: '123456',
-					constraints: {
-						fields: [
-							{
-								path: [ '$.type' ],
-								filter: {
-									type: 'array',
-									contains: { const: 'VerifiableAttestation' }
+							]
+						}
+					},
+					{
+						"id": "Residence",
+						"constraints": {
+							"fields": [
+								{
+									"path": [ '$.vc.type' ],
+									"filter": {
+										"type": 'array',
+										"items": { type: 'string' },
+										"contains": { const: 'PermanentResidentCard' }
+									}
 								}
-							}
-						]
-					}
-				},
-				{
-					id: '1234',
-					constraints: {
-						fields: [
-							{
-								path: [ '$.type' ],
-								filter: {
-									type: 'array',
-									contains: { const: 'VerifiableAttestation' }
+							]
+						}
+					},
+					{
+						"id": "Bachelor",
+						"constraints": {
+							"fields": [
+								{
+									"path": [ '$.vc.type' ],
+									"filter": {
+										"type": 'array',
+										"items": { type: 'string' },
+										"contains": { const: 'Bachelor' }
+									}
 								}
-							}
-						]
+							]
+						}
 					}
-				}
-			]
-		},
-		{
-			"id": "diploma", // scope name
-			"format": { jwt_vc: { alg: [ 'ES256' ] }, jwt_vp: { alg: [ 'ES256' ] } },
-			"input_descriptors": [
-				{
-					"id": "VID",
-					"constraints": {
-						"fields": [
-							{
-								"path": [
-									"$.credentialSchema.id"
-								],
-								"filter": {
-									"type": "string",
-									"const": "https://api-pilot.ebsi.eu/trusted-schemas-registry/v1/schemas/0x4dd3926cd92bb3cb64fa6c837539ed31fc30dd38a11266a91678efa7268cde09"
-								}
-							}
-						]
-					}
-				}
-			]
-		},]
+				]
+			}
+		]
 	}
 
 

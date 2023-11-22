@@ -60,6 +60,9 @@ p {
 	margin-bottom: 100px;
 	/* padding: 40px 60px; */
 }
+#IssuerSelection .main-container {
+	margin-bottom: 45px;
+}
 
 /* @media only screen and (max-width: 600px) {
 	.main-container {
@@ -285,4 +288,101 @@ section.layout {
 
 .container {
 	margin: 60px 30px;
+}
+
+.centered {
+	display: flex;
+	justify-content: center;
+	padding: 3% 1% 1% 1%;
+}
+
+.centered .Btn.Small {
+	margin: 5px auto;
+	padding: 10px 40px;
+	font-size: 16px;
+}
+
+#DiplomaSelection p {
+	font-size: 35px;
+	color: #003476;
+	font-weight: 700;
+	margin-bottom: 20px;
+}
+
+/* Profile Page */
+
+.personal-container {
+	background-color: #fff;
+	box-shadow: 0px 3px 15px rgba(0, 0, 0, 0.2);
+	border: 0px solid;
+	margin-top: 40px;
+	width: 80vw;
+	max-width: 750px;
+	display: block;
+	margin: 50px auto 70px auto;
+	padding: 10px 40px;
+}
+
+.personal-container h2 {
+	font-size: 28px;
+	text-align: center;
+	opacity: 0.65;
+	font-weight: 700;
+	padding-top: 25px;
+}
+
+.personal-container .info-table {
+	width: 100%;
+	display: table;
+	border-collapse: collapse;
+	border-spacing: 0;
+}
+
+.personal-container .striped tr:nth-child(2n+1) {
+	background-color: rgba(242, 242, 242, 0.5);
+}
+
+.personal-container .striped tr {
+	border-bottom: none;
+}
+
+.personal-container .striped td,
+.personal-container .striped th {
+	padding: 8px 10px;
+	display: table-cell;
+	text-align: left;
+	vertical-align: middle;
+}
+
+hr {
+	margin-top: 2rem;
+	margin-bottom: 1rem;
+	border: 0;
+	border-top-width: 0px;
+	border-top-style: none;
+	border-top: 1px solid rgba(0, 0, 0, .1);
+}
+
+.personal-container .action-group {
+	width: 100%;
+	padding: 10px 0;
+	display: flex;
+	justify-content: end;
+}
+
+.personal-container .action-group button {
+	min-width: 150px;
+	max-width: none !important;
+	padding: 1rem;
+	font-size: 17px;
+}
+
+.personal-container .gray {
+	margin-right: 2%;
+	color: #000;
+	background-color: #e9e9ed;
+}
+
+.personal-container .gray:hover {
+	background-color: #e0e0e0;
 }

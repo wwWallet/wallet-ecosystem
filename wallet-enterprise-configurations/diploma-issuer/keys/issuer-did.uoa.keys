@@ -4,6 +4,7 @@
       "id": "Ltpx1y5d1tlFYfhyaMaGXqAvQpDfxHvfsP8N9WV0ZVM",
       "kid": "did:ebsi:zpq1XFkNWgsGB6MuvJp21vA#Ltpx1y5d1tlFYfhyaMaGXqAvQpDfxHvfsP8N9WV0ZVM",
       "privateKeyJwk": {
+				"alg": "ES256K",
         "kty": "EC",
         "crv": "secp256k1",
         "x": "ZUurLSBPvQ2vl0fx5TkdS_bN4ssj1w29cTNGvSztkq0",
@@ -11,6 +12,7 @@
         "d": "Q3mk5f_-4OgOn_HJNQZs3a0cyJfmkfcgWOxbXuWxiQA"
       },
       "publicKeyJwk": {
+				"alg": "ES256K",
         "kty": "EC",
         "crv": "secp256k1",
         "x": "ZUurLSBPvQ2vl0fx5TkdS_bN4ssj1w29cTNGvSztkq0",

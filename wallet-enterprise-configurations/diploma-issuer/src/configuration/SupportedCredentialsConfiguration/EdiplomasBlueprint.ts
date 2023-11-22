@@ -1,7 +1,7 @@
 import config from "../../../config";
 import { VerifiableCredentialFormat, Display, CredentialSupportedJwtVcJson } from "../../types/oid4vci";
 import { CredentialSubject } from "../CredentialSubjectBuilders/CredentialSubject.type";
-import { getDiplomasBySSN } from "../resources/data";
+import { getDiplomasBySSNAndBlueprintID } from "../resources/data";
 import { CredentialIssuer } from "../../lib/CredentialIssuerConfig/CredentialIssuer";
 import { SupportedCredentialProtocol } from "../../lib/CredentialIssuerConfig/SupportedCredentialProtocol";
 import { SignVerifiableCredentialJWT } from "@wwwallet/ssi-sdk";
@@ -44,7 +44,7 @@ export class EdiplomasBlueprint implements SupportedCredentialProtocol {
     }
 
 
-		const diplomaEntries = await getDiplomasBySSN(userSession.ssn);
+		const diplomaEntries = await getDiplomasBySSNAndBlueprintID(userSession.ssn, this.blueprintID);
 		if (diplomaEntries.length == 0) {
 			throw new Error("No diploma entries found");
 		}
@@ -63,6 +63,10 @@ export class EdiplomasBlueprint implements SupportedCredentialProtocol {
 					{ name: "Family Name", value: diplomaEntry.familyName },
 					{ name: "Title", value: diplomaEntry.title },
 					{ name: "Grade", value: diplomaEntry.grade },
+					{ name: "Date of birth", value: diplomaEntry.dateOfBirth },
+					{ name: "Completion date", value: diplomaEntry.completionDate },
+					{ name: "Awarding date", value: diplomaEntry.awardingDate },
+
 				]
 			}
 		};
@@ -74,7 +78,7 @@ export class EdiplomasBlueprint implements SupportedCredentialProtocol {
 			throw new Error("Cannot generate credential: Taxis id is missing");
 		}
 		
-		const diplomaEntries = await getDiplomasBySSN(userSession.ssn);
+		const diplomaEntries = await getDiplomasBySSNAndBlueprintID(userSession.ssn, this.blueprintID);
 		if (diplomaEntries.length == 0) {
 			throw new Error("No diploma entries found");
 		}
@@ -92,6 +96,9 @@ export class EdiplomasBlueprint implements SupportedCredentialProtocol {
 			.setLevel(diplomaEntry.level)
 			.setDiplomaTitle(diplomaEntry.title)
 			.setCertificateId(diplomaEntry.certificateId)
+			.setDateOfBirth(diplomaEntry.dateOfBirth)
+			.setCompletionDate(diplomaEntry.completionDate)
+			.setAwardingDate(diplomaEntry.awardingDate)
 			.build();
 
     const nonSignedJwt = new SignVerifiableCredentialJWT()
@@ -99,10 +106,27 @@ export class EdiplomasBlueprint implements SupportedCredentialProtocol {
 			.setSubject(holderDID)
       .setIssuedAt()
       .setExpirationTime('1y')
-      .setContext([])
+      .setContext(["https://www.w3.org/2018/credentials/v1"])
       .setType(this.getTypes())
-      .setCredentialSubject(diploma)
-      .setCredentialSchema("https://api-pilot.ebsi.eu/trusted-schemas-registry/v1/schemas/0x4dd3926cd92bb3cb64fa6c837539ed31fc30dd38a11266a91678efa7268cde09");    
+      .setCredentialSubject({
+				...diploma,
+				id: diplomaEntry.certificateId,
+				achievement: {
+					name: "University Degree Credential",
+					description: "A Europass Diploma issued by the University of Athens",
+					type: "Bachelor",
+					image: config.url + "/images/EuropassUoaCard.png"
+				},
+			} as any)
+      // .setCredentialSchema("https://api-pilot.ebsi.eu/trusted-schemas-registry/v1/schemas/0x4dd3926cd92bb3cb64fa6c837539ed31fc30dd38a11266a91678efa7268cde09")
+			.setAttribute("name", "University Degree Credential")   
+			.setAttribute("description", "A Europass Diploma issued by the University of Athens")
+			.setAttribute("credentialBranding", {
+				backgroundColor: "#8ebeeb",
+				textColor: "#ffffff"
+			})
+			.setAttribute("credentialSchema", undefined)
+		
 
 		const { credential } = await keystoreService.signVcJwt(this.getCredentialIssuerConfig().walletId, nonSignedJwt);
     const response = {
@@ -119,7 +143,7 @@ export class EdiplomasBlueprint implements SupportedCredentialProtocol {
 			format: this.getFormat(),
 			display: [ this.getDisplay() ],
 			types: this.getTypes(),
-			cryptographic_binding_methods_supported: ["ES256"]
+			cryptographic_binding_methods_supported: ["EdDSA", "ES256"]
 		}
 	}
 

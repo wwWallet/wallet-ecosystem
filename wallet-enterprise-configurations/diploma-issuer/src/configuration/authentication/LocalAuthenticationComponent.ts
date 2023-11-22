@@ -1,12 +1,11 @@
 import { NextFunction, Request, Response } from "express";
 import { ParamsDictionary } from "express-serve-static-core";
-import { SignJWT, jwtVerify } from "jose";
 import { ParsedQs } from "qs";
 import { AuthenticationComponent } from "../../authentication/AuthenticationComponent";
 import AppDataSource from "../../AppDataSource";
 import { AuthorizationServerState } from "../../entities/AuthorizationServerState.entity";
-import config from "../../../config";
 import locale from "../locale";
+import { UserAuthenticationMethod } from "../../types/UserAuthenticationMethod.enum";
 
 
 
@@ -16,8 +15,7 @@ export class LocalAuthenticationComponent extends AuthenticationComponent {
 	constructor(
 		override identifier: string,
 		override protectedEndpoint: string,
-		private secret = config.appSecret,
-		private users = [ { username: "user", password: "secret", taxis_id: "432432432423" }, { username: "user2", password: "secret", taxis_id: "user" }]
+		private users = [{ username: "user", password: "secret", taxis_id: "432432432423", ssn: '032429484252432' }, { username: "user2", password: "secret", taxis_id: "432432432423", ssn: "032429484252433" }]
 	) { super(identifier, protectedEndpoint) }
 
 	public override async authenticate(
@@ -30,6 +28,11 @@ export class LocalAuthenticationComponent extends AuthenticationComponent {
 				return next();
 			}
 	
+			if (req.authorizationServerState.authenticationMethod &&
+				req.authorizationServerState.authenticationMethod != UserAuthenticationMethod.SSO) {
+					
+				return next();
+			}
 			if (req.method == "POST") {
 				return this.handleLoginSubmission(req, res);
 			}
@@ -44,22 +47,17 @@ export class LocalAuthenticationComponent extends AuthenticationComponent {
 
 	
 	private async isAuthenticated(req: Request): Promise<boolean> {
-		const jws = req.cookies['jws'];
-		if (!jws) {
+		if (!req.session.authenticationChain?.localAuthenticationComponent?.username) {
 			return false;
 		}
-		return await jwtVerify(jws, new TextEncoder().encode(this.secret)).then(async (result) => {
-			const username = result.payload.sub;
-			if (!username || this.users.filter(u => u.username == username).length != 1) return false;
+		const username = req.session.authenticationChain.localAuthenticationComponent.username;
+		if (!username || this.users.filter(u => u.username == username).length != 1) return false;
 
-			const usersFound = this.users.filter(u => u.username == username);
-			req.authorizationServerState.taxis_id = usersFound[0].taxis_id;
-			await AppDataSource.getRepository(AuthorizationServerState).save(req.authorizationServerState);
-			return true;
-		}).catch(err => {
-			console.error(err);
-			return false;
-		})
+		const usersFound = this.users.filter(u => u.username == username);
+		req.authorizationServerState.ssn = usersFound[0].ssn;
+		req.authorizationServerState.taxis_id = usersFound[0].taxis_id;
+		await AppDataSource.getRepository(AuthorizationServerState).save(req.authorizationServerState);
+		return true;
 	}
 
 	private async renderLogin(req: Request, res: Response): Promise<any> {
@@ -76,14 +74,11 @@ export class LocalAuthenticationComponent extends AuthenticationComponent {
 		if (usersFound.length == 1) {
 			// sign a token and send it to the client
 
-			const jws = await new SignJWT({})
-				.setSubject(username)
-				.setProtectedHeader({ alg: 'HS256' })
-				.setIssuedAt()
-				.setExpirationTime('1h')
-				.sign(new TextEncoder().encode(this.secret));
-			res.cookie('jws', jws);
+			req.session.authenticationChain.localAuthenticationComponent = {
+				username: username
+			};
 
+			req.authorizationServerState.ssn = usersFound[0].ssn;
 			req.authorizationServerState.taxis_id = usersFound[0].taxis_id;
 			await AppDataSource.getRepository(AuthorizationServerState).save(req.authorizationServerState);
 			return res.redirect(this.protectedEndpoint);

@@ -2,6 +2,7 @@ import { CONSENT_ENTRYPOINT, VERIFIER_PANEL_ENTRYPOINT } from "../../authorizati
 import { AuthenticationChainBuilder } from "../../authentication/AuthenticationComponent";
 import { LocalAuthenticationComponent } from "./LocalAuthenticationComponent";
 import { VerifierAuthenticationComponent } from "./VerifierAuthenticationComponent";
+import { IssuerSelectionComponent } from "./IssuerSelectionComponent";
 
 
 
@@ -9,6 +10,7 @@ import { VerifierAuthenticationComponent } from "./VerifierAuthenticationCompone
 
 export const authChain = new AuthenticationChainBuilder()
 	.addAuthenticationComponent(new LocalAuthenticationComponent("1-local", CONSENT_ENTRYPOINT))
+	.addAuthenticationComponent(new IssuerSelectionComponent("2-issuer-selection", CONSENT_ENTRYPOINT))
 	// .addAuthenticationComponent(new LocalAuthenticationComponent2("2-local", CONSENT_ENTRYPOINT))
 	.build();
 
