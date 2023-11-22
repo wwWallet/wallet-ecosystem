@@ -53,7 +53,7 @@ export class CredentialIssuersConfigurationService implements CredentialIssuersC
 		]
 	}
 
-	public defaultCredentialIssuerIdentifier(): string {
-		return this.credentialIssuerIdentifierUOA;
+	public defaultCredentialIssuerIdentifier(): string | null {
+		return null;
 	}
 }
