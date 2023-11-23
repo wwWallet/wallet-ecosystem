@@ -137,16 +137,16 @@ services:
       # bind-mount any sql files that should be run while initializing
       - ./db-setup/scripts/:/docker-entrypoint-initdb.d/
 
-  wallet-phpmyadmin:
-    image: phpmyadmin/phpmyadmin:latest
-    container_name: wallet-phpmyadmin
-    hostname: wallet-phpmyadmin
-    ports:
-      - 8081:8081
-    environment:
-      APACHE_PORT: 8081
-      PMA_HOST: wallet-db
-      PMA_PORT: 3307
+  # wallet-phpmyadmin:
+  #   image: phpmyadmin/phpmyadmin:latest
+  #   container_name: wallet-phpmyadmin
+  #   hostname: wallet-phpmyadmin
+  #   ports:
+  #     - 8081:8081
+  #   environment:
+  #     APACHE_PORT: 8081
+  #     PMA_HOST: wallet-db
+  #     PMA_PORT: 3307
 
   wallet-backend-server:
     container_name: wallet-backend-server
