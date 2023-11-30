@@ -1,4 +1,5 @@
 CREATE DATABASE wallet;
 CREATE DATABASE issuer;
 CREATE DATABASE vidissuer;
+CREATE DATABASE ehicissuer;
 CREATE DATABASE verifier;

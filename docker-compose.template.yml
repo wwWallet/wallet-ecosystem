@@ -36,6 +36,36 @@ services:
       resources:
           limits:
             memory: 1G
+  
+  wallet-enterprise-ehic-issuer:
+    container_name: wallet-enterprise-ehic-issuer
+    hostname: wallet-enterprise-vid-issuer
+    build:
+      context: $PWD/wallet-enterprise
+      dockerfile: development.Dockerfile
+      secrets:
+        - npmrc
+    image: wallet-enterprise:dev-ehic
+    restart: always
+    ports:
+      - 8004:8004
+    depends_on:
+      wallet-db:
+        condition: service_healthy
+    volumes:
+      - ./wallet-enterprise:/app:rw
+      - ./wallet-enterprise-configurations/ehic-issuer/config/config.development.ts:/app/config/config.development.ts:rw
+      - ./wallet-enterprise-configurations/ehic-issuer/keys:/app/keys:rw
+      - ./wallet-enterprise-configurations/ehic-issuer/src/configuration:/app/src/configuration:rw
+      - ./.vscode/:/app/.vscode:rw
+      - type: tmpfs
+        target: /app/dist  # Not /dist here because of relative imports that assume dist/ and keys/, views/ etc. are sibling dirs
+        tmpfs:
+          mode: 01777
+    deploy:
+      resources:
+          limits:
+            memory: 1G
 
   wallet-enterprise-diploma-issuer:
     container_name: wallet-enterprise-diploma-issuer
