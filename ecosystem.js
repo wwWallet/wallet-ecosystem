@@ -166,7 +166,7 @@ function init() {
 		./configwallet.js create issuer \
 			--friendlyName "EHIC Issuer" \
 			--url http://wallet-enterprise-ehic-issuer:8004 \
-			--did did:ebsi:zyhE5cJ7VVqYT4gZmoKadFt \
+			--did did:ebsi:zyhE5cJ7VVqYT4gZmoKadFt3 \
 			--client_id did:ebsi:zyhE5cJ7VVqYT4gZmoKadFt3
 	'`, { stdio: 'inherit' });
 }
