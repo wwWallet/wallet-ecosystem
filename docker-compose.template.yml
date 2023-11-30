@@ -12,7 +12,7 @@ services:
       secrets:
         - npmrc
     image: wallet-enterprise:dev-vid
-    restart: always
+    restart: on-failure
     ports:
       - 8003:8003
     depends_on:
@@ -46,7 +46,7 @@ services:
       secrets:
         - npmrc
     image: wallet-enterprise:dev-diploma
-    restart: always
+    restart: on-failure
     ports:
       - 8000:8000
     depends_on:
@@ -81,7 +81,7 @@ services:
       secrets:
         - npmrc
     image: wallet-enterprise:dev-verifier
-    restart: always
+    restart: on-failure
     ports:
       - 8005:8005
     depends_on:
@@ -113,7 +113,7 @@ services:
     image: mariadb
     container_name: wallet-db
     hostname: wallet-db
-    restart: always
+    restart: on-failure
     ports:
       - 3307:3307
     expose: 
@@ -156,7 +156,7 @@ services:
       secrets:
         - npmrc
     image: wallet-backend-server:dev
-    restart: always
+    restart: on-failure
     ports:
       - 8002:8002
     depends_on:
