@@ -32,7 +32,7 @@ const ehicRepository: EHICEntry[] = [
 		firstName: "John",
 		familyName: "Doe",
 		taxisId: "432432432423",
-		ssn: "08109500986",
+		ssn: "032429484252432",
 		birthdate: "18-5-1990"
 	}
 ]
