@@ -39,7 +39,7 @@ services:
   
   wallet-enterprise-ehic-issuer:
     container_name: wallet-enterprise-ehic-issuer
-    hostname: wallet-enterprise-vid-issuer
+    hostname: wallet-enterprise-ehic-issuer
     build:
       context: $PWD/wallet-enterprise
       dockerfile: development.Dockerfile
