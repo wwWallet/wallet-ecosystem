@@ -163,6 +163,11 @@ function init() {
 			--url http://wallet-enterprise-diploma-issuer:8000/uoa \
 			--did did:ebsi:zpq1XFkNWgsGB6MuvJp21vA \
 			--client_id did:ebsi:zpq1XFkNWgsGB6MuvJp21vA
+		./configwallet.js create issuer \
+			--friendlyName "EHIC Issuer" \
+			--url http://wallet-enterprise-ehic-issuer:8004 \
+			--did did:ebsi:zyhE5cJ7VVqYT4gZmoKadFt3 \
+			--client_id did:ebsi:zyhE5cJ7VVqYT4gZmoKadFt3
 	'`, { stdio: 'inherit' });
 }
 
