@@ -90,7 +90,7 @@ export class EHICSupportedCredentialJwtVcJson implements SupportedCredentialProt
 			.setContext([])
 			.setType(this.getTypes())
 			.setCredentialSubject(ehic)
-			.setCredentialSchema("https://api-pilot.ebsi.eu/trusted-schemas-registry/v2/schemas/z8Y6JJnebU2UuQQNc2R8GYqkEiAMj3Hd861rQhsoNWxsM");
+			.setCredentialSchema("https://");
 
 		const { credential } = await keystoreService.signVcJwt(this.getCredentialIssuerConfig().walletId, nonSignedJwt);
 		const response = {
