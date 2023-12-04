@@ -286,3 +286,8 @@ section.layout {
 .container {
 	margin: 60px 30px;
 }
+
+.openwithwalletbutton{
+	cursor: not-allowed;
+	opacity: 0.5;
+}
