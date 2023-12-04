@@ -11,13 +11,13 @@ import locale from "../locale";
 
 
 
-export class LocalAuthenticationComponent2 extends AuthenticationComponent {
+export class LocalAuthenticationComponent extends AuthenticationComponent {
 
 	constructor(
 		override identifier: string,
 		override protectedEndpoint: string,
 		private secret = config.appSecret,
-		private users = [ { username: "user2", password: "secret", taxis_id: "432432432423" }]
+		private users = [{ username: "user", password: "secret", taxis_id: "432432432423", ssn: "032429484252432" },]
 	) { super(identifier, protectedEndpoint) }
 
 	public override async authenticate(
@@ -44,7 +44,7 @@ export class LocalAuthenticationComponent2 extends AuthenticationComponent {
 
 	
 	private async isAuthenticated(req: Request): Promise<boolean> {
-		const jws = req.cookies['jws2'];
+		const jws = req.cookies['jws'];
 		if (!jws) {
 			return false;
 		}
@@ -54,6 +54,7 @@ export class LocalAuthenticationComponent2 extends AuthenticationComponent {
 
 			const usersFound = this.users.filter(u => u.username == username);
 			req.authorizationServerState.taxis_id = usersFound[0].taxis_id;
+			req.authorizationServerState.ssn = usersFound[0].ssn;
 			await AppDataSource.getRepository(AuthorizationServerState).save(req.authorizationServerState);
 			return true;
 		}).catch(err => {
@@ -82,9 +83,10 @@ export class LocalAuthenticationComponent2 extends AuthenticationComponent {
 				.setIssuedAt()
 				.setExpirationTime('1h')
 				.sign(new TextEncoder().encode(this.secret));
-			res.cookie('jws2', jws);
+			res.cookie('jws', jws);
 
 			req.authorizationServerState.taxis_id = usersFound[0].taxis_id;
+			req.authorizationServerState.ssn = usersFound[0].ssn;
 			await AppDataSource.getRepository(AuthorizationServerState).save(req.authorizationServerState);
 			return res.redirect(this.protectedEndpoint);
 		}
