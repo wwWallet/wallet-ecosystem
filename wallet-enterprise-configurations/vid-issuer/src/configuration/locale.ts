@@ -1,7 +1,7 @@
 const locale = {
 	en: {
 		header: {
-			title: "National VID Issuer",
+			title: "National Verifiable ID Issuer",
 			subtitle: "Receive your verifiable ID",
 		},
 		plainHeader: {
@@ -20,7 +20,7 @@ const locale = {
 			emailForOrgs: "E-mail for Institutions"
 		},
 		index: {
-			header: "National VID Issuer",
+			header: "National Verifiable ID Issuer",
 			phrase: "I want to receive a Verifiable ID",
 			proceed: "Proceed",
 			heading: "National Verifiable ID Issuer",

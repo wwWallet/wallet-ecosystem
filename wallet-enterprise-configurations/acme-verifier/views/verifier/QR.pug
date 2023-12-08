@@ -9,7 +9,7 @@ block layout-content
           h1 Scan the QR code
 
           img(src=authorizationRequestQR width=200 height=200)
-          button.Btn.Medium(type="button" onclick=`window.location.href = '${authorizationRequestURL}';`) Open with wallet
+          button.Btn.Medium.openwithwalletbutton(type="button" onclick=`window.location.href = '${authorizationRequestURL}';`) Open with wallet
 
           input(type='hidden' name='state' id='state' value=state)
           input(type='hidden' name='authorizationRequestQR' id='authorizationRequestQR' value=authorizationRequestQR)

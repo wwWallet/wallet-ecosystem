@@ -80,9 +80,9 @@ p {
 	width: fit-content;
 }
 
-.Btn:hover {
+/* .Btn:hover {
 	opacity: 0.85;
-}
+} */
 
 .Btn.Large {
 	padding: 14px 50px;
@@ -519,4 +519,9 @@ th, td {
 th {
   background-color: #4d7e3e;
 	color:white;
+}
+
+.openwithwalletbutton{
+	cursor: not-allowed;
+	opacity: 0.5;
 }
