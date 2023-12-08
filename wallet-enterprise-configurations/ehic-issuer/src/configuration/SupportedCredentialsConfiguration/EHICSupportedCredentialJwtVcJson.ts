@@ -6,7 +6,6 @@ import { getEhic } from "../resources/data";
 import { CredentialIssuer } from "../../lib/CredentialIssuerConfig/CredentialIssuer";
 import { SupportedCredentialProtocol } from "../../lib/CredentialIssuerConfig/SupportedCredentialProtocol";
 import { SignVerifiableCredentialJWT } from "@wwwallet/ssi-sdk";
-import { keystoreService } from "../../services/instances";
 import { AuthorizationServerState } from "../../entities/AuthorizationServerState.entity";
 import { CredentialView } from "../../authorization/types";
 
@@ -92,11 +91,13 @@ export class EHICSupportedCredentialJwtVcJson implements SupportedCredentialProt
 			.setCredentialSubject(ehic)
 			.setCredentialSchema("https://");
 
-		const { credential } = await keystoreService.signVcJwt(this.getCredentialIssuerConfig().walletId, nonSignedJwt);
-		const response = {
-			format: this.getFormat(),
-			credential: credential
-		};
+
+		const { jws } = await this.getCredentialIssuerConfig().getSigner()
+			.sign(nonSignedJwt, {});
+    const response = {
+      format: this.getFormat(),
+      credential: jws
+    };
 
 		return response;
 	}

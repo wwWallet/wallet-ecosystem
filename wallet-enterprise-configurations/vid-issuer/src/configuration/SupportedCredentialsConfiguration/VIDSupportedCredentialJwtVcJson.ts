@@ -6,7 +6,6 @@ import { getVIDByTaxisId } from "../resources/data";
 import { CredentialIssuer } from "../../lib/CredentialIssuerConfig/CredentialIssuer";
 import { SupportedCredentialProtocol } from "../../lib/CredentialIssuerConfig/SupportedCredentialProtocol";
 import { SignVerifiableCredentialJWT } from "@wwwallet/ssi-sdk";
-import { keystoreService } from "../../services/instances";
 import { AuthorizationServerState } from "../../entities/AuthorizationServerState.entity";
 import { CredentialView } from "../../authorization/types";
 
@@ -92,10 +91,12 @@ export class VIDSupportedCredentialJwtVcJson implements SupportedCredentialProto
       .setCredentialSubject(vid)
       .setCredentialSchema("https://api-pilot.ebsi.eu/trusted-schemas-registry/v2/schemas/z8Y6JJnebU2UuQQNc2R8GYqkEiAMj3Hd861rQhsoNWxsM");    
 
-		const { credential } = await keystoreService.signVcJwt(this.getCredentialIssuerConfig().walletId, nonSignedJwt);
+
+		const { jws } = await this.getCredentialIssuerConfig().getSigner()
+			.sign(nonSignedJwt, {});
     const response = {
       format: this.getFormat(),
-      credential: credential
+      credential: jws
     };
 
     return response;

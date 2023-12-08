@@ -1,0 +1,11 @@
+{
+  "name": "did-resolver-service",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "type": "module",
+  "dependencies": {
+    "did-resolver": "^4.1.0",
+    "key-did-resolver": "^3.0.0"
+  }
+}

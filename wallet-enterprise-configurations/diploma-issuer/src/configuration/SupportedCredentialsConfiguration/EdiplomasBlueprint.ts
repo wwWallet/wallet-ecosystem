@@ -5,7 +5,6 @@ import { getDiplomasBySSNAndBlueprintID } from "../resources/data";
 import { CredentialIssuer } from "../../lib/CredentialIssuerConfig/CredentialIssuer";
 import { SupportedCredentialProtocol } from "../../lib/CredentialIssuerConfig/SupportedCredentialProtocol";
 import { SignVerifiableCredentialJWT } from "@wwwallet/ssi-sdk";
-import { keystoreService } from "../../services/instances";
 import { AuthorizationServerState } from "../../entities/AuthorizationServerState.entity";
 import { CredentialView } from "../../authorization/types";
 import { SimpleDiplomaCredentialSubjectBuilder } from "../CredentialSubjectBuilders/SimpleDiplomaCredentialSubjectBuilder/SimpleDiplomaCredentialSubjectBuilder";
@@ -128,10 +127,12 @@ export class EdiplomasBlueprint implements SupportedCredentialProtocol {
 			.setAttribute("credentialSchema", undefined)
 		
 
-		const { credential } = await keystoreService.signVcJwt(this.getCredentialIssuerConfig().walletId, nonSignedJwt);
+
+		const { jws } = await this.getCredentialIssuerConfig().getSigner()
+			.sign(nonSignedJwt, {});
     const response = {
       format: this.getFormat(),
-      credential: credential
+      credential: jws
     };
 
     return response;

@@ -1,0 +1,21 @@
+{
+	"keys": {
+		"ES256": {
+			"id": "did:key:zDnaemLRtZwZGm1qG9EkdBuuz71KpuNyDJgZ5KMaytD41thuL#zDnaemLRtZwZGm1qG9EkdBuuz71KpuNyDJgZ5KMaytD41thuL",
+			"kid": "did:key:zDnaemLRtZwZGm1qG9EkdBuuz71KpuNyDJgZ5KMaytD41thuL#zDnaemLRtZwZGm1qG9EkdBuuz71KpuNyDJgZ5KMaytD41thuL",
+			"publicKeyJwk": {
+				"kty": "EC",
+				"crv": "P-256",
+				"x": "NppK_BmfYXmK0AwPKGkBcMCt6cB0Q5FOzQ1v3Dd6ZNM",
+				"y": "ExfNQpPEHV5UfpIjOo6C9YHh6bWIZ8OF6i2lluNiw3U"
+			},
+			"privateKeyJwk": {
+				"kty": "EC",
+				"crv": "P-256",
+				"d": "i-Sz2Z1Uzi_Ad9E7C7Jzkdjv6zv6YE4MEhXGV5lvpFg",
+				"x": "NppK_BmfYXmK0AwPKGkBcMCt6cB0Q5FOzQ1v3Dd6ZNM",
+				"y": "ExfNQpPEHV5UfpIjOo6C9YHh6bWIZ8OF6i2lluNiw3U"
+			}
+		}
+	}
+}

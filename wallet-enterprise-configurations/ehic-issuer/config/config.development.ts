@@ -10,4 +10,5 @@ export = {
 		password: "root",
 		dbname: "ehicissuer"
 	},
+	didResolverServiceUrl: "http://did-resolver-service:4555",
 }
