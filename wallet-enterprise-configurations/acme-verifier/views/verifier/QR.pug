@@ -9,7 +9,9 @@ block layout-content
           h1 Scan the QR code
 
           img(src=authorizationRequestQR width=200 height=200)
-          button.Btn.Medium.openwithwalletbutton(type="button" onclick=`window.location.href = '${authorizationRequestURL}';`) Open with wallet
+					
+          - const modifiedURL = authorizationRequestURL.replace("openid://", "https://demo.wwwallet.org/")
+          button.Btn.Medium.openwithwalletbutton(type="button" onclick=`window.location.href = '${modifiedURL}';`) Open with wwWallet
 
           input(type='hidden' name='state' id='state' value=state)
           input(type='hidden' name='authorizationRequestQR' id='authorizationRequestQR' value=authorizationRequestQR)
