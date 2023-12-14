@@ -177,7 +177,7 @@ function init() {
 	'`, { stdio: 'inherit' });
 }
 
-if (action != 'up') {
+if (action !== 'up') {
 	console.log("Error: First argument must be 'up' or 'down' or 'init'");
 	help();
 	process.exit();
