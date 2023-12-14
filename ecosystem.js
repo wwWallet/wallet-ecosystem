@@ -218,8 +218,10 @@ if (action !== 'up') {
 
 if (daemonMode === false) {
 	console.log("Performing 'docker compose up'");
+	init()
 	execSync(`${dockerComposeCommand} up --build`, { stdio: 'inherit' });
 } else {
 	console.log("Performing 'docker compose up -d'");
+	init()
 	execSync(`${dockerComposeCommand} up --build -d`, { stdio: 'inherit' });
 }
