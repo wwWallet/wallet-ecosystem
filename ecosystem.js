@@ -145,6 +145,12 @@ if (action === "down") {
 	process.exit();
 }
 
+if (action === "init") {
+	console.log("Performing init");
+	init()
+	process.exit();
+}
+
 function init() {
 	return execSync(`${dockerComposeCommand} run --rm -t --workdir /app/cli --env NODE_PATH=/cli_node_modules wallet-backend-server sh -c '
 		set -e # Exit on error
@@ -171,8 +177,8 @@ function init() {
 	'`, { stdio: 'inherit' });
 }
 
-if (action !== "up") {
-	console.log("Error: First argument must be 'up' or 'down'");
+if (action != 'up') {
+	console.log("Error: First argument must be 'up' or 'down' or 'init'");
 	help();
 	process.exit();
 }
@@ -210,10 +216,7 @@ if (action !== "up") {
 	}
 }
 
-
 if (daemonMode === false) {
-	console.log("Initializing database");
-	init();
 	console.log("Performing 'docker compose up'");
 	execSync(`${dockerComposeCommand} up --build`, { stdio: 'inherit' });
 } else {
