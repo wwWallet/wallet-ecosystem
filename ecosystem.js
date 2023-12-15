@@ -212,6 +212,13 @@ if (action !== 'up') {
 		configContent = configContent.replace(/WEBAUTHN_RP_ID/g, "localhost");
 		configContent = configContent.replace(/WEBAUTHN_ORIGIN/g, walletClientOrigin);
 	
+		// Replacing the whole string so that the value of enabled is of type boolean and not string
+		if (args.includes('--no-notifications')) {
+			configContent = configContent.replace(/enabled: "NOTIFICATIONS_ENABLED"/g, 'enabled: false');
+		} else {
+			configContent = configContent.replace(/enabled: "NOTIFICATIONS_ENABLED"/g, 'enabled: true');
+		}
+
 		fs.writeFileSync(configPath, configContent);
 	}
 }
