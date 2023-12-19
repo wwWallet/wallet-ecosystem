@@ -99,7 +99,7 @@ p {
 }
 
 .Btn.Medium {
-	margin: 50px 0 20px;
+	margin: 20px 0 20px;
 	padding: 10px 40px;
 	font-weight: 700;
 	border-radius: 6px;
@@ -291,3 +291,7 @@ section.layout {
 	cursor: not-allowed;
 	opacity: 0.5;
 } */
+
+.openwithwalletbuttonnative{
+	margin-top: 5px!important;
+}
