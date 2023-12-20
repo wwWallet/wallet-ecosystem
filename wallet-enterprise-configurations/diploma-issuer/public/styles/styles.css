@@ -116,8 +116,17 @@ p {
 	min-width: auto;
 	font-weight: 400;
 	border-radius: 6px;
+	max-width: 220px;
+}
+.Btn.Dialog {
+	margin: 20px 0 20px;
+	padding: 10px 20px;
+	min-width: auto;
+	font-weight: 400;
+	border-radius: 6px;
 	width: 100%;
 }
+
 .Btn.Close {
 	position: absolute;
 	font-size: 30px;
