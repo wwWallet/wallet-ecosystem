@@ -5,6 +5,7 @@
   "license": "MIT",
   "type": "module",
   "dependencies": {
+    "@cef-ebsi/key-did-resolver": "^2.0.0",
     "did-resolver": "^4.1.0",
     "key-did-resolver": "^3.0.0"
   }

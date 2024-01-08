@@ -1,10 +1,12 @@
 import { createServer } from 'http';
 import { parse } from 'url';
-import { getResolver } from 'key-did-resolver';
+import { getResolver as w3cDidKeyResolver } from 'key-did-resolver';
 import { Resolver } from 'did-resolver';
+import { getResolver as ebsiDidKeyResolver } from "@cef-ebsi/key-did-resolver";
 
-const keyDidResolver = getResolver();
+const keyDidResolver = ebsiDidKeyResolver();
 const didResolver = new Resolver(keyDidResolver);
+
 
 const handler = async ({ req, res }) => {
     const parsedUrl = parse(req.url, true);
