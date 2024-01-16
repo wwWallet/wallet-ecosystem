@@ -99,7 +99,7 @@ const bachelorWithEuropeanHealthInsuranceCardPresentationDefinition = {
 }
 
 const verifiableIdWithBachelorWithEuropeanHealthInsuranceCardPresentationDefinition = {
-	"id": "VerifiableIdBachelorWithEuropeanHealthInsuranceCard",
+	"id": "VerifiableIdWithBachelorWithEuropeanHealthInsuranceCard",
 	"title": "Send your verifiable id card and European Health Insurance Card",
 	"description": "Send your Verifiable id and bachelor Bachelor",
 	"format": { jwt_vc: { alg: [ 'ES256' ] },jwt_vc_json: { alg: [ 'ES256' ] }, jwt_vp: { alg: [ 'ES256' ] } },
