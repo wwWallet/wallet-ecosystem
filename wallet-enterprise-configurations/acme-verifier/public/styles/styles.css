@@ -517,6 +517,12 @@ background-color: #4d7e3e!important;
 	padding: 20px;
 }
 
+@media screen and (max-width: 768px) {
+	.CenteredLayout{
+
+		width: auto!important;
+	}
+}
 
 .container2{
 min-height:60vh;
