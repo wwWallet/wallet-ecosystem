@@ -11,9 +11,12 @@
     //-   button#lang-el.active EL
     //-   span |
     //-   button#lang-en EN
-    .header-content(style="width: 70%!important;")
+    .header-content
       a.logo-area(href="/")
         img#acmelogo(src='/images/acmelogo.png' alt='acme Logo')
+      .mobile-menu-toggle
+        button#menu-toggle-button
+          span.menu-icon ☰
       ul.menu
         li.menu-item
           a(href="#") Home
@@ -25,6 +28,16 @@
           a(href="#") Contact
     //- p.header-subtitle #{locale.header.subtitle}
     .header-border
+
+script.
+  document.addEventListener('DOMContentLoaded', function () {
+    const menuToggle = document.getElementById('menu-toggle-button');
+    const menu = document.querySelector('.menu');
+
+    menuToggle.addEventListener('click', function () {
+      menu.classList.toggle('show-menu');
+    });
+  });
 
 link(rel="stylesheet" href="/styles/header.css")
 script(src="/js/header.js")
