@@ -382,6 +382,21 @@ a.menu-link {
   width:50%; /* Set the width of the content column */
 }
 
+@media screen and (max-width: 768px) {
+	.flex-container {
+			flex-direction: column; /* Stack columns vertically */
+			align-items: stretch; /* Stretch items vertically to occupy full width */
+	}
+
+	.image-column, .content-column {
+			width: 100%; 
+			padding: 0;
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+	}
+}
+
 /* Styling for the image */
 .image-column img {
   max-width: 70%; /* Ensure the image doesn't exceed its container */
@@ -411,7 +426,7 @@ a.menu-link {
 
 #Index{
 	display: flex;
-	height:60vh;
+	min-height:60vh;
 	margin: 0px;
 
 }
