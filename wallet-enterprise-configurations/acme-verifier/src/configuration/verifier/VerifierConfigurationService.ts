@@ -13,6 +13,103 @@ export type PresentationDefinitionTypeWithFormat = {
 	input_descriptors: InputDescriptorType[];
 };
 
+
+const verifiableIdDescriptor =	{
+	"id": "VerifiableId",
+	"constraints": {
+		"fields": [
+			{
+				"path": [ '$.type' ],
+				"filter": {
+					"type": 'array',
+					"items": { type: 'string' },
+					"contains": { const: 'VerifiableId' }
+				}
+			}
+		]
+	}
+}
+
+const bachelorDescriptor = {
+	"id": "Bachelor",
+	"constraints": {
+		"fields": [
+			{
+				"path": [ '$.type' ],
+				"filter": {
+					"type": 'array',
+					"items": { type: 'string' },
+					"contains": { const: 'Bachelor' }
+				}
+			}
+		]
+	}
+}
+
+
+const europeanHealthInsuranceCardDescriptor = {
+	"id": "EuropeanHealthInsuranceCard",
+	"constraints": {
+		"fields": [
+			{
+				"path": [ '$.type' ],
+				"filter": {
+					"type": 'array',
+					"items": { type: 'string' },
+					"contains": { const: 'EuropeanHealthInsuranceCard' }
+				}
+			}
+		]
+	}
+}
+
+
+
+const verifiableIdWithBachelorPresentationDefinition = {
+	"id": "VerifiableIdWithBachelor",
+	"title": "Send your verifiable id card and bachelor",
+	"description": "Send your Verifiable id and bachelor Bachelor",
+	"format": { jwt_vc: { alg: [ 'ES256' ] },jwt_vc_json: { alg: [ 'ES256' ] }, jwt_vp: { alg: [ 'ES256' ] } },
+	"input_descriptors": [
+		verifiableIdDescriptor,
+		bachelorDescriptor
+	]
+}
+
+const verifiableIdWithEuropeanHealthInsuranceCardPresentationDefinition = {
+	"id": "VerifiableIdWithEuropeanHealthInsuranceCard",
+	"title": "Send your verifiable id card and European Health Insurance Card",
+	"description": "Send your Verifiable id and bachelor Bachelor",
+	"format": { jwt_vc: { alg: [ 'ES256' ] },jwt_vc_json: { alg: [ 'ES256' ] }, jwt_vp: { alg: [ 'ES256' ] } },
+	"input_descriptors": [
+		verifiableIdDescriptor,
+		europeanHealthInsuranceCardDescriptor
+	]
+}
+
+const bachelorWithEuropeanHealthInsuranceCardPresentationDefinition = {
+	"id": "BachelorWithEuropeanHealthInsuranceCard",
+	"title": "Send your verifiable id card and European Health Insurance Card",
+	"description": "Send your Verifiable id and bachelor Bachelor",
+	"format": { jwt_vc: { alg: [ 'ES256' ] },jwt_vc_json: { alg: [ 'ES256' ] }, jwt_vp: { alg: [ 'ES256' ] } },
+	"input_descriptors": [
+		bachelorDescriptor,
+		europeanHealthInsuranceCardDescriptor
+	]
+}
+
+const verifiableIdWithBachelorWithEuropeanHealthInsuranceCardPresentationDefinition = {
+	"id": "VerifiableIdWithBachelorWithEuropeanHealthInsuranceCard",
+	"title": "Send your verifiable id card and European Health Insurance Card",
+	"description": "Send your Verifiable id and bachelor Bachelor",
+	"format": { jwt_vc: { alg: [ 'ES256' ] },jwt_vc_json: { alg: [ 'ES256' ] }, jwt_vp: { alg: [ 'ES256' ] } },
+	"input_descriptors": [
+		verifiableIdDescriptor,
+		bachelorDescriptor,
+		europeanHealthInsuranceCardDescriptor,
+	]
+}
+
 @injectable()
 export class VerifierConfigurationService implements VerifierConfigurationInterface {
 
@@ -20,28 +117,36 @@ export class VerifierConfigurationService implements VerifierConfigurationInterf
 	getPresentationDefinitions(): PresentationDefinitionTypeWithFormat[] {
 		return [
 			{
-				"id": "diploma", // scope name
-				"title": "Software Engineer - Core",
+				"id": "VerifiableId",
+				"title": "Send your verifiable id card",
 				"description": "Send your Bachelor Diploma to apply for 'Software Engineer - Core'",
-				"format": { jwt_vc: { alg: [ 'ES256' ] },jwt_vc_json: { alg: [ 'EdDSA' ] }, jwt_vp: { alg: [ 'ES256' ] } },
+				"format": { jwt_vc: { alg: [ 'ES256' ] },jwt_vc_json: { alg: [ 'ES256' ] }, jwt_vp: { alg: [ 'ES256' ] } },
 				"input_descriptors": [
-					{
-						"id": "University Diploma",
-						"constraints": {
-							"fields": [
-								{
-									"path": [ '$.type' ],
-									"filter": {
-										"type": 'array',
-										"items": { type: 'string' },
-										"contains": { const: 'Bachelor' }
-									}
-								}
-							]
-						}
-					}
+					verifiableIdDescriptor
 				]
 			},
+			{
+				"id": "Bachelor",
+				"title": "Software Engineer - Core",
+				"description": "Send your Bachelor Diploma to apply for 'Software Engineer - Core'",
+				"format": { jwt_vc: { alg: [ 'ES256' ] },jwt_vc_json: { alg: [ 'ES256' ] }, jwt_vp: { alg: [ 'ES256' ] } },
+				"input_descriptors": [
+					bachelorDescriptor
+				]
+			},
+			{
+				"id": "EuropeanHealthInsuranceCard",
+				"title": "European HealthInsurance Card",
+				"description": "Send your ehic card",
+				"format": { jwt_vc: { alg: [ 'ES256' ] },jwt_vc_json: { alg: [ 'ES256' ] }, jwt_vp: { alg: [ 'ES256' ] } },
+				"input_descriptors": [
+					europeanHealthInsuranceCardDescriptor
+				]
+			},
+			verifiableIdWithBachelorPresentationDefinition,
+			verifiableIdWithEuropeanHealthInsuranceCardPresentationDefinition,
+			bachelorWithEuropeanHealthInsuranceCardPresentationDefinition,
+			verifiableIdWithBachelorWithEuropeanHealthInsuranceCardPresentationDefinition,
 			{
 				"id": "Multiple", // scope name
 				"title": "Project Manager",
@@ -78,21 +183,7 @@ export class VerifierConfigurationService implements VerifierConfigurationInterf
 							]
 						}
 					},
-					{
-						"id": "Bachelor",
-						"constraints": {
-							"fields": [
-								{
-									"path": [ '$.vc.type' ],
-									"filter": {
-										"type": 'array',
-										"items": { type: 'string' },
-										"contains": { const: 'Bachelor' }
-									}
-								}
-							]
-						}
-					}
+					bachelorDescriptor
 				]
 			}
 		]
