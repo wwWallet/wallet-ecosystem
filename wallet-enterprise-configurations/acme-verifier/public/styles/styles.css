@@ -599,3 +599,12 @@ th {
 .openwithwalletbuttonnative{
 	margin-top:5px!important;
 }
+
+@media (max-width: 768px) {
+
+	#json-textarea{
+		width: -webkit-fill-available!important;
+		margin-left: 1%;
+		margin-right: 1%;
+	}
+}
