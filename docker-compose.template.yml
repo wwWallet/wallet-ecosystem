@@ -225,14 +225,6 @@ services:
         target: /app/node_modules/.cache
         tmpfs:
           mode: 01777
-  did-resolver:
-    build:
-      context: $PWD/did-resolver-service
-    image: did-resolver-service:dev
-    container_name: did-resolver-service
-    hostname: did-resolver-service
-    ports:
-      - 4555:4555
 
 volumes:
   datadir:
