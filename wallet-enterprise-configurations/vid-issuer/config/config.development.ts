@@ -7,7 +7,7 @@ export = {
 		host: "wallet-db",
 		port: "3307",
 		username: "root",
-		password: "root",
+		password: "FD2343OIAJWWE3242424332DAKD312",
 		dbname: "vidissuer"
 	},
 }
