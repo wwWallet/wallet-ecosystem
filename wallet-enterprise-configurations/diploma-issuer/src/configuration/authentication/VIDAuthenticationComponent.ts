@@ -138,6 +138,7 @@ export class VIDAuthenticationComponent extends AuthenticationComponent {
 			}) as string;
 			return res.render('issuer/vid-auth-component', {
 				title: "VID authentication",
+				wwwalletURL: config.wwwalletURL,
 				authorizationRequestURL: url.toString(),
 				authorizationRequestQR: authorizationRequestQR,
 				state: url.searchParams.get('state'),

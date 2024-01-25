@@ -146,7 +146,7 @@ services:
     hostname: wallet-db
     restart: on-failure
     ports:
-      - 3307:3307
+      - 127.0.0.1:3307:3307
     expose: 
       - 3307
     environment:

@@ -10,4 +10,5 @@ export = {
 		password: "root",
 		dbname: "verifier"
 	},
+	wwwalletURL: "http://localhost:3000/cb"
 }

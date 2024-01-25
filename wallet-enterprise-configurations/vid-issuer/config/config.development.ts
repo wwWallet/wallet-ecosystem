@@ -10,5 +10,5 @@ export = {
 		password: "root",
 		dbname: "vidissuer"
 	},
-	didResolverServiceUrl: "http://did-resolver-service:4555"
+	wwwalletURL: "http://localhost:3000/cb"
 }
