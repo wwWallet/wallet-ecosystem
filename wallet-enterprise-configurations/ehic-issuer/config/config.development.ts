@@ -10,4 +10,5 @@ export = {
 		password: "root",
 		dbname: "ehicissuer"
 	},
+	wwwalletURL: "http://localhost:3000/cb"
 }
