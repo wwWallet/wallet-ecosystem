@@ -119,7 +119,7 @@ if (fs.existsSync(githubTokenFile)) {
 const dbHost = 'wallet-db';
 const dbPort = 3307;
 const dbUser = 'root';
-const dbPassword = 'FD2343OIAJWWE3242424332DAKD312';
+const dbPassword = 'root';
 
 
 if (!fs.existsSync(`${process.cwd()}/docker-compose.yml`) || useComposeTemplate) {
@@ -154,10 +154,10 @@ if (action === "init") {
 function init() {
 	return execSync(`${dockerComposeCommand} run --rm -t --workdir /app/cli --env NODE_PATH=/cli_node_modules wallet-backend-server sh -c '
 		set -e # Exit on error
-		export DB_HOST="${dbHost}"
-		export DB_PORT="${dbPort}"
-		export DB_USER="${dbUser}"
-		export DB_PASSWORD="${dbPassword}"
+		export DB_HOST="wallet-db"
+		export DB_PORT="3307"
+		export DB_USER="root"
+		export DB_PASSWORD="root"
 		export DB_NAME="wallet"
 		./configwallet.js create issuer \
 			--friendlyName "National VID Issuer" \

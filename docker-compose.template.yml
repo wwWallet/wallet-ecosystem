@@ -151,13 +151,13 @@ services:
       - 3307
     environment:
       MARIADB_HOST: wallet-db
-      MARIADB_ROOT_PASSWORD: FD2343OIAJWWE3242424332DAKD312
+      MARIADB_ROOT_PASSWORD: root
       MARIADB_USER: myuser
-      MARIADB_PASSWORD: FD2343OIAJWWE3242424332DAKD312
+      MARIADB_PASSWORD:
       MYSQL_TCP_PORT: 3307
       MYSQL_UNIX_PORT: 3307
     healthcheck:
-      test: ["CMD", "mariadb" ,"-uroot", "-pFD2343OIAJWWE3242424332DAKD312", "--protocol=TCP", "-hlocalhost", "--port=3307",  "-estatus"]
+      test: ["CMD", "mariadb" ,"-uroot", "-proot", "--protocol=TCP", "-hlocalhost", "--port=3307",  "-estatus"]
       start_period: 60s
       #start_interval: 5s  # Not yet supported it seems, but upcoming: https://github.com/docker/compose/issues/10830
       interval: 5s         # Delete this line when start_interval becomes supported
