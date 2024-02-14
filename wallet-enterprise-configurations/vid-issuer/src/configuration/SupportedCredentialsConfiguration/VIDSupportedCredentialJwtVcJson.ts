@@ -5,7 +5,6 @@ import { CredentialSubject } from "../CredentialSubjectBuilders/CredentialSubjec
 import { getVIDByTaxisId } from "../resources/data";
 import { CredentialIssuer } from "../../lib/CredentialIssuerConfig/CredentialIssuer";
 import { SupportedCredentialProtocol } from "../../lib/CredentialIssuerConfig/SupportedCredentialProtocol";
-import { SignVerifiableCredentialJWT } from "@wwwallet/ssi-sdk";
 import { AuthorizationServerState } from "../../entities/AuthorizationServerState.entity";
 import { CredentialView } from "../../authorization/types";
 
@@ -76,24 +75,20 @@ export class VIDSupportedCredentialJwtVcJson implements SupportedCredentialProto
 		const vid: CredentialSubject = {
 			familyName: vidEntry.familyName,
 			firstName: vidEntry.firstName,
-			id: holderDID,
 			personalIdentifier: vidEntry.personalIdentifier,
 			dateOfBirth: vidEntry.birthdate
 		} as any;
 
-    const nonSignedJwt = new SignVerifiableCredentialJWT()
-      .setJti(vidEntry.personalIdentifier)
-			.setSubject(holderDID)
-      .setIssuedAt()
-      .setExpirationTime('1y')
-      .setContext([])
-      .setType(this.getTypes())
-      .setCredentialSubject(vid)
-      .setCredentialSchema("https://api-pilot.ebsi.eu/trusted-schemas-registry/v2/schemas/z8Y6JJnebU2UuQQNc2R8GYqkEiAMj3Hd861rQhsoNWxsM");    
-
-
-		const { jws } = await this.getCredentialIssuerConfig().getSigner()
-			.sign(nonSignedJwt, {});
+		const payload = {
+			"@context": ["https://www.w3.org/2018/credentials/v1"],
+			"type": this.getTypes(),
+			"credentialSubject": {
+				...vid,
+				"id": holderDID,
+			},
+		};
+		const { jws } = await this.getCredentialIssuerConfig().getCredentialSigner()
+			.sign(payload, {});
     const response = {
       format: this.getFormat(),
       credential: jws

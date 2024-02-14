@@ -3,35 +3,58 @@ import 'reflect-metadata';
 import config from "../../config";
 import { CredentialIssuersRepository } from "../lib/CredentialIssuersRepository";
 import { CredentialIssuer } from "../lib/CredentialIssuerConfig/CredentialIssuer";
-import { CredentialIssuersConfiguration, Signer } from "../services/interfaces";
+import { CredentialIssuersConfiguration, CredentialSigner } from "../services/interfaces";
 import { EHICSupportedCredentialJwtVcJson } from "./SupportedCredentialsConfiguration/EHICSupportedCredentialJwtVcJson";
-import { SignVerifiableCredentialJWT } from "@wwwallet/ssi-sdk";
 import { SignJWT, JWTHeaderParameters, importJWK } from "jose";
 import path from "node:path";
 import { KeyIdentifierKeySchema } from "../lib/Identifier";
 import fs from 'fs';
+import { util } from "@cef-ebsi/key-did-resolver";
 
-const issuerKeySetFile = fs.readFileSync(path.join(__dirname, '../../../keys/issuer.w3c.json'), 'utf-8');
+const issuerKeySetFile = fs.readFileSync(path.join(__dirname, '../../../keys/issuer.key.json'), 'utf-8');
 const issuerKeySet = KeyIdentifierKeySchema.parse(JSON.parse(issuerKeySetFile));
 
-const issuerSigner: Signer = {
-	sign: async function (signJwt: SignJWT | SignVerifiableCredentialJWT, headers: JWTHeaderParameters) {
+const issuerSigner: CredentialSigner = {
+	sign: async function (payload: any, headers: JWTHeaderParameters) {
 		const { did } = await this.getDID();
 		const key = await importJWK(issuerKeySet.keys['ES256']?.privateKeyJwk, 'ES256');
-		const jws = await signJwt
-			.setProtectedHeader({ ...headers, alg: 'ES256', kid: issuerKeySet.keys['ES256']?.kid ?? "undefined" })
-			.setIssuer(did)
+		const kid = `${did}#${did.split(':')[2]}`;
+
+		const extendedHeaders = { ...headers, alg: 'ES256', kid: kid };
+
+		const issuanceDate = new Date();
+		const expirationDate = (() => {
+			const expirationDate = new Date(issuanceDate);
+			expirationDate.setFullYear(expirationDate.getFullYear() + 1);
+			return expirationDate;
+		})();
+
+		const extendedPayload = {
+			iss: did,
+			vc: {
+				...payload, // this includes the credential subject, the types and the LD context
+				issuanceDate: issuanceDate.toISOString(),
+				expirationDate: expirationDate.toISOString(),
+				issuer: did,
+			},
+			iat: Math.floor(issuanceDate.getTime() / 1000),
+			exp: Math.floor(expirationDate.getTime() / 1000),
+			sub: payload.credentialSubject.id,
+		};
+		const jws = await new SignJWT(extendedPayload)
+			.setProtectedHeader(extendedHeaders)
 			.sign(key);
 		return { jws };
 	},
 	getPublicKeyJwk: async function () {
-		return { jwk: issuerKeySet.keys['ES256']?.publicKeyJwk ?? "undefined" };
+		const jwk = issuerKeySet.keys['ES256']?.publicKeyJwk;
+		return { jwk: jwk };
 	},
 	getDID: async function () {
-		return { did: issuerKeySet.keys['ES256']?.kid.split('#')[0] ?? "undefined" };
+		const did = util.createDid(issuerKeySet.keys['ES256']?.publicKeyJwk);
+		return { did: did };
 	}
 }
-
 @injectable()
 export class CredentialIssuersConfigurationService implements CredentialIssuersConfiguration {
 
