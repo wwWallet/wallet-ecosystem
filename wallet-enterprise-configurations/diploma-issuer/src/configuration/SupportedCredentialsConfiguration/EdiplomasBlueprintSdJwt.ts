@@ -9,7 +9,7 @@ import { CredentialView } from "../../authorization/types";
 import { SimpleDiplomaCredentialSubjectBuilder } from "../CredentialSubjectBuilders/SimpleDiplomaCredentialSubjectBuilder/SimpleDiplomaCredentialSubjectBuilder";
 
 
-export class EdiplomasBlueprint implements SupportedCredentialProtocol {
+export class EdiplomasBlueprintSdJwt implements SupportedCredentialProtocol {
 
 
   constructor(private credentialIssuerConfig: CredentialIssuer,
@@ -119,22 +119,28 @@ export class EdiplomasBlueprint implements SupportedCredentialProtocol {
 				"textColor": "#ffffff"
 			},
 		};
-		console.log("payload = ", payload)
 		const disclosureFrame = {
 			vc: {
-				name: true
+				credentialSubject: {
+					dateOfBirth: true,
+					achievement: true,
+					eqfLevel: true,
+					diplomaTitle: true,
+					completionDate: true,
+					awardingDate: true,
+					grade: true,
+				}
 			}
 		}
 		const { jws } = await this.getCredentialIssuerConfig().getCredentialSigner()
 			.sign({
 				vc: payload
 			}, {}, disclosureFrame);
-		console.log("JWS = ", jws)
     const response = {
       format: this.getFormat(),
       credential: jws
     };
-
+		console.log("JWS = ", jws)
     return response;
   }
 

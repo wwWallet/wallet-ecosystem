@@ -3,7 +3,7 @@ import 'reflect-metadata';
 import config from "../../config";
 import { CredentialIssuersRepository } from "../lib/CredentialIssuersRepository";
 import { CredentialIssuer } from "../lib/CredentialIssuerConfig/CredentialIssuer";
-import { EdiplomasBlueprint } from "./SupportedCredentialsConfiguration/EdiplomasBlueprint";
+import { EdiplomasBlueprintSdJwt } from "./SupportedCredentialsConfiguration/EdiplomasBlueprintSdJwt";
 import { CredentialIssuersConfiguration, CredentialSigner } from "../services/interfaces";
 import { importJWK } from "jose";
 import path from "node:path";
@@ -56,6 +56,9 @@ const issuerSigner: CredentialSigner = {
 		payload.vc.issuanceDate = issuanceDate.toISOString();
 		payload.iat = Math.floor(issuanceDate.getTime() / 1000);
 
+		payload.iss = did;
+		payload.sub = payload.vc.credentialSubject.id;
+
 		const sdJwt = new SdJwt({
 			header: { ...headers, alg: SignatureAndEncryptionAlgorithm.ES256, kid },
 			payload
@@ -63,7 +66,11 @@ const issuerSigner: CredentialSigner = {
 			.withSigner(signer)
 			.withSaltGenerator(saltGenerator)
 			.withDisclosureFrame(disclosureFrame);
-		return { jws: await sdJwt.toCompact() };
+
+		const credential =  await sdJwt.toCompact();
+		console.log("jws = ", credential)
+
+		return { jws: credential };
 	},
 	getPublicKeyJwk: async function () {
 		const jwk = issuerKeySet.keys['ES256']?.publicKeyJwk;
@@ -89,7 +96,7 @@ export class CredentialIssuersConfigurationService implements CredentialIssuersC
 			// .setDeferredCredentialEndpoint(config.url + "/openid4vci/deferred")
 
 		// diplomaIssuer.addSupportedCredential(new EdiplomasBlueprint(diplomaIssuer, "75"));
-		diplomaIssuer.addSupportedCredential(new EdiplomasBlueprint(diplomaIssuer, "46"));
+		diplomaIssuer.addSupportedCredential(new EdiplomasBlueprintSdJwt(diplomaIssuer, "46"));
 
 		return new CredentialIssuersRepository([
 			diplomaIssuer

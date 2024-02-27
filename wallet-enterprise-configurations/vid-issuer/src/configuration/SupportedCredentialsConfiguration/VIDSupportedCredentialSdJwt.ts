@@ -9,7 +9,7 @@ import { AuthorizationServerState } from "../../entities/AuthorizationServerStat
 import { CredentialView } from "../../authorization/types";
 
 
-export class VIDSupportedCredentialJwtVcJson implements SupportedCredentialProtocol {
+export class VIDSupportedCredentialSdJwt implements SupportedCredentialProtocol {
 
 
   constructor(private credentialIssuerConfig: CredentialIssuer) { }
@@ -86,13 +86,22 @@ export class VIDSupportedCredentialJwtVcJson implements SupportedCredentialProto
 				...vid,
 				"id": holderDID,
 			},
-			"credentialSchema": {
-				"id": "https://api-pilot.ebsi.eu/trusted-schemas-registry/v2/schemas/z8Y6JJnebU2UuQQNc2R8GYqkEiAMj3Hd861rQhsoNWxsM",
-				"type": "JsonSchema",
-			}
 		};
+
+		const disclosureFrame = {
+			vc: {
+				credentialSubject: {
+					familyName: true,
+					firstName: true,
+					dateOfBirth: true,
+					personalIdentifier: true,
+				}
+			}
+		}
 		const { jws } = await this.getCredentialIssuerConfig().getCredentialSigner()
-			.sign(payload, {});
+			.sign({
+				vc: payload
+			}, {}, disclosureFrame);
     const response = {
       format: this.getFormat(),
       credential: jws
