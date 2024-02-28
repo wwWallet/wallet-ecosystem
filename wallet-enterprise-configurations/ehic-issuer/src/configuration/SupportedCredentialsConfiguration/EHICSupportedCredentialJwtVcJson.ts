@@ -5,8 +5,6 @@ import { CredentialSubject } from "../CredentialSubjectBuilders/CredentialSubjec
 import { getEhic } from "../resources/data";
 import { CredentialIssuer } from "../../lib/CredentialIssuerConfig/CredentialIssuer";
 import { SupportedCredentialProtocol } from "../../lib/CredentialIssuerConfig/SupportedCredentialProtocol";
-import { SignVerifiableCredentialJWT } from "@wwwallet/ssi-sdk";
-import { keystoreService } from "../../services/instances";
 import { AuthorizationServerState } from "../../entities/AuthorizationServerState.entity";
 import { CredentialView } from "../../authorization/types";
 
@@ -82,21 +80,26 @@ export class EHICSupportedCredentialJwtVcJson implements SupportedCredentialProt
 			dateOfBirth: ehicEntry.birthdate
 		} as any;
 
-		const nonSignedJwt = new SignVerifiableCredentialJWT()
-			.setJti(ehicEntry.personalIdentifier)
-			.setSubject(holderDID)
-			.setIssuedAt()
-			.setExpirationTime('1y')
-			.setContext([])
-			.setType(this.getTypes())
-			.setCredentialSubject(ehic)
-			.setCredentialSchema("https://");
-
-		const { credential } = await keystoreService.signVcJwt(this.getCredentialIssuerConfig().walletId, nonSignedJwt);
-		const response = {
-			format: this.getFormat(),
-			credential: credential
+		const payload = {
+			"@context": ["https://www.w3.org/2018/credentials/v1"],
+			"type": this.getTypes(),
+			"credentialSubject": {
+				...ehic,
+				"id": holderDID,
+				"achievement": {
+					"name": "University Degree Credential",
+					"description": "A Europass Diploma issued by the University of Athens",
+					"type": "Bachelor",
+					"image": config.url + "/images/EuropassUoaCard.png"
+				},
+			},
 		};
+		const { jws } = await this.getCredentialIssuerConfig().getCredentialSigner()
+			.sign(payload, {});
+    const response = {
+      format: this.getFormat(),
+      credential: jws
+    };
 
 		return response;
 	}

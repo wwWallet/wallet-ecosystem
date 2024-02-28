@@ -48,6 +48,7 @@ export class VIDAuthenticationComponent extends AuthenticationComponent {
 	}
 
 	private personalIdentifierHasBeenExtracted(req: Request): boolean {
+		console.log("VID auth started")
 		if (!req.session.authenticationChain.vidAuthenticationComponent?.personalIdentifier) {
 			return false;
 		}

@@ -162,18 +162,18 @@ function init() {
 		./configwallet.js create issuer \
 			--friendlyName "National VID Issuer" \
 			--url http://wallet-enterprise-vid-issuer:8003 \
-			--did did:ebsi:zyhE5cJ7VVqYT4gZmoKadFt \
-			--client_id did:ebsi:zyhE5cJ7VVqYT4gZmoKadFt
+			--did did:key:zDnaexeQbRxqyGRCuMi4FNxvjyob5dFeYFr8VDWnrcdy5v14H \
+			--client_id did:key:zDnaexeQbRxqyGRCuMi4FNxvjyob5dFeYFr8VDWnrcdy5v14H
 		./configwallet.js create issuer \
 			--friendlyName "University of Athens" \
 			--url http://wallet-enterprise-diploma-issuer:8000/uoa \
-			--did did:ebsi:zpq1XFkNWgsGB6MuvJp21vA \
-			--client_id did:ebsi:zpq1XFkNWgsGB6MuvJp21vA
+			--did did:key:zDnaeZkvNZx2YRUqLpaupbzouPs4SnRtAo4fV3UqwZ5xqBVbg \
+			--client_id did:key:zDnaeZkvNZx2YRUqLpaupbzouPs4SnRtAo4fV3UqwZ5xqBVbg
 		./configwallet.js create issuer \
 			--friendlyName "EHIC Issuer" \
 			--url http://wallet-enterprise-ehic-issuer:8004 \
-			--did did:ebsi:zyhE5cJ7VVqYT4gZmoKadFt3 \
-			--client_id did:ebsi:zyhE5cJ7VVqYT4gZmoKadFt3
+			--did did:key:zDnaemLRtZwZGm1qG9EkdBuuz71KpuNyDJgZ5KMaytD41thuL \
+			--client_id did:key:zDnaemLRtZwZGm1qG9EkdBuuz71KpuNyDJgZ5KMaytD41thuL
 	'`, { stdio: 'inherit' });
 }
 
