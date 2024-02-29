@@ -22,7 +22,7 @@ export class EdiplomasBlueprintSdJwt implements SupportedCredentialProtocol {
     return "urn:credential:ediplomas:blueprint:" + this.blueprintID;
   }
   getFormat(): VerifiableCredentialFormat {
-    return VerifiableCredentialFormat.JWT_VC_JSON;
+    return VerifiableCredentialFormat.VC_SD_JWT;
   }
   getTypes(): string[] {
     return ["VerifiableCredential", "VerifiableAttestation", "Bachelor", this.getId()];
@@ -102,46 +102,47 @@ export class EdiplomasBlueprintSdJwt implements SupportedCredentialProtocol {
 		const payload = {
 			"@context": ["https://www.w3.org/2018/credentials/v1"],
 			"type": this.getTypes(),
+			"id": `urn:certificateId:${diploma.certificateId}`,
 			"credentialSubject": {
-				...diploma,
 				"id": holderDID,
-				"achievement": {
-					"name": "University Degree Credential",
-					"description": "A Europass Diploma issued by the University of Athens",
-					"type": "Bachelor",
-					"image": config.url + "/images/EuropassUoaCard.png"
-				},
-			},
-			"name": "University Degree Credential",
-			"description": "A Europass Diploma issued by the University of Athens",
-			"credentialBranding": {
-				"backgroundColor": "#8ebeeb",
-				"textColor": "#ffffff"
+				"firstName": diploma.firstName,
+				"familyName": diploma.familyName,
+				"dateOfBirth": diploma.dateOfBirth,
+				"grade": diploma.grade,
+				"eqfLevel": diploma.eqfLevel,
+				"diplomaTitle": diploma.diplomaTitle,
+				"certificateId": diploma.certificateId,
+				"blueprintId": this.blueprintID,
+				"completionDate": diploma.completionDate,
+				"awardingDate": diploma.awardingDate,
 			},
 		};
+
 		const disclosureFrame = {
 			vc: {
 				credentialSubject: {
 					dateOfBirth: true,
-					achievement: true,
+					grade: true,
 					eqfLevel: true,
 					diplomaTitle: true,
+					blueprintId: true,
 					completionDate: true,
 					awardingDate: true,
-					grade: true,
 				}
 			}
 		}
+
 		const { jws } = await this.getCredentialIssuerConfig().getCredentialSigner()
 			.sign({
 				vc: payload
 			}, {}, disclosureFrame);
+
     const response = {
       format: this.getFormat(),
       credential: jws
     };
-		console.log("JWS = ", jws)
-    return response;
+
+		return response;
   }
 
 	exportCredentialSupportedObject(): CredentialSupportedJwtVcJson {

@@ -21,7 +21,7 @@ export class VIDSupportedCredentialSdJwt implements SupportedCredentialProtocol 
     return "urn:credential:vid"
   }
   getFormat(): VerifiableCredentialFormat {
-    return VerifiableCredentialFormat.JWT_VC_JSON;
+    return VerifiableCredentialFormat.VC_SD_JWT;
   }
   getTypes(): string[] {
     return ["VerifiableCredential", "VerifiableAttestation", "VerifiableId", this.getId()];

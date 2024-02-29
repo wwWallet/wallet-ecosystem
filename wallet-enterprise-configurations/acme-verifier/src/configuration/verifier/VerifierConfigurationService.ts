@@ -46,6 +46,37 @@ const bachelorDescriptor = {
 	}
 }
 
+const bachelorDescriptorSdJwt = {
+	"id": "Bachelor",
+	"constraints": {
+		"fields": [
+			{
+				"path": [ '$.type' ],
+				"filter": {
+					"type": 'array',
+					"items": { type: 'string' },
+					"contains": { const: 'Bachelor' }
+				}
+			},
+			{
+				"path": [ "$.credentialSubject.id" ],
+				"filter": {}
+			},
+			{
+				"path": [ "$.credentialSubject.familyName" ],
+				"filter": {}
+			},
+			{
+				"path": [ "$.credentialSubject.firstName" ],
+				"filter": {}
+			},
+			{
+				"path": [ "$.credentialSubject.eqfLevel" ],
+				"filter": {},
+			},
+		]
+	}
+}
 
 const europeanHealthInsuranceCardDescriptor = {
 	"id": "EuropeanHealthInsuranceCard",
@@ -110,12 +141,23 @@ const verifiableIdWithBachelorWithEuropeanHealthInsuranceCardPresentationDefinit
 	]
 }
 
+const minimalBachelorSdJwtPresentationDefinition = {
+	"id": "MinimalBachelorSdJwtPresentationDefinition",
+	"title": "Send your minimal Bachelor Diploma",
+	"description": "Required fields: familyName, firstName, eqfLevel",
+	"format": { "vc+sd-jwt": { alg: [ 'ES256' ] } },
+	"input_descriptors": [
+		bachelorDescriptorSdJwt
+	]
+}
+
 @injectable()
 export class VerifierConfigurationService implements VerifierConfigurationInterface {
 
 
 	getPresentationDefinitions(): PresentationDefinitionTypeWithFormat[] {
 		return [
+			minimalBachelorSdJwtPresentationDefinition,
 			{
 				"id": "VerifiableId",
 				"title": "Send your verifiable id card",

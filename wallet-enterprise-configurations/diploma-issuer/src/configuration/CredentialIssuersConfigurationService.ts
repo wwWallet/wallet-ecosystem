@@ -57,6 +57,8 @@ const issuerSigner: CredentialSigner = {
 		payload.iat = Math.floor(issuanceDate.getTime() / 1000);
 
 		payload.iss = did;
+		payload.vc.issuer = did;
+
 		payload.sub = payload.vc.credentialSubject.id;
 
 		const sdJwt = new SdJwt({
@@ -68,7 +70,6 @@ const issuerSigner: CredentialSigner = {
 			.withDisclosureFrame(disclosureFrame);
 
 		const credential =  await sdJwt.toCompact();
-		console.log("jws = ", credential)
 
 		return { jws: credential };
 	},
