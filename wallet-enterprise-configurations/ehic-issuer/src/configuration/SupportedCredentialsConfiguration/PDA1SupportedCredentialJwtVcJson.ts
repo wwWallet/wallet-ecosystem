@@ -9,7 +9,7 @@ import { AuthorizationServerState } from "../../entities/AuthorizationServerStat
 import { CredentialView } from "../../authorization/types";
 
 
-export class EHICSupportedCredentialJwtVcJson implements SupportedCredentialProtocol {
+export class PDA1SupportedCredentialJwtVcJson implements SupportedCredentialProtocol {
 
 
 	constructor(private credentialIssuerConfig: CredentialIssuer) { }
@@ -28,8 +28,8 @@ export class EHICSupportedCredentialJwtVcJson implements SupportedCredentialProt
 	}
 	getDisplay(): Display {
 		return {
-			name: "EHIC Card",
-			logo: { url: config.url + "/images/ehicCard.png" },
+			name: "PDA1 Card",
+			logo: { url: config.url + "/images/pda1.png" },
 			background_color: "#4CC3DD"
 		}
 	}
@@ -86,12 +86,6 @@ export class EHICSupportedCredentialJwtVcJson implements SupportedCredentialProt
 			"credentialSubject": {
 				...ehic,
 				"id": holderDID,
-				"achievement": {
-					"name": "University Degree Credential",
-					"description": "A Europass Diploma issued by the University of Athens",
-					"type": "Bachelor",
-					"image": config.url + "/images/EuropassUoaCard.png"
-				},
 			},
 		};
 		const { jws } = await this.getCredentialIssuerConfig().getCredentialSigner()

@@ -4,7 +4,7 @@ import config from "../../config";
 import { CredentialIssuersRepository } from "../lib/CredentialIssuersRepository";
 import { CredentialIssuer } from "../lib/CredentialIssuerConfig/CredentialIssuer";
 import { CredentialIssuersConfiguration, CredentialSigner } from "../services/interfaces";
-import { EHICSupportedCredentialJwtVcJson } from "./SupportedCredentialsConfiguration/EHICSupportedCredentialJwtVcJson";
+import { PDA1SupportedCredentialJwtVcJson } from "./SupportedCredentialsConfiguration/PDA1SupportedCredentialJwtVcJson";
 import { SignJWT, JWTHeaderParameters, importJWK } from "jose";
 import path from "node:path";
 import { KeyIdentifierKeySchema } from "../lib/Identifier";
@@ -60,31 +60,31 @@ export class CredentialIssuersConfigurationService implements CredentialIssuersC
 
 
 	public registeredCredentialIssuerRepository(): CredentialIssuersRepository {
-		const ehicIssuer = new CredentialIssuer()
+		const pda1Issuer = new CredentialIssuer()
 			.setCredentialIssuerIdentifier(config.url)
 			.setSigner(issuerSigner)
 			.setAuthorizationServerURL(config.url)
 			.setCredentialEndpoint(config.url + "/openid4vci/credential")
 			// .setDeferredCredentialEndpoint(config.url + "/openid4vci/deferred")
 
-		// ehicIssuer.addSupportedCredential(new CTWalletSameInTimeSupportedCredential(ehicIssuer));
-		// ehicIssuer.addSupportedCredential(new CTWalletSameDeferredSupportedCredential(ehicIssuer));
-		// ehicIssuer.addSupportedCredential(new CTWalletSamePreAuthorisedSupportedCredential(ehicIssuer));
-		ehicIssuer.addSupportedCredential(new EHICSupportedCredentialJwtVcJson(ehicIssuer));
+		// pda1Issuer.addSupportedCredential(new CTWalletSameInTimeSupportedCredential(pda1Issuer));
+		// pda1Issuer.addSupportedCredential(new CTWalletSameDeferredSupportedCredential(pda1Issuer));
+		// pda1Issuer.addSupportedCredential(new CTWalletSamePreAuthorisedSupportedCredential(pda1Issuer));
+		pda1Issuer.addSupportedCredential(new PDA1SupportedCredentialJwtVcJson(pda1Issuer));
 
-		// const ehicIssuer2 = new CredentialIssuer()
+		// const pda1Issuer2 = new CredentialIssuer()
 		// 	.setCredentialIssuerIdentifier(config.url + "/vid")
 		// 	.setWalletId("conformant")
 		// 	.setAuthorizationServerURL(config.url)
 		// 	.setCredentialEndpoint(config.url + "/vid/openid4vci/credential")
 		// 	// .setDeferredCredentialEndpoint(config.url + "/vid/openid4vci/deferred");
-		// ehicIssuer2.addSupportedCredential(new CTWalletSameInTimeSupportedCredential(ehicIssuer2));
-		// ehicIssuer2.addSupportedCredential(new CTWalletSameDeferredSupportedCredential(ehicIssuer2));
-		// ehicIssuer2.addSupportedCredential(new CTWalletSamePreAuthorisedSupportedCredential(ehicIssuer2));
+		// pda1Issuer2.addSupportedCredential(new CTWalletSameInTimeSupportedCredential(pda1Issuer2));
+		// pda1Issuer2.addSupportedCredential(new CTWalletSameDeferredSupportedCredential(pda1Issuer2));
+		// pda1Issuer2.addSupportedCredential(new CTWalletSamePreAuthorisedSupportedCredential(pda1Issuer2));
 	
 		return new CredentialIssuersRepository([
-			ehicIssuer,
-			// ehicIssuer2
+			pda1Issuer,
+			// pda1Issuer2
 		]);
 	}
 

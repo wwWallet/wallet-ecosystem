@@ -17,7 +17,7 @@ const vidRepository: VIDEntry[] = [
 	}
 ]
 
-type EHICEntry = {
+type PDA1Entry = {
 	personalIdentifier: string;
 	firstName: string;
 	familyName: string;
@@ -26,7 +26,7 @@ type EHICEntry = {
 	birthdate: string;
 }
 
-const ehicRepository: EHICEntry[] = [
+const ehicRepository: PDA1Entry[] = [
 	{
 		personalIdentifier: "032429484252432",
 		firstName: "John",
@@ -50,5 +50,5 @@ export {
 	getVIDByTaxisId,
 	getEhic,
 	VIDEntry,
-	EHICEntry
+	PDA1Entry
 }
