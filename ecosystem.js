@@ -170,7 +170,7 @@ function init() {
 			--did did:key:zDnaeZkvNZx2YRUqLpaupbzouPs4SnRtAo4fV3UqwZ5xqBVbg \
 			--client_id did:key:zDnaeZkvNZx2YRUqLpaupbzouPs4SnRtAo4fV3UqwZ5xqBVbg
 		./configwallet.js create issuer \
-			--friendlyName "EHIC Issuer" \
+			--friendlyName "PDA1 Issuer" \
 			--url http://wallet-enterprise-ehic-issuer:8004 \
 			--did did:key:zDnaemLRtZwZGm1qG9EkdBuuz71KpuNyDJgZ5KMaytD41thuL \
 			--client_id did:key:zDnaemLRtZwZGm1qG9EkdBuuz71KpuNyDJgZ5KMaytD41thuL
