@@ -115,6 +115,9 @@ export class EdiplomasBlueprint implements SupportedCredentialProtocol {
 			"name": "University Degree Credential",
 			"description": "A Europass Diploma issued by the University of Athens",
 			"credentialBranding": {
+				"image": {
+					"url": config.url + "/images/EuropassUoaCard.png"
+				},
 				"backgroundColor": "#8ebeeb",
 				"textColor": "#ffffff"
 			},
