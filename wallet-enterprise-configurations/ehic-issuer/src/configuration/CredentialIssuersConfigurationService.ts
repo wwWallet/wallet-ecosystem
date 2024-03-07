@@ -35,7 +35,13 @@ const issuerSigner: CredentialSigner = {
 				...payload, // this includes the credential subject, the types and the LD context
 				issuanceDate: issuanceDate.toISOString(),
 				expirationDate: expirationDate.toISOString(),
-				issuer: did,
+				issuer: {
+					id: did,
+					name: "EHIC Issuer",
+					iconUrl: `${config.url}/images/coat_of_arms_greece.png`,
+					image: `${config.url}/images/coat_of_arms_greece.png`,
+					logoUrl: `${config.url}/images/coat_of_arms_greece.png`
+				},
 			},
 			iat: Math.floor(issuanceDate.getTime() / 1000),
 			exp: Math.floor(expirationDate.getTime() / 1000),

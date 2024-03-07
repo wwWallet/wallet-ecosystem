@@ -89,7 +89,13 @@ export class VIDSupportedCredentialJwtVcJson implements SupportedCredentialProto
 			"credentialSchema": {
 				"id": "https://api-pilot.ebsi.eu/trusted-schemas-registry/v2/schemas/z8Y6JJnebU2UuQQNc2R8GYqkEiAMj3Hd861rQhsoNWxsM",
 				"type": "JsonSchema",
-			}
+			},
+			"name": "Verifiable ID",
+			"description": "A verifiable ID credential issued by the National Verifiable ID Issuer",
+			"credentialBranding": {
+				"backgroundColor": "#4cc3de",
+				"textColor": "#ffffff"
+			},
 		};
 		const { jws } = await this.getCredentialIssuerConfig().getCredentialSigner()
 			.sign(payload, {});

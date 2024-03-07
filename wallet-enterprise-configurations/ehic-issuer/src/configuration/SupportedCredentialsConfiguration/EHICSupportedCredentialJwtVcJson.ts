@@ -86,12 +86,12 @@ export class EHICSupportedCredentialJwtVcJson implements SupportedCredentialProt
 			"credentialSubject": {
 				...ehic,
 				"id": holderDID,
-				"achievement": {
-					"name": "University Degree Credential",
-					"description": "A Europass Diploma issued by the University of Athens",
-					"type": "Bachelor",
-					"image": config.url + "/images/EuropassUoaCard.png"
-				},
+			},
+			"name": "EHIC Card",
+			"description": "A European Health Insurance Card issued by the National EHIC Issuer",
+			"credentialBranding": {
+				"backgroundColor": "#2e4e84",
+				"textColor": "#ffffff"
 			},
 		};
 		const { jws } = await this.getCredentialIssuerConfig().getCredentialSigner()
