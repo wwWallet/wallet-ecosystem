@@ -67,8 +67,8 @@ const europeanHealthInsuranceCardDescriptor = {
 
 const verifiableIdWithBachelorPresentationDefinition = {
 	"id": "VerifiableIdWithBachelor",
-	"title": "Send your verifiable id card and bachelor",
-	"description": "Send your Verifiable id and bachelor Bachelor",
+	"title": "Send your Verifiable ID card and bachelor",
+	"description": "Send your Verifiable ID and bachelor Bachelor",
 	"format": { jwt_vc: { alg: [ 'ES256' ] },jwt_vc_json: { alg: [ 'ES256' ] }, jwt_vp: { alg: [ 'ES256' ] } },
 	"input_descriptors": [
 		verifiableIdDescriptor,
@@ -78,8 +78,8 @@ const verifiableIdWithBachelorPresentationDefinition = {
 
 const verifiableIdWithEuropeanHealthInsuranceCardPresentationDefinition = {
 	"id": "VerifiableIdWithEuropeanHealthInsuranceCard",
-	"title": "Send your verifiable id card and European Health Insurance Card",
-	"description": "Send your Verifiable id and bachelor Bachelor",
+	"title": "Send your Verifiable ID card and European Health Insurance Card",
+	"description": "Send your Verifiable ID and bachelor Bachelor",
 	"format": { jwt_vc: { alg: [ 'ES256' ] },jwt_vc_json: { alg: [ 'ES256' ] }, jwt_vp: { alg: [ 'ES256' ] } },
 	"input_descriptors": [
 		verifiableIdDescriptor,
@@ -89,8 +89,8 @@ const verifiableIdWithEuropeanHealthInsuranceCardPresentationDefinition = {
 
 const bachelorWithEuropeanHealthInsuranceCardPresentationDefinition = {
 	"id": "BachelorWithEuropeanHealthInsuranceCard",
-	"title": "Send your verifiable id card and European Health Insurance Card",
-	"description": "Send your Verifiable id and bachelor Bachelor",
+	"title": "Send your Bachelor Diploma and European Health Insurance Card",
+	"description": "Send your Bachelor Diploma and European Health Insurance Card",
 	"format": { jwt_vc: { alg: [ 'ES256' ] },jwt_vc_json: { alg: [ 'ES256' ] }, jwt_vp: { alg: [ 'ES256' ] } },
 	"input_descriptors": [
 		bachelorDescriptor,
@@ -100,8 +100,8 @@ const bachelorWithEuropeanHealthInsuranceCardPresentationDefinition = {
 
 const verifiableIdWithBachelorWithEuropeanHealthInsuranceCardPresentationDefinition = {
 	"id": "VerifiableIdWithBachelorWithEuropeanHealthInsuranceCard",
-	"title": "Send your verifiable id card and European Health Insurance Card",
-	"description": "Send your Verifiable id and bachelor Bachelor",
+	"title": "Send your Verifiable ID card, Bachelor Diploma and European Health Insurance Card",
+	"description": "Send your Verifiable ID card, Bachelor Diploma and European Health Insurance Card",
 	"format": { jwt_vc: { alg: [ 'ES256' ] },jwt_vc_json: { alg: [ 'ES256' ] }, jwt_vp: { alg: [ 'ES256' ] } },
 	"input_descriptors": [
 		verifiableIdDescriptor,
@@ -109,6 +109,48 @@ const verifiableIdWithBachelorWithEuropeanHealthInsuranceCardPresentationDefinit
 		europeanHealthInsuranceCardDescriptor,
 	]
 }
+
+
+// const projectManagerPresentationDefinition = {
+// 	"id": "Multiple", // scope name
+// 	"title": "Project Manager",
+// 	"description": "Apply for Project Manager",
+// 	"format": { jwt_vc: { alg: [ 'ES256' ] },jwt_vc_json: { alg: [ 'EdDSA' ] }, jwt_vp: { alg: [ 'ES256' ] } },
+// 	"input_descriptors": [
+// 		{
+// 			"id": "Open Badge",
+// 			"constraints": {
+// 				"fields": [
+// 					{
+// 						"path": [ '$.vc.type' ],
+// 						"filter": {
+// 							"type": 'array',
+// 							"items": { type: 'string' },
+// 							"contains": { const: 'OpenBadgeCredential' }
+// 						}
+// 					}
+// 				]
+// 			}
+// 		},
+// 		{
+// 			"id": "Residence",
+// 			"constraints": {
+// 				"fields": [
+// 					{
+// 						"path": [ '$.vc.type' ],
+// 						"filter": {
+// 							"type": 'array',
+// 							"items": { type: 'string' },
+// 							"contains": { const: 'PermanentResidentCard' }
+// 						}
+// 					}
+// 				]
+// 			}
+// 		},
+// 		bachelorDescriptor
+// 	]
+// }
+
 
 @injectable()
 export class VerifierConfigurationService implements VerifierConfigurationInterface {
@@ -118,8 +160,8 @@ export class VerifierConfigurationService implements VerifierConfigurationInterf
 		return [
 			{
 				"id": "VerifiableId",
-				"title": "Send your verifiable id card",
-				"description": "Send your Bachelor Diploma to apply for 'Software Engineer - Core'",
+				"title": "Send your Verifiable ID card",
+				"description": "Send your Verifiable ID card ",
 				"format": { jwt_vc: { alg: [ 'ES256' ] },jwt_vc_json: { alg: [ 'ES256' ] }, jwt_vp: { alg: [ 'ES256' ] } },
 				"input_descriptors": [
 					verifiableIdDescriptor
@@ -137,7 +179,7 @@ export class VerifierConfigurationService implements VerifierConfigurationInterf
 			{
 				"id": "EuropeanHealthInsuranceCard",
 				"title": "European HealthInsurance Card",
-				"description": "Send your ehic card",
+				"description": "Send your EHIC card",
 				"format": { jwt_vc: { alg: [ 'ES256' ] },jwt_vc_json: { alg: [ 'ES256' ] }, jwt_vp: { alg: [ 'ES256' ] } },
 				"input_descriptors": [
 					europeanHealthInsuranceCardDescriptor
@@ -147,45 +189,7 @@ export class VerifierConfigurationService implements VerifierConfigurationInterf
 			verifiableIdWithEuropeanHealthInsuranceCardPresentationDefinition,
 			bachelorWithEuropeanHealthInsuranceCardPresentationDefinition,
 			verifiableIdWithBachelorWithEuropeanHealthInsuranceCardPresentationDefinition,
-			{
-				"id": "Multiple", // scope name
-				"title": "Project Manager",
-				"description": "Apply for Project Manager",
-				"format": { jwt_vc: { alg: [ 'ES256' ] },jwt_vc_json: { alg: [ 'EdDSA' ] }, jwt_vp: { alg: [ 'ES256' ] } },
-				"input_descriptors": [
-					{
-						"id": "Open Badge",
-						"constraints": {
-							"fields": [
-								{
-									"path": [ '$.vc.type' ],
-									"filter": {
-										"type": 'array',
-										"items": { type: 'string' },
-										"contains": { const: 'OpenBadgeCredential' }
-									}
-								}
-							]
-						}
-					},
-					{
-						"id": "Residence",
-						"constraints": {
-							"fields": [
-								{
-									"path": [ '$.vc.type' ],
-									"filter": {
-										"type": 'array',
-										"items": { type: 'string' },
-										"contains": { const: 'PermanentResidentCard' }
-									}
-								}
-							]
-						}
-					},
-					bachelorDescriptor
-				]
-			}
+			// projectManagerPresentationDefinition
 		]
 	}
 
