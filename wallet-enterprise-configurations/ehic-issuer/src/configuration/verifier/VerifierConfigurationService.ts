@@ -15,7 +15,36 @@ export type PresentationDefinitionTypeWithFormat = {
 export class VerifierConfigurationService implements VerifierConfigurationInterface {
 
 	getPresentationDefinitions(): PresentationDefinitionTypeWithFormat[] {
-		return []
+		return [
+			{
+				"id": "vid", // scope name
+				"format": { jwt_vc: { alg: [ 'ES256' ] }, jwt_vp: { alg: [ 'ES256' ] } },
+				"input_descriptors": [
+					{
+						"id": "VID",
+						"constraints": {
+							"fields": [
+								{
+									"path": [
+										"$.credentialSubject.personalIdentifier"
+									],
+									"filter": {}
+								},
+								{
+									"path": [
+										"$.credentialSchema.id"
+									],
+									"filter": {
+										"type": "string",
+										"const": "https://api-pilot.ebsi.eu/trusted-schemas-registry/v2/schemas/z8Y6JJnebU2UuQQNc2R8GYqkEiAMj3Hd861rQhsoNWxsM"
+									}
+								}
+							]
+						}
+					}
+				]
+			}
+		]
 	}
 
 	getConfiguration(): OpenidForPresentationsConfiguration {

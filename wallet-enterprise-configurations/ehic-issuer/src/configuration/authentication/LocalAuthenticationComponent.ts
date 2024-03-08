@@ -5,6 +5,7 @@ import { AuthenticationComponent } from "../../authentication/AuthenticationComp
 import AppDataSource from "../../AppDataSource";
 import { AuthorizationServerState } from "../../entities/AuthorizationServerState.entity";
 import locale from "../locale";
+import { UserAuthenticationMethod } from "../../types/UserAuthenticationMethod.enum";
 
 
 
@@ -24,6 +25,12 @@ export class LocalAuthenticationComponent extends AuthenticationComponent {
 		
 		return super.authenticate(req, res, async () => {
 			if (await this.isAuthenticated(req)) {
+				return next();
+			}
+
+			if (req.authorizationServerState.authenticationMethod &&
+				req.authorizationServerState.authenticationMethod != UserAuthenticationMethod.SSO) {
+					
 				return next();
 			}
 	
