@@ -3,9 +3,13 @@ import { AuthenticationChainBuilder } from "../../authentication/AuthenticationC
 import { LocalAuthenticationComponent } from "./LocalAuthenticationComponent";
 import { VerifierAuthenticationComponent } from "./VerifierAuthenticationComponent";
 import { IssuerSelectionComponent } from "./IssuerSelectionComponent";
+import { AuthenticationMethodSelectionComponent } from "./AuthenticationMethodSelectionComponent";
+import { VIDAuthenticationComponent } from "./VIDAuthenticationComponent";
 
 
 export const authChain = new AuthenticationChainBuilder()
+	.addAuthenticationComponent(new AuthenticationMethodSelectionComponent("auth-method", CONSENT_ENTRYPOINT))
+	.addAuthenticationComponent(new VIDAuthenticationComponent("vid-authentication", CONSENT_ENTRYPOINT))
 	.addAuthenticationComponent(new LocalAuthenticationComponent("1-local", CONSENT_ENTRYPOINT))
 	.addAuthenticationComponent(new IssuerSelectionComponent("2-issuer-selection", CONSENT_ENTRYPOINT))
 	.build();
