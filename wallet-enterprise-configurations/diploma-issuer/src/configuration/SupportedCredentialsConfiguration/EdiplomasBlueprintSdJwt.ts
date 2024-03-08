@@ -115,6 +115,21 @@ export class EdiplomasBlueprintSdJwt implements SupportedCredentialProtocol {
 				"blueprintId": this.blueprintID,
 				"completionDate": diploma.completionDate,
 				"awardingDate": diploma.awardingDate,
+				"achievement": {
+					"name": "University Degree Credential",
+					"description": "A Europass Diploma issued by the University of Athens",
+					"type": "Bachelor",
+					"image": config.url + "/images/EuropassUoaCard.png"
+				},
+			},
+			"name": "University Degree Credential",
+			"description": "A Europass Diploma issued by the University of Athens",
+			"credentialBranding": {
+				"image": {
+					"url": config.url + "/images/EuropassUoaCard.png"
+				},
+				"backgroundColor": "#8ebeeb",
+				"textColor": "#ffffff"
 			},
 		};
 

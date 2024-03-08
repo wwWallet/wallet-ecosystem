@@ -87,6 +87,13 @@ export class EHICSupportedCredentialSdJwt implements SupportedCredentialProtocol
 				...ehic,
 				"id": holderDID,
 			},
+			"credentialBranding": {
+				"image": {
+					"url": config.url + "/images/ehicCard.png"
+				},
+				"backgroundColor": "#8ebeeb",
+				"textColor": "#ffffff"
+			},
 		};
 
 		const disclosureFrame = {
