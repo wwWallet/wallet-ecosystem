@@ -86,6 +86,13 @@ export class VIDSupportedCredentialJwtVcJson implements SupportedCredentialProto
 				...vid,
 				"id": holderDID,
 			},
+			"credentialBranding": {
+				"image": {
+					"url": config.url + "/images/vidCard.png"
+				},
+				"backgroundColor": "#8ebeeb",
+				"textColor": "#ffffff"
+			},
 			"credentialSchema": {
 				"id": "https://api-pilot.ebsi.eu/trusted-schemas-registry/v2/schemas/z8Y6JJnebU2UuQQNc2R8GYqkEiAMj3Hd861rQhsoNWxsM",
 				"type": "JsonSchema",

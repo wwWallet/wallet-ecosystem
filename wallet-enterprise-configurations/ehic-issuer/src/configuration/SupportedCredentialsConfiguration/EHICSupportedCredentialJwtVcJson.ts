@@ -93,6 +93,13 @@ export class EHICSupportedCredentialJwtVcJson implements SupportedCredentialProt
 					"image": config.url + "/images/EuropassUoaCard.png"
 				},
 			},
+			"credentialBranding": {
+				"image": {
+					"url": config.url + "/images/ehicCard.png"
+				},
+				"backgroundColor": "#8ebeeb",
+				"textColor": "#ffffff"
+			},
 		};
 		const { jws } = await this.getCredentialIssuerConfig().getCredentialSigner()
 			.sign(payload, {});
