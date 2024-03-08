@@ -26,12 +26,19 @@ block layout-content
 						.credential-box(style=`display: flex; flex-direction: column; justify-content: flex-start; align-items: flex-start; position: relative; padding: 10px;`)
 							img(style="width: 240px; height: 150px; border-radius: 10px;")(src=imageUrl)
 
-				h3 Details
+				h3 Requested claims extracted from credentials
+
+				// Text area to display claims
+				textarea#json-textarea(style="border: 1px solid #ccc; padding: 10px; margin-bottom:20px; padding-top:0px; background-color: white; color: black; overflow: auto; resize: vertical; width:500px; min-height: 200px;")
+					//- Display the 'credentialPayloads' JSON object
+					| #{JSON.stringify(presentationClaims, null, 2)}
+
+				h3 Credentials
 
 				// Text area to display credentials JSON format
 				textarea#json-textarea(style="border: 1px solid #ccc; padding: 10px; margin-bottom:20px; padding-top:0px; background-color: white; color: black; overflow: auto; resize: vertical; width:500px; min-height: 200px;")
 					//- Display the 'credentialPayloads' JSON object
-					| #{JSON.stringify(presentationClaims, null, 2)}
+					| #{JSON.stringify(credentialPayloads, null, 2)}
 
 
 	// JavaScript to show the spinner for 2 seconds and then hide it
