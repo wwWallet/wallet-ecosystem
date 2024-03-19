@@ -9,7 +9,7 @@ import { AuthorizationServerState } from "../../entities/AuthorizationServerStat
 import { CredentialView } from "../../authorization/types";
 
 
-export class EHICSupportedCredentialJwtVcJson implements SupportedCredentialProtocol {
+export class EHICSupportedCredentialSdJwt implements SupportedCredentialProtocol {
 
 
 	constructor(private credentialIssuerConfig: CredentialIssuer) { }
@@ -21,7 +21,7 @@ export class EHICSupportedCredentialJwtVcJson implements SupportedCredentialProt
 		return "urn:credential:ehic"
 	}
 	getFormat(): VerifiableCredentialFormat {
-		return VerifiableCredentialFormat.JWT_VC_JSON;
+		return VerifiableCredentialFormat.VC_SD_JWT;
 	}
 	getTypes(): string[] {
 		return ["VerifiableCredential", "VerifiableAttestation", "EuropeanHealthInsuranceCard", this.getId()];
@@ -86,12 +86,6 @@ export class EHICSupportedCredentialJwtVcJson implements SupportedCredentialProt
 			"credentialSubject": {
 				...ehic,
 				"id": holderDID,
-				"achievement": {
-					"name": "University Degree Credential",
-					"description": "A Europass Diploma issued by the University of Athens",
-					"type": "Bachelor",
-					"image": config.url + "/images/EuropassUoaCard.png"
-				},
 			},
 			"credentialBranding": {
 				"image": {
@@ -101,8 +95,19 @@ export class EHICSupportedCredentialJwtVcJson implements SupportedCredentialProt
 				"textColor": "#ffffff"
 			},
 		};
+
+		const disclosureFrame = {
+			vc: {
+				credentialSubject: {
+					dateOfBirth: true,
+					personalIdentifier: true,
+				}
+			}
+		}
 		const { jws } = await this.getCredentialIssuerConfig().getCredentialSigner()
-			.sign(payload, {});
+			.sign({
+				vc: payload
+			}, {}, disclosureFrame);
     const response = {
       format: this.getFormat(),
       credential: jws

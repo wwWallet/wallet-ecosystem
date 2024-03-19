@@ -9,7 +9,7 @@ import { AuthorizationServerState } from "../../entities/AuthorizationServerStat
 import { CredentialView } from "../../authorization/types";
 
 
-export class VIDSupportedCredentialJwtVcJson implements SupportedCredentialProtocol {
+export class VIDSupportedCredentialSdJwt implements SupportedCredentialProtocol {
 
 
   constructor(private credentialIssuerConfig: CredentialIssuer) { }
@@ -21,7 +21,7 @@ export class VIDSupportedCredentialJwtVcJson implements SupportedCredentialProto
     return "urn:credential:vid"
   }
   getFormat(): VerifiableCredentialFormat {
-    return VerifiableCredentialFormat.JWT_VC_JSON;
+    return VerifiableCredentialFormat.VC_SD_JWT;
   }
   getTypes(): string[] {
     return ["VerifiableCredential", "VerifiableAttestation", "VerifiableId", this.getId()];
@@ -98,8 +98,21 @@ export class VIDSupportedCredentialJwtVcJson implements SupportedCredentialProto
 				"type": "JsonSchema",
 			}
 		};
+
+		const disclosureFrame = {
+			vc: {
+				credentialSubject: {
+					familyName: true,
+					firstName: true,
+					dateOfBirth: true,
+					personalIdentifier: true,
+				}
+			}
+		}
 		const { jws } = await this.getCredentialIssuerConfig().getCredentialSigner()
-			.sign(payload, {});
+			.sign({
+				vc: payload
+			}, {}, disclosureFrame);
     const response = {
       format: this.getFormat(),
       credential: jws

@@ -4,7 +4,6 @@ import { ParsedQs } from "qs";
 import { AuthenticationComponent } from "../../authentication/AuthenticationComponent";
 import AppDataSource from "../../AppDataSource";
 import { AuthorizationServerState } from "../../entities/AuthorizationServerState.entity";
-import base64url from "base64url";
 import { VerifiablePresentationEntity } from "../../entities/VerifiablePresentation.entity";
 import config from "../../../config";
 import { CONSENT_ENTRYPOINT } from "../../authorization/constants";
@@ -72,15 +71,13 @@ export class VIDAuthenticationComponent extends AuthenticationComponent {
 			.where("state.vid_auth_state = :vid_auth_state", { vid_auth_state: state })
 			.getOne();
 
-		if (!authorizationServerState || !vp_token) {
+		if (!authorizationServerState || !vp_token || !queryRes.claims || !queryRes.claims["VID"]) {
 			return;
 		}
-
-		// unwrap the vp_token to find the personal identifier inside the vp_token
-		const vpPayload = JSON.parse(base64url.decode(vp_token.split('.')[1])) as { vp: any };
-		const credential = vpPayload.vp.verifiableCredential[0];
-		const vcPayload = JSON.parse(base64url.decode(credential.split('.')[1])) as { vc: any };
-		const personalIdentifier = vcPayload.vc.credentialSubject.personalIdentifier as string;
+		const personalIdentifier = queryRes.claims["VID"].filter((claim) => claim.name == 'personalIdentifier')[0].value ?? null;
+		if (!personalIdentifier) {
+			return;
+		}
 		authorizationServerState.personalIdentifier = personalIdentifier;
 		authorizationServerState.ssn = personalIdentifier; // update the ssn as well, because this will be used to fetch the diplomas
 
