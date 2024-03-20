@@ -98,8 +98,8 @@ const europeanHealthInsuranceCardDescriptor = {
 
 const verifiableIdWithBachelorPresentationDefinition = {
 	"id": "VerifiableIdWithBachelor",
-	"title": "Send your Verifiable ID card and bachelor",
-	"description": "Send your Verifiable ID and bachelor Bachelor",
+	"title": "Verifiable ID and Bachelor Diploma",
+	"description": "Send your Verifiable ID along with your Bachelor Diploma ",
 	"format": { "vc+sd-jwt": { alg: [ 'ES256' ] },jwt_vc_json: { alg: [ 'ES256' ] }, jwt_vp: { alg: [ 'ES256' ] } },
 	"input_descriptors": [
 		verifiableIdDescriptor,
@@ -109,8 +109,8 @@ const verifiableIdWithBachelorPresentationDefinition = {
 
 const verifiableIdWithEuropeanHealthInsuranceCardPresentationDefinition = {
 	"id": "VerifiableIdWithEuropeanHealthInsuranceCard",
-	"title": "Send your Verifiable ID card and European Health Insurance Card",
-	"description": "Send your Verifiable ID and bachelor Bachelor",
+	"title": "Verifiable ID and European Health Insurance Card",
+	"description": "Send your Verifiable ID along with your European Health Insurance Card",
 	"format": { "vc+sd-jwt": { alg: [ 'ES256' ] },jwt_vc_json: { alg: [ 'ES256' ] }, jwt_vp: { alg: [ 'ES256' ] } },
 	"input_descriptors": [
 		verifiableIdDescriptor,
@@ -120,8 +120,8 @@ const verifiableIdWithEuropeanHealthInsuranceCardPresentationDefinition = {
 
 const bachelorWithEuropeanHealthInsuranceCardPresentationDefinition = {
 	"id": "BachelorWithEuropeanHealthInsuranceCard",
-	"title": "Send your Bachelor Diploma and European Health Insurance Card",
-	"description": "Send your Bachelor Diploma and European Health Insurance Card",
+	"title": "Bachelor Diploma and European Health Insurance Card",
+	"description": "Send your Bachelor Diploma along with your European Health Insurance Card ",
 	"format": { "vc+sd-jwt": { alg: [ 'ES256' ] },jwt_vc_json: { alg: [ 'ES256' ] }, jwt_vp: { alg: [ 'ES256' ] } },
 	"input_descriptors": [
 		bachelorDescriptor,
@@ -131,8 +131,8 @@ const bachelorWithEuropeanHealthInsuranceCardPresentationDefinition = {
 
 const verifiableIdWithBachelorWithEuropeanHealthInsuranceCardPresentationDefinition = {
 	"id": "VerifiableIdWithBachelorWithEuropeanHealthInsuranceCard",
-	"title": "Send your Verifiable ID card, Bachelor Diploma and European Health Insurance Card",
-	"description": "Send your Verifiable ID card, Bachelor Diploma and European Health Insurance Card",
+	"title": "Verifiable ID, Bachelor Diploma and European Health Insurance Card",
+	"description": "Send your Verifiable ID, Bachelor Diploma and European Health Insurance Card",
 	"format": { "vc+sd-jwt": { alg: [ 'ES256' ] },jwt_vc_json: { alg: [ 'ES256' ] }, jwt_vp: { alg: [ 'ES256' ] } },
 	"input_descriptors": [
 		verifiableIdDescriptor,
@@ -143,8 +143,8 @@ const verifiableIdWithBachelorWithEuropeanHealthInsuranceCardPresentationDefinit
 
 const minimalBachelorSdJwtPresentationDefinition = {
 	"id": "MinimalBachelorSdJwtPresentationDefinition",
-	"title": "Send your minimal Bachelor Diploma",
-	"description": "Required fields: familyName, firstName, eqfLevel",
+	"title": "Minimal Bachelor Diploma",
+	"description": "Required Fields: familyName, firstName, eqfLevel",
 	"format": { "vc+sd-jwt": { alg: [ 'ES256' ] } },
 	"input_descriptors": [
 		bachelorDescriptorSdJwt
@@ -198,43 +198,11 @@ export class VerifierConfigurationService implements VerifierConfigurationInterf
 
 	getPresentationDefinitions(): PresentationDefinitionTypeWithFormat[] {
 		return [
-			minimalBachelorSdJwtPresentationDefinition,
 			{
-				"id": "VerifiableId",
-				"title": "Send your Verifiable ID card",
-				"description": "Send your Verifiable ID card ",
-				"format": { "vc+sd-jwt": { alg: [ 'ES256' ] },jwt_vc_json: { alg: [ 'ES256' ] }, jwt_vp: { alg: [ 'ES256' ] } },
-				"input_descriptors": [
-					verifiableIdDescriptor
-				]
-			},
-			{
-				"id": "Bachelor",
-				"title": "Software Engineer - Core",
-				"description": "Send your Bachelor Diploma to apply for 'Software Engineer - Core'",
-				"format": { "vc+sd-jwt": { alg: [ 'ES256' ] },jwt_vc_json: { alg: [ 'ES256' ] }, jwt_vp: { alg: [ 'ES256' ] } },
-				"input_descriptors": [
-					bachelorDescriptor
-				]
-			},
-			{
-				"id": "EuropeanHealthInsuranceCard",
-				"title": "European HealthInsurance Card",
-				"description": "Send your EHIC card",
-				"format": { "vc+sd-jwt": { alg: [ 'ES256' ] },jwt_vc_json: { alg: [ 'ES256' ] }, jwt_vp: { alg: [ 'ES256' ] } },
-				"input_descriptors": [
-					europeanHealthInsuranceCardDescriptor
-				]
-			},
-			verifiableIdWithBachelorPresentationDefinition,
-			verifiableIdWithEuropeanHealthInsuranceCardPresentationDefinition,
-			bachelorWithEuropeanHealthInsuranceCardPresentationDefinition,
-			verifiableIdWithBachelorWithEuropeanHealthInsuranceCardPresentationDefinition,
-			{
-				"title": "Minimal VID",
-				"description": "Minimal VID",
+				"title": "Minimal Verifiable ID",
+				"description": "Required Fields: personalIdentifier",
 				"id": "vid", // scope name
-				"format": { "vc+sd-jwt": { alg: [ 'ES256' ] }, jwt_vp: { alg: [ 'ES256' ] } },
+				"format": { "vc+sd-jwt": { alg: ['ES256'] }, jwt_vp: { alg: ['ES256'] } },
 				"input_descriptors": [
 					{
 						"id": "VID",
@@ -260,6 +228,38 @@ export class VerifierConfigurationService implements VerifierConfigurationInterf
 					}
 				]
 			},
+			{
+				"id": "VerifiableId",
+				"title": "Verifiable ID",
+				"description": "Send your Verifiable ID",
+				"format": { "vc+sd-jwt": { alg: [ 'ES256' ] },jwt_vc_json: { alg: [ 'ES256' ] }, jwt_vp: { alg: [ 'ES256' ] } },
+				"input_descriptors": [
+					verifiableIdDescriptor
+				]
+			},
+			minimalBachelorSdJwtPresentationDefinition,
+			{
+				"id": "Bachelor",
+				"title": "Bachelor Diploma",
+				"description": "Send your Bachelor Diploma ",
+				"format": { "vc+sd-jwt": { alg: [ 'ES256' ] },jwt_vc_json: { alg: [ 'ES256' ] }, jwt_vp: { alg: [ 'ES256' ] } },
+				"input_descriptors": [
+					bachelorDescriptor
+				]
+			},
+			{
+				"id": "EuropeanHealthInsuranceCard",
+				"title": "European HealthInsurance Card",
+				"description": "Send your European HealthInsurance Card ",
+				"format": { "vc+sd-jwt": { alg: [ 'ES256' ] },jwt_vc_json: { alg: [ 'ES256' ] }, jwt_vp: { alg: [ 'ES256' ] } },
+				"input_descriptors": [
+					europeanHealthInsuranceCardDescriptor
+				]
+			},
+			verifiableIdWithBachelorPresentationDefinition,
+			verifiableIdWithEuropeanHealthInsuranceCardPresentationDefinition,
+			bachelorWithEuropeanHealthInsuranceCardPresentationDefinition,
+			verifiableIdWithBachelorWithEuropeanHealthInsuranceCardPresentationDefinition,
 			// projectManagerPresentationDefinition
 		]
 	}
