@@ -4,7 +4,7 @@
 	--header-font: 'Open Sans', sans-serif;
 	--main-font: 'Roboto Slab', sans-serif;
 	--main-fonts: Helvetica, sans-serif;
-	--primary-color: #1B263B;
+	--primary-color: #003399;
 	--secondary-color: #778DA9;
 	--secondary-light-color: #E0E1DD;
 	--light-gray: #f5f5f5;
@@ -331,4 +331,9 @@ section.layout {
 
 .dialog-body{
 padding: 30px;
+}
+
+.index-card{
+	height: 200px!important;
+	border-radius: 3.18mm;
 }
