@@ -58,6 +58,7 @@ services:
       - ./wallet-enterprise-configurations/ehic-issuer/keys:/app/keys:rw
       - ./wallet-enterprise-configurations/ehic-issuer/src/configuration:/app/src/configuration:rw
       - ./wallet-enterprise-configurations/ehic-issuer/views/header.pug:/app/views/header.pug:rw
+      - ./wallet-enterprise-configurations/ehic-issuer/views/index.pug:/app/views/index.pug:rw
       - ./.vscode/:/app/.vscode:rw
       - type: tmpfs
         target: /app/dist  # Not /dist here because of relative imports that assume dist/ and keys/, views/ etc. are sibling dirs

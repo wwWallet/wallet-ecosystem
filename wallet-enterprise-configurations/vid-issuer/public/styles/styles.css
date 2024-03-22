@@ -334,6 +334,6 @@ padding: 30px;
 }
 
 .index-card{
-	height: 200px!important;
+	max-height: 200px!important;
 	border-radius: 3.18mm;
 }
