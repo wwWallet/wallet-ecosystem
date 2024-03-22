@@ -302,9 +302,9 @@ section.layout {
 	display: flex;
 	flex-direction: column;
 	gap: 16px;
-
 	justify-content: center;
 	align-items: center;
+	margin-bottom: 5%;
 }
 
 
@@ -605,6 +605,9 @@ textarea.wide{
 	width: 40% !important;
 }
 
+.expired-credential {
+	border: 2px solid red;
+}
 @media (max-width: 768px) {
 
 	#json-textarea{
