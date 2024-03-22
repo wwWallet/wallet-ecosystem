@@ -56,6 +56,7 @@ services:
       - ./wallet-enterprise:/app:rw
       - ./wallet-enterprise-configurations/ehic-issuer/config/config.development.ts:/app/config/config.development.ts:rw
       - ./wallet-enterprise-configurations/ehic-issuer/keys:/app/keys:rw
+      - ./wallet-enterprise-configurations/ehic-issuer/public/styles/styles.css:/app/public/styles/styles.css:rw
       - ./wallet-enterprise-configurations/ehic-issuer/src/configuration:/app/src/configuration:rw
       - ./wallet-enterprise-configurations/ehic-issuer/views/header.pug:/app/views/header.pug:rw
       - ./wallet-enterprise-configurations/ehic-issuer/views/index.pug:/app/views/index.pug:rw
