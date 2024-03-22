@@ -4,7 +4,7 @@
 	--header-font: 'Open Sans', sans-serif;
 	--main-font: 'Roboto Slab', sans-serif;
 	--main-fonts: Helvetica, sans-serif;
-	--primary-color: #939393;
+	--primary-color: #003399;
 	--secondary-color: #d4d4d4;
 	--secondary-light-color: #ffffff;
 	--light-gray: #f5f5f5;
@@ -26,8 +26,7 @@ body {
 
 
 h1, h2, h3, h4, h5 {
-	opacity: 0.6;
-	color: #000;
+	color: var(--primary-color);
 }
 
 @media only screen and (max-width: 600px) {
@@ -341,12 +340,12 @@ ul.menu{
 }
 
 li.menu-item {
-	color:#4d7e3e;
+	color:var(--primary-color);
   margin-right: 20px; /* Adjust the spacing between menu items */
 }
 
 a.menu-link {
-	color:#4d7e3e!important;
+	color:var(--primary-color)!important;
   text-decoration: none; /* Remove underlines from links */
   font-weight: bold; /* Set font weight to bold */
 }
@@ -356,7 +355,7 @@ a.menu-link {
 }
 
 #Header .header-content a{
-	color:#4d7e3e!important;
+	color:var(--primary-color)!important;
 	font-size: 	20px!important;
 
 }
@@ -379,7 +378,7 @@ a.menu-link {
 		background-color: white;
     border: none;
     font-size: larger;
-		color: #4d7e3e;
+		color: var(--primary-color);
 	}
 
   .menu {
@@ -472,7 +471,7 @@ a.menu-link {
 
 }
 body{
-	background-color: rgba(77, 126, 62, 0.15) !important; /* Adjust the opacity value (0.8) as needed */
+	background-color:#D4E0F8 !important
 
 }
 .container{
@@ -482,12 +481,12 @@ body{
 
 }
 .btn-primary{
-background-color: #4d7e3e!important;
+background-color: var(--primary-color)!important;
 }
 .footer{
 	height: 28vh;
 	margin:0!important;
-	background-color: #4d7e3e!important;
+	background-color: var(--primary-color)!important;
 }
 
 #FooterLogo{
@@ -500,7 +499,7 @@ background-color: #4d7e3e!important;
 }
 
 .Btn.Large.Landing, .Btn.Medium{
-	background-color: #4d7e3e;
+	background-color: var(--primary-color);
 }
 
 
@@ -547,7 +546,7 @@ min-height:60vh;
   width: 80px;
   height: 80px;
   border: 10px solid #333; /* Border color of the spinner */
-  border-top: 10px solid #4d7e3e; /* Border color of the spinner top */
+  border-top: 10px solid var(--primary-color); /* Border color of the spinner top */
   border-radius: 50%;
   animation: spin 4s linear infinite; /* Spin animation for 2 seconds */
 }
@@ -587,7 +586,7 @@ th, td {
 }
 
 th {
-  background-color: #4d7e3e;
+  background-color: var(--primary-color);
 	color:white;
 }
 
