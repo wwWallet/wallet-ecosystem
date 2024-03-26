@@ -605,6 +605,19 @@ textarea.wide{
 	width: 40% !important;
 }
 
+#json-textarea {
+	border: 1px solid #ccc;
+	padding: 10px;
+	margin-bottom: 20px;
+	padding-top: 0px;
+	background-color: white;
+	color: black;
+	overflow: auto;
+	resize: vertical;
+	width: 500px;
+	min-height: 200px;
+}
+
 .expired-label {
 	--tw-bg-opacity: 1;
 	background-color: rgb(239 68 68 / var(--tw-bg-opacity));
