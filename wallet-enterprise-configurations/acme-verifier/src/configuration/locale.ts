@@ -1,8 +1,8 @@
 const locale = {
 	en: {
 		header: {
-			title: "ACME Verifier",
-			subtitle: "Send your VCs to Acme Corp",
+			title: "Checking your Attestations",
+			subtitle: "Apply for a job position at ACME corp",
 		},
 		footer: {
 			services: "Services",
@@ -16,10 +16,10 @@ const locale = {
 			emailForOrgs: "E-mail for Institutions"
 		},
 		index: {
-			header: "ACME Verifier",
+			header: "Checking your Attestations",
 			phrase: "I want to apply for a job",
 			proceed: "Proceed",
-			heading: "ACME Verifier",
+			heading: "Checking your Attestations",
 			paragraph: "This website is the recruitment platform of ACME corporation which is used for submiting job applications by transferring digital credentials in verifiable credential format instead of CVs. To apply for a position, candidates are required to have a digital wallet which will be used for the presentation of the required credentials by the corresponding job position.",
 			demo_text: "This website is only used for demonstration purposes"
 		},
