@@ -249,6 +249,7 @@ section.layout {
   padding: 10px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   background-color: #fff;
+	word-wrap: break-word;
 }
 
 .card-title {
@@ -301,9 +302,9 @@ section.layout {
 	display: flex;
 	flex-direction: column;
 	gap: 16px;
-
 	justify-content: center;
 	align-items: center;
+	margin-bottom: 5%;
 }
 
 
@@ -598,6 +599,28 @@ th {
 
 .openwithwalletbuttonnative{
 	margin-top:5px!important;
+}
+
+textarea.wide{
+	width: 40% !important;
+}
+
+.expired-label {
+	--tw-bg-opacity: 1;
+	background-color: rgb(239 68 68 / var(--tw-bg-opacity));
+	--tw-text-opacity: 1;
+	color: rgb(255 255 255 / var(--tw-text-opacity));
+	--tw-border-opacity: 1;
+	border-color: rgb(255 255 255 / var(--tw-border-opacity));
+	border-top-width: 1px;
+	border-left-width: 1px;
+	border-top-left-radius: 0.5rem;
+	font-size: 0.75rem;
+	line-height: 1rem;
+	padding: 0.25rem 0.75rem 0.25rem 0.75rem;
+	right: 10px;
+	bottom: 10px;
+	position: absolute;
 }
 
 @media (max-width: 768px) {
