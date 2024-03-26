@@ -103,6 +103,8 @@ export class EdiplomasBlueprintSdJwt implements SupportedCredentialProtocol {
 			"@context": ["https://www.w3.org/2018/credentials/v1"],
 			"type": this.getTypes(),
 			"id": `urn:certificateId:${diploma.certificateId}`,
+			"name": "Greek HEI Diploma",  // https://www.w3.org/TR/vc-data-model-2.0/#names-and-descriptions
+			"description": "This diploma serves as evidence of successful completion of a Bachelor's program at a Greek university.",
 			"credentialSubject": {
 				"id": holderDID,
 				"firstName": diploma.firstName,
@@ -122,8 +124,6 @@ export class EdiplomasBlueprintSdJwt implements SupportedCredentialProtocol {
 					"image": config.url + "/images/EuropassUoaCard.png"
 				},
 			},
-			"name": "University Degree Credential",
-			"description": "A Europass Diploma issued by the University of Athens",
 			"credentialBranding": {
 				"image": {
 					"url": config.url + "/images/EuropassUoaCard.png"
