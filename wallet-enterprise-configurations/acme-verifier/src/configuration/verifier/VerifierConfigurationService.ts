@@ -11,6 +11,7 @@ export type PresentationDefinitionTypeWithFormat = {
 	id: string;
 	format?: any;
 	input_descriptors: InputDescriptorType[];
+	selectable?: boolean;
 };
 
 
@@ -227,6 +228,16 @@ const minimalBachelorSdJwtPresentationDefinition = {
 	]
 }
 
+const customVerifiableIdSdJwtPresentationDefinition = {
+	"id": "CustomVerifiableId",
+	"title": "Custom Verifiable ID",
+	"description": "Selectable Fields: type, personalIdentifier, firstName, familyName, dateOfBirth",
+	"selectable": true,
+	"format": { "vc+sd-jwt": { alg: ['ES256'] }, jwt_vc_json: { alg: ['ES256'] }, jwt_vp: { alg: ['ES256'] } },
+	"input_descriptors": [
+		verifiableIdDescriptor
+	]
+}
 // const projectManagerPresentationDefinition = {
 // 	"id": "Multiple", // scope name
 // 	"title": "Project Manager",
@@ -274,6 +285,7 @@ export class VerifierConfigurationService implements VerifierConfigurationInterf
 
 	getPresentationDefinitions(): PresentationDefinitionTypeWithFormat[] {
 		return [
+			customVerifiableIdSdJwtPresentationDefinition,
 			{
 				"title": "Minimal Verifiable ID",
 				"description": "Required Fields: id, personalIdentifier",
