@@ -120,7 +120,7 @@ export class CredentialIssuersConfigurationService implements CredentialIssuersC
 		const deployedWWWalletClient = {
 			client_id: "1232132131232131",
 			friendlyName: "wwwWallet",
-			redirectUri: "https://demo.wwwallet.org/cb"
+			redirectUri: "https://wallet.dc4eu.eu/cb"
 		};
 		return [
 			openidGenericClient,
