@@ -7,7 +7,7 @@ import { CredentialIssuer } from "../../lib/CredentialIssuerConfig/CredentialIss
 import { SupportedCredentialProtocol } from "../../lib/CredentialIssuerConfig/SupportedCredentialProtocol";
 import { AuthorizationServerState } from "../../entities/AuthorizationServerState.entity";
 import { CredentialView } from "../../authorization/types";
-
+import { randomUUID } from "node:crypto";
 
 export class VIDSupportedCredentialSdJwt implements SupportedCredentialProtocol {
 
@@ -82,6 +82,9 @@ export class VIDSupportedCredentialSdJwt implements SupportedCredentialProtocol 
 		const payload = {
 			"@context": ["https://www.w3.org/2018/credentials/v1"],
 			"type": this.getTypes(),
+			"id": `urn:vid:${randomUUID()}`,
+			"name": "Verifiable ID",  // https://www.w3.org/TR/vc-data-model-2.0/#names-and-descriptions
+			"description": "This credential is issued by the National Verifiable ID credential issuer and it can be used for authentication purposes",
 			"credentialSubject": {
 				...vid,
 				"id": holderDID,

@@ -4,7 +4,7 @@
 	--header-font: 'Open Sans', sans-serif;
 	--main-font: 'Roboto Slab', sans-serif;
 	--main-fonts: Helvetica, sans-serif;
-	--primary-color: #939393;
+	--primary-color: #003399;
 	--secondary-color: #d4d4d4;
 	--secondary-light-color: #ffffff;
 	--light-gray: #f5f5f5;
@@ -26,8 +26,7 @@ body {
 
 
 h1, h2, h3, h4, h5 {
-	opacity: 0.6;
-	color: #000;
+	color: var(--primary-color);
 }
 
 @media only screen and (max-width: 600px) {
@@ -249,6 +248,7 @@ section.layout {
   padding: 10px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   background-color: #fff;
+	word-wrap: break-word;
 }
 
 .card-title {
@@ -301,9 +301,9 @@ section.layout {
 	display: flex;
 	flex-direction: column;
 	gap: 16px;
-
 	justify-content: center;
 	align-items: center;
+	margin-bottom: 5%;
 }
 
 
@@ -341,12 +341,12 @@ ul.menu{
 }
 
 li.menu-item {
-	color:#4d7e3e;
+	color:var(--primary-color);
   margin-right: 20px; /* Adjust the spacing between menu items */
 }
 
 a.menu-link {
-	color:#4d7e3e!important;
+	color:var(--primary-color)!important;
   text-decoration: none; /* Remove underlines from links */
   font-weight: bold; /* Set font weight to bold */
 }
@@ -356,7 +356,7 @@ a.menu-link {
 }
 
 #Header .header-content a{
-	color:#4d7e3e!important;
+	color:var(--primary-color)!important;
 	font-size: 	20px!important;
 
 }
@@ -379,7 +379,7 @@ a.menu-link {
 		background-color: white;
     border: none;
     font-size: larger;
-		color: #4d7e3e;
+		color: var(--primary-color);
 	}
 
   .menu {
@@ -472,7 +472,7 @@ a.menu-link {
 
 }
 body{
-	background-color: rgba(77, 126, 62, 0.15) !important; /* Adjust the opacity value (0.8) as needed */
+	background-color:#D4E0F8 !important
 
 }
 .container{
@@ -482,12 +482,12 @@ body{
 
 }
 .btn-primary{
-background-color: #4d7e3e!important;
+background-color: var(--primary-color)!important;
 }
 .footer{
 	height: 28vh;
 	margin:0!important;
-	background-color: #4d7e3e!important;
+	background-color: var(--primary-color)!important;
 }
 
 #FooterLogo{
@@ -500,7 +500,7 @@ background-color: #4d7e3e!important;
 }
 
 .Btn.Large.Landing, .Btn.Medium{
-	background-color: #4d7e3e;
+	background-color: var(--primary-color);
 }
 
 
@@ -547,7 +547,7 @@ min-height:60vh;
   width: 80px;
   height: 80px;
   border: 10px solid #333; /* Border color of the spinner */
-  border-top: 10px solid #4d7e3e; /* Border color of the spinner top */
+  border-top: 10px solid var(--primary-color); /* Border color of the spinner top */
   border-radius: 50%;
   animation: spin 4s linear infinite; /* Spin animation for 2 seconds */
 }
@@ -587,7 +587,7 @@ th, td {
 }
 
 th {
-  background-color: #4d7e3e;
+  background-color: var(--primary-color);
 	color:white;
 }
 
@@ -598,6 +598,28 @@ th {
 
 .openwithwalletbuttonnative{
 	margin-top:5px!important;
+}
+
+textarea.wide{
+	width: 40% !important;
+}
+
+.expired-label {
+	--tw-bg-opacity: 1;
+	background-color: rgb(239 68 68 / var(--tw-bg-opacity));
+	--tw-text-opacity: 1;
+	color: rgb(255 255 255 / var(--tw-text-opacity));
+	--tw-border-opacity: 1;
+	border-color: rgb(255 255 255 / var(--tw-border-opacity));
+	border-top-width: 1px;
+	border-left-width: 1px;
+	border-top-left-radius: 0.5rem;
+	font-size: 0.75rem;
+	line-height: 1rem;
+	padding: 0.25rem 0.75rem 0.25rem 0.75rem;
+	right: 10px;
+	bottom: 10px;
+	position: absolute;
 }
 
 @media (max-width: 768px) {

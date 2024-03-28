@@ -6,7 +6,7 @@ block layout-content
 			div.item.IssuerSection
 				.ItemLayout
 					//i(class=`fa ${locale.landingPageFaClass ? locale.landingPageFaClass : "fa-id-card-o"} LargeIcon`)
-					img(src="/images/vidCard.png", alt="Descriptive text", class="index-card")
+					img(src="/images/ehicCard.png", alt="Descriptive text", class="index-card")
 					p.title #{locale.index.phrase}
 					p.text-area #{locale.index.subtitle}
 					button.Btn.Large.Landing(id="mainBtn" type="submit") #{locale.index.proceed}
@@ -19,8 +19,9 @@ block layout-content
 
 		.container
 			h1 #{locale.index.heading}
-			p #{locale.index.paragraph}
+			p #{locale.index.paragraph} #[a(href="https://w3c-ccg.github.io/vc-ed/plugfest-3-2023/") #{locale.index.jff}] #{locale.index.paragraph1}
 			p #{locale.index.paragraph2}
+			p #{locale.index.paragraph3}#[a(href="https://www.ediplomas.gr") #{locale.index.ediplomas}]#{locale.index.paragraph4}
 			.demo-text #{locale.index.demo_text}
 
 	block footer
