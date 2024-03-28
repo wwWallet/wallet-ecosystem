@@ -3,3 +3,4 @@ CREATE DATABASE issuer;
 CREATE DATABASE vidissuer;
 CREATE DATABASE ehicissuer;
 CREATE DATABASE verifier;
+CREATE DATABASE pda1issuer;
