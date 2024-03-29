@@ -44,7 +44,7 @@ export class EdiplomasBlueprintSdJwt implements SupportedCredentialProtocol {
 
 		const diplomaEntries = await getDiplomasBySSNAndBlueprintID(userSession.ssn, this.blueprintID);
 		if (diplomaEntries.length == 0) {
-			throw new Error("No diploma entries found");
+			return null;
 		}
 		const diplomaEntry = diplomaEntries[0];
 		if (!diplomaEntry) {
