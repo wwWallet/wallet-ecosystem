@@ -231,7 +231,7 @@ const minimalBachelorSdJwtPresentationDefinition = {
 const customVerifiableIdSdJwtPresentationDefinition = {
 	"id": "CustomVerifiableId",
 	"title": "Custom Verifiable ID",
-	"description": "Selectable Fields: type, personalIdentifier, firstName, familyName, dateOfBirth",
+	"description": "Selectable Fields: personalIdentifier, firstName, familyName, dateOfBirth",
 	"selectable": true,
 	"format": { "vc+sd-jwt": { alg: ['ES256'] }, jwt_vc_json: { alg: ['ES256'] }, jwt_vp: { alg: ['ES256'] } },
 	"input_descriptors": [
