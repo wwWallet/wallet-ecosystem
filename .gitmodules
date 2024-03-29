@@ -7,3 +7,6 @@
 [submodule "wallet-frontend"]
 	path = wallet-frontend
 	url = git@github.com:gunet/wallet-frontend.git
+[submodule "resources-vault"]
+	path = resources-vault
+	url = git@github.com:gunet/resources-vault.git
