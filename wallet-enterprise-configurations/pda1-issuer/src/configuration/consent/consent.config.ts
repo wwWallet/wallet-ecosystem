@@ -5,5 +5,5 @@
 	 * 
 	 * For EBSI conformance tests, it should be set to true
 	 */
-export const SKIP_CONSENT = false;
+export const SKIP_CONSENT = true;
 export const REQUIRE_PIN = true;
