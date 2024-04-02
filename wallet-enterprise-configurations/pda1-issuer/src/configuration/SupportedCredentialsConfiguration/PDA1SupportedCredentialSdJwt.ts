@@ -28,7 +28,7 @@ export class PDA1SupportedCredentialSdJwt implements SupportedCredentialProtocol
 	getDisplay(): Display {
 		return {
 			name: "PDA1 Credential",
-			logo: { url: config.url + "/images/ehicCard.png" },
+			logo: { url: config.url + "/images/pda1.png" },
 			background_color: "#4CC3DD"
 		}
 	}
@@ -75,7 +75,7 @@ export class PDA1SupportedCredentialSdJwt implements SupportedCredentialProtocol
 			},
 			"credentialBranding": {
 				"image": {
-					"url": config.url + "/images/ehicCard.png"
+					"url": config.url + "/images/pda1.png"
 				},
 				"backgroundColor": "#8ebeeb",
 				"textColor": "#ffffff"
