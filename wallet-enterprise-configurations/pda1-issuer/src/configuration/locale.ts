@@ -2,7 +2,7 @@ const locale = {
 	en: {
 		header: {
 			title: "EHIC Issuer",
-			subtitle: "Receive your verifiable EHIC Card",
+			subtitle: "Receive your PDA1 Card",
 		},
 		plainHeader: {
 			title: "National Authentication Service",
@@ -20,12 +20,12 @@ const locale = {
 			emailForOrgs: "E-mail for Institutions"
 		},
 		index: {
-			header: "eEHIC Issuer",
-			phrase: "I want to receive my eEHIC",
+			header: "PDA1 Issuer",
+			phrase: "I want to receive my Portable Document A1",
 			proceed: "Proceed",
-			heading: "eEHIC Issuer",
-			paragraph: "This is a portal where citizens can receive their digital EHIC Card in their wallet. To proceed you must first have an EUDI wallet from a provider of your choice. This Verifiable eEHIC will contain the Social Security Number as your personal identifier for social security.",
-			demo_text: "This is an Issuer implementation for demonstration purposes. The purpose of this application is to issue a Verifiable Credential containing the attributes of an EHIC Card."
+			heading: "PDA1 Issuer",
+			paragraph: "This is a portal where citizens can receive their digital PDA1 in their wallet. To proceed you must first have an EUDI wallet from a provider of your choice. This Verifiable PDA1 will contain the Social Security Number as your personal identifier for social security.",
+			demo_text: "This is an Issuer implementation for demonstration purposes. The purpose of this application is to issue a Verifiable Credential containing the attributes of a PDA1."
 		},
 		login: {
 			title: "Login",
