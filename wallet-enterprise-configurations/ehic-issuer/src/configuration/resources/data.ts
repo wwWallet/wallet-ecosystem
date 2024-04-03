@@ -14,6 +14,13 @@ const vidRepository: VIDEntry[] = [
 		familyName: "Doe",
 		taxisId: "432432432423",
 		birthdate: "18-5-1990"
+	},
+	{
+		personalIdentifier: "032429484252433",
+		firstName: "Jane",
+		familyName: "Duffy",
+		taxisId: "432432432424",
+		birthdate: "19-7-1990"
 	}
 ]
 
@@ -34,6 +41,14 @@ const ehicRepository: EHICEntry[] = [
 		taxisId: "432432432423",
 		ssn: "032429484252432",
 		birthdate: "18-5-1990"
+	},
+	{
+		personalIdentifier: "032429484252433",
+		firstName: "Jane",
+		familyName: "Duffy",
+		taxisId: "432432432424",
+		ssn: "032429484252433",
+		birthdate: "19-7-1990"
 	}
 ]
 
