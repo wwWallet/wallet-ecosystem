@@ -5,8 +5,35 @@ import { CredentialIssuer } from "../../lib/CredentialIssuerConfig/CredentialIss
 import { SupportedCredentialProtocol } from "../../lib/CredentialIssuerConfig/SupportedCredentialProtocol";
 import { AuthorizationServerState } from "../../entities/AuthorizationServerState.entity";
 import { CredentialView } from "../../authorization/types";
-import { randomUUID } from "node:crypto";
-import axios from "axios";
+import crypto, { randomUUID } from 'crypto';
+import fs from 'fs';
+import path from 'path';
+import axios from 'axios';
+import { compactDecrypt, calculateJwkThumbprint, CompactEncrypt } from 'jose';
+const currentWorkingDirectory = __dirname + "/../../../../";
+
+var publicKeyFilePath;
+var publicKeyContent;
+
+publicKeyFilePath = path.resolve(currentWorkingDirectory, 'keys', 'issuer.public.rsa.json');
+publicKeyContent = fs.readFileSync(publicKeyFilePath, 'utf8');
+const credentialIssuerPublicKeyJWK = JSON.parse(publicKeyContent) as crypto.JsonWebKey;
+// const credentialIssuerPublicKey = crypto.createPublicKey({ key: credentialIssuerPublicKeyJWK, format: 'jwk' });
+
+
+publicKeyFilePath = path.resolve(currentWorkingDirectory, 'keys', 'vault.public.rsa.json');
+publicKeyContent = fs.readFileSync(publicKeyFilePath, 'utf8');
+const vaultPublicKeyJWK = JSON.parse(publicKeyContent) as crypto.JsonWebKey;
+const vaultPublicKey = crypto.createPublicKey({ key: vaultPublicKeyJWK, format: 'jwk' });
+
+
+var privateKeyFilePath;
+var privateKeyContent;
+
+privateKeyFilePath = path.resolve(currentWorkingDirectory, 'keys', 'issuer.private.rsa.json');
+privateKeyContent = fs.readFileSync(privateKeyFilePath, 'utf8');
+const credentialIssuerPrivateKeyJWK = JSON.parse(privateKeyContent) as crypto.JsonWebKey;
+const credentialIssuerPrivateKey = crypto.createPrivateKey({ key: credentialIssuerPrivateKeyJWK, format: 'jwk' });
 
 export class PDA1SupportedCredentialSdJwt implements SupportedCredentialProtocol {
 
@@ -39,24 +66,84 @@ export class PDA1SupportedCredentialSdJwt implements SupportedCredentialProtocol
 	}
 
 	async generateCredentialResponse(userSession: AuthorizationServerState, holderDID: string): Promise<{ format: VerifiableCredentialFormat; credential: any; }> {
-		if (!userSession.issuer_state) {
-			throw new Error("issuer_state was found")
+		if (!userSession.issuer_state || userSession.issuer_state == "null") {
+			throw new Error("issuer_state was found user session");
 		}
 
-		console.log("issuer state = ", userSession.issuer_state);
+		console.log('type of issuer state ', typeof userSession.issuer_state);
+		if (!userSession.ssn) {
+			throw new Error("ssn was found on the user session");
+		}
 
-		let resourcesVaultResponse;
+		const { issuer_state } = userSession;
+		console.log("issuer	state = ", userSession.issuer_state);
+		let { plaintext } = await compactDecrypt(issuer_state, credentialIssuerPrivateKey);
+		const {
+			iss,
+			exp,
+			jti, // is the collection id
+			aud,
+			sub, // authorized identities to receive this specific credential
+		} = JSON.parse(new TextDecoder().decode(plaintext)) as { iss: string, exp: number, jti: string, aud: string, sub: string[] };
+	
+
+		console.log("Issuer state attributes: ", {
+			iss,
+			exp,
+			jti, // is the collection id
+			aud,
+			sub, // authorized identities to receive this specific credential
+		})
+		const expectedIssuer = await calculateJwkThumbprint(vaultPublicKeyJWK);
+		if (!iss || iss !== expectedIssuer) {
+			throw new Error(`'iss' is missing from issuer_state or expected value '${expectedIssuer}'`);
+		}
+
+		const expectedAudience = await calculateJwkThumbprint(credentialIssuerPublicKeyJWK);
+		if (!aud || aud !== expectedAudience) {
+			throw new Error(`'aud' is missing from issuer_state or expected value for '${expectedAudience}'`);
+		}
+
+		if (exp && Math.floor(Date.now() / 1000) > exp) {
+			console.log("Exp cmp = ", Math.floor(Date.now() / 1000) > exp)
+			throw new Error(`'exp' is missing from issuer_state or the issuer_state is expired`);
+		} 
+
+		if (!sub || !sub.includes(userSession.ssn)) {
+			throw new Error(`SSN ${userSession.ssn} is not authorized to receive this credential`);
+		}
+
+		const collection_id = jti;
+	
+		const jwePayload = {
+			iss: await calculateJwkThumbprint(credentialIssuerPublicKeyJWK),
+			exp: Date.now() + 60*5, // expires in 5 minutes,
+			jti: collection_id,
+			aud: await calculateJwkThumbprint(vaultPublicKeyJWK),
+			sub: userSession.ssn,
+		};
+	
+		const fetchRequestToken = await new CompactEncrypt(new TextEncoder().encode(JSON.stringify(jwePayload)))
+			.setProtectedHeader({ alg: 'RSA-OAEP-256', enc: 'A256GCM' })
+			.encrypt(vaultPublicKey);
+	
+		let fetchResponse = null;
 		try {
-			resourcesVaultResponse = await axios.post(config.resourcesVaultService.url + "/fetch", {
-				issuer_state: userSession.issuer_state
+			fetchResponse = await axios.post('http://resources-vault:6555/fetch', {
+				fetch_request_token: fetchRequestToken
 			});
 		}
 		catch(err) {
-			console.error(err);
-			throw new Error("Failed to get resource vault response")
+			console.log(err)
+			console.error('Failed fetch request')
+			throw new Error("Failed fetch request");
+		}
+		if (fetchResponse == null || !fetchResponse.data.claims) {
+			console.error("'claims' is missing from resources vault fetch response");
+			throw new Error("'claims' is missing from resources vault fetch response");
 		}
 
-		const { claims } = resourcesVaultResponse.data;
+		const { claims } = fetchResponse.data;
 		console.log("Claims = ", claims)
 		const pda1: CredentialSubject = {
 			id: holderDID,
