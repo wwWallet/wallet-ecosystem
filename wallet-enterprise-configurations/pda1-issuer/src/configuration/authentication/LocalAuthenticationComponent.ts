@@ -15,7 +15,7 @@ export class LocalAuthenticationComponent extends AuthenticationComponent {
 	constructor(
 		override identifier: string,
 		override protectedEndpoint: string,
-		private users = [ { username: "user", password: "secret", taxis_id: "432432432423", ssn: "032429484252432" },]
+		private users = [{ username: "user1", password: "secret", taxis_id: "432432432423", ssn: '032429484252432', firstName: 'John', lastName: 'Doe' }, { username: "user2", password: "secret", taxis_id: "432432432424", ssn: "032429484252433", firstName: 'Jane', lastName:'Duffy' }]
 	) { super(identifier, protectedEndpoint) }
 
 	public override async authenticate(
@@ -57,6 +57,8 @@ export class LocalAuthenticationComponent extends AuthenticationComponent {
 		const usersFound = this.users.filter(u => u.username == username);
 		req.authorizationServerState.ssn = usersFound[0].ssn;
 		req.authorizationServerState.taxis_id = usersFound[0].taxis_id;
+		req.authorizationServerState.firstName = usersFound[0].firstName;
+		req.authorizationServerState.lastName = usersFound[0].lastName;
 		await AppDataSource.getRepository(AuthorizationServerState).save(req.authorizationServerState);
 		return true;
 	}
@@ -81,6 +83,8 @@ export class LocalAuthenticationComponent extends AuthenticationComponent {
 
 			req.authorizationServerState.ssn = usersFound[0].ssn;
 			req.authorizationServerState.taxis_id = usersFound[0].taxis_id;
+			req.authorizationServerState.firstName = usersFound[0].firstName;
+			req.authorizationServerState.lastName = usersFound[0].lastName;
 			await AppDataSource.getRepository(AuthorizationServerState).save(req.authorizationServerState);
 			return res.redirect(this.protectedEndpoint);
 		}
