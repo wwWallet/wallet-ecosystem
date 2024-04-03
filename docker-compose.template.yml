@@ -89,8 +89,11 @@ services:
       - ./wallet-enterprise:/app:rw
       - ./wallet-enterprise-configurations/pda1-issuer/config/config.development.ts:/app/config/config.development.ts:rw
       - ./wallet-enterprise-configurations/pda1-issuer/keys:/app/keys:rw
+      - ./wallet-enterprise-configurations/pda1-issuer/public/styles/styles.css:/app/public/styles/styles.css:rw
       - ./wallet-enterprise-configurations/pda1-issuer/src/configuration:/app/src/configuration:rw
       - ./wallet-enterprise-configurations/pda1-issuer/views/header.pug:/app/views/header.pug:rw
+      - ./wallet-enterprise-configurations/pda1-issuer/views/index.pug:/app/views/index.pug:rw
+
       - ./.vscode/:/app/.vscode:rw
       - type: tmpfs
         target: /app/dist  # Not /dist here because of relative imports that assume dist/ and keys/, views/ etc. are sibling dirs
