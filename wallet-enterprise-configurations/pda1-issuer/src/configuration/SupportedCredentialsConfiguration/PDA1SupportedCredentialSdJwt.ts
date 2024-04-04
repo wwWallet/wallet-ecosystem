@@ -15,13 +15,13 @@ const currentWorkingDirectory = __dirname + "/../../../../";
 var publicKeyFilePath;
 var publicKeyContent;
 
-publicKeyFilePath = path.resolve(currentWorkingDirectory, 'keys', 'issuer.public.rsa.json');
+publicKeyFilePath = path.resolve(currentWorkingDirectory, 'keys', 'issuer.public.ecdh.json');
 publicKeyContent = fs.readFileSync(publicKeyFilePath, 'utf8');
 const credentialIssuerPublicKeyJWK = JSON.parse(publicKeyContent) as crypto.JsonWebKey;
 // const credentialIssuerPublicKey = crypto.createPublicKey({ key: credentialIssuerPublicKeyJWK, format: 'jwk' });
 
 
-publicKeyFilePath = path.resolve(currentWorkingDirectory, 'keys', 'vault.public.rsa.json');
+publicKeyFilePath = path.resolve(currentWorkingDirectory, 'keys', 'vault.public.ecdh.json');
 publicKeyContent = fs.readFileSync(publicKeyFilePath, 'utf8');
 const vaultPublicKeyJWK = JSON.parse(publicKeyContent) as crypto.JsonWebKey;
 const vaultPublicKey = crypto.createPublicKey({ key: vaultPublicKeyJWK, format: 'jwk' });
@@ -30,7 +30,7 @@ const vaultPublicKey = crypto.createPublicKey({ key: vaultPublicKeyJWK, format: 
 var privateKeyFilePath;
 var privateKeyContent;
 
-privateKeyFilePath = path.resolve(currentWorkingDirectory, 'keys', 'issuer.private.rsa.json');
+privateKeyFilePath = path.resolve(currentWorkingDirectory, 'keys', 'issuer.private.ecdh.json');
 privateKeyContent = fs.readFileSync(privateKeyFilePath, 'utf8');
 const credentialIssuerPrivateKeyJWK = JSON.parse(privateKeyContent) as crypto.JsonWebKey;
 const credentialIssuerPrivateKey = crypto.createPrivateKey({ key: credentialIssuerPrivateKeyJWK, format: 'jwk' });
@@ -124,7 +124,15 @@ export class PDA1SupportedCredentialSdJwt implements SupportedCredentialProtocol
 		};
 	
 		const fetchRequestToken = await new CompactEncrypt(new TextEncoder().encode(JSON.stringify(jwePayload)))
-			.setProtectedHeader({ alg: 'RSA-OAEP-256', enc: 'A256GCM' })
+			.setProtectedHeader({
+				alg: 'ECDH-ES+A256KW', // Elliptic Curve Diffie-Hellman Ephemeral Static with AES Key Wrap using 256-bit key
+				enc: 'A256GCM', // AES GCM using 256-bit key
+				epk: {
+						kty: 'EC', // Elliptic Curve Key Type
+						crv: 'P-256' // Curve name
+						// you can add other parameters as needed, like 'x' and 'y' for specific key pairs
+				}
+			})
 			.encrypt(vaultPublicKey);
 	
 		let fetchResponse = null;
