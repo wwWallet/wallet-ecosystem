@@ -21,7 +21,7 @@ const locale = {
 		},
 		index: {
 			header: "PDA1 Issuer",
-			phrase: "I want to receive my Portable Document A1",
+			phrase: "Portable Document A1",
 			proceed: "Proceed",
 			heading: "PDA1 Issuer",
 			paragraph: "This is a portal where citizens can receive their digital PDA1 in their wallet. To proceed you must first have an EUDI wallet from a provider of your choice. This Verifiable PDA1 will contain the Social Security Number as your personal identifier for social security.",
