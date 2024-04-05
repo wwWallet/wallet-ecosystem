@@ -63,9 +63,18 @@ export class LocalAuthenticationComponent extends AuthenticationComponent {
 
 	private async renderLogin(req: Request, res: Response): Promise<any> {
 		res.render('issuer/login', {
-			title: "Login1",
+			title: "Login",
 			lang: req.lang,
 			locale: locale[req.lang]
+		})
+	}
+
+	private async renderFailedLogin(req: Request, res: Response): Promise<any> {
+		res.render('issuer/login', {
+			title: "Login",
+			lang: req.lang,
+			locale: locale[req.lang],
+			failed: true
 		})
 	}
 
@@ -85,7 +94,7 @@ export class LocalAuthenticationComponent extends AuthenticationComponent {
 			return res.redirect(this.protectedEndpoint);
 		}
 		else {
-			return this.renderLogin(req, res);
+			return this.renderFailedLogin(req, res);
 		}
 	}
 }
