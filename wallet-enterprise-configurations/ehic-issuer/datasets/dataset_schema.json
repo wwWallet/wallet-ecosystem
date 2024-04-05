@@ -1,0 +1,31 @@
+{
+	"users": [
+		{
+			"authentication": {
+				"username": "user",
+				"password": "secret",
+				"uid": "UID",
+				"personalIdentifier": "PERSONAL_IDENTIFIER"
+			},
+			"claims": {
+				"firstName": "FIRST_NAME",
+				"familyName": "FAMILY_NAME",
+				"birthdate": "BIRTH_DATE",
+				"personalIdentifier": "PERSONAL_IDENTIFIER",
+				"socialSecurityIdentification": {
+					"ssn": "SSN_ID"
+				},
+				"validityPeriod": {
+					"startingDate": "STARTING_DATE",
+					"endingDate": "ENDING_DATE"
+				},
+				"documentId": "DOC_ID",
+				"competentInstitution": {
+					"competentInstitutionId": "COMPETENT_INSTITUTION_ID",
+					"competentInstitutionName": "COMPETENT_INSTITUTION_NAME",
+					"competentInstitutionCountryCode": "COMPETENT_INSTITUTION_COUNTRY_CODE"
+				}
+			}
+		}
+	]
+}

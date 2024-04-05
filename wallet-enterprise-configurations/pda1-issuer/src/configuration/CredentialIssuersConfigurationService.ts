@@ -46,7 +46,7 @@ const issuerSigner: CredentialSigner = {
 		const issuanceDate = new Date();
 		const expirationDate = (() => {
 			const expirationDate = new Date(issuanceDate);
-			expirationDate.setFullYear(expirationDate.getFullYear() + 1);
+			expirationDate.setMinutes(expirationDate.getMinutes() + 1);
 			return expirationDate;
 		})();
 

@@ -79,14 +79,13 @@ export class VIDAuthenticationComponent extends AuthenticationComponent {
 			return;
 		}
 		authorizationServerState.personalIdentifier = personalIdentifier;
-		authorizationServerState.ssn = personalIdentifier; // update the ssn as well, because this will be used to fetch the diplomas
 
 		req.session.authenticationChain.vidAuthenticationComponent = {
 			personalIdentifier: personalIdentifier
 		};
 
 		console.log("Personal identifier = ", personalIdentifier)
-		req.authorizationServerState.ssn = personalIdentifier;
+		req.authorizationServerState.personalIdentifier = personalIdentifier;
 
 		await AppDataSource.getRepository(AuthorizationServerState).save(authorizationServerState);
 		return res.redirect(this.protectedEndpoint);

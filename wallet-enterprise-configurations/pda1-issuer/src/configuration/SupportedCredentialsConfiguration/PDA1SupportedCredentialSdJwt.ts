@@ -1,6 +1,5 @@
 import config from "../../../config";
 import { VerifiableCredentialFormat, Display, CredentialSupportedJwtVcJson } from "../../types/oid4vci";
-import { CredentialSubject } from "../CredentialSubjectBuilders/CredentialSubject.type";
 import { CredentialIssuer } from "../../lib/CredentialIssuerConfig/CredentialIssuer";
 import { SupportedCredentialProtocol } from "../../lib/CredentialIssuerConfig/SupportedCredentialProtocol";
 import { AuthorizationServerState } from "../../entities/AuthorizationServerState.entity";
@@ -67,12 +66,12 @@ export class PDA1SupportedCredentialSdJwt implements SupportedCredentialProtocol
 
 	async generateCredentialResponse(userSession: AuthorizationServerState, holderDID: string): Promise<{ format: VerifiableCredentialFormat; credential: any; }> {
 		if (!userSession.issuer_state || userSession.issuer_state == "null") {
-			throw new Error("issuer_state was found user session");
+			throw new Error("issuer_state was not found user session");
 		}
 
 		console.log('type of issuer state ', typeof userSession.issuer_state);
-		if (!userSession.ssn) {
-			throw new Error("ssn was found on the user session");
+		if (!userSession.personalIdentifier) {
+			throw new Error("Cannot generate credential: personalIdentifier is missing");
 		}
 
 		const { issuer_state } = userSession;
@@ -109,8 +108,8 @@ export class PDA1SupportedCredentialSdJwt implements SupportedCredentialProtocol
 			throw new Error(`'exp' is missing from issuer_state or the issuer_state is expired`);
 		} 
 
-		if (!sub || !sub.includes(userSession.ssn)) {
-			throw new Error(`SSN ${userSession.ssn} is not authorized to receive this credential`);
+		if (!sub || !sub.includes(userSession.personalIdentifier)) {
+			throw new Error(`Personal identifier ${userSession.personalIdentifier} is not authorized to receive this credential`);
 		}
 
 		const collection_id = jti;
@@ -120,7 +119,7 @@ export class PDA1SupportedCredentialSdJwt implements SupportedCredentialProtocol
 			exp: Date.now() + 60*5, // expires in 5 minutes,
 			jti: collection_id,
 			aud: await calculateJwkThumbprint(vaultPublicKeyJWK),
-			sub: userSession.ssn,
+			sub: userSession.personalIdentifier,
 		};
 	
 		const fetchRequestToken = await new CompactEncrypt(new TextEncoder().encode(JSON.stringify(jwePayload)))
@@ -153,10 +152,7 @@ export class PDA1SupportedCredentialSdJwt implements SupportedCredentialProtocol
 
 		const { claims } = fetchResponse.data;
 		console.log("Claims = ", claims)
-		const pda1: CredentialSubject = {
-			id: holderDID,
-			...claims
-		} as any;
+
 
 		const payload = {
 			"@context": ["https://www.w3.org/2018/credentials/v1"],
@@ -165,7 +161,7 @@ export class PDA1SupportedCredentialSdJwt implements SupportedCredentialProtocol
 			"name": "PDA1",  // https://www.w3.org/TR/vc-data-model-2.0/#names-and-descriptions
 			"description": "This credential is issued by the National PDA1 credential issuer",
 			"credentialSubject": {
-				...pda1,
+				...claims,
 				"id": holderDID,
 			},
 			"credentialBranding": {
@@ -177,11 +173,18 @@ export class PDA1SupportedCredentialSdJwt implements SupportedCredentialProtocol
 			},
 		};
 
+		console.log("payload = ", payload)
 		const disclosureFrame = {
 			vc: {
 				credentialSubject: {
-					dateOfBirth: true,
 					personalIdentifier: true,
+					socialSecurityIdentification: true,
+					nationality: true,
+					employer: true,
+					address: true,
+					placeOfWork: true,
+					documentId: true,
+					competentInstitution: true,
 				}
 			}
 		}

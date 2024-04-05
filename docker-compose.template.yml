@@ -20,6 +20,7 @@ services:
         condition: service_healthy
     volumes:
       - ./wallet-enterprise:/app:rw
+      - ./wallet-enterprise-configurations/vid-issuer/datasets/:/datasets/:rw
       - ./wallet-enterprise-configurations/vid-issuer/config/config.development.ts:/app/config/config.development.ts:rw
       - ./wallet-enterprise-configurations/vid-issuer/keys:/app/keys:rw
       - ./wallet-enterprise-configurations/vid-issuer/src/configuration:/app/src/configuration:rw
@@ -54,6 +55,7 @@ services:
         condition: service_healthy
     volumes:
       - ./wallet-enterprise:/app:rw
+      - ./wallet-enterprise-configurations/ehic-issuer/datasets/:/datasets/:rw
       - ./wallet-enterprise-configurations/ehic-issuer/config/config.development.ts:/app/config/config.development.ts:rw
       - ./wallet-enterprise-configurations/ehic-issuer/keys:/app/keys:rw
       - ./wallet-enterprise-configurations/ehic-issuer/public/styles/styles.css:/app/public/styles/styles.css:rw
@@ -87,13 +89,13 @@ services:
         condition: service_healthy
     volumes:
       - ./wallet-enterprise:/app:rw
+      - ./wallet-enterprise-configurations/pda1-issuer/datasets/:/datasets/:rw
       - ./wallet-enterprise-configurations/pda1-issuer/config/config.development.ts:/app/config/config.development.ts:rw
       - ./wallet-enterprise-configurations/pda1-issuer/keys:/app/keys:rw
-      - ./wallet-enterprise-configurations/pda1-issuer/public/styles/styles.css:/app/public/styles/styles.css:rw
       - ./wallet-enterprise-configurations/pda1-issuer/src/configuration:/app/src/configuration:rw
       - ./wallet-enterprise-configurations/pda1-issuer/views/header.pug:/app/views/header.pug:rw
+      - ./wallet-enterprise-configurations/pda1-issuer/public/styles/styles.css:/app/public/styles/styles.css:rw
       - ./wallet-enterprise-configurations/pda1-issuer/views/index.pug:/app/views/index.pug:rw
-
       - ./.vscode/:/app/.vscode:rw
       - type: tmpfs
         target: /app/dist  # Not /dist here because of relative imports that assume dist/ and keys/, views/ etc. are sibling dirs
@@ -235,6 +237,10 @@ services:
     image: resources-vault:dev
     container_name: resources-vault
     hostname: resources-vault
+    volumes:
+      - ./resources-vault/src/config/config.js:/app/src/config/config.js
+      - ./resources-vault/keys/:/app/keys/
+
     ports:
       - 6555:6555
 

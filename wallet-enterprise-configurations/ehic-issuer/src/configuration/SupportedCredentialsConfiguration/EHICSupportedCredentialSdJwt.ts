@@ -1,18 +1,20 @@
 import config from "../../../config";
 import { CategorizedRawCredentialView, CategorizedRawCredentialViewRow } from "../../openid4vci/Metadata";
 import { VerifiableCredentialFormat, Display, CredentialSupportedJwtVcJson } from "../../types/oid4vci";
-import { CredentialSubject } from "../CredentialSubjectBuilders/CredentialSubject.type";
-import { getEhic } from "../resources/data";
 import { CredentialIssuer } from "../../lib/CredentialIssuerConfig/CredentialIssuer";
 import { SupportedCredentialProtocol } from "../../lib/CredentialIssuerConfig/SupportedCredentialProtocol";
 import { AuthorizationServerState } from "../../entities/AuthorizationServerState.entity";
 import { CredentialView } from "../../authorization/types";
 import { randomUUID } from "node:crypto";
+import fs from 'fs';
 
 export class EHICSupportedCredentialSdJwt implements SupportedCredentialProtocol {
 
+	dataset: any;
 
-	constructor(private credentialIssuerConfig: CredentialIssuer) { }
+	constructor(private credentialIssuerConfig: CredentialIssuer) {
+		this.dataset = JSON.parse(fs.readFileSync('/datasets/dataset.json', 'utf-8').toString()) as any
+	}
 
 	getCredentialIssuerConfig(): CredentialIssuer {
 		return this.credentialIssuerConfig;
@@ -36,17 +38,17 @@ export class EHICSupportedCredentialSdJwt implements SupportedCredentialProtocol
 
 
 	async getProfile(userSession: AuthorizationServerState): Promise<CredentialView | null> {
-		if (!userSession?.ssn) {
+		if (!userSession?.personalIdentifier) {
 			return null;
 		}
-		const ehics = [await getEhic(userSession?.ssn)];
+		const ehics = this.dataset.users.filter((user: any) => user.authentication.personalIdentifier == userSession.personalIdentifier);
 		const credentialViews: CredentialView[] = ehics
-			.map((ehic) => {
+			.map((ehic: any) => {
 				const rows: CategorizedRawCredentialViewRow[] = [
-					{ name: "Family Name", value: ehic.familyName },
-					{ name: "First Name", value: ehic.firstName },
-					{ name: "Personal Identifier", value: ehic.personalIdentifier },
-					{ name: "Date of Birth", value: ehic.birthdate },
+					{ name: "Family Name", value: ehic.claims.familyName },
+					{ name: "First Name", value: ehic.claims.firstName },
+					{ name: "SSN", value: ehic.claims.socialSecurityIdentification.ssn },
+					{ name: "Date of Birth", value: ehic.claims.birthdate },
 				];
 				const rowsObject: CategorizedRawCredentialView = { rows };
 
@@ -61,24 +63,11 @@ export class EHICSupportedCredentialSdJwt implements SupportedCredentialProtocol
 	}
 
 	async generateCredentialResponse(userSession: AuthorizationServerState, holderDID: string): Promise<{ format: VerifiableCredentialFormat; credential: any; }> {
-		if (!userSession.ssn) {
-			throw new Error("Cannot generate credential: SSN is missing");
+		if (!userSession.personalIdentifier) {
+			throw new Error("Cannot generate credential: personalIdentifier is missing");
 		}
 
-		const ehicEntry = await getEhic(userSession?.ssn);
-
-		if (!ehicEntry) {
-			console.error("Possibly raw data w not found")
-			throw new Error("Could not generate credential response");
-		}
-
-		const ehic: CredentialSubject = {
-			familyName: ehicEntry.familyName,
-			firstName: ehicEntry.firstName,
-			id: holderDID,
-			personalIdentifier: ehicEntry.personalIdentifier,
-			dateOfBirth: ehicEntry.birthdate
-		} as any;
+		const ehicClaims = this.dataset.users.filter((user: any) => user.authentication.personalIdentifier == userSession.personalIdentifier)[0].claims;
 
 		const payload = {
 			"@context": ["https://www.w3.org/2018/credentials/v1"],
@@ -87,7 +76,7 @@ export class EHICSupportedCredentialSdJwt implements SupportedCredentialProtocol
 			"name": "EHIC ID Card",  // https://www.w3.org/TR/vc-data-model-2.0/#names-and-descriptions
 			"description": "This credential is issued by the National EHIC ID credential issuer and it can be used for authentication purposes",
 			"credentialSubject": {
-				...ehic,
+				...ehicClaims,
 				"id": holderDID,
 			},
 			"credentialBranding": {
@@ -102,8 +91,13 @@ export class EHICSupportedCredentialSdJwt implements SupportedCredentialProtocol
 		const disclosureFrame = {
 			vc: {
 				credentialSubject: {
-					dateOfBirth: true,
+					familyName: true,
+					firstName: true,
+					birthdate: true,
 					personalIdentifier: true,
+					socialSecurityIdentification: true,
+					documentId: true,
+					competentInstitution: true,
 				}
 			}
 		}
