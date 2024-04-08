@@ -82,8 +82,9 @@ export class PDA1SupportedCredentialSdJwt implements SupportedCredentialProtocol
 			exp,
 			jti, // is the collection id
 			aud,
-			sub, // authorized identities to receive this specific credential
-		} = JSON.parse(new TextDecoder().decode(plaintext)) as { iss: string, exp: number, jti: string, aud: string, sub: string[] };
+			sub, // authorized identities to receive this specific credential,
+			nonce,
+		} = JSON.parse(new TextDecoder().decode(plaintext)) as { iss: string, exp: number, jti: string, aud: string, sub: string[], nonce: string };
 	
 
 		console.log("Issuer state attributes: ", {
@@ -92,6 +93,7 @@ export class PDA1SupportedCredentialSdJwt implements SupportedCredentialProtocol
 			jti, // is the collection id
 			aud,
 			sub, // authorized identities to receive this specific credential
+			nonce,
 		})
 		const expectedIssuer = await calculateJwkThumbprint(vaultPublicKeyJWK);
 		if (!iss || iss !== expectedIssuer) {
@@ -108,7 +110,9 @@ export class PDA1SupportedCredentialSdJwt implements SupportedCredentialProtocol
 			throw new Error(`'exp' is missing from issuer_state or the issuer_state is expired`);
 		} 
 
+		console.log("User session = ", userSession)
 		if (!sub || !sub.includes(userSession.personalIdentifier)) {
+			console.log(`Personal identifier ${userSession.personalIdentifier} is not authorized to receive this credential`);
 			throw new Error(`Personal identifier ${userSession.personalIdentifier} is not authorized to receive this credential`);
 		}
 
@@ -120,6 +124,7 @@ export class PDA1SupportedCredentialSdJwt implements SupportedCredentialProtocol
 			jti: collection_id,
 			aud: await calculateJwkThumbprint(vaultPublicKeyJWK),
 			sub: userSession.personalIdentifier,
+			nonce: nonce,
 		};
 	
 		const fetchRequestToken = await new CompactEncrypt(new TextEncoder().encode(JSON.stringify(jwePayload)))
