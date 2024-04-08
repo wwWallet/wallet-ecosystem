@@ -7,4 +7,3 @@ docker-compose.yml
 *.production*
 *.tar
 .npmrc
-*/**/*.ecdh.json
