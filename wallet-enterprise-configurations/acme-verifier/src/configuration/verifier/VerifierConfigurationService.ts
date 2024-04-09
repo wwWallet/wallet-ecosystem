@@ -40,7 +40,7 @@ const verifiableIdDescriptor =	{
 				"filter": {}
 			},
 			{
-				"path": ['$.credentialSubject.dateOfBirth'],
+				"path": ['$.credentialSubject.birthdate'],
 				"filter": {}
 			}
 		]
@@ -164,7 +164,7 @@ const europeanHealthInsuranceCardDescriptor = {
 				"filter": {}
 			},
 			{
-				"path": ['$.credentialSubject.dateOfBirth'],
+				"path": ['$.credentialSubject.birthdate'],
 				"filter": {}
 			},
 		]
@@ -176,7 +176,7 @@ const europeanHealthInsuranceCardDescriptor = {
 const verifiableIdWithBachelorPresentationDefinition = {
 	"id": "VerifiableIdWithBachelor",
 	"title": "Verifiable ID and Bachelor Diploma",
-	"description": "Required Fields: Verifiable ID (type, personalIdentifier, firstName, familyName, dateOfBirth), Bachelor Diploma (id, firstName, familyName, diplomaTitle, grade, eqfLevel, certificateId, dateOfBirth, awardingDate, completionDate)",
+	"description": "Required Fields: Verifiable ID (type, personalIdentifier, firstName, familyName, birthdate), Bachelor Diploma (id, firstName, familyName, diplomaTitle, grade, eqfLevel, certificateId, dateOfBirth, awardingDate, completionDate)",
 	"format": { "vc+sd-jwt": { alg: [ 'ES256' ] },jwt_vc_json: { alg: [ 'ES256' ] }, jwt_vp: { alg: [ 'ES256' ] } },
 	"input_descriptors": [
 		verifiableIdDescriptor,
@@ -187,7 +187,7 @@ const verifiableIdWithBachelorPresentationDefinition = {
 const verifiableIdWithEuropeanHealthInsuranceCardPresentationDefinition = {
 	"id": "VerifiableIdWithEuropeanHealthInsuranceCard",
 	"title": "Verifiable ID and European Health Insurance Card",
-	"description": "Required Fields: Verifiable ID (type, personalIdentifier, firstName, familyName, dateOfBirth), EHIC (id, firstName, familyName, personalIdentifier, dateOfBirth)",
+	"description": "Required Fields: Verifiable ID (type, personalIdentifier, firstName, familyName, birthdate), EHIC (id, firstName, familyName, personalIdentifier, birthdate)",
 	"format": { "vc+sd-jwt": { alg: [ 'ES256' ] },jwt_vc_json: { alg: [ 'ES256' ] }, jwt_vp: { alg: [ 'ES256' ] } },
 	"input_descriptors": [
 		verifiableIdDescriptor,
@@ -198,7 +198,7 @@ const verifiableIdWithEuropeanHealthInsuranceCardPresentationDefinition = {
 const bachelorWithEuropeanHealthInsuranceCardPresentationDefinition = {
 	"id": "BachelorWithEuropeanHealthInsuranceCard",
 	"title": "Bachelor Diploma and European Health Insurance Card",
-	"description": "Required Fields: Bachelor Diploma (id, firstName, familyName, diplomaTitle, grade, eqfLevel, certificateId, dateOfBirth, awardingDate, completionDate), EHIC (id, firstName, familyName, personalIdentifier, dateOfBirth)",
+	"description": "Required Fields: Bachelor Diploma (id, firstName, familyName, diplomaTitle, grade, eqfLevel, certificateId, dateOfBirth, awardingDate, completionDate), EHIC (id, firstName, familyName, personalIdentifier, birthdate)",
 	"format": { "vc+sd-jwt": { alg: [ 'ES256' ] },jwt_vc_json: { alg: [ 'ES256' ] }, jwt_vp: { alg: [ 'ES256' ] } },
 	"input_descriptors": [
 		bachelorDescriptor,
@@ -209,7 +209,7 @@ const bachelorWithEuropeanHealthInsuranceCardPresentationDefinition = {
 const verifiableIdWithBachelorWithEuropeanHealthInsuranceCardPresentationDefinition = {
 	"id": "VerifiableIdWithBachelorWithEuropeanHealthInsuranceCard",
 	"title": "Verifiable ID, Bachelor Diploma and European Health Insurance Card",
-	"description": "Required Fields: Verifiable ID (type, personalIdentifier, firstName, familyName, dateOfBirth), Bachelor Diploma (id, firstName, familyName, diplomaTitle, grade, eqfLevel, certificateId, dateOfBirth, awardingDate, completionDate), EHIC (id, firstName, familyName, personalIdentifier, dateOfBirth)",
+	"description": "Required Fields: Verifiable ID (type, personalIdentifier, firstName, familyName, dateOfBirth), Bachelor Diploma (id, firstName, familyName, diplomaTitle, grade, eqfLevel, certificateId, dateOfBirth, awardingDate, completionDate), EHIC (id, firstName, familyName, personalIdentifier, birthdate)",
 	"format": { "vc+sd-jwt": { alg: [ 'ES256' ] },jwt_vc_json: { alg: [ 'ES256' ] }, jwt_vp: { alg: [ 'ES256' ] } },
 	"input_descriptors": [
 		verifiableIdDescriptor,
@@ -231,7 +231,7 @@ const minimalBachelorSdJwtPresentationDefinition = {
 const customVerifiableIdSdJwtPresentationDefinition = {
 	"id": "CustomVerifiableId",
 	"title": "Custom Verifiable ID",
-	"description": "Selectable Fields: personalIdentifier, firstName, familyName, dateOfBirth",
+	"description": "Selectable Fields: personalIdentifier, firstName, familyName, birthdate",
 	"selectable": true,
 	"format": { "vc+sd-jwt": { alg: ['ES256'] }, jwt_vc_json: { alg: ['ES256'] }, jwt_vp: { alg: ['ES256'] } },
 	"input_descriptors": [
@@ -338,7 +338,7 @@ export class VerifierConfigurationService implements VerifierConfigurationInterf
 			{
 				"id": "EuropeanHealthInsuranceCard",
 				"title": "European HealthInsurance Card",
-				"description": "Required Fields: id, firstName, familyName, personalIdentifier, dateOfBirth",
+				"description": "Required Fields: id, firstName, familyName, personalIdentifier, birthdate",
 				"format": { "vc+sd-jwt": { alg: [ 'ES256' ] },jwt_vc_json: { alg: [ 'ES256' ] }, jwt_vp: { alg: [ 'ES256' ] } },
 				"input_descriptors": [
 					europeanHealthInsuranceCardDescriptor

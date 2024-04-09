@@ -76,7 +76,7 @@ export class VIDSupportedCredentialSdJwt implements SupportedCredentialProtocol 
 			familyName: vidEntry.familyName,
 			firstName: vidEntry.firstName,
 			personalIdentifier: vidEntry.personalIdentifier,
-			dateOfBirth: vidEntry.birthdate
+			birthdate: vidEntry.birthdate
 		} as any;
 
 		const payload = {
@@ -107,7 +107,7 @@ export class VIDSupportedCredentialSdJwt implements SupportedCredentialProtocol 
 				credentialSubject: {
 					familyName: true,
 					firstName: true,
-					dateOfBirth: true,
+					birthdate: true,
 					personalIdentifier: true,
 				}
 			}
