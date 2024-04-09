@@ -41,6 +41,7 @@ export class EHICSupportedCredentialSdJwt implements SupportedCredentialProtocol
 		if (!userSession?.personalIdentifier) {
 			return null;
 		}
+		this.dataset = JSON.parse(fs.readFileSync('/datasets/dataset.json', 'utf-8').toString()) as any
 		const ehics = this.dataset.users.filter((user: any) => user.authentication.personalIdentifier == userSession.personalIdentifier);
 		const credentialViews: CredentialView[] = ehics
 			.map((ehic: any) => {
@@ -66,7 +67,7 @@ export class EHICSupportedCredentialSdJwt implements SupportedCredentialProtocol
 		if (!userSession.personalIdentifier) {
 			throw new Error("Cannot generate credential: personalIdentifier is missing");
 		}
-
+		this.dataset = JSON.parse(fs.readFileSync('/datasets/dataset.json', 'utf-8').toString()) as any
 		const ehicClaims = this.dataset.users.filter((user: any) => user.authentication.personalIdentifier == userSession.personalIdentifier)[0].claims;
 
 		const payload = {
@@ -87,7 +88,6 @@ export class EHICSupportedCredentialSdJwt implements SupportedCredentialProtocol
 				"textColor": "#ffffff"
 			},
 		};
-
 		const disclosureFrame = {
 			vc: {
 				credentialSubject: {
@@ -95,9 +95,19 @@ export class EHICSupportedCredentialSdJwt implements SupportedCredentialProtocol
 					firstName: true,
 					birthdate: true,
 					personalIdentifier: true,
-					socialSecurityIdentification: true,
+					socialSecurityIdentification: {
+						ssn: true
+					},
+					validityPeriod: {
+						startingDate: true,
+						endingDate: true
+					},
 					documentId: true,
-					competentInstitution: true,
+					competentInstitution: {
+						competentInstitutionId: true,
+						competentInstitutionName: true,
+						competentInstitutionCountryCode: true
+					},
 				}
 			}
 		}

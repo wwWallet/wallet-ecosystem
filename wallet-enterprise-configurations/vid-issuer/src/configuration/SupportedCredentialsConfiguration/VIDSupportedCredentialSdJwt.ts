@@ -42,7 +42,7 @@ export class VIDSupportedCredentialSdJwt implements SupportedCredentialProtocol 
       return null;
     }
 
-		
+		this.dataset = JSON.parse(fs.readFileSync('/datasets/dataset.json', 'utf-8').toString()) as any;
 		const vids = this.dataset.users.filter((user: any) => user.authentication.personalIdentifier == userSession.personalIdentifier);
 		const credentialViews: CredentialView[] = vids
 			.map((vid: any) => {
@@ -69,6 +69,7 @@ export class VIDSupportedCredentialSdJwt implements SupportedCredentialProtocol 
 			throw new Error("Cannot generate credential: Taxis id is missing");
 		}
 		
+		this.dataset = JSON.parse(fs.readFileSync('/datasets/dataset.json', 'utf-8').toString()) as any;
 		const vidClaims = this.dataset.users.filter((user: any) => user.authentication.personalIdentifier == userSession.personalIdentifier)[0].claims;
 		console.log("Vid claims = ", vidClaims)
 		const payload = {
