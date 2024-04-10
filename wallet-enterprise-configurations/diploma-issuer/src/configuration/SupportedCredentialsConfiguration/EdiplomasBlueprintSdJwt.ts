@@ -118,9 +118,9 @@ export class EdiplomasBlueprintSdJwt implements SupportedCredentialProtocol {
 				"completionDate": diploma.completionDate,
 				"awardingDate": diploma.awardingDate,
 				"achievement": {
-					"name": "University Degree Credential",
-					"description": "A Europass Diploma issued by the University of Athens",
-					"type": "Bachelor",
+					"name": "Systems Programming",
+					"description": "This course examines in depth the Unix environment as a development environment. We will look at the Linux API for the C / C ++ languages as well as the Linux shell. We will cover topics such as: basic Unix commands, shell programming, script languages, programming of system functions in C / C ++ for error handling, creation and termination of processes, sending / receiving signals, low-level input / output system calls, communication between local processes, creation, termination and synchronization of threads, file system management, as well as network programming. This course requires independent and consistent effort from the student.",
+					"type": "Compulsory",
 					"image": config.url + "/images/EuropassUoaCard.png"
 				},
 			},

@@ -4,6 +4,7 @@ import { authorizationServerMetadataConfiguration } from "../../authorizationSer
 import config from "../../../config";
 import { VerifierConfigurationInterface } from "../../services/interfaces";
 import { InputDescriptorType } from "@wwwallet/ssi-sdk";
+import "reflect-metadata";
 
 export type PresentationDefinitionTypeWithFormat = {
 	id: string;

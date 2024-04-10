@@ -77,7 +77,7 @@ export class EHICSupportedCredentialSdJwt implements SupportedCredentialProtocol
 			firstName: ehicEntry.firstName,
 			id: holderDID,
 			personalIdentifier: ehicEntry.personalIdentifier,
-			dateOfBirth: ehicEntry.birthdate
+			birthdate: ehicEntry.birthdate
 		} as any;
 
 		const payload = {
@@ -102,7 +102,7 @@ export class EHICSupportedCredentialSdJwt implements SupportedCredentialProtocol
 		const disclosureFrame = {
 			vc: {
 				credentialSubject: {
-					dateOfBirth: true,
+					birthdate: true,
 					personalIdentifier: true,
 				}
 			}
