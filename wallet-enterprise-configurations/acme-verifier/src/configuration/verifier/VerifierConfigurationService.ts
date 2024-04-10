@@ -210,7 +210,7 @@ const bachelorWithEuropeanHealthInsuranceCardPresentationDefinition = {
 const verifiableIdWithBachelorWithEuropeanHealthInsuranceCardPresentationDefinition = {
 	"id": "VerifiableIdWithBachelorWithEuropeanHealthInsuranceCard",
 	"title": "Verifiable ID, Bachelor Diploma and European Health Insurance Card",
-	"description": "Required Fields: Verifiable ID (type, personalIdentifier, firstName, familyName, dateOfBirth), Bachelor Diploma (id, firstName, familyName, diplomaTitle, grade, eqfLevel, certificateId, dateOfBirth, awardingDate, completionDate), EHIC (id, firstName, familyName, personalIdentifier, birthdate)",
+	"description": "Required Fields: Verifiable ID (type, personalIdentifier, firstName, familyName, birthdate), Bachelor Diploma (id, firstName, familyName, diplomaTitle, grade, eqfLevel, certificateId, dateOfBirth, awardingDate, completionDate), EHIC (id, firstName, familyName, personalIdentifier, birthdate)",
 	"format": { "vc+sd-jwt": { alg: [ 'ES256' ] },jwt_vc_json: { alg: [ 'ES256' ] }, jwt_vp: { alg: [ 'ES256' ] } },
 	"input_descriptors": [
 		verifiableIdDescriptor,
@@ -320,7 +320,7 @@ export class VerifierConfigurationService implements VerifierConfigurationInterf
 			{
 				"id": "VerifiableId",
 				"title": "Verifiable ID",
-				"description": "Required Fields: type, personalIdentifier, firstName, familyName, dateOfBirth",
+				"description": "Required Fields: type, personalIdentifier, firstName, familyName, birthdate",
 				"format": { "vc+sd-jwt": { alg: [ 'ES256' ] },jwt_vc_json: { alg: [ 'ES256' ] }, jwt_vp: { alg: [ 'ES256' ] } },
 				"input_descriptors": [
 					verifiableIdDescriptor
