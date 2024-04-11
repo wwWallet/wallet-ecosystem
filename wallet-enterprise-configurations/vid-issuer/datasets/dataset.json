@@ -12,7 +12,10 @@
         "familyName": "Mathers",
         "birthdate": "1972-10-17",
         "personalIdentifier": "EM19721017MM",
-        "referenceId": "4123456789"
+        "referenceId": "4123456789",
+				"validityPeriod": {
+					"endingDate": "2030-10-17"
+				}
       }
     },
     {
@@ -27,7 +30,10 @@
         "familyName": "DiCaprio",
         "birthdate": "1974-11-11",
         "personalIdentifier": "LD19741111DC",
-        "referenceId": "5123456789"
+        "referenceId": "5123456789",
+				"validityPeriod": {
+					"endingDate": "2030-10-17"
+				}
       }
     },
     {
@@ -42,7 +48,10 @@
         "familyName": "Robbie",
         "birthdate": "1990-07-02",
         "personalIdentifier": "MR19900702R",
-        "referenceId": "6123456789"
+        "referenceId": "6123456789",
+				"validityPeriod": {
+					"endingDate": "2030-10-17"
+				}
       }
     },
     {
@@ -57,7 +66,10 @@
         "familyName": "Burr",
         "birthdate": "1968-06-10",
         "personalIdentifier": "BB19680610B",
-        "referenceId": "7123456789"
+        "referenceId": "7123456789",
+				"validityPeriod": {
+					"endingDate": "2030-10-17"
+				}
       }
     },
     {
@@ -72,7 +84,10 @@
         "familyName": "Foxx",
         "birthdate": "1967-12-13",
         "personalIdentifier": "JF19671213F",
-        "referenceId": "8123456789"
+        "referenceId": "8123456789",
+				"validityPeriod": {
+					"endingDate": "2030-10-17"
+				}
       }
     }
   ]
