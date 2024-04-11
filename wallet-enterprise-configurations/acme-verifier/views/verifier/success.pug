@@ -18,7 +18,7 @@ block layout-content
 				h1 Success
 
 				// Container to hold inline boxes using Flexbox
-				.inline-box-container(style="display: flex; gap:30px; flex-direction: row; flex-wrap: wrap;")
+				.inline-box-container(style="display: flex; gap:30px; flex-direction: row; flex-wrap: wrap;justify-content: center;")
 					// Iterate over each credential and display an inline box with dynamic background color and text color
 					each credential, index in credentialPayloads
 						- const branding = credential.credentialBranding || { backgroundColor: 'red', textColor: 'black' }
