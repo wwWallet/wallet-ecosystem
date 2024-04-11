@@ -30,7 +30,7 @@ export class VIDSupportedCredentialSdJwt implements SupportedCredentialProtocol 
   }
   getDisplay(): Display {
 		return {
-			name: "Verifiable ID",
+			name: "PID",
 			logo: { url: config.url + "/images/vidCard.png" },
 			background_color: "#4CC3DD"
 		}
@@ -51,6 +51,7 @@ export class VIDSupportedCredentialSdJwt implements SupportedCredentialProtocol 
 					{ name: "First Name", value: vid.claims.firstName },
 					{ name: "Personal Identifier", value: vid.claims.personalIdentifier },
 					{ name: "Date of Birth", value: vid.claims.birthdate },
+					{ name: "Expiration Date", value: vid.claims.validityPeriod.endingDate },
 				];
 				const rowsObject: CategorizedRawCredentialView = { rows };
 				
@@ -76,8 +77,8 @@ export class VIDSupportedCredentialSdJwt implements SupportedCredentialProtocol 
 			"@context": ["https://www.w3.org/2018/credentials/v1"],
 			"type": this.getTypes(),
 			"id": `urn:vid:${randomUUID()}`,
-			"name": "Verifiable ID",  // https://www.w3.org/TR/vc-data-model-2.0/#names-and-descriptions
-			"description": "This credential is issued by the National Verifiable ID credential issuer and it can be used for authentication purposes",
+			"name": "PID",  // https://www.w3.org/TR/vc-data-model-2.0/#names-and-descriptions
+			"description": "This credential is issued by the National PID credential issuer and it can be used for authentication purposes",
 			"credentialSubject": {
 				...vidClaims,
 				"id": holderDID,

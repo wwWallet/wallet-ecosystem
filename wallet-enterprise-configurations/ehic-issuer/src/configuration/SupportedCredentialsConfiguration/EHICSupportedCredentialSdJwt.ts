@@ -50,6 +50,7 @@ export class EHICSupportedCredentialSdJwt implements SupportedCredentialProtocol
 					{ name: "First Name", value: ehic.claims.firstName },
 					{ name: "SSN", value: ehic.claims.socialSecurityIdentification.ssn },
 					{ name: "Date of Birth", value: ehic.claims.birthdate },
+					{ name: "Expiration Date", value: ehic.claims.validityPeriod.endingDate },
 				];
 				const rowsObject: CategorizedRawCredentialView = { rows };
 

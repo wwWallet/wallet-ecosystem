@@ -1,7 +1,7 @@
 // titles.ts
 
 const titles = {
-  index: "EHIC Issuer",
+  index: "DC4EU EHIC Issuer",
   // Add other titles for different routes or pages here if needed
 };
 

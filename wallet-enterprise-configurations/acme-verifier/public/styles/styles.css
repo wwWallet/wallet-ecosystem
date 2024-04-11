@@ -236,6 +236,7 @@ section.layout {
   display: flex;
   flex-wrap: wrap;
 	flex-direction: column;
+	margin-bottom: 3rem;
 }
 
 

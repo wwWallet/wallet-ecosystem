@@ -2,7 +2,7 @@ extends ../layout.pug
 
 block layout-content
   .container2.container-positions
-    h1 Present your Verifiable Credentials
+    h1 Create Request for Verifiable Credentials
     .card-container
       for definition in presentationDefinitions
         .card
@@ -10,9 +10,9 @@ block layout-content
           p.card-text #{definition.description}
           .card-buttons
             if definition.selectable === true
-              button.btn.btn-primary(onclick=`window.location.href = "/verifier/public/definitions/selectable-presentation-request/${definition.id}"`) Present
+              button.btn.btn-primary(onclick=`window.location.href = "/verifier/public/definitions/selectable-presentation-request/${definition.id}"`) Request
             else
-              button.btn.btn-primary(onclick=`window.location.href = "/verifier/public/definitions/presentation-request/${definition.id}"`) Present
+              button.btn.btn-primary(onclick=`window.location.href = "/verifier/public/definitions/presentation-request/${definition.id}"`) Request
 
   block footer
     include ../footer.pug

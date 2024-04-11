@@ -240,7 +240,9 @@ services:
     volumes:
       - ./resources-vault/src/config/config.js:/app/src/config/config.js
       - ./resources-vault/keys/:/app/keys/
-
+    depends_on:
+      wallet-db:
+        condition: service_healthy
     ports:
       - 6555:6555
 
