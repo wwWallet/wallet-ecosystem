@@ -183,13 +183,30 @@ export class PDA1SupportedCredentialSdJwt implements SupportedCredentialProtocol
 			vc: {
 				credentialSubject: {
 					personalIdentifier: true,
-					socialSecurityIdentification: true,
+					socialSecurityIdentification: {
+						ssn: true
+					},
 					nationality: true,
-					employer: true,
+					employer: {
+						employmentType: true,
+						name: true,
+						employerId: true,
+						typeOfId: true
+					},
+					decisionOnApplicableLegislation: {
+						validityPeriod: {
+							startingDate: true,
+							endingDate: true
+						}
+					},
 					address: true,
 					placeOfWork: true,
 					documentId: true,
-					competentInstitution: true,
+					competentInstitution: {
+						competentInstitutionId: true,
+						competentInstitutionName: true,
+						competentInstitutionCountryCode: true
+					},
 				}
 			}
 		}

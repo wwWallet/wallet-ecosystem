@@ -87,11 +87,15 @@ const europeanHealthInsuranceCardDescriptor = {
 				}
 			},
 			{
-				"path": ['$.credentialSubject.socialSecurityIdentification'],
+				"path": ['$.credentialSubject.socialSecurityIdentification.ssn'],
 				"filter": {}
 			},
 			{
-				"path": ['$.credentialSubject.validityPeriod'],
+				"path": ['$.credentialSubject.validityPeriod.startingDate'],
+				"filter": {}
+			},
+			{
+				"path": ['$.credentialSubject.validityPeriod.endingDate'],
 				"filter": {}
 			},
 			{
@@ -99,7 +103,15 @@ const europeanHealthInsuranceCardDescriptor = {
 				"filter": {}
 			},
 			{
-				"path": ['$.credentialSubject.competentInstitution'],
+				"path": ['$.credentialSubject.competentInstitution.competentInstitutionId'],
+				"filter": {}
+			},
+			{
+				"path": ['$.credentialSubject.competentInstitution.competentInstitutionName'],
+				"filter": {}
+			},
+			{
+				"path": ['$.credentialSubject.competentInstitution.competentInstitutionCountryCode'],
 				"filter": {}
 			}
 		]
@@ -120,11 +132,15 @@ const Pda1Descriptor = {
 				}
 			},
 			{
-				"path": ['$.credentialSubject.socialSecurityIdentification'],
+				"path": ['$.credentialSubject.socialSecurityIdentification.ssn'],
 				"filter": {}
 			},
 			{
-				"path": ['$.credentialSubject.decisionOnApplicableLegislation'],
+				"path": ['$.credentialSubject.decisionOnApplicableLegislation.validityPeriod.startingDate'],
+				"filter": {}
+			},
+			{
+				"path": ['$.credentialSubject.decisionOnApplicableLegislation.validityPeriod.endingDate'],
 				"filter": {}
 			},
 			{
@@ -132,13 +148,33 @@ const Pda1Descriptor = {
 				"filter": {}
 			},
 			{
-				"path": ['$.credentialSubject.competentInstitution'],
+				"path": ['$.credentialSubject.competentInstitution.competentInstitutionId'],
 				"filter": {}
 			},
 			{
-				"path": ['$.credentialSubject.employer'],
+				"path": ['$.credentialSubject.competentInstitution.competentInstitutionName'],
 				"filter": {}
 			},
+			{
+				"path": ['$.credentialSubject.competentInstitution.competentInstitutionCountryCode'],
+				"filter": {}
+			},
+			{
+				"path": ['$.credentialSubject.employer.employmentType'],
+				"filter": {}
+			},
+			{
+				"path": ['$.credentialSubject.employer.name'],
+				"filter": {}
+			},
+			{
+				"path": ['$.credentialSubject.employer.employerId'],
+				"filter": {}
+			},
+			{
+				"path": ['$.credentialSubject.employer.typeOfId'],
+				"filter": {}
+			}
 		]
 	}
 }
@@ -188,7 +224,7 @@ const verifiableIdWithPda1PresentationDefinition = {
 const customVerifiableIdSdJwtPresentationDefinition = {
 	"id": "CustomVerifiableId",
 	"title": "Custom PID",
-	"description": "Selectable Fields: personalIdentifier, firstName, familyName, dateOfBirth",
+	"description": "Selectable Fields: personalIdentifier, firstName, familyName, birthdate",
 	"selectable": true,
 	"format": { "vc+sd-jwt": { alg: ['ES256'] }, jwt_vc_json: { alg: ['ES256'] }, jwt_vp: { alg: ['ES256'] } },
 	"input_descriptors": [
