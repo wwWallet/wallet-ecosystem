@@ -45,7 +45,7 @@ const issuerSigner: CredentialSigner = {
 
 		const issuanceDate = new Date();
 		const expirationDate = (() => {
-			const expirationDate = new Date(payload.vc.credentialSubject.decisionOnApplicableLegislation.validityPeriod.endingDate);
+			const expirationDate = new Date(payload.vc.credentialSubject.validityPeriod.endingDate);
 			return expirationDate;
 		})();
 
