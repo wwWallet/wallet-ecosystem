@@ -12,7 +12,11 @@
 				"familyName": "FAMILY_NAME",
 				"birthdate": "BIRTH_DATE",
 				"personalIdentifier": "PERSONAL_IDENTIFIER",
-				"referenceId": "REFERENCE_ID"
+				"referenceId": "REFERENCE_ID",
+				"validityPeriod": {
+					"startingDate": "STARTING_DATE",
+					"endingDate": "ENDING_DATE"
+				}
 			}
 		}
 	]

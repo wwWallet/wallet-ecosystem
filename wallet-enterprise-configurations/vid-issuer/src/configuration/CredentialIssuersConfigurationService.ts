@@ -46,8 +46,15 @@ const issuerSigner: CredentialSigner = {
 
 		const issuanceDate = new Date();
 		const expirationDate = (() => {
-			const expirationDate = new Date(payload.vc.credentialSubject.validityPeriod.endingDate);
-			return expirationDate;
+			if (payload.vc.credentialSubject?.validityPeriod?.endingDate) {
+				const expirationDate = new Date(payload.vc.credentialSubject.validityPeriod.endingDate);
+				return expirationDate;
+			}
+			else { // if no expiration date found on credential subject, then set it to next year
+				const expirationDate = new Date();
+				expirationDate.setFullYear(expirationDate.getFullYear() + 1);
+				return expirationDate;
+			}
 		})();
 
 		payload.vc.expirationDate = expirationDate.toISOString();

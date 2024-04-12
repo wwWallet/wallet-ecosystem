@@ -184,7 +184,7 @@ const Pda1Descriptor = {
 
 const verifiableIdWithEuropeanHealthInsuranceCardPresentationDefinition = {
 	"id": "VerifiableIdWithEuropeanHealthInsuranceCard",
-	"title": "PID and European Health Insurance Card",
+	"title": "PID and EHIC",
 	"description": "Required Fields: PID (firstName, familyName), EHIC (ssn, validityPeriod, documentId, competentInstitution)",
 	"format": { "vc+sd-jwt": { alg: [ 'ES256' ] },jwt_vc_json: { alg: [ 'ES256' ] }, jwt_vp: { alg: [ 'ES256' ] } },
 	"input_descriptors": [
@@ -193,19 +193,17 @@ const verifiableIdWithEuropeanHealthInsuranceCardPresentationDefinition = {
 	]
 }
 
-
-
-const verifiableIdWithPda1WithEuropeanHealthInsuranceCardPresentationDefinition = {
-	"id": "VerifiableIdWithBachelorWithEuropeanHealthInsuranceCard",
-	"title": "PID, European Health Insurance Card and PDA1",
-	"description": "Required Fields: PID (firstName, familyName), EHIC (ssn, validityPeriod, documentId, competentInstitution), PDA1 (ssn, validityPeriod, documentId, competentInstitution, employerInfo)",
-	"format": { "vc+sd-jwt": { alg: [ 'ES256' ] },jwt_vc_json: { alg: [ 'ES256' ] }, jwt_vp: { alg: [ 'ES256' ] } },
-	"input_descriptors": [
-		verifiableIdDescriptorWithFirstnameLastname,
-		europeanHealthInsuranceCardDescriptor,
-		Pda1Descriptor,
-	]
-}
+// const verifiableIdWithPda1WithEuropeanHealthInsuranceCardPresentationDefinition = {
+// 	"id": "VerifiableIdWithBachelorWithEuropeanHealthInsuranceCard",
+// 	"title": "PID, European Health Insurance Card and PDA1",
+// 	"description": "Required Fields: PID (firstName, familyName), EHIC (ssn, validityPeriod, documentId, competentInstitution), PDA1 (ssn, validityPeriod, documentId, competentInstitution, employerInfo)",
+// 	"format": { "vc+sd-jwt": { alg: [ 'ES256' ] },jwt_vc_json: { alg: [ 'ES256' ] }, jwt_vp: { alg: [ 'ES256' ] } },
+// 	"input_descriptors": [
+// 		verifiableIdDescriptorWithFirstnameLastname,
+// 		europeanHealthInsuranceCardDescriptor,
+// 		Pda1Descriptor,
+// 	]
+// }
 
 const verifiableIdWithPda1PresentationDefinition = {
 	"id": "VerifiableIdWithPda1",
@@ -240,9 +238,8 @@ export class VerifierConfigurationService implements VerifierConfigurationInterf
 		return [
 			customVerifiableIdSdJwtPresentationDefinition,
 			verifiableIdWithEuropeanHealthInsuranceCardPresentationDefinition,
-			verifiableIdWithPda1WithEuropeanHealthInsuranceCardPresentationDefinition,
 			verifiableIdWithPda1PresentationDefinition,
-
+			// verifiableIdWithPda1WithEuropeanHealthInsuranceCardPresentationDefinition
 		]
 	}
 

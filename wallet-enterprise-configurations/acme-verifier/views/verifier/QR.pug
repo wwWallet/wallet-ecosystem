@@ -12,7 +12,6 @@ block layout-content
 					
           - const modifiedURL = authorizationRequestURL.replace("openid://cb", wwwalletURL)
           button.Btn.Medium.openwithwalletbutton(type="button" onclick=`window.location.href = '${modifiedURL}';`) Open with DC4EU Wallet
-          button.Btn.Medium.openwithwalletbuttonnative(type="button" onclick=`window.location.href = '${authorizationRequestURL}';`) Open with a Native
 
           input(type='hidden' name='state' id='state' value=state)
           input(type='hidden' name='authorizationRequestQR' id='authorizationRequestQR' value=authorizationRequestQR)
