@@ -18,11 +18,11 @@ export class VerifierConfigurationService implements VerifierConfigurationInterf
 	getPresentationDefinitions(): PresentationDefinitionTypeWithFormat[] {
 		return [
 			{
-				"id": "vid", // scope name
+				"id": "PID", // scope name
 				"format": { "vc+sd-jwt": { alg: [ 'ES256' ] }, jwt_vp: { alg: [ 'ES256' ] } },
 				"input_descriptors": [
 					{
-						"id": "VID",
+						"id": "PID",
 						"constraints": {
 							"fields": [
 								{
