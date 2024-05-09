@@ -17,7 +17,7 @@ export type PresentationDefinitionTypeWithFormat = {
 
 
 const verifiableIdDescriptor =	{
-	"id": "VerifiableId",
+	"id": "PID",
 	"constraints": {
 		"fields": [
 			{
@@ -49,7 +49,7 @@ const verifiableIdDescriptor =	{
 }
 
 const verifiableIdDescriptorWithFirstnameLastname =	{
-	"id": "VerifiableId",
+	"id": "PID",
 	"constraints": {
 		"fields": [
 			{
@@ -75,7 +75,7 @@ const verifiableIdDescriptorWithFirstnameLastname =	{
 
 
 const europeanHealthInsuranceCardDescriptor = {
-	"id": "EuropeanHealthInsuranceCard",
+	"id": "EHIC",
 	"constraints": {
 		"fields": [
 			{
@@ -206,7 +206,7 @@ const verifiableIdWithEuropeanHealthInsuranceCardPresentationDefinition = {
 // }
 
 const verifiableIdWithPda1PresentationDefinition = {
-	"id": "VerifiableIdWithPda1",
+	"id": "PIDWithPda1",
 	"title": "PID and PDA1",
 	"description": "Required Fields: PID (firstName, familyName), PDA1 (ssn, validityPeriod, documentId, competentInstitution, employerInfo)",
 	"format": { "vc+sd-jwt": { alg: ['ES256'] }, jwt_vc_json: { alg: ['ES256'] }, jwt_vp: { alg: ['ES256'] } },
@@ -220,7 +220,7 @@ const verifiableIdWithPda1PresentationDefinition = {
 
 
 const customVerifiableIdSdJwtPresentationDefinition = {
-	"id": "CustomVerifiableId",
+	"id": "CustomPID",
 	"title": "Custom PID",
 	"description": "Selectable Fields: personalIdentifier, firstName, familyName, birthdate",
 	"selectable": true,
