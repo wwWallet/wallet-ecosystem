@@ -2,11 +2,9 @@
 FROM ghcr.io/wwwallet/wallet-enterprise:base AS builder
 WORKDIR /app
 
-COPY wallet-enterprise/ .
+# COPY wallet-enterprise/ .
 RUN rm -rf src/configuration/
 COPY ./wallet-enterprise-configurations/ehic-issuer/src/configuration/ src/configuration/
-COPY ./wallet-enterprise-configurations/ehic-issuer/public/styles/styles.css public/styles/styles.css
-COPY ./wallet-enterprise-configurations/ehic-issuer/views/index.pug views/index.pug
 COPY ./wallet-enterprise-configurations/ehic-issuer/views/header.pug views/header.pug
 
 
