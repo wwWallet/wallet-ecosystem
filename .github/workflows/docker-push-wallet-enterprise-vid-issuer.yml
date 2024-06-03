@@ -1,0 +1,20 @@
+name: Push Docker image
+on:
+  push:
+    tags:
+      - v0.*
+      - v1.*
+      - v2.*
+
+jobs:
+  push-vid:
+    permissions:
+      contents: read
+      packages: write
+
+    uses: ./.github/workflows/docker-build-push.yml
+    secrets: inherit
+    with:
+      image-tag: ghcr.io/gunet/wallet-enterprise-vid-issuer:${{ github.ref_name }}
+      docker-push: true
+      dockerfile-path: ./wallet-enterprise-configurations/vid-issuer/Dockerfile
