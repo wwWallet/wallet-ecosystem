@@ -3,7 +3,7 @@ FROM ghcr.io/gunet/wallet-enterprise:base AS builder
 WORKDIR /app
 
 RUN rm -rf src/configuration/
-COPY ./wallet-enterprise-configurations/vid-issuer/src/configuration src/configuration:rw
+COPY ./wallet-enterprise-configurations/vid-issuer/src/configuration src/configuration
 COPY ./wallet-enterprise-configurations/vid-issuer/public/styles/styles.css public/styles/styles.css
 COPY ./wallet-enterprise-configurations/vid-issuer/public/images public/images
 COPY ./wallet-enterprise-configurations/vid-issuer/views/header.pug views/header.pug
