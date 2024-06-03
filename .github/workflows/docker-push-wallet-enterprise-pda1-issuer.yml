@@ -7,7 +7,7 @@ on:
       - v2.*
 
 jobs:
-  push-diploma:
+  push-pda1:
     permissions:
       contents: read
       packages: write
@@ -15,6 +15,6 @@ jobs:
     uses: ./.github/workflows/docker-build-push.yml
     secrets: inherit
     with:
-      image-tag: ghcr.io/wwwallet/wallet-enterprise-diploma-issuer:${{ github.ref_name }}
+      image-tag: ghcr.io/gunet/wallet-enterprise-pda1-issuer:${{ github.ref_name }}
       docker-push: true
-      dockerfile-path: ./wallet-enterprise-configurations/diploma-issuer/Dockerfile
+      dockerfile-path: ./wallet-enterprise-configurations/pda1-issuer/Dockerfile

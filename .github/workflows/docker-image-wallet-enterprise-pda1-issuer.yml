@@ -3,10 +3,11 @@ on:
   push:
     branches-ignore:
       - master
+      - dc4eu-rome
   pull_request:
 
 jobs:
-  build-diploma:
+  build-pda1:
     permissions:
       contents: read
       packages: read
@@ -14,6 +15,6 @@ jobs:
     uses: ./.github/workflows/docker-build-push.yml
     secrets: inherit
     with:
-      image-tag: ghcr.io/wwwallet/wallet-enterprise-diploma-issuer:latest
+      image-tag: ghcr.io/gunet/wallet-enterprise-pda1-issuer:latest
       docker-push: false
-      dockerfile-path: ./wallet-enterprise-configurations/diploma-issuer/Dockerfile
+      dockerfile-path: ./wallet-enterprise-configurations/pda1-issuer/Dockerfile

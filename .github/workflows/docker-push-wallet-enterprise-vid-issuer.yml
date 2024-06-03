@@ -15,6 +15,6 @@ jobs:
     uses: ./.github/workflows/docker-build-push.yml
     secrets: inherit
     with:
-      image-tag: ghcr.io/wwwallet/wallet-enterprise-vid-issuer:${{ github.ref_name }}
+      image-tag: ghcr.io/gunet/wallet-enterprise-vid-issuer:${{ github.ref_name }}
       docker-push: true
       dockerfile-path: ./wallet-enterprise-configurations/vid-issuer/Dockerfile

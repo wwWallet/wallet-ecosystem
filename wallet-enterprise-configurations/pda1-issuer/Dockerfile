@@ -2,14 +2,12 @@
 FROM ghcr.io/gunet/wallet-enterprise:base AS builder
 WORKDIR /app
 
-COPY wallet-enterprise/ .
 RUN rm -rf src/configuration/
-COPY ./wallet-enterprise-configurations/diploma-issuer/src/configuration /app/src/configuration
-COPY ./wallet-enterprise-configurations/diploma-issuer/views/issuer/login.pug /app/views/issuer/login.pug
-COPY ./wallet-enterprise-configurations/diploma-issuer/public/styles/styles.css /app/public/styles/styles.css
-COPY ./wallet-enterprise-configurations/diploma-issuer/public/images /app/public/images
-COPY ./wallet-enterprise-configurations/diploma-issuer/views/header.pug /app/views/header.pug
-COPY ./wallet-enterprise-configurations/diploma-issuer/views/index.pug /app/views/index.pug
+COPY ./wallet-enterprise-configurations/pda1-issuer/src/configuration src/configuration
+COPY ./wallet-enterprise-configurations/pda1-issuer/views/header.pug views/header.pug
+COPY ./wallet-enterprise-configurations/pda1-issuer/public/styles/styles.css public/styles/styles.css
+COPY ./wallet-enterprise-configurations/pda1-issuer/views/index.pug views/index.pug
+
 
 RUN --mount=type=secret,id=npmrc,required=true,target=./.npmrc,uid=1000 \
     yarn cache clean && yarn install && yarn build
