@@ -88,7 +88,6 @@ services:
       - ./wallet-enterprise-configurations/diploma-issuer/config/config.development.ts:/app/config/config.development.ts:rw
       - ./wallet-enterprise-configurations/diploma-issuer/keys:/app/keys:rw
       - ./wallet-enterprise-configurations/diploma-issuer/src/configuration:/app/src/configuration:rw
-      - ./wallet-enterprise-configurations/diploma-issuer/views/issuer/login.pug:/app/views/issuer/login.pug:rw
       - ./wallet-enterprise-configurations/diploma-issuer/views/header.pug:/app/views/header.pug:rw
       - ./wallet-enterprise-configurations/diploma-issuer/views/index.pug:/app/views/index.pug:rw
       - ./wallet-enterprise-configurations/diploma-issuer/public/styles/styles.css:/app/public/styles/styles.css:rw
