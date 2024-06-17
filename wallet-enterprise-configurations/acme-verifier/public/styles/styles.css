@@ -4,7 +4,7 @@
 	--header-font: 'Open Sans', sans-serif;
 	--main-font: 'Roboto Slab', sans-serif;
 	--main-fonts: Helvetica, sans-serif;
-	--primary-color: #4d7e3e;
+	--primary-color: #003399;
 	--secondary-color: #d4d4d4;
 	--secondary-light-color: #ffffff;
 	--light-gray: #f5f5f5;
@@ -26,8 +26,7 @@ body {
 
 
 h1, h2, h3, h4, h5 {
-	opacity: 0.6;
-	color: #000;
+	color: var(--primary-color);
 }
 
 @media only screen and (max-width: 600px) {
@@ -237,6 +236,7 @@ section.layout {
   display: flex;
   flex-wrap: wrap;
 	flex-direction: column;
+	margin-bottom: 3rem;
 }
 
 
@@ -473,7 +473,7 @@ a.menu-link {
 
 }
 body{
-	background-color: rgba(77, 126, 62, 0.15) !important; /* Adjust the opacity value (0.8) as needed */
+	background-color:#D4E0F8 !important
 
 }
 .container{

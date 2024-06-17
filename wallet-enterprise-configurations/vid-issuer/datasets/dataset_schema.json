@@ -1,0 +1,23 @@
+{
+	"users": [
+		{
+			"authentication": {
+				"username": "user",
+				"password": "secret",
+				"uid": "UID",
+				"personalIdentifier": "PERSONAL_IDENTIFIER"
+			},
+			"claims": {
+				"firstName": "FIRST_NAME",
+				"familyName": "FAMILY_NAME",
+				"birthdate": "BIRTH_DATE",
+				"personalIdentifier": "PERSONAL_IDENTIFIER",
+				"referenceId": "REFERENCE_ID",
+				"validityPeriod": {
+					"startingDate": "STARTING_DATE",
+					"endingDate": "ENDING_DATE"
+				}
+			}
+		}
+	]
+}

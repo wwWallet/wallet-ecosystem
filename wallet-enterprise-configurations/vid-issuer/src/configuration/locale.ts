@@ -1,8 +1,8 @@
 const locale = {
 	en: {
 		header: {
-			title: "National Verifiable ID Issuer",
-			subtitle: "Receive your verifiable ID",
+			title: "DC4EU PID Issuer",
+			subtitle: "Receive your PID",
 		},
 		plainHeader: {
 			title: "National Authentication Service",
@@ -20,12 +20,12 @@ const locale = {
 			emailForOrgs: "E-mail for Institutions"
 		},
 		index: {
-			header: "National Verifiable ID Issuer",
-			phrase: "I want to receive a Verifiable ID",
+			header: "DC4EU PID Issuer",
+			phrase: "I want to receive my PID",
 			proceed: "Proceed",
-			heading: "National Verifiable ID Issuer",
-			paragraph: "This is a portal where citizens can receive their digital Verifiable ID in their wallet. To proceed you must first have an EBSI conformant digital wallet. This Verifiable ID will contain a the Social Security Number as a personal identifier.",
-			demo_text: "This is a National VID implementation for demonstration puproses. It has been developed in the framework of EBSI Early Adopters Program and the Multi University Pilot, with the endorsement of the Greek Ministry of Education. The purpose of this application is to issue a Verifiable ID for authentication puproses."
+			heading: "DC4EU PID Issuer",
+			paragraph: "This is a portal where citizens can receive their PID in their wallet. To proceed you must first have an EUDI wallet from a provider of your choice.",
+			demo_text: "This is a National PID implementation for demonstration puproses. The purpose of this application is to issue a Verifiable PID for authentication and identification purposes."
 		},
 		login: {
 			title: "Login",

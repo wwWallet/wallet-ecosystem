@@ -7,6 +7,7 @@ import AppDataSource from "../../AppDataSource";
 import { AuthorizationServerState } from "../../entities/AuthorizationServerState.entity";
 import config from "../../../config";
 import locale from "../locale";
+import fs from 'fs';
 
 export class LocalAuthenticationComponent extends AuthenticationComponent {
 
@@ -14,8 +15,13 @@ export class LocalAuthenticationComponent extends AuthenticationComponent {
 		override identifier: string,
 		override protectedEndpoint: string,
 		private secret = config.appSecret,
-		private users = [{ username: "user1", password: "secret", taxis_id: "432432432423", ssn: '032429484252432' }, { username: "user2", password: "secret", taxis_id: "432432432424", ssn: "032429484252433" }]
-	) { super(identifier, protectedEndpoint) }
+		private users = []
+	) {
+		super(identifier, protectedEndpoint)
+		const dataset = JSON.parse(fs.readFileSync('/datasets/dataset.json', 'utf-8').toString()) as any;
+		console.dir(dataset, { depth: null })
+		this.users = dataset.users;
+	}
 
 	public override async authenticate(
 		req: Request<ParamsDictionary, any, any, ParsedQs, Record<string, any>>,
@@ -47,10 +53,10 @@ export class LocalAuthenticationComponent extends AuthenticationComponent {
 		}
 		return await jwtVerify(jws, new TextEncoder().encode(this.secret)).then(async (result) => {
 			const username = result.payload.sub;
-			if (!username || this.users.filter(u => u.username == username).length != 1) return false;
+			if (!username || this.users.filter((u: any) => u.authentication.username == username).length != 1) return false;
 
-			const usersFound = this.users.filter(u => u.username == username);
-			req.authorizationServerState.taxis_id = usersFound[0].taxis_id;
+			const usersFound = this.users.filter((u: any) => u.authentication.username == username);
+			req.authorizationServerState.personalIdentifier = (usersFound[0] as any).authentication.personalIdentifier;
 			await AppDataSource.getRepository(AuthorizationServerState).save(req.authorizationServerState);
 			return true;
 		}).catch(err => {
@@ -77,7 +83,7 @@ export class LocalAuthenticationComponent extends AuthenticationComponent {
 	}
 	private async handleLoginSubmission(req: Request, res: Response): Promise<any> {
 		const { username, password } = req.body;
-		const usersFound = this.users.filter(u => u.username == username && u.password == password);
+		const usersFound = this.users.filter((u: any) => u.authentication.username == username && u.authentication.password == password);
 		if (usersFound.length == 1) {
 			// sign a token and send it to the client
 
@@ -89,7 +95,7 @@ export class LocalAuthenticationComponent extends AuthenticationComponent {
 				.sign(new TextEncoder().encode(this.secret));
 			res.cookie('jws', jws);
 
-			req.authorizationServerState.taxis_id = usersFound[0].taxis_id;
+			req.authorizationServerState.personalIdentifier = (usersFound[0] as any).authentication.personalIdentifier;
 			await AppDataSource.getRepository(AuthorizationServerState).save(req.authorizationServerState);
 			return res.redirect(this.protectedEndpoint);
 		}

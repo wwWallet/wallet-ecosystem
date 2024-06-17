@@ -5,7 +5,8 @@ block layout-content
 		section.IssuerOrVerifierLayout
 			div.item.IssuerSection
 				.ItemLayout
-					i(class=`fa ${locale.landingPageFaClass ? locale.landingPageFaClass : "fa-id-card-o"} LargeIcon`)
+					//i(class=`fa ${locale.landingPageFaClass ? locale.landingPageFaClass : "fa-id-card-o"} LargeIcon`)
+					img(src="/images/vidCard.png", alt="Descriptive text", class="index-card")
 					p.title #{locale.index.phrase}
 					p.text-area #{locale.index.subtitle}
 					button.Btn.Large.Landing(id="mainBtn" type="submit") #{locale.index.proceed}

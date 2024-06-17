@@ -1,18 +1,20 @@
 import config from "../../../config";
 import { CategorizedRawCredentialView, CategorizedRawCredentialViewRow } from "../../openid4vci/Metadata";
 import { VerifiableCredentialFormat, Display, CredentialSupportedJwtVcJson } from "../../types/oid4vci";
-import { CredentialSubject } from "../CredentialSubjectBuilders/CredentialSubject.type";
-import { getVIDByTaxisId } from "../resources/data";
 import { CredentialIssuer } from "../../lib/CredentialIssuerConfig/CredentialIssuer";
 import { SupportedCredentialProtocol } from "../../lib/CredentialIssuerConfig/SupportedCredentialProtocol";
 import { AuthorizationServerState } from "../../entities/AuthorizationServerState.entity";
 import { CredentialView } from "../../authorization/types";
 import { randomUUID } from "node:crypto";
+import fs from 'fs';
 
 export class VIDSupportedCredentialSdJwt implements SupportedCredentialProtocol {
 
+	dataset: any;
 
-  constructor(private credentialIssuerConfig: CredentialIssuer) { }
+  constructor(private credentialIssuerConfig: CredentialIssuer) {
+		this.dataset = JSON.parse(fs.readFileSync('/datasets/dataset.json', 'utf-8').toString()) as any;
+	}
 
   getCredentialIssuerConfig(): CredentialIssuer {
     return this.credentialIssuerConfig;
@@ -28,7 +30,7 @@ export class VIDSupportedCredentialSdJwt implements SupportedCredentialProtocol 
   }
   getDisplay(): Display {
 		return {
-			name: "Verifiable ID",
+			name: "PID",
 			logo: { url: config.url + "/images/vidCard.png" },
 			background_color: "#4CC3DD"
 		}
@@ -36,17 +38,20 @@ export class VIDSupportedCredentialSdJwt implements SupportedCredentialProtocol 
 
 
   async getProfile(userSession: AuthorizationServerState): Promise<CredentialView | null> {
-    if (!userSession?.taxis_id) {
+    if (!userSession?.personalIdentifier) {
       return null;
     }
-		const vids = [await getVIDByTaxisId(userSession?.taxis_id)];
+
+		this.dataset = JSON.parse(fs.readFileSync('/datasets/dataset.json', 'utf-8').toString()) as any;
+		const vids = this.dataset.users.filter((user: any) => user.authentication.personalIdentifier == userSession.personalIdentifier);
 		const credentialViews: CredentialView[] = vids
-			.map((vid) => {
+			.map((vid: any) => {
 				const rows: CategorizedRawCredentialViewRow[] = [
-					{ name: "Family Name", value: vid.familyName },
-					{ name: "First Name", value: vid.firstName },
-					{ name: "Personal Identifier", value: vid.personalIdentifier },
-					{ name: "Date of Birth", value: vid.birthdate },
+					{ name: "Family Name", value: vid.claims.familyName },
+					{ name: "First Name", value: vid.claims.firstName },
+					{ name: "Personal Identifier", value: vid.claims.personalIdentifier },
+					{ name: "Date of Birth", value: vid.claims.birthdate },
+					{ name: "Expiration Date", value: vid.claims.validityPeriod.endingDate },
 				];
 				const rowsObject: CategorizedRawCredentialView = { rows };
 				
@@ -61,32 +66,21 @@ export class VIDSupportedCredentialSdJwt implements SupportedCredentialProtocol 
   }
   
   async generateCredentialResponse(userSession: AuthorizationServerState, holderDID: string): Promise<{ format: VerifiableCredentialFormat; credential: any;  }> {
-		if (!userSession.taxis_id) {
+		if (!userSession.personalIdentifier) {
 			throw new Error("Cannot generate credential: Taxis id is missing");
 		}
 		
-		const vidEntry = await getVIDByTaxisId(userSession?.taxis_id);
-
-		if (!vidEntry) {
-			console.error("Possibly raw data w not found")
-			throw new Error("Could not generate credential response");
-		}
-
-		const vid: CredentialSubject = {
-			familyName: vidEntry.familyName,
-			firstName: vidEntry.firstName,
-			personalIdentifier: vidEntry.personalIdentifier,
-			birthdate: vidEntry.birthdate
-		} as any;
-
+		this.dataset = JSON.parse(fs.readFileSync('/datasets/dataset.json', 'utf-8').toString()) as any;
+		const vidClaims = this.dataset.users.filter((user: any) => user.authentication.personalIdentifier == userSession.personalIdentifier)[0].claims;
+		console.log("Vid claims = ", vidClaims)
 		const payload = {
 			"@context": ["https://www.w3.org/2018/credentials/v1"],
 			"type": this.getTypes(),
 			"id": `urn:vid:${randomUUID()}`,
-			"name": "Verifiable ID",  // https://www.w3.org/TR/vc-data-model-2.0/#names-and-descriptions
-			"description": "This credential is issued by the National Verifiable ID credential issuer and it can be used for authentication purposes",
+			"name": "PID",  // https://www.w3.org/TR/vc-data-model-2.0/#names-and-descriptions
+			"description": "This credential is issued by the National PID credential issuer and it can be used for authentication purposes",
 			"credentialSubject": {
-				...vid,
+				...vidClaims,
 				"id": holderDID,
 			},
 			"credentialBranding": {
