@@ -620,6 +620,24 @@ textarea.wide{
 
 .expired-label {
 	--tw-bg-opacity: 1;
+	background-color: #F97316;
+	--tw-text-opacity: 1;
+	color: rgb(255 255 255 / var(--tw-text-opacity));
+	--tw-border-opacity: 1;
+	border-color: #F97316;
+	border-top-width: 1px;
+	border-left-width: 1px;
+	border-top-left-radius: 0.5rem;
+	font-size: 0.75rem;
+	line-height: 1rem;
+	padding: 0.25rem 0.75rem 0.25rem 0.75rem;
+	right: 10px;
+	bottom: 10px;
+	position: absolute;
+}
+
+.revoked-label {
+	--tw-bg-opacity: 1;
 	background-color: rgb(239 68 68 / var(--tw-bg-opacity));
 	--tw-text-opacity: 1;
 	color: rgb(255 255 255 / var(--tw-text-opacity));
