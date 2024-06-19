@@ -10,3 +10,6 @@
 [submodule "resources-vault"]
 	path = resources-vault
 	url = git@github.com:gunet/resources-vault.git
+[submodule "credential-status-list"]
+	path = credential-status-list
+	url = git@github.com:gunet/credential-status-list.git
