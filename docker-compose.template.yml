@@ -209,6 +209,32 @@ services:
           limits:
             memory: 1G
 
+  credential-status-list:
+    container_name: credential-status-list
+    build:
+      context: $PWD/credential-status-list
+      dockerfile: development.Dockerfile
+      secrets:
+        - npmrc
+    image: credential-status-list:dev
+    restart: on-failure
+    ports:
+      - 9001:9001
+    depends_on:
+      wallet-db:
+        condition: service_healthy
+    volumes:
+      - ./credential-status-list:/usr/src/app:rw
+      - ./.vscode/:/usr/src/app/.vscode:rw
+      - type: tmpfs
+        target: /dist
+        tmpfs:
+          mode: 01777
+    deploy:
+      resources:
+          limits:
+            memory: 1G
+
   wallet-frontend:
     build:
       context: $PWD/wallet-frontend
