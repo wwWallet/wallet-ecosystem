@@ -5,7 +5,6 @@ WORKDIR /app
 COPY wallet-enterprise/ .
 RUN rm -rf src/configuration/
 COPY ./wallet-enterprise-configurations/diploma-issuer/src/configuration /app/src/configuration
-COPY ./wallet-enterprise-configurations/diploma-issuer/views/issuer/login.pug /app/views/issuer/login.pug
 COPY ./wallet-enterprise-configurations/diploma-issuer/public/styles/styles.css /app/public/styles/styles.css
 COPY ./wallet-enterprise-configurations/diploma-issuer/public/images /app/public/images
 COPY ./wallet-enterprise-configurations/diploma-issuer/views/header.pug /app/views/header.pug
