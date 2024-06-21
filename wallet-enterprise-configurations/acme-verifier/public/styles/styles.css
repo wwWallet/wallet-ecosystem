@@ -602,7 +602,7 @@ th {
 }
 
 textarea.wide{
-	width: 40% !important;
+	width: 60% !important;
 }
 
 #json-textarea {
@@ -614,11 +614,28 @@ textarea.wide{
 	color: black;
 	overflow: auto;
 	resize: vertical;
-	width: 500px;
 	min-height: 200px;
 }
 
 .expired-label {
+	--tw-bg-opacity: 1;
+	background-color: #F97316;
+	--tw-text-opacity: 1;
+	color: rgb(255 255 255 / var(--tw-text-opacity));
+	--tw-border-opacity: 1;
+	border-color: #F97316;
+	border-top-width: 1px;
+	border-left-width: 1px;
+	border-top-left-radius: 0.5rem;
+	font-size: 0.75rem;
+	line-height: 1rem;
+	padding: 0.25rem 0.75rem 0.25rem 0.75rem;
+	right: 0px;
+	bottom: 0px;
+	position: absolute;
+}
+
+.revoked-label {
 	--tw-bg-opacity: 1;
 	background-color: rgb(239 68 68 / var(--tw-bg-opacity));
 	--tw-text-opacity: 1;
@@ -631,8 +648,8 @@ textarea.wide{
 	font-size: 0.75rem;
 	line-height: 1rem;
 	padding: 0.25rem 0.75rem 0.25rem 0.75rem;
-	right: 10px;
-	bottom: 10px;
+	right: 0px;
+	bottom: 0px;
 	position: absolute;
 }
 
@@ -699,4 +716,64 @@ textarea.wide{
 
 .checkbox input[type="checkbox"]:checked + label:after {
 	display: block;
+}
+
+/* CSS for the claims tables */
+
+/* CSS for the claims tables */
+.claims-tables {
+	width: 100%;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+
+.claims-tables h4 {
+	margin: 10px 0;
+	color: #333;
+}
+
+.table-container {
+	width: 60%;
+	margin-bottom: 20px;
+	overflow-x: auto; /* Enable horizontal scrolling */
+}
+
+.table-container table {
+	width: 100%;
+	border-collapse: collapse;
+	box-shadow: 0 2px 3px rgba(0, 0, 0, 0.1);
+}
+
+@media (max-width: 768px) {
+
+	.table-container{
+		width: -webkit-fill-available!important;
+		margin-left: 1%;
+		margin-right: 1%;
+	}
+}
+
+.table-container table thead tr {
+	background-color: #f2f2f2;
+}
+
+.table-container table th, 
+.table-container table td {
+	padding: 10px;
+	text-align: left;
+	border: 1px solid #ddd;
+	font-size: 14px;
+}
+
+.table-container table th {
+	color: white;
+}
+
+.table-container table tbody tr:nth-child(even) {
+	background-color: #f9f9f9;
+}
+
+.table-container table tbody tr:hover {
+	background-color: #f1f1f1;
 }

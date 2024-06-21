@@ -7,6 +7,7 @@ import { AuthorizationServerState } from "../../entities/AuthorizationServerStat
 import { CredentialView } from "../../authorization/types";
 import { randomUUID } from "node:crypto";
 import fs from 'fs';
+import { CredentialStatusList } from "../../lib/CredentialStatus";
 
 export class EHICSupportedCredentialSdJwt implements SupportedCredentialProtocol {
 
@@ -80,6 +81,10 @@ export class EHICSupportedCredentialSdJwt implements SupportedCredentialProtocol
 			"credentialSubject": {
 				...ehicClaims,
 				"id": holderDID,
+			},
+			"credentialStatus": {
+				"id": `${config.crl.url}#${(await CredentialStatusList.insert()).id}`,
+				"type": "CertificateRevocationList"
 			},
 			"credentialBranding": {
 				"image": {

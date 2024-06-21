@@ -9,6 +9,7 @@ import fs from 'fs';
 import path from 'path';
 import axios from 'axios';
 import { compactDecrypt, calculateJwkThumbprint, CompactEncrypt } from 'jose';
+import { CredentialStatusList } from "../../lib/CredentialStatus";
 const currentWorkingDirectory = __dirname + "/../../../../";
 
 var publicKeyFilePath;
@@ -168,6 +169,10 @@ export class PDA1SupportedCredentialSdJwt implements SupportedCredentialProtocol
 			"credentialSubject": {
 				...claims,
 				"id": holderDID,
+			},
+			"credentialStatus": {
+				"id": `${config.crl.url}#${(await CredentialStatusList.insert()).id}`,
+				"type": "CertificateRevocationList"
 			},
 			"credentialBranding": {
 				"image": {

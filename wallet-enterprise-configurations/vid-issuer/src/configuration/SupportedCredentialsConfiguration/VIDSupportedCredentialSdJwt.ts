@@ -7,6 +7,7 @@ import { AuthorizationServerState } from "../../entities/AuthorizationServerStat
 import { CredentialView } from "../../authorization/types";
 import { randomUUID } from "node:crypto";
 import fs from 'fs';
+import { CredentialStatusList } from "../../lib/CredentialStatus";
 
 export class VIDSupportedCredentialSdJwt implements SupportedCredentialProtocol {
 
@@ -82,6 +83,10 @@ export class VIDSupportedCredentialSdJwt implements SupportedCredentialProtocol 
 			"credentialSubject": {
 				...vidClaims,
 				"id": holderDID,
+			},
+			"credentialStatus": {
+				"id": `${config.crl.url}#${(await CredentialStatusList.insert()).id}`,
+				"type": "CertificateRevocationList"
 			},
 			"credentialBranding": {
 				"image": {
