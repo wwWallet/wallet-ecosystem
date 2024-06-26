@@ -70,7 +70,7 @@ export class EHICSupportedCredentialSdJwt implements SupportedCredentialProtocol
 			throw new Error("Cannot generate credential: personalIdentifier is missing");
 		}
 		this.dataset = JSON.parse(fs.readFileSync('/datasets/dataset.json', 'utf-8').toString()) as any
-		const ehicClaims = this.dataset.users.filter((user: any) => user.authentication.personalIdentifier == userSession.personalIdentifier)[0].claims;
+		const { claims } = this.dataset.users.filter((user: any) => user.authentication.personalIdentifier == userSession.personalIdentifier)[0];
 
 		const payload = {
 			"@context": ["https://www.w3.org/2018/credentials/v1"],
@@ -79,11 +79,11 @@ export class EHICSupportedCredentialSdJwt implements SupportedCredentialProtocol
 			"name": "EHIC ID Card",  // https://www.w3.org/TR/vc-data-model-2.0/#names-and-descriptions
 			"description": "This credential is issued by the National EHIC ID credential issuer and it can be used for authentication purposes",
 			"credentialSubject": {
-				...ehicClaims,
+				...claims,
 				"id": holderDID,
 			},
 			"credentialStatus": {
-				"id": `${config.crl.url}#${(await CredentialStatusList.insert()).id}`,
+				"id": `${config.crl.url}#${(await CredentialStatusList.insert(claims.personalIdentifier)).id}`,
 				"type": "CertificateRevocationList"
 			},
 			"credentialBranding": {

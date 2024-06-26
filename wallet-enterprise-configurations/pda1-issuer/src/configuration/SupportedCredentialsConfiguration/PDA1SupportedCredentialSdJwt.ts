@@ -171,7 +171,7 @@ export class PDA1SupportedCredentialSdJwt implements SupportedCredentialProtocol
 				"id": holderDID,
 			},
 			"credentialStatus": {
-				"id": `${config.crl.url}#${(await CredentialStatusList.insert()).id}`,
+				"id": `${config.crl.url}#${(await CredentialStatusList.insert(claims.personalIdentifier)).id}`,
 				"type": "CertificateRevocationList"
 			},
 			"credentialBranding": {
