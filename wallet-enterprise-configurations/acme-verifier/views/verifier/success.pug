@@ -23,7 +23,7 @@ block layout-content
 					each credential, index in credentialPayloads
 						- const branding = credential.credentialBranding || { backgroundColor: 'red', textColor: 'black' }
 						- const imageUrl = credential.credentialBranding.image.url // Get the corresponding image URL
-						.credential-box(style=`display: flex; flex-direction: column; justify-content: flex-start; align-items: flex-start; position: relative; padding: 10px;`, id=`credential-box-${index}`)
+						.credential-box(style=`position:relative;overflow:hidden;display: flex; flex-direction: column; justify-content: flex-start; align-items: flex-start; position: relative; margin: 10px;border-radius:10px;`, id=`credential-box-${index}`)
 							img(style="width: 240px; height: 150px; border-radius: 10px;")(src=imageUrl)
 
 				h3 Requested claims extracted from credentials
