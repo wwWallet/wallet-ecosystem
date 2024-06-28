@@ -28,10 +28,20 @@ block layout-content
 
 				h3 Requested claims extracted from credentials
 
-				// Text area to display claims
-				textarea#json-textarea.wide
-					//- Display the 'credentialPayloads' JSON object
-					| #{JSON.stringify(presentationClaims, null, 2)}
+				.claims-tables
+					each claimType in Object.keys(presentationClaims)
+						h4= claimType
+						.table-container(style="overflow-x: auto;")
+							table
+								thead
+									tr
+										th Name
+										th Value
+								tbody
+									each claim in presentationClaims[claimType]
+										tr
+											td= claim.name
+											td= claim.value
 
 				h3 Credentials
 
