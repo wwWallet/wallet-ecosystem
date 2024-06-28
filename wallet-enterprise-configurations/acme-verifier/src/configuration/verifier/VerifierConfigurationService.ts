@@ -21,6 +21,7 @@ const verifiableIdDescriptor =	{
 	"constraints": {
 		"fields": [
 			{
+				"name": "Credential Type",
 				"path": [ '$.type' ],
 				"filter": {
 					"type": 'array',
@@ -29,18 +30,22 @@ const verifiableIdDescriptor =	{
 				}
 			},
 			{
+				"name": "First Name",
 				"path": ['$.credentialSubject.firstName'],
 				"filter": {}
 			},
 			{
+				"name": "Last Name",
 				"path": ['$.credentialSubject.familyName'],
 				"filter": {}
 			},
 			{
+				"name": "Personal Identifier",
 				"path": ['$.credentialSubject.personalIdentifier'],
 				"filter": {}
 			},
 			{
+				"name": "Birthdate",
 				"path": ['$.credentialSubject.birthdate'],
 				"filter": {}
 			}
@@ -53,6 +58,7 @@ const verifiableIdDescriptorWithFirstnameLastname =	{
 	"constraints": {
 		"fields": [
 			{
+				"name": "Credential Type",
 				"path": [ '$.type' ],
 				"filter": {
 					"type": 'array',
@@ -61,10 +67,12 @@ const verifiableIdDescriptorWithFirstnameLastname =	{
 				}
 			},
 			{
+				"name": "First Name",
 				"path": ['$.credentialSubject.firstName'],
 				"filter": {}
 			},
 			{
+				"name": "Last Name",
 				"path": ['$.credentialSubject.familyName'],
 				"filter": {}
 			}
@@ -79,6 +87,7 @@ const europeanHealthInsuranceCardDescriptor = {
 	"constraints": {
 		"fields": [
 			{
+				"name": "Credential Type",
 				"path": [ '$.type' ],
 				"filter": {
 					"type": 'array',
@@ -87,30 +96,37 @@ const europeanHealthInsuranceCardDescriptor = {
 				}
 			},
 			{
+				"name": "SSN",
 				"path": ['$.credentialSubject.socialSecurityIdentification.ssn'],
 				"filter": {}
 			},
 			{
+				"name": "Starting Date",
 				"path": ['$.credentialSubject.validityPeriod.startingDate'],
 				"filter": {}
 			},
 			{
+				"name": "Ending Date",
 				"path": ['$.credentialSubject.validityPeriod.endingDate'],
 				"filter": {}
 			},
 			{
+				"name": "Document Id",
 				"path": ['$.credentialSubject.documentId'],
 				"filter": {}
 			},
 			{
+				"name": "Competent Institution Id",
 				"path": ['$.credentialSubject.competentInstitution.competentInstitutionId'],
 				"filter": {}
 			},
 			{
+				"name": "Competent Institution Name",
 				"path": ['$.credentialSubject.competentInstitution.competentInstitutionName'],
 				"filter": {}
 			},
 			{
+				"name": "Competent Institution Country Code",
 				"path": ['$.credentialSubject.competentInstitution.competentInstitutionCountryCode'],
 				"filter": {}
 			}
@@ -124,6 +140,7 @@ const Pda1Descriptor = {
 	"constraints": {
 		"fields": [
 			{
+				"name": "Credential Type",
 				"path": ['$.type'],
 				"filter": {
 					"type": 'array',
@@ -132,47 +149,73 @@ const Pda1Descriptor = {
 				}
 			},
 			{
+				"name": "SSN",
 				"path": ['$.credentialSubject.socialSecurityIdentification.ssn'],
 				"filter": {}
 			},
 			{
+				"name": "Starting Date",
 				"path": ['$.credentialSubject.decisionOnApplicableLegislation.validityPeriod.startingDate'],
 				"filter": {}
 			},
 			{
+				"name": "Ending Date",
 				"path": ['$.credentialSubject.decisionOnApplicableLegislation.validityPeriod.endingDate'],
 				"filter": {}
 			},
 			{
+				"name": "Document Id",
 				"path": ['$.credentialSubject.documentId'],
 				"filter": {}
 			},
 			{
+				"name": "Competent Institution Id",
 				"path": ['$.credentialSubject.competentInstitution.competentInstitutionId'],
 				"filter": {}
 			},
 			{
+				"name": "Competent Institution Name",
 				"path": ['$.credentialSubject.competentInstitution.competentInstitutionName'],
 				"filter": {}
 			},
 			{
+				"name": "Competent Institution Country Code",
 				"path": ['$.credentialSubject.competentInstitution.competentInstitutionCountryCode'],
 				"filter": {}
 			},
 			{
-				"path": ['$.credentialSubject.employer.employmentType'],
-				"filter": {}
-			},
-			{
+				"name": "Name of Employer",
 				"path": ['$.credentialSubject.employer.name'],
 				"filter": {}
 			},
 			{
+				"name": "Employer Id",
 				"path": ['$.credentialSubject.employer.employerId'],
 				"filter": {}
 			},
+			// {
+			// 	"name": "Employer Country Code",
+			// 	"path": ['$.credentialSubject.employer.countryCode'],
+			// 	"filter": {}
+			// },
 			{
-				"path": ['$.credentialSubject.employer.typeOfId'],
+				"name": "Place of Work Town",
+				"path": ['$.credentialSubject.placeOfWork.town'],
+				"filter": {}
+			},
+			{
+				"name": "Place of Work Postal Code",
+				"path": ['$.credentialSubject.placeOfWork.postalCode'],
+				"filter": {}
+			},
+			{
+				"name": "Place of Work Country Code",
+				"path": ['$.credentialSubject.placeOfWork.countryCode'],
+				"filter": {}
+			},
+			{
+				"name": "Member State Legislation",
+				"path": ['$.credentialSubject.decisionOnApplicableLegislation.decisionOnMSWhoseLegislationApplies.memberStateWhoseLegislationIsToBeApplied'],
 				"filter": {}
 			}
 		]
