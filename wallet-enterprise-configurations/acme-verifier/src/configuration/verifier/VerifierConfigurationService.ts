@@ -21,6 +21,7 @@ const verifiableIdDescriptor =	{
 	"constraints": {
 		"fields": [
 			{
+				"name": "Credential Type",
 				"path": [ '$.type' ],
 				"filter": {
 					"type": 'array',
@@ -29,18 +30,22 @@ const verifiableIdDescriptor =	{
 				}
 			},
 			{
+				"name": "First Name",
 				"path": ['$.credentialSubject.firstName'],
 				"filter": {}
 			},
 			{
+				"name": "Family Name",
 				"path": ['$.credentialSubject.familyName'],
 				"filter": {}
 			},
 			{
+				"name": "Personal Identifier",
 				"path": ['$.credentialSubject.personalIdentifier'],
 				"filter": {}
 			},
 			{
+				"name": "Birthdate",
 				"path": ['$.credentialSubject.birthdate'],
 				"filter": {}
 			}
@@ -53,6 +58,7 @@ const bachelorDescriptor = {
 	"constraints": {
 		"fields": [
 			{
+				"name": "Credential Type",
 				"path": [ '$.type' ],
 				"filter": {
 					"type": 'array',
@@ -61,42 +67,52 @@ const bachelorDescriptor = {
 				}
 			},
 			{
+				"name": "Credential Subject Id",
 				"path": ['$.credentialSubject.id'],
 				"filter": {}
 			},
 			{
+				"name": "First Name",
 				"path": ['$.credentialSubject.firstName'],
 				"filter": {}
 			},
 			{
+				"name": "Family Name",
 				"path": ['$.credentialSubject.familyName'],
 				"filter": {}
 			},
 			{
+				"name": "Diploma Title",
 				"path": ['$.credentialSubject.diplomaTitle'],
 				"filter": {}
 			},
 			{
+				"name": "Grade",
 				"path": ['$.credentialSubject.grade'],
 				"filter": {}
 			},
 			{
+				"name": "EQF Level",
 				"path": ['$.credentialSubject.eqfLevel'],
 				"filter": {}
 			},
 			{
+				"name": "Certificate Id",
 				"path": ['$.credentialSubject.certificateId'],
 				"filter": {}
 			},
 			{
+				"name": "Date of Birth",
 				"path": ['$.credentialSubject.dateOfBirth'],
 				"filter": {}
 			},
 			{
+				"name": "Awardning Date",
 				"path": ['$.credentialSubject.awardingDate'],
 				"filter": {}
 			},
 			{
+				"name": "Completion Date",
 				"path": ['$.credentialSubject.completionDate'],
 				"filter": {}
 			},
@@ -109,6 +125,7 @@ const bachelorDescriptorSdJwt = {
 	"constraints": {
 		"fields": [
 			{
+				"name": "Credential Type",
 				"path": [ '$.type' ],
 				"filter": {
 					"type": 'array',
@@ -117,18 +134,22 @@ const bachelorDescriptorSdJwt = {
 				}
 			},
 			{
+				"name": "Credential Subject Id",
 				"path": [ "$.credentialSubject.id" ],
 				"filter": {}
 			},
 			{
+				"name": "Family Name",
 				"path": [ "$.credentialSubject.familyName" ],
 				"filter": {}
 			},
 			{
+				"name": "First Name",
 				"path": [ "$.credentialSubject.firstName" ],
 				"filter": {}
 			},
 			{
+				"name": "EQF Level",
 				"path": [ "$.credentialSubject.eqfLevel" ],
 				"filter": {},
 			},
@@ -141,6 +162,7 @@ const europeanHealthInsuranceCardDescriptor = {
 	"constraints": {
 		"fields": [
 			{
+				"name": "Credential Type",
 				"path": [ '$.type' ],
 				"filter": {
 					"type": 'array',
@@ -149,22 +171,27 @@ const europeanHealthInsuranceCardDescriptor = {
 				}
 			},
 			{
+				"name": "Credential Subject Id",
 				"path": ['$.credentialSubject.id'],
 				"filter": {}
 			},
 			{
+				"name": "First Name",
 				"path": ['$.credentialSubject.firstName'],
 				"filter": {}
 			},
 			{
+				"name": "Family Name",
 				"path": ['$.credentialSubject.familyName'],
 				"filter": {}
 			},
 			{
+				"name": "Personal Identifier",
 				"path": ['$.credentialSubject.personalIdentifier'],
 				"filter": {}
 			},
 			{
+				"name": "Birthdate",
 				"path": ['$.credentialSubject.birthdate'],
 				"filter": {}
 			},
