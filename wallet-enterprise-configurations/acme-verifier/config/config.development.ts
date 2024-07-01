@@ -11,5 +11,10 @@ export = {
 		dbname: "verifier"
 	},
 	wwwalletURL: "http://localhost:3000/cb",
-	crl: {},
+	crl: {
+		url: "http://credential-status-list:9001",
+		credentials: {
+			basicToken: ""
+		}
+	}
 }
