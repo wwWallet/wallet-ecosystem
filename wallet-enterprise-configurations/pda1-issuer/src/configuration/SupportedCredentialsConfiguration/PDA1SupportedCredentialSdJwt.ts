@@ -211,8 +211,22 @@ export class PDA1SupportedCredentialSdJwt implements SupportedCredentialProtocol
 							endingDate: true
 						}
 					},
-					address: true,
-					placeOfWork: true,
+					address: {
+						street: true,
+						town: true,
+						postalCode: true,
+						countryCode: true
+					},
+					placeOfWork: {
+						companyName: true,
+						flagBaseHomeState: true,
+						companyId: true,
+						typeOfId: true,
+						street: true,
+						town: true,
+						postalCode: true,
+						countryCode: true
+					},
 					documentId: true,
 					competentInstitution: {
 						competentInstitutionId: true,

@@ -35,7 +35,7 @@ const verifiableIdDescriptor =	{
 				"filter": {}
 			},
 			{
-				"name": "Last Name",
+				"name": "Family Name",
 				"path": ['$.credentialSubject.familyName'],
 				"filter": {}
 			},
@@ -72,7 +72,7 @@ const verifiableIdDescriptorWithFirstnameLastname =	{
 				"filter": {}
 			},
 			{
-				"name": "Last Name",
+				"name": "Family Name",
 				"path": ['$.credentialSubject.familyName'],
 				"filter": {}
 			}
@@ -95,7 +95,7 @@ const europeanHealthInsuranceCardDescriptor = {
 					"contains": { const: 'EuropeanHealthInsuranceCard' }
 				}
 			},
-			{
+      {
 				"name": "SSN",
 				"path": ['$.credentialSubject.socialSecurityIdentification.ssn'],
 				"filter": {}
@@ -141,7 +141,7 @@ const Pda1Descriptor = {
 		"fields": [
 			{
 				"name": "Credential Type",
-				"path": ['$.type'],
+				"path": [ '$.type' ],
 				"filter": {
 					"type": 'array',
 					"items": { type: 'string' },
@@ -168,8 +168,8 @@ const Pda1Descriptor = {
 				"path": ['$.credentialSubject.documentId'],
 				"filter": {}
 			},
-			{
-				"name": "Competent Institution Id",
+      {
+        "name": "Competent Institution Id",
 				"path": ['$.credentialSubject.competentInstitution.competentInstitutionId'],
 				"filter": {}
 			},
@@ -193,12 +193,12 @@ const Pda1Descriptor = {
 				"path": ['$.credentialSubject.employer.employerId'],
 				"filter": {}
 			},
-			// {
-			// 	"name": "Employer Country Code",
-			// 	"path": ['$.credentialSubject.employer.countryCode'],
-			// 	"filter": {}
-			// },
-			{
+      {
+				"name": "Place of Work Street",
+				"path": ['$.credentialSubject.placeOfWork.street'],
+				"filter": {}
+			},
+      {
 				"name": "Place of Work Town",
 				"path": ['$.credentialSubject.placeOfWork.town'],
 				"filter": {}
