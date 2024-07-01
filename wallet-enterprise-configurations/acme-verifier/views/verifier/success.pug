@@ -23,15 +23,25 @@ block layout-content
 					each credential, index in credentialPayloads
 						- const branding = credential.credentialBranding || { backgroundColor: 'red', textColor: 'black' }
 						- const imageUrl = credential.credentialBranding.image.url // Get the corresponding image URL
-						.credential-box(style=`display: flex; flex-direction: column; justify-content: flex-start; align-items: flex-start; position: relative; padding: 10px;`, id=`credential-box-${index}`)
+						.credential-box(style=`position:relative;overflow:hidden;display: flex; flex-direction: column; justify-content: flex-start; align-items: flex-start; position: relative; margin: 10px;border-radius:10px;`, id=`credential-box-${index}`)
 							img(style="width: 240px; height: 150px; border-radius: 10px;")(src=imageUrl)
 
 				h3 Requested claims extracted from credentials
 
-				// Text area to display claims
-				textarea#json-textarea.wide
-					//- Display the 'credentialPayloads' JSON object
-					| #{JSON.stringify(presentationClaims, null, 2)}
+				.claims-tables
+					each claimType in Object.keys(presentationClaims)
+						h4= claimType
+						.table-container(style="overflow-x: auto;")
+							table
+								thead
+									tr
+										th Name
+										th Value
+								tbody
+									each claim in presentationClaims[claimType]
+										tr
+											td= claim.name
+											td= claim.value
 
 				h3 Credentials
 
