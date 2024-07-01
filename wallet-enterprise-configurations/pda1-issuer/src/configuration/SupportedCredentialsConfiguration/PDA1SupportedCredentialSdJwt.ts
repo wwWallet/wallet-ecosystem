@@ -166,7 +166,7 @@ export class PDA1SupportedCredentialSdJwt implements SupportedCredentialProtocol
 
 
 		// use the dataset to retrieve only the username based on personalIdentifier
-		const username = dataset.users.filter((u) => u.authentication.personalIdentifier == userSession.personalIdentifier)[0].username;
+		const username = dataset.users.filter((u: any) => u.authentication.personalIdentifier == userSession.personalIdentifier)[0].username;
 		const payload = {
 			"@context": ["https://www.w3.org/2018/credentials/v1"],
 			"type": this.getTypes(),
