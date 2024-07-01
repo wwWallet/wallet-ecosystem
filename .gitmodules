@@ -1,9 +1,15 @@
-[submodule "wallet-backend-server"]
-	path = wallet-backend-server
-	url = git@github.com:wwwallet/wallet-backend-server.git
-[submodule "wallet-frontend"]
-	path = wallet-frontend
-	url = git@github.com:wwwallet/wallet-frontend.git
 [submodule "wallet-enterprise"]
 	path = wallet-enterprise
-	url = git@github.com:wwwallet/wallet-enterprise.git
+	url = git@github.com:gunet/wallet-enterprise.git
+[submodule "wallet-backend-server"]
+	path = wallet-backend-server
+	url = git@github.com:gunet/wallet-backend-server.git
+[submodule "wallet-frontend"]
+	path = wallet-frontend
+	url = git@github.com:gunet/wallet-frontend.git
+[submodule "resources-vault"]
+	path = resources-vault
+	url = git@github.com:gunet/resources-vault.git
+[submodule "credential-status-list"]
+	path = credential-status-list
+	url = git@github.com:gunet/credential-status-list.git

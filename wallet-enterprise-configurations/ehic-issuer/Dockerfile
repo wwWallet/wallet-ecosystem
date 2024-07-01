@@ -1,12 +1,12 @@
 # Builder stage
-FROM ghcr.io/wwwallet/wallet-enterprise:base AS builder
+FROM ghcr.io/gunet/wallet-enterprise:base AS builder
 WORKDIR /app
 
-# COPY wallet-enterprise/ .
 RUN rm -rf src/configuration/
-COPY ./wallet-enterprise-configurations/ehic-issuer/src/configuration/ src/configuration/
+COPY ./wallet-enterprise-configurations/ehic-issuer/public/styles/styles.css public/styles/styles.css
+COPY ./wallet-enterprise-configurations/ehic-issuer/src/configuration src/configuration
 COPY ./wallet-enterprise-configurations/ehic-issuer/views/header.pug views/header.pug
-
+COPY ./wallet-enterprise-configurations/ehic-issuer/views/index.pug views/index.pug
 
 RUN --mount=type=secret,id=npmrc,required=true,target=./.npmrc,uid=1000 \
     yarn cache clean && yarn install && yarn build
