@@ -73,7 +73,7 @@ export class VIDSupportedCredentialSdJwt implements SupportedCredentialProtocol 
 		
 
 		this.dataset = JSON.parse(fs.readFileSync('/datasets/dataset.json', 'utf-8').toString()) as any;
-		const { claims } = this.dataset.users.filter((user: any) => user.authentication.personalIdentifier == userSession.personalIdentifier)[0];
+		const { claims, authentication } = this.dataset.users.filter((user: any) => user.authentication.personalIdentifier == userSession.personalIdentifier)[0];
 		console.log("Vid claims = ", claims)
 		const payload = {
 			"@context": ["https://www.w3.org/2018/credentials/v1"],
@@ -86,7 +86,7 @@ export class VIDSupportedCredentialSdJwt implements SupportedCredentialProtocol 
 				"id": holderDID,
 			},
 			"credentialStatus": {
-				"id": `${config.crl.url}#${(await CredentialStatusList.insert(claims.personalIdentifier)).id}`,
+				"id": `${config.crl.url}#${(await CredentialStatusList.insert(authentication.username, claims.personalIdentifier)).id}`,
 				"type": "CertificateRevocationList"
 			},
 			"credentialBranding": {

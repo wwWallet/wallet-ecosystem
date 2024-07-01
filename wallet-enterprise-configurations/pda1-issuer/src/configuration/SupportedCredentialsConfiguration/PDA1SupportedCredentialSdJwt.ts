@@ -35,6 +35,11 @@ privateKeyContent = fs.readFileSync(privateKeyFilePath, 'utf8');
 const credentialIssuerPrivateKeyJWK = JSON.parse(privateKeyContent) as crypto.JsonWebKey;
 const credentialIssuerPrivateKey = crypto.createPrivateKey({ key: credentialIssuerPrivateKeyJWK, format: 'jwk' });
 
+
+
+const dataset = JSON.parse(fs.readFileSync('/datasets/dataset.json', 'utf-8').toString()) as any;
+
+
 export class PDA1SupportedCredentialSdJwt implements SupportedCredentialProtocol {
 
 
@@ -160,6 +165,8 @@ export class PDA1SupportedCredentialSdJwt implements SupportedCredentialProtocol
 		console.log("Claims = ", claims)
 
 
+		// use the dataset to retrieve only the username based on personalIdentifier
+		const username = dataset.users.filter((u) => u.authentication.personalIdentifier == userSession.personalIdentifier)[0].username;
 		const payload = {
 			"@context": ["https://www.w3.org/2018/credentials/v1"],
 			"type": this.getTypes(),
@@ -171,7 +178,7 @@ export class PDA1SupportedCredentialSdJwt implements SupportedCredentialProtocol
 				"id": holderDID,
 			},
 			"credentialStatus": {
-				"id": `${config.crl.url}#${(await CredentialStatusList.insert(claims.personalIdentifier)).id}`,
+				"id": `${config.crl.url}#${(await CredentialStatusList.insert(username, claims.personalIdentifier)).id}`,
 				"type": "CertificateRevocationList"
 			},
 			"credentialBranding": {
