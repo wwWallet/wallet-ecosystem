@@ -53,7 +53,7 @@ const verifiableIdDescriptor =	{
 	}
 }
 
-const verifiableIdDescriptorWithFirstnameLastname =	{
+const verifiableIdDescriptorWithFirstnameLastnameAndBirthdate =	{
 	"id": "PID",
 	"constraints": {
 		"fields": [
@@ -74,6 +74,11 @@ const verifiableIdDescriptorWithFirstnameLastname =	{
 			{
 				"name": "Family Name",
 				"path": ['$.credentialSubject.familyName'],
+				"filter": {}
+			},
+			{
+				"name": "Birthdate",
+				"path": ['$.credentialSubject.birthdate'],
 				"filter": {}
 			}
 		]
@@ -231,7 +236,7 @@ const verifiableIdWithEuropeanHealthInsuranceCardPresentationDefinition = {
 	"description": "Required Fields: PID (firstName, familyName), EHIC (ssn, validityPeriod, documentId, competentInstitution)",
 	"format": { "vc+sd-jwt": { alg: [ 'ES256' ] },jwt_vc_json: { alg: [ 'ES256' ] }, jwt_vp: { alg: [ 'ES256' ] } },
 	"input_descriptors": [
-		verifiableIdDescriptorWithFirstnameLastname,
+		verifiableIdDescriptorWithFirstnameLastnameAndBirthdate,
 		europeanHealthInsuranceCardDescriptor
 	]
 }
@@ -254,7 +259,7 @@ const verifiableIdWithPda1PresentationDefinition = {
 	"description": "Required Fields: PID (firstName, familyName), PDA1 (ssn, validityPeriod, documentId, competentInstitution, employerInfo)",
 	"format": { "vc+sd-jwt": { alg: ['ES256'] }, jwt_vc_json: { alg: ['ES256'] }, jwt_vp: { alg: ['ES256'] } },
 	"input_descriptors": [
-		verifiableIdDescriptorWithFirstnameLastname,
+		verifiableIdDescriptorWithFirstnameLastnameAndBirthdate,
 		Pda1Descriptor,
 	]
 
