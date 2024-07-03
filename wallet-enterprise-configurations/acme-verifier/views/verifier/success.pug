@@ -26,6 +26,7 @@ block layout-content
 						.credential-box(style=`position:relative;overflow:hidden;display: flex; flex-direction: column; justify-content: flex-start; align-items: flex-start; position: relative; margin: 10px;border-radius:10px;`, id=`credential-box-${index}`)
 							img(style="width: 240px; height: 150px; border-radius: 10px;")(src=imageUrl)
 
+				i Verified on #{new Date(verificationTimestamp)}
 				h3 Requested claims extracted from credentials
 
 				.claims-tables
