@@ -47,11 +47,12 @@ export class EHICSupportedCredentialSdJwt implements SupportedCredentialProtocol
 		const credentialViews: CredentialView[] = ehics
 			.map((ehic: any) => {
 				const rows: CategorizedRawCredentialViewRow[] = [
-					{ name: "Family Name", value: ehic.claims.familyName },
-					{ name: "First Name", value: ehic.claims.firstName },
+					// { name: "Family Name", value: ehic.claims.familyName },
+					// { name: "First Name", value: ehic.claims.firstName },
 					{ name: "SSN", value: ehic.claims.socialSecurityIdentification.ssn },
-					{ name: "Date of Birth", value: ehic.claims.birthdate },
+					// { name: "Date of Birth", value: ehic.claims.birthdate },
 					{ name: "Expiration Date", value: ehic.claims.validityPeriod.endingDate },
+					{ name: "Document Id", value: ehic.claims.documentId },
 				];
 				const rowsObject: CategorizedRawCredentialView = { rows };
 
@@ -97,9 +98,9 @@ export class EHICSupportedCredentialSdJwt implements SupportedCredentialProtocol
 		const disclosureFrame = {
 			vc: {
 				credentialSubject: {
-					familyName: true,
-					firstName: true,
-					birthdate: true,
+					// familyName: true,
+					// firstName: true,
+					// birthdate: true,
 					personalIdentifier: true,
 					socialSecurityIdentification: {
 						ssn: true

@@ -9,9 +9,6 @@
 				"email": "EMAIL"
 			},
 			"claims": {
-				"firstName": "FIRST_NAME",
-				"familyName": "FAMILY_NAME",
-				"birthdate": "BIRTH_DATE",
 				"personalIdentifier": "PERSONAL_IDENTIFIER",
 				"socialSecurityIdentification": {
 					"ssn": "SSN_ID"
