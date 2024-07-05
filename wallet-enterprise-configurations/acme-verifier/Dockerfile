@@ -7,6 +7,7 @@ RUN rm -rf /app/src/configuration/
 
 COPY ./wallet-enterprise-configurations/acme-verifier/src/configuration src/configuration
 COPY ./wallet-enterprise-configurations/acme-verifier/public/styles/styles.css public/styles/styles.css
+COPY ./wallet-enterprise-configurations/acme-verifier/public/site.webmanifest public/site.webmanifest
 COPY ./wallet-enterprise-configurations/acme-verifier/views/index.pug views/index.pug
 COPY ./wallet-enterprise-configurations/acme-verifier/views/header.pug views/header.pug
 COPY ./wallet-enterprise-configurations/acme-verifier/views/verifier/public_definitions.pug views/verifier/public_definitions.pug
