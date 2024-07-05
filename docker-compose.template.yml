@@ -134,6 +134,7 @@ services:
       - ./wallet-enterprise-configurations/acme-verifier/views/verifier/QR.pug:/app/views/verifier/QR.pug:rw
       - ./wallet-enterprise-configurations/acme-verifier/views/verifier/success.pug:/app/views/verifier/success.pug:rw
       - ./wallet-enterprise-configurations/acme-verifier/public/images:/app/public/images:rw
+      - ./wallet-enterprise-configurations/acme-verifier/public/site.webmanifest:/app/public/site.webmanifest:rw
       - ./.vscode/:/app/.vscode:rw
       - type: tmpfs
         target: /app/dist
