@@ -19,7 +19,7 @@ RUN --mount=type=secret,id=npmrc,required=true,target=./.npmrc,uid=1000 \
     yarn cache clean && yarn install && yarn build
 
 # Production stage
-FROM node:16-bullseye-slim AS production
+FROM node:20-bullseye-slim AS production
 WORKDIR /app
 
 COPY --from=builder /app/package.json .
