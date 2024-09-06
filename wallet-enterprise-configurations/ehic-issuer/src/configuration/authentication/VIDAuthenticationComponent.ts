@@ -13,6 +13,7 @@ import * as qrcode from 'qrcode';
 import { openidForPresentationReceivingService, verifierConfigurationService } from "../../services/instances";
 import { UserAuthenticationMethod } from "../../types/UserAuthenticationMethod.enum";
 import { PresentationDefinitionTypeWithFormat } from "../verifier/VerifierConfigurationService";
+import base64url from "base64url";
 
 export class VIDAuthenticationComponent extends AuthenticationComponent {
 
@@ -55,7 +56,27 @@ export class VIDAuthenticationComponent extends AuthenticationComponent {
 		return true
 	}
 
+	private async checkForInvalidCredentials(vp_token: string): Promise<{ valid: boolean }> {
+		const [_header, payload, _] = vp_token.split('.');
+		const parsedPayload = JSON.parse(base64url.decode(payload)) as { vp: any };
+		const credential = parsedPayload.vp.verifiableCredential[0];
+		
+		const [_credentialHeader, credentialPayload] = credential.split('.');
+
+		const parsedCredPayload = JSON.parse(base64url.decode(credentialPayload)) as any;
+		console.log("Parsed cred payload = ", parsedCredPayload)
+
+		console.log("Exp = ", parsedCredPayload.exp)
+		console.log("Now = ", Date.now() / 1000)
+		if (parsedCredPayload.exp < (Date.now() / 1000)) {
+			return { valid: false };
+		}
+
+		return { valid: true };
+	}
+
 	private async handleCallback(req: Request, res: Response): Promise<any> {
+
 		const state = req.query.state as string; // find the vp based on the state
 
 		const queryRes = await AppDataSource.getRepository(VerifiablePresentationEntity)
@@ -72,8 +93,13 @@ export class VIDAuthenticationComponent extends AuthenticationComponent {
 			.where("state.vid_auth_state = :vid_auth_state", { vid_auth_state: state })
 			.getOne();
 
-		if (!authorizationServerState || !vp_token || !queryRes.claims || !queryRes.claims["VID"]) {
+		if (!authorizationServerState || !vp_token || !queryRes.claims || !queryRes.claims["VID"] || !queryRes.raw_presentation) {
 			return;
+		}
+
+		const { valid } = await this.checkForInvalidCredentials(queryRes.raw_presentation);
+		if (!valid) {
+			return await this.redirectToFailurePage(req, res, "Credential is expired");
 		}
 		const personalIdentifier = queryRes.claims["VID"].filter((claim) => claim.name == 'personalIdentifier')[0].value ?? null;
 		if (!personalIdentifier) {
@@ -92,6 +118,15 @@ export class VIDAuthenticationComponent extends AuthenticationComponent {
 		await AppDataSource.getRepository(AuthorizationServerState).save(authorizationServerState);
 		return res.redirect(this.protectedEndpoint);
 
+	}
+
+
+	private async redirectToFailurePage(_req: Request, res: Response, msg: string) {
+		res.render('error', {
+			code: 100,
+			msg: msg,
+			locale: locale,
+		})
 	}
 
 	private async askForPresentation(req: Request, res: Response): Promise<any> {
