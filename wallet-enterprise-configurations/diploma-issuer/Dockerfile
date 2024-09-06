@@ -1,5 +1,5 @@
 # Builder stage
-FROM ghcr.io/wwwallet/wallet-enterprise:base AS builder
+FROM ghcr.io/gunet/wallet-enterprise:base AS builder
 WORKDIR /app
 
 COPY wallet-enterprise/ .

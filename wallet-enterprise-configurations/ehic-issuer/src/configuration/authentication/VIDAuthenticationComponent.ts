@@ -72,22 +72,21 @@ export class VIDAuthenticationComponent extends AuthenticationComponent {
 			.where("state.vid_auth_state = :vid_auth_state", { vid_auth_state: state })
 			.getOne();
 
-		if (!authorizationServerState || !vp_token || !queryRes.claims || !queryRes.claims["VID"]) {
+		if (!authorizationServerState || !vp_token || !queryRes.claims || !queryRes.claims["PID"]) {
 			return;
 		}
-		const personalIdentifier = queryRes.claims["VID"].filter((claim) => claim.name == 'personalIdentifier')[0].value ?? null;
+		const personalIdentifier = queryRes.claims["PID"].filter((claim) => claim.name == 'personalIdentifier')[0].value ?? null;
 		if (!personalIdentifier) {
 			return;
 		}
 		authorizationServerState.personalIdentifier = personalIdentifier;
-		authorizationServerState.ssn = personalIdentifier; // update the ssn as well, because this will be used to fetch the diplomas
 
 		req.session.authenticationChain.vidAuthenticationComponent = {
 			personalIdentifier: personalIdentifier
 		};
 
 		console.log("Personal identifier = ", personalIdentifier)
-		req.authorizationServerState.ssn = personalIdentifier;
+		req.authorizationServerState.personalIdentifier = personalIdentifier;
 
 		await AppDataSource.getRepository(AuthorizationServerState).save(authorizationServerState);
 		return res.redirect(this.protectedEndpoint);
@@ -113,7 +112,7 @@ export class VIDAuthenticationComponent extends AuthenticationComponent {
 		}
 
 
-		const presentationDefinition = JSON.parse(JSON.stringify(verifierConfigurationService.getPresentationDefinitions().filter(pd => pd.id == "vid")[0])) as PresentationDefinitionTypeWithFormat;
+		const presentationDefinition = JSON.parse(JSON.stringify(verifierConfigurationService.getPresentationDefinitions().filter(pd => pd.id == "PID")[0])) as PresentationDefinitionTypeWithFormat;
 
 		const { url, stateId } = await openidForPresentationReceivingService.generateAuthorizationRequestURL({req, res}, presentationDefinition, config.url + CONSENT_ENTRYPOINT);
 

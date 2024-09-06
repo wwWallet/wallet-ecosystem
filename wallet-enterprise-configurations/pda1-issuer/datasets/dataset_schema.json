@@ -1,0 +1,63 @@
+{
+	"users": [
+		{
+			"authentication": {
+				"username": "user",
+				"password": "secret",
+				"uid": "UID",
+				"personalIdentifier": "PERSONAL_IDENTIFIER",
+				"email": "EMAIL"
+			},
+			"claims": {
+				"personalIdentifier": "PERSONAL_IDENTIFIER",
+				"socialSecurityIdentification": {
+					"ssn": "SSN_ID"
+				},
+				"nationality": {
+					"nationalityCode": "NATIONALITY_CODE"
+				},
+				"employer": {
+					"employmentType": "EMPLOYER_TYPE",
+					"name": "EMPLOYER_NAME",
+					"employerId": "EMPLOYER_ID",
+					"typeOfId": "EMPLOYER_TYPE_OF_ID"
+				},
+				"address": {
+					"street": "ADDRESS_STATE",
+					"town": "ADDRESS_TOWN",
+					"postalCode": "ADDRESS_POSTAL_CODE",
+					"countryCode": "ADDRESS_COUNTRY_CODE"
+				},
+				"placeOfWork": {
+					"companyName": "WORK_COMPANY_NAME",
+					"flagBaseHomeState": "WORK_HOME_STATE",
+					"companyId": "WORK_COMPANY_ID",
+					"typeOfId": "WORK_TYPE_OF_ID",
+					"street": "WORK_STREET",
+					"town": "WORK_TOWN",
+					"postalCode": "WORK_POSTAL_CODE",
+					"countryCode": "WORK_COUNTRY_CODE"
+				},
+				"decisionOnApplicableLegislation": {
+					"decisionOnMSWhoseLegislationApplies": {
+						"memberStateWhoseLegislationIsToBeApplied": "MEMBER_STATE",
+						"transitionalRulesApplyAsPerTheRegulation": "RULES_APPLY_BOOL"
+					},
+					"validityPeriod": {
+						"startingDate": "STARTING_DATE",
+						"endingDate": "ENDING_DATE"
+					}
+				},
+				"statusConfirmation": {
+					"statusCode": "STATUS_CONFIRMATION_CODE"
+				},
+				"documentId": "DOC_ID",
+				"competentInstitution": {
+					"competentInstitutionId": "COMPETENT_INSTITUTION_ID",
+					"competentInstitutionName": "COMPETENT_INSTITUTION_NAME",
+					"competentInstitutionCountryCode": "COMPETENT_INSTITUTION_COUNTRY_CODE"
+				}
+			}
+		}
+	]
+}

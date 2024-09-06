@@ -3,6 +3,7 @@ on:
   push:
     branches-ignore:
       - master
+      - dc4eu-rome
   pull_request:
 
 jobs:
@@ -14,6 +15,6 @@ jobs:
     uses: ./.github/workflows/docker-build-push.yml
     secrets: inherit
     with:
-      image-tag: ghcr.io/wwwallet/wallet-enterprise-ehic-issuer:latest
+      image-tag: ghcr.io/gunet/wallet-enterprise-ehic-issuer:latest
       docker-push: false
       dockerfile-path: ./wallet-enterprise-configurations/ehic-issuer/Dockerfile
