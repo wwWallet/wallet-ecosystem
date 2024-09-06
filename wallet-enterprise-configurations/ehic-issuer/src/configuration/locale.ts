@@ -1,5 +1,6 @@
 const locale = {
 	en: {
+		ReturnToMainPage: "Return to main page",
 		header: {
 			title: "DC4EU EHIC Issuer",
 			subtitle: "Receive your verifiable EHIC Card",
