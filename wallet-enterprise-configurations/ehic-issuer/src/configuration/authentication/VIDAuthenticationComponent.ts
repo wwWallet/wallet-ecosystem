@@ -61,14 +61,13 @@ export class VIDAuthenticationComponent extends AuthenticationComponent {
 		const parsedPayload = JSON.parse(base64url.decode(payload)) as { vp: any };
 		const credential = parsedPayload.vp.verifiableCredential[0];
 		
-		const [_credentialHeader, credentialPayload] = credential.split('.');
+		const [_credentialHeader, credentialPayload, _sig] = credential.split('.');
 
 		const parsedCredPayload = JSON.parse(base64url.decode(credentialPayload)) as any;
-		console.log("Parsed cred payload = ", parsedCredPayload)
 
-		console.log("Exp = ", parsedCredPayload.exp)
-		console.log("Now = ", Date.now() / 1000)
-		if (parsedCredPayload.exp < (Date.now() / 1000)) {
+		const { validityPeriod: { startingDate, endingDate }} = parsedCredPayload.vc.credentialSubject;
+		
+		if (new Date(startingDate) > new Date() || new Date() > new Date(endingDate)) {
 			return { valid: false };
 		}
 
@@ -93,15 +92,16 @@ export class VIDAuthenticationComponent extends AuthenticationComponent {
 			.where("state.vid_auth_state = :vid_auth_state", { vid_auth_state: state })
 			.getOne();
 
-		if (!authorizationServerState || !vp_token || !queryRes.claims || !queryRes.claims["VID"] || !queryRes.raw_presentation) {
+		if (!authorizationServerState || !vp_token || !queryRes.claims || !queryRes.claims["PID"]) {
 			return;
 		}
 
-		const { valid } = await this.checkForInvalidCredentials(queryRes.raw_presentation);
+		const { valid } = await this.checkForInvalidCredentials(queryRes!.raw_presentation as string);
 		if (!valid) {
-			return await this.redirectToFailurePage(req, res, "Credential is expired");
+			return await this.redirectToFailurePage(req, res, "Credential is not valid");
 		}
-		const personalIdentifier = queryRes.claims["VID"].filter((claim) => claim.name == 'personalIdentifier')[0].value ?? null;
+		const personalIdentifier = queryRes.claims["PID"].filter((claim) => claim.name == 'personalIdentifier')[0].value ?? null;
+
 		if (!personalIdentifier) {
 			return;
 		}
