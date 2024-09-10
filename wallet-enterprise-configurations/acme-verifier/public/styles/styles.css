@@ -727,9 +727,8 @@ textarea.wide{
 }
 
 @media (max-width: 768px) {
-
-	.table-container{
-		width: -webkit-fill-available!important;
+	.table-container {
+		width: -webkit-fill-available !important;
 		margin-left: 1%;
 		margin-right: 1%;
 	}
@@ -739,16 +738,22 @@ textarea.wide{
 	background-color: #f2f2f2;
 }
 
-.table-container table th, 
+.table-container table th,
 .table-container table td {
 	padding: 10px;
 	text-align: left;
 	border: 1px solid #ddd;
 	font-size: 14px;
+	overflow-wrap: anywhere;
 }
 
 .table-container table th {
 	color: white;
+}
+
+.table-container table th:first-child,
+.table-container table td:first-child {
+	width: 30%!important;
 }
 
 .table-container table tbody tr:nth-child(even) {
