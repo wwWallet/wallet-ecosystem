@@ -131,6 +131,9 @@ export class EdiplomasBlueprintSdJwt implements SupportedCredentialProtocol {
 				"backgroundColor": "#8ebeeb",
 				"textColor": "#ffffff"
 			},
+			"renderMethod": {
+				"id": config.url + "/images/diplomaTemplate.svg",
+			},
 		};
 
 		const disclosureFrame = {

@@ -99,7 +99,10 @@ export class VIDSupportedCredentialSdJwt implements SupportedCredentialProtocol 
 			"credentialSchema": {
 				"id": "https://api-pilot.ebsi.eu/trusted-schemas-registry/v2/schemas/z8Y6JJnebU2UuQQNc2R8GYqkEiAMj3Hd861rQhsoNWxsM",
 				"type": "JsonSchema",
-			}
+			},
+			"renderMethod": {
+				"id": config.url + "/images/idTemplate.svg",
+			},
 		};
 
 		const disclosureFrame = {

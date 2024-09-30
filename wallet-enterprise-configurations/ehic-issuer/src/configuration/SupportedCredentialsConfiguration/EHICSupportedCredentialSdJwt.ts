@@ -97,6 +97,9 @@ export class EHICSupportedCredentialSdJwt implements SupportedCredentialProtocol
 				"backgroundColor": "#8ebeeb",
 				"textColor": "#ffffff"
 			},
+			"renderMethod": {
+				"id": config.url + "/images/ehicTemplate.svg",
+			},
 		};
 
 		const disclosureFrame = {
