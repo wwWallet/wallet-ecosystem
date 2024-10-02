@@ -3,95 +3,44 @@ import { OpenidForPresentationsConfiguration } from "../../services/types/Openid
 import { authorizationServerMetadataConfiguration } from "../../authorizationServiceConfiguration";
 import config from "../../../config";
 import { VerifierConfigurationInterface } from "../../services/interfaces";
-import { InputDescriptorType } from "@wwwallet/ssi-sdk";
 import "reflect-metadata";
-
-export type PresentationDefinitionTypeWithFormat = {
-	id: string;
-	format?: any;
-	input_descriptors: InputDescriptorType[];
-};
 
 @injectable()
 export class VerifierConfigurationService implements VerifierConfigurationInterface {
 
-	getPresentationDefinitions(): PresentationDefinitionTypeWithFormat[] {
-		return [{
-			"id": "vid", // scope name
-			"format": { "vc+sd-jwt": { alg: [ 'ES256' ] }, jwt_vp: { alg: [ 'ES256' ] } },
-			"input_descriptors": [
-				{
-					"id": "VID",
-					"constraints": {
-						"fields": [
-							{
-								"path": [
-									"$.credentialSubject.personalIdentifier"
-								],
-								"filter": {}
-							},
-							{
-								"path": [
-									"$.credentialSchema.id"
-								],
-								"filter": {
-									"type": "string",
-									"const": "https://api-pilot.ebsi.eu/trusted-schemas-registry/v2/schemas/z8Y6JJnebU2UuQQNc2R8GYqkEiAMj3Hd861rQhsoNWxsM"
+	getPresentationDefinitions(): any[] {
+		return [
+			{
+				"id": "vid",
+				"format": { "vc+sd-jwt": { alg: [ 'ES256' ] }, jwt_vp: { alg: [ 'ES256' ] } },
+				"input_descriptors": [
+					{
+						"id": "VID",
+						"constraints": {
+							"fields": [
+								{
+									"name": "Document Number",
+									"path": [
+										"$.document_number"
+									],
+									"filter": {}
+								},
+								{
+									"name": "Credential Type",
+									"path": [
+										"$.vct"
+									],
+									"filter": {
+										"type": "string",
+										"const": "urn:credential:vid"
+									}
 								}
-							}
-						]
+							]
+						}
 					}
-				}
-			]
-		},
-		{
-			id: 'ver_test:vp_token', // scope name
-			format: { jwt_vc: { alg: [ 'ES256' ] }, jwt_vp: { alg: [ 'ES256' ] } },
-			input_descriptors: [
-				{
-					id: '<any id, random or static>',
-					constraints: {
-						fields: [
-							{
-								path: [ '$.type' ],
-								filter: {
-									type: 'array',
-									contains: { const: 'VerifiableAttestation' }
-								}
-							}
-						]
-					}
-				},
-				{
-					id: '123456',
-					constraints: {
-						fields: [
-							{
-								path: [ '$.type' ],
-								filter: {
-									type: 'array',
-									contains: { const: 'VerifiableAttestation' }
-								}
-							}
-						]
-					}
-				},
-				{
-					id: '1234',
-					constraints: {
-						fields: [
-							{
-								path: [ '$.type' ],
-								filter: {
-									type: 'array',
-									contains: { const: 'VerifiableAttestation' }
-								}
-							}
-						]
-					}
-				}
-			]
-		}]
+				]
+			}
+		]
 	}
 
 	getConfiguration(): OpenidForPresentationsConfiguration {

@@ -7,12 +7,9 @@ import { AuthorizationServerState } from "../../entities/AuthorizationServerStat
 import { VerifiablePresentationEntity } from "../../entities/VerifiablePresentation.entity";
 import config from "../../../config";
 import { CONSENT_ENTRYPOINT } from "../../authorization/constants";
-import { GrantType } from "../../types/oid4vci";
 import locale from "../locale";
-import * as qrcode from 'qrcode';
 import { openidForPresentationReceivingService, verifierConfigurationService } from "../../services/instances";
 import { UserAuthenticationMethod } from "../../types/UserAuthenticationMethod.enum";
-import { PresentationDefinitionTypeWithFormat } from "../verifier/VerifierConfigurationService";
 
 export class VIDAuthenticationComponent extends AuthenticationComponent {
 
@@ -49,13 +46,15 @@ export class VIDAuthenticationComponent extends AuthenticationComponent {
 
 	private personalIdentifierHasBeenExtracted(req: Request): boolean {
 		console.log("VID auth started")
-		if (!req.session.authenticationChain.vidAuthenticationComponent?.personalIdentifier) {
+		console.log(req.session.authenticationChain.vidAuthenticationComponent)
+		if (!req.session.authenticationChain.vidAuthenticationComponent?.document_number) {
 			return false;
 		}
 		return true
 	}
 
 	private async handleCallback(req: Request, res: Response): Promise<any> {
+		console.log("handling callback...")
 		const state = req.query.state as string; // find the vp based on the state
 
 		const queryRes = await AppDataSource.getRepository(VerifiablePresentationEntity)
@@ -72,22 +71,23 @@ export class VIDAuthenticationComponent extends AuthenticationComponent {
 			.where("state.vid_auth_state = :vid_auth_state", { vid_auth_state: state })
 			.getOne();
 
-		if (!authorizationServerState || !vp_token || !queryRes.claims || !queryRes.claims["VID"]) {
-			return;
+		if (!authorizationServerState || !vp_token || !queryRes.claims) {
+			throw new Error("Generic error")
 		}
-		const personalIdentifier = queryRes.claims["VID"].filter((claim) => claim.name == 'personalIdentifier')[0].value ?? null;
-		if (!personalIdentifier) {
-			return;
+
+		const document_number = queryRes.claims["VID"].filter((claim) => claim.name == 'Document Number')[0].value ?? null;
+		if (!document_number) {
+			console.log("at least one of (document_number) is missing")
+			return res.redirect('/');
 		}
-		authorizationServerState.personalIdentifier = personalIdentifier;
-		authorizationServerState.ssn = personalIdentifier; // update the ssn as well, because this will be used to fetch the diplomas
+
+		console.log("Document number extracred = ", document_number)
+		authorizationServerState.document_number = document_number;
+
 
 		req.session.authenticationChain.vidAuthenticationComponent = {
-			personalIdentifier: personalIdentifier
+			document_number,
 		};
-
-		console.log("Personal identifier = ", personalIdentifier)
-		req.authorizationServerState.ssn = personalIdentifier;
 
 		await AppDataSource.getRepository(AuthorizationServerState).save(authorizationServerState);
 		return res.redirect(this.protectedEndpoint);
@@ -113,39 +113,23 @@ export class VIDAuthenticationComponent extends AuthenticationComponent {
 		}
 
 
-		const presentationDefinition = JSON.parse(JSON.stringify(verifierConfigurationService.getPresentationDefinitions().filter(pd => pd.id == "vid")[0])) as PresentationDefinitionTypeWithFormat;
+		const presentationDefinition = JSON.parse(JSON.stringify(verifierConfigurationService.getPresentationDefinitions().filter(pd => pd.id == "vid")[0])) as any;
 
-		const { url, stateId } = await openidForPresentationReceivingService.generateAuthorizationRequestURL({req, res}, presentationDefinition, config.url + CONSENT_ENTRYPOINT);
-	
-		// attach the vid_auth_state with an authorization server state
-		req.authorizationServerState.vid_auth_state = stateId;
-		await AppDataSource.getRepository(AuthorizationServerState).save(req.authorizationServerState);
-		console.log("Authz state = ", req.authorizationServerState)
-		if (req.authorizationServerState.grant_type && req.authorizationServerState.grant_type == GrantType.PRE_AUTHORIZED_CODE) {
-			// render a page which shows a QR code and a button with the url for same device authentication
+		try {
+			const { url, stateId } = await openidForPresentationReceivingService.generateAuthorizationRequestURL({req, res}, presentationDefinition, config.url + CONSENT_ENTRYPOINT);
+			console.log("Authorization request url = ", url)
+			// attach the vid_auth_state with an authorization server state
+			req.authorizationServerState.vid_auth_state = stateId;
+			await AppDataSource.getRepository(AuthorizationServerState).save(req.authorizationServerState);
+			console.log("Authz state = ", req.authorizationServerState)
+			return res.redirect(url.toString());
 
-			let authorizationRequestQR = await new Promise((resolve) => {
-				qrcode.toDataURL(url.toString(), {
-					margin: 1,
-					errorCorrectionLevel: 'L',
-					type: 'image/png'
-				}, 
-				(err, data) => {
-					if (err) return resolve("NO_QR");
-					return resolve(data);
-				});
-			}) as string;
-			return res.render('issuer/vid-auth-component', {
-				title: "VID authentication",
-				wwwalletURL: config.wwwalletURL,
-				authorizationRequestURL: url.toString(),
-				authorizationRequestQR: authorizationRequestQR,
-				state: url.searchParams.get('state'),
-				lang: req.lang,
-				locale: locale[req.lang]
-			});
 		}
-		return res.redirect(url.toString());
+		catch(err) {
+			console.log(err);
+			return res.redirect('/');
+		}
+
 	}
 	
 	

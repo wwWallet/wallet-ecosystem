@@ -1,22 +1,33 @@
 import config from "../../../config";
 import { CategorizedRawCredentialView, CategorizedRawCredentialViewRow } from "../../openid4vci/Metadata";
-import { VerifiableCredentialFormat, Display, CredentialSupportedJwtVcJson } from "../../types/oid4vci";
-import { CredentialSubject } from "../CredentialSubjectBuilders/CredentialSubject.type";
-import { getEhic } from "../resources/data";
-import { CredentialIssuer } from "../../lib/CredentialIssuerConfig/CredentialIssuer";
+import { VerifiableCredentialFormat, Display } from "../../types/oid4vci";
 import { SupportedCredentialProtocol } from "../../lib/CredentialIssuerConfig/SupportedCredentialProtocol";
 import { AuthorizationServerState } from "../../entities/AuthorizationServerState.entity";
 import { CredentialView } from "../../authorization/types";
 import { randomUUID } from "node:crypto";
+import { CredentialSigner } from "../../services/interfaces";
+import { JWK } from "jose";
+import { Request } from "express";
+import { parseEhicData } from "../datasetParser";
+import path from "node:path";
+import { issuerSigner } from "../CredentialIssuerConfiguration";
+
+
+parseEhicData(path.join(__dirname, "../../../../dataset/ehic-dataset.xlsx")) // test parse
 
 export class EHICSupportedCredentialSdJwt implements SupportedCredentialProtocol {
 
 
-	constructor(private credentialIssuerConfig: CredentialIssuer) { }
+	constructor() { }
 
-	getCredentialIssuerConfig(): CredentialIssuer {
-		return this.credentialIssuerConfig;
+	getScope(): string {
+		return "ehic";
 	}
+
+	getCredentialSigner(): CredentialSigner {
+		return issuerSigner;
+	}
+
 	getId(): string {
 		return "urn:credential:ehic"
 	}
@@ -28,25 +39,41 @@ export class EHICSupportedCredentialSdJwt implements SupportedCredentialProtocol
 	}
 	getDisplay(): Display {
 		return {
-			name: "EHIC Card",
-			logo: { url: config.url + "/images/ehicCard.png" },
-			background_color: "#4CC3DD"
+			name: "EHIC",
+			description: "This is a European Health Insurance Card verifiable credential issued by the well-known EHIC Issuer",
+			background_image: { uri: config.url + "/images/ehicCard.png" },
+			background_color: "#4CC3DD",
+			locale: 'en-US',
 		}
 	}
 
 
 	async getProfile(userSession: AuthorizationServerState): Promise<CredentialView | null> {
-		if (!userSession?.ssn) {
+		console.log("User session = ", userSession);
+		if (!userSession?.family_name || !userSession?.given_name || !userSession?.birth_date) {
 			return null;
 		}
-		const ehics = [await getEhic(userSession?.ssn)];
+		const users = parseEhicData(path.join(__dirname, "../../../../dataset/ehic-dataset.xlsx"));
+
+		console.log("Users = ", users)
+		if (!users) {
+			console.error("Failed to load users")
+			return null;
+		}
+
+		const ehics = users.filter((ehic) => 
+			ehic.family_name == userSession.family_name &&
+			ehic.given_name == userSession.given_name &&
+			new Date(ehic.birth_date).toISOString() == new Date(userSession.birth_date as string).toISOString()
+		);
+		console.log("Ehic = ", ehics)
 		const credentialViews: CredentialView[] = ehics
 			.map((ehic) => {
 				const rows: CategorizedRawCredentialViewRow[] = [
-					{ name: "Family Name", value: ehic.familyName },
-					{ name: "First Name", value: ehic.firstName },
-					{ name: "Personal Identifier", value: ehic.personalIdentifier },
-					{ name: "Date of Birth", value: ehic.birthdate },
+					{ name: "Family Name", value: ehic.family_name },
+					{ name: "Given Name", value: ehic.given_name },
+					{ name: "SSN", value: String(ehic.ssn) },
+					{ name: "Date of Birth", value: ehic.birth_date },
 				];
 				const rowsObject: CategorizedRawCredentialView = { rows };
 
@@ -60,74 +87,80 @@ export class EHICSupportedCredentialSdJwt implements SupportedCredentialProtocol
 		return credentialViews[0];
 	}
 
-	async generateCredentialResponse(userSession: AuthorizationServerState, holderDID: string): Promise<{ format: VerifiableCredentialFormat; credential: any; }> {
-		if (!userSession.ssn) {
-			throw new Error("Cannot generate credential: SSN is missing");
+	async generateCredentialResponse(userSession: AuthorizationServerState, request: Request, holderPublicKeyJwk: JWK): Promise<{ format: VerifiableCredentialFormat; credential: any; }> {
+		if (!userSession?.family_name || !userSession.given_name || !userSession.birth_date) {
+			console.log("Cannot generate credential: family_name is missing")
+			throw new Error("Cannot generate credential: family_name is missing");
 		}
 
-		const ehicEntry = await getEhic(userSession?.ssn);
+		const users = parseEhicData(path.join(__dirname, "../../../../dataset/ehic-dataset.xlsx"));
+
+		if (!users) {
+			throw new Error("Failed to get users from dataset");
+		}
+
+		if (request.body?.vct != this.getId() || !userSession.scope || !userSession.scope.split(' ').includes(this.getScope())) {
+			console.log("Not the correct credential");
+			throw new Error("Not the correct credential");
+		}
+
+		const ehicEntry = users.filter((ehic) => 
+			ehic.family_name == userSession.family_name &&
+			ehic.given_name == userSession.given_name &&
+			new Date(ehic.birth_date).toISOString() == new Date(userSession.birth_date as string).toISOString()
+		)[0];
 
 		if (!ehicEntry) {
-			console.error("Possibly raw data w not found")
+			console.error("Possibly raw data not found")
 			throw new Error("Could not generate credential response");
 		}
 
-		const ehic: CredentialSubject = {
-			familyName: ehicEntry.familyName,
-			firstName: ehicEntry.firstName,
-			id: holderDID,
-			personalIdentifier: ehicEntry.personalIdentifier,
-			birthdate: ehicEntry.birthdate
-		} as any;
+		const ehic = {
+			family_name: ehicEntry.family_name,
+			given_name: ehicEntry.given_name,
+			ssn: ehicEntry.ssn,
+			birth_date: ehicEntry.birth_date
+		};
 
 		const payload = {
-			"@context": ["https://www.w3.org/2018/credentials/v1"],
-			"type": this.getTypes(),
-			"id": `urn:ehic:${randomUUID()}`,
-			"name": "EHIC ID Card",  // https://www.w3.org/TR/vc-data-model-2.0/#names-and-descriptions
-			"description": "This credential is issued by the National EHIC ID credential issuer and it can be used for authentication purposes",
-			"credentialSubject": {
-				...ehic,
-				"id": holderDID,
+			"cnf": {
+				"jwk": holderPublicKeyJwk
 			},
-			"credentialBranding": {
-				"image": {
-					"url": config.url + "/images/ehicCard.png"
-				},
-				"backgroundColor": "#8ebeeb",
-				"textColor": "#ffffff"
-			},
+			"vct": this.getId(),
+			"jti": `urn:ehic:${randomUUID()}`,
+			...ehic,
+			ssn: String(ehic.ssn)
 		};
 
 		const disclosureFrame = {
-			vc: {
-				credentialSubject: {
-					birthdate: true,
-					personalIdentifier: true,
-				}
-			}
+			family_name: true,
+			given_name: true,
+			birth_date: true,
+			ssn: true,
 		}
-		const { jws } = await this.getCredentialIssuerConfig().getCredentialSigner()
-			.sign({
-				vc: payload
-			}, {}, disclosureFrame);
-    const response = {
-      format: this.getFormat(),
-      credential: jws
-    };
+		const { jws } = await this.getCredentialSigner()
+			.sign(payload, {}, disclosureFrame);
+		const response = {
+			format: this.getFormat(),
+			credential: jws
+		};
 
 		return response;
 	}
 
-	exportCredentialSupportedObject(): CredentialSupportedJwtVcJson {
+	exportCredentialSupportedObject(): any {
 		return {
-			id: this.getId(),
+			scope: this.getScope(),
+			vct: this.getId(),
 			format: this.getFormat(),
 			display: [this.getDisplay()],
-			types: this.getTypes(),
-			cryptographic_binding_methods_supported: ["ES256"]
+			cryptographic_binding_methods_supported: ["ES256"],
+			credential_signing_alg_values_supported: ["ES256"],
+			proof_types_supported: {
+				jwt: {
+					proof_signing_alg_values_supported: ["ES256"]
+				}
+			}
 		}
 	}
-
 }
-

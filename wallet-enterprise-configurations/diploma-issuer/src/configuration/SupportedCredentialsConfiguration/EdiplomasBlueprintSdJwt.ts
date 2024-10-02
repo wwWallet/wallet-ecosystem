@@ -1,26 +1,36 @@
 import config from "../../../config";
-import { VerifiableCredentialFormat, Display, CredentialSupportedJwtVcJson } from "../../types/oid4vci";
-import { CredentialSubject } from "../CredentialSubjectBuilders/CredentialSubject.type";
-import { getDiplomasBySSNAndBlueprintID } from "../resources/data";
-import { CredentialIssuer } from "../../lib/CredentialIssuerConfig/CredentialIssuer";
+import { VerifiableCredentialFormat, Display } from "../../types/oid4vci";
 import { SupportedCredentialProtocol } from "../../lib/CredentialIssuerConfig/SupportedCredentialProtocol";
 import { AuthorizationServerState } from "../../entities/AuthorizationServerState.entity";
 import { CredentialView } from "../../authorization/types";
-import { SimpleDiplomaCredentialSubjectBuilder } from "../CredentialSubjectBuilders/SimpleDiplomaCredentialSubjectBuilder/SimpleDiplomaCredentialSubjectBuilder";
+import { issuerSigner } from "../CredentialIssuerConfiguration";
+import { CredentialSigner } from "../../services/interfaces";
+import { JWK } from "jose";
+import { parseDiplomaData } from "../datasetParser";
+import path from "path";
+import { randomUUID } from "crypto";
+import { Request } from "express";
 
+
+parseDiplomaData(path.join(__dirname, "../../../../dataset/diploma-dataset.xlsx"));
 
 export class EdiplomasBlueprintSdJwt implements SupportedCredentialProtocol {
 
 
-  constructor(private credentialIssuerConfig: CredentialIssuer,
-		private blueprintID: string) { }
+  constructor() { }
 
-  getCredentialIssuerConfig(): CredentialIssuer {
-    return this.credentialIssuerConfig;
-  }
-  getId(): string {
-    return "urn:credential:ediplomas:blueprint:" + this.blueprintID;
-  }
+
+	getId(): string {
+		return "urn:credential:diploma";
+	}
+	getScope(): string {
+		return "diploma";
+	}
+
+	getCredentialSigner(): CredentialSigner {
+		return issuerSigner;
+	}
+
   getFormat(): VerifiableCredentialFormat {
     return VerifiableCredentialFormat.VC_SD_JWT;
   }
@@ -30,127 +40,96 @@ export class EdiplomasBlueprintSdJwt implements SupportedCredentialProtocol {
   getDisplay(): Display {
 		return {
 			name: "Bachelor Diploma",
-			logo: { url: config.url + "/images/EuropassUoaCard.png" },
-			background_color: "#4CC3DD"
+			description: "This is a Bachelor Diploma verifiable credential issued by the well-known eDiplomas",
+			background_image: { uri: config.url + "/images/EuropassUoaCard.png" },
+			background_color: "#4CC3DD",
+			locale: 'en-US',
 		}
   }
 
 
   async getProfile(userSession: AuthorizationServerState): Promise<CredentialView | null> {
-    if (!userSession?.ssn) {
-      return null;
-    }
-
-
-		const diplomaEntries = await getDiplomasBySSNAndBlueprintID(userSession.ssn, this.blueprintID);
-		if (diplomaEntries.length == 0) {
+		if (!userSession?.document_number) {
+			console.log("Cannot generate credential: (document_number) is missing");
 			return null;
 		}
-		const diplomaEntry = diplomaEntries[0];
+
+		
+		const diplomaEntries = parseDiplomaData(path.join(__dirname, "../../../../dataset/diploma-dataset.xlsx"));
+		if (!diplomaEntries || diplomaEntries.length == 0) {
+			throw new Error("No diploma entries found");
+		}
+		const diplomaEntry = diplomaEntries.filter((diploma) => 
+			String(diploma.vid_document_number) == userSession.document_number
+		)[0];
 		if (!diplomaEntry) {
-			console.error("Possibly raw data w not found")
+			console.error("Possibly raw data not found")
 			throw new Error("Could not generate credential response");
 		}
+
 		const credentialView: CredentialView = {
 			credential_id: diplomaEntry.certificateId,
 			deferredFlow: false,
 			credential_supported_object: this.exportCredentialSupportedObject(),
 			view: {
 				rows: [
-					{ name: "First Name", value: diplomaEntry.firstName },
-					{ name: "Family Name", value: diplomaEntry.familyName },
+					{ name: "Given Name", value: diplomaEntry.given_name },
+					{ name: "Family Name", value: diplomaEntry.family_name },
 					{ name: "Title", value: diplomaEntry.title },
 					{ name: "Grade", value: diplomaEntry.grade },
-					{ name: "Date of birth", value: diplomaEntry.dateOfBirth },
-					{ name: "Completion date", value: diplomaEntry.completionDate },
-					{ name: "Awarding date", value: diplomaEntry.awardingDate },
+					{ name: "Graduation date", value: diplomaEntry.graduation_date },
+					{ name: "Blueprint ID", value: "#" + diplomaEntry.blueprint_id  },
 
 				]
 			}
 		};
 		return credentialView;
   }
-  
-  async generateCredentialResponse(userSession: AuthorizationServerState, holderDID: string): Promise<{ format: VerifiableCredentialFormat; credential: any;  }> {
-		if (!userSession.ssn) {
-			throw new Error("Cannot generate credential: Taxis id is missing");
+
+	async generateCredentialResponse(userSession: AuthorizationServerState, request: Request, holderPublicKeyJwk: JWK): Promise<{ format: VerifiableCredentialFormat; credential: any; }> {
+		if (!userSession?.document_number) {
+			throw new Error("Cannot generate credential: (document_number) is missing");
 		}
-		
-		const diplomaEntries = await getDiplomasBySSNAndBlueprintID(userSession.ssn, this.blueprintID);
-		if (diplomaEntries.length == 0) {
+
+		const diplomaEntries = parseDiplomaData(path.join(__dirname, "../../../../dataset/diploma-dataset.xlsx"));
+		if (!diplomaEntries || diplomaEntries.length == 0) {
 			throw new Error("No diploma entries found");
 		}
-		const diplomaEntry = diplomaEntries[0];
+		const diplomaEntry = diplomaEntries.filter((diploma) => 
+			String(diploma.vid_document_number) == userSession.document_number
+		)[0];
+
 		if (!diplomaEntry) {
-			console.error("Possibly raw data w not found")
+			console.error("diplomaEntry not found")
 			throw new Error("Could not generate credential response");
 		}
 
-		const diploma: CredentialSubject = new SimpleDiplomaCredentialSubjectBuilder()
-			.setId(diplomaEntry.certificateId)
-			.setFirstName(diplomaEntry.firstName)
-			.setFamilyName(diplomaEntry.familyName)
-			.setGrade(diplomaEntry.grade)
-			.setLevel(diplomaEntry.level)
-			.setDiplomaTitle(diplomaEntry.title)
-			.setCertificateId(diplomaEntry.certificateId)
-			.setDateOfBirth(diplomaEntry.dateOfBirth)
-			.setCompletionDate(diplomaEntry.completionDate)
-			.setAwardingDate(diplomaEntry.awardingDate)
-			.build();
+		if (request.body?.vct != this.getId() || !userSession.scope || !userSession.scope.split(' ').includes(this.getScope())) {
+			console.log("Not the correct credential");
+			throw new Error("Not the correct credential");
+		}
 
 		const payload = {
-			"@context": ["https://www.w3.org/2018/credentials/v1"],
-			"type": this.getTypes(),
-			"id": `urn:certificateId:${diploma.certificateId}`,
-			"name": "Greek HEI Diploma",  // https://www.w3.org/TR/vc-data-model-2.0/#names-and-descriptions
-			"description": "This diploma serves as evidence of successful completion of a Bachelor's program at a Greek university.",
-			"credentialSubject": {
-				"id": holderDID,
-				"firstName": diploma.firstName,
-				"familyName": diploma.familyName,
-				"dateOfBirth": diploma.dateOfBirth,
-				"grade": diploma.grade,
-				"eqfLevel": diploma.eqfLevel,
-				"diplomaTitle": diploma.diplomaTitle,
-				"certificateId": diploma.certificateId,
-				"blueprintId": this.blueprintID,
-				"completionDate": diploma.completionDate,
-				"awardingDate": diploma.awardingDate,
-				"achievement": {
-					"name": "Systems Programming",
-					"description": "This course examines in depth the Unix environment as a development environment. We will look at the Linux API for the C / C ++ languages as well as the Linux shell. We will cover topics such as: basic Unix commands, shell programming, script languages, programming of system functions in C / C ++ for error handling, creation and termination of processes, sending / receiving signals, low-level input / output system calls, communication between local processes, creation, termination and synchronization of threads, file system management, as well as network programming. This course requires independent and consistent effort from the student.",
-					"type": "Compulsory",
-					"image": config.url + "/images/EuropassUoaCard.png"
-				},
+			"cnf": {
+				"jwk": holderPublicKeyJwk
 			},
-			"credentialBranding": {
-				"image": {
-					"url": config.url + "/images/EuropassUoaCard.png"
-				},
-				"backgroundColor": "#8ebeeb",
-				"textColor": "#ffffff"
-			},
+			"vct": this.getId(),
+			"jti": `urn:credential:diploma:${randomUUID()}`,
+			"title": diplomaEntry.title,
+			"grade": String(diplomaEntry.grade),
+			"eqf_level": String(diplomaEntry.eqf_level),
+			"graduation_date": diplomaEntry.graduation_date,
 		};
 
 		const disclosureFrame = {
-			vc: {
-				credentialSubject: {
-					dateOfBirth: true,
-					grade: true,
-					eqfLevel: true,
-					diplomaTitle: true,
-					blueprintId: true,
-					completionDate: true,
-					awardingDate: true,
-				}
-			}
+			title: true,
+			grade: true,
+			eqf_level: false, // no ability to hide
+			graduation_date: true,
 		}
 
-		const { jws } = await this.getCredentialIssuerConfig().getCredentialSigner()
-			.sign({
-				vc: payload
-			}, {}, disclosureFrame);
+		const { jws } = await this.getCredentialSigner()
+			.sign(payload, {}, disclosureFrame);
 
     const response = {
       format: this.getFormat(),
@@ -160,13 +139,19 @@ export class EdiplomasBlueprintSdJwt implements SupportedCredentialProtocol {
 		return response;
   }
 
-	exportCredentialSupportedObject(): CredentialSupportedJwtVcJson {
+	exportCredentialSupportedObject(): any {
 		return {
-			id: this.getId(),
+			scope: this.getScope(),
+			vct: this.getId(),
 			format: this.getFormat(),
-			display: [ this.getDisplay() ],
-			types: this.getTypes(),
-			cryptographic_binding_methods_supported: ["EdDSA", "ES256"]
+			display: [this.getDisplay()],
+			cryptographic_binding_methods_supported: ["ES256"],
+			credential_signing_alg_values_supported: ["ES256"],
+			proof_types_supported: {
+				jwt: {
+					proof_signing_alg_values_supported: ["ES256"]
+				}
+			}
 		}
 	}
 
