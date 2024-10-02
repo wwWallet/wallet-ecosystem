@@ -20,7 +20,8 @@ services:
         condition: service_healthy
     volumes:
       - ./wallet-enterprise:/app:rw
-      - ./wallet-enterprise-configurations/vid-issuer/config/config.development.ts:/app/config/config.development.ts:rw
+      - ./wallet-enterprise-configurations/vid-issuer/dataset:/app/dataset:rw
+      - ./wallet-enterprise-configurations/vid-issuer/config/index.ts:/app/config/index.ts:rw
       - ./wallet-enterprise-configurations/vid-issuer/keys:/app/keys:rw
       - ./wallet-enterprise-configurations/vid-issuer/src/configuration:/app/src/configuration:rw
       - ./wallet-enterprise-configurations/vid-issuer/public/styles/styles.css:/app/public/styles/styles.css:rw
@@ -54,7 +55,8 @@ services:
         condition: service_healthy
     volumes:
       - ./wallet-enterprise:/app:rw
-      - ./wallet-enterprise-configurations/ehic-issuer/config/config.development.ts:/app/config/config.development.ts:rw
+      - ./wallet-enterprise-configurations/ehic-issuer/dataset:/app/dataset:rw
+      - ./wallet-enterprise-configurations/ehic-issuer/config/index.ts:/app/config/index.ts:rw
       - ./wallet-enterprise-configurations/ehic-issuer/keys:/app/keys:rw
       - ./wallet-enterprise-configurations/ehic-issuer/src/configuration:/app/src/configuration:rw
       - ./wallet-enterprise-configurations/ehic-issuer/views/header.pug:/app/views/header.pug:rw
@@ -85,7 +87,8 @@ services:
         condition: service_healthy
     volumes:
       - ./wallet-enterprise:/app:rw
-      - ./wallet-enterprise-configurations/diploma-issuer/config/config.development.ts:/app/config/config.development.ts:rw
+      - ./wallet-enterprise-configurations/diploma-issuer/dataset:/app/dataset:rw
+      - ./wallet-enterprise-configurations/diploma-issuer/config/index.ts:/app/config/index.ts:rw
       - ./wallet-enterprise-configurations/diploma-issuer/keys:/app/keys:rw
       - ./wallet-enterprise-configurations/diploma-issuer/src/configuration:/app/src/configuration:rw
       - ./wallet-enterprise-configurations/diploma-issuer/views/header.pug:/app/views/header.pug:rw
@@ -119,7 +122,7 @@ services:
         condition: service_healthy
     volumes:
       - ./wallet-enterprise:/app:rw
-      - ./wallet-enterprise-configurations/acme-verifier/config/config.development.ts:/app/config/config.development.ts:rw
+      - ./wallet-enterprise-configurations/acme-verifier/config/index.ts:/app/config/index.ts:rw
       - ./wallet-enterprise-configurations/acme-verifier/keys:/app/keys:rw
       - ./wallet-enterprise-configurations/acme-verifier/src/configuration:/app/src/configuration:rw
       - ./wallet-enterprise-configurations/acme-verifier/public/styles/styles.css:/app/public/styles/styles.css:rw

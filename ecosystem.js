@@ -4,6 +4,9 @@ const fs = require('fs');
 const path = require('path');
 const { execSync } = require('child_process');
 
+
+const issuersTrustedRootCert = `MIIB3DCCAYECFHBDWpkLi64f5ZrF0xuytj5PIrbqMAoGCCqGSM49BAMCMHAxCzAJBgNVBAYTAkdSMQ8wDQYDVQQIDAZBdGhlbnMxEDAOBgNVBAcMB0lsbGlzaWExETAPBgNVBAoMCHd3V2FsbGV0MREwDwYDVQQLDAhJZGVudGl0eTEYMBYGA1UEAwwPd3d3YWxsZXQtaXNzdWVyMB4XDTI0MDkyNjA4MTQxMloXDTM0MDkyNDA4MTQxMlowcDELMAkGA1UEBhMCR1IxDzANBgNVBAgMBkF0aGVuczEQMA4GA1UEBwwHSWxsaXNpYTERMA8GA1UECgwId3dXYWxsZXQxETAPBgNVBAsMCElkZW50aXR5MRgwFgYDVQQDDA93d3dhbGxldC1pc3N1ZXIwWTATBgcqhkjOPQIBBggqhkjOPQMBBwNCAAQtY9kUQFfDf6iocFE4rRvy3GMyYypqmX3ZjmwUeXJy0kkgRT73C8+WPkWNg/ydJHCEDDO5XuRaIaOHc9DpLpNSMAoGCCqGSM49BAMCA0kAMEYCIQDzw27nBr7E8N6Gqc83v/6+9izi/NEXBKlojwLJAeSlsAIhAO2JdjPEz3bD0stoWEg7RDtrAm8dsgryCy1W5BDGCVdN`;
+
 function copyKeys(srcPath, destPath) {
 	const fileName = path.basename(srcPath);
 	if (!fs.existsSync(destPath)) {
@@ -66,7 +69,7 @@ for (const arg of args) {
 
 	if (arg === '-m') {
 		useOpenIdUrl = true;
-		console.log("Wallet URL is now openid:// in all configurations");
+		console.log("Wallet URL is now openid4vp:// in all configurations");
 	}
 
 	if (arg === '-d') {
@@ -127,7 +130,7 @@ if (!fs.existsSync(`${process.cwd()}/docker-compose.yml`) || useComposeTemplate)
 }
 
 if (useOpenIdUrl) {
-	walletClientUrl = "openid://cb";
+	walletClientUrl = "openid4vp://cb";
 }
 
 let dockerComposeCommand = 'docker-compose';
@@ -152,29 +155,17 @@ if (action === "init") {
 }
 
 function init() {
-	return execSync(`${dockerComposeCommand} run --rm -t --workdir /app/cli --env NODE_PATH=/cli_node_modules wallet-backend-server sh -c '
-		set -e # Exit on error
-		export DB_HOST="wallet-db"
-		export DB_PORT="3307"
-		export DB_USER="root"
-		export DB_PASSWORD="root"
-		export DB_NAME="wallet"
-		./configwallet.js create issuer \
-			--friendlyName "National VID Issuer" \
-			--url http://wallet-enterprise-vid-issuer:8003 \
-			--did did:key:zDnaexeQbRxqyGRCuMi4FNxvjyob5dFeYFr8VDWnrcdy5v14H \
-			--client_id did:key:zDnaexeQbRxqyGRCuMi4FNxvjyob5dFeYFr8VDWnrcdy5v14H
-		./configwallet.js create issuer \
-			--friendlyName "University of Athens" \
-			--url http://wallet-enterprise-diploma-issuer:8000/uoa \
-			--did did:key:zDnaeZkvNZx2YRUqLpaupbzouPs4SnRtAo4fV3UqwZ5xqBVbg \
-			--client_id did:key:zDnaeZkvNZx2YRUqLpaupbzouPs4SnRtAo4fV3UqwZ5xqBVbg
-		./configwallet.js create issuer \
-			--friendlyName "EHIC Issuer" \
-			--url http://wallet-enterprise-ehic-issuer:8004 \
-			--did did:key:zDnaemLRtZwZGm1qG9EkdBuuz71KpuNyDJgZ5KMaytD41thuL \
-			--client_id did:key:zDnaemLRtZwZGm1qG9EkdBuuz71KpuNyDJgZ5KMaytD41thuL
-	'`, { stdio: 'inherit' });
+	const cleanupCredentialIssueTable = `DELETE FROM credential_issuer`;
+	const firstIssuerInsertion = `INSERT INTO credential_issuer (credentialIssuerIdentifier, clientId, visible) VALUES ('http://wallet-enterprise-vid-issuer:8003', '1233', 1)`;
+	const secondIssuerInsertion = `INSERT INTO credential_issuer (credentialIssuerIdentifier, clientId, visible) VALUES ('http://wallet-enterprise-diploma-issuer:8000', '213213213213', 1)`;
+	const thirdIssuerInsertion = `INSERT INTO credential_issuer (credentialIssuerIdentifier, clientId, visible) VALUES ('http://wallet-enterprise-ehic-issuer:8004', '1343421314efr243', 1)`;
+
+	const cleanupCertificateTable = `DELETE FROM trusted_root_certificate`;
+	const firstCertificateInsertion = `INSERT INTO trusted_root_certificate (certificate) VALUES ('${issuersTrustedRootCert}')`;
+
+	return execSync(`${dockerComposeCommand} exec -t wallet-db sh -c "
+			mariadb -u ${dbUser} -p\\"${dbPassword}\\" wallet -e \\"${cleanupCredentialIssueTable}; ${firstIssuerInsertion}; ${secondIssuerInsertion}; ${thirdIssuerInsertion}; ${cleanupCertificateTable}; ${firstCertificateInsertion} \\"
+		"`, { stdio: 'inherit' });
 }
 
 if (action !== 'up') {
