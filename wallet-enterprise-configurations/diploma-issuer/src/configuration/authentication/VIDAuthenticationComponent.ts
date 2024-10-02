@@ -5,7 +5,7 @@ import { AuthenticationComponent } from "../../authentication/AuthenticationComp
 import AppDataSource from "../../AppDataSource";
 import { AuthorizationServerState } from "../../entities/AuthorizationServerState.entity";
 import { VerifiablePresentationEntity } from "../../entities/VerifiablePresentation.entity";
-import config from "../../../config";
+import { config } from "../../../config";
 import { CONSENT_ENTRYPOINT } from "../../authorization/constants";
 import locale from "../locale";
 import { openidForPresentationReceivingService, verifierConfigurationService } from "../../services/instances";

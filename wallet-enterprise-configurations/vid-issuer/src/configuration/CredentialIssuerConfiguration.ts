@@ -1,5 +1,5 @@
 import 'reflect-metadata';
-import config from "../../config";
+import { config } from "../../config";
 import { CredentialSigner } from "../services/interfaces";
 import { VIDSupportedCredentialSdJwt } from "./SupportedCredentialsConfiguration/VIDSupportedCredentialSdJwt";
 import fs from 'fs';

@@ -3,7 +3,7 @@ import { ParamsDictionary } from "express-serve-static-core";
 import { SignJWT, jwtVerify } from "jose";
 import { ParsedQs } from "qs";
 import { AuthenticationComponent } from "../../authentication/AuthenticationComponent";
-import config from "../../../config";
+import { config } from "../../../config";
 import locale from "../locale";
 
 

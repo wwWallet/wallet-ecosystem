@@ -1,7 +1,7 @@
 import { injectable } from "inversify";
 import { OpenidForPresentationsConfiguration } from "../../services/types/OpenidForPresentationsConfiguration.type";
 import { authorizationServerMetadataConfiguration } from "../../authorizationServiceConfiguration";
-import config from "../../../config";
+import { config } from "../../../config";
 import { VerifierConfigurationInterface } from "../../services/interfaces";
 import "reflect-metadata";
 

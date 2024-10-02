@@ -1,4 +1,4 @@
-import config from "../../../config";
+import { config } from "../../../config";
 import { VerifiableCredentialFormat, Display } from "../../types/oid4vci";
 import { SupportedCredentialProtocol } from "../../lib/CredentialIssuerConfig/SupportedCredentialProtocol";
 import { AuthorizationServerState } from "../../entities/AuthorizationServerState.entity";
