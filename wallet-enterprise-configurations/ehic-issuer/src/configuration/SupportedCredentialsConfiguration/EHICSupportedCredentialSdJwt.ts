@@ -10,7 +10,7 @@ import { JWK } from "jose";
 import { Request } from "express";
 import { parseEhicData } from "../datasetParser";
 import path from "node:path";
-import { issuerSigner } from "../CredentialIssuerConfiguration";
+import { issuerSigner } from "../issuerSigner";
 
 
 parseEhicData(path.join(__dirname, "../../../../dataset/ehic-dataset.xlsx")) // test parse

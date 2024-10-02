@@ -5,10 +5,8 @@ import fs from 'fs';
 import path from "path";
 import { HasherAlgorithm, HasherAndAlgorithm, SdJwt, SignatureAndEncryptionAlgorithm, Signer } from "@sd-jwt/core";
 import { sign, randomBytes, createHash, KeyObject } from "crypto";
-import { credentialConfigurationRegistryService } from "../services/instances";
 import { importPrivateKeyPem } from '../lib/importPrivateKeyPem';
 import { calculateJwkThumbprint, exportJWK, importX509 } from 'jose';
-import { EdiplomasBlueprintSdJwt } from './SupportedCredentialsConfiguration/EdiplomasBlueprintSdJwt';
 
 const issuerX5C: string[] = JSON.parse(fs.readFileSync(path.join(__dirname, "../../../keys/x5c.json"), 'utf-8').toString()) as string[];
 const issuerPrivateKeyPem = fs.readFileSync(path.join(__dirname, "../../../keys/pem.key"), 'utf-8').toString();
@@ -92,10 +90,4 @@ export const issuerSigner: CredentialSigner = {
 		return { jwk: jwk };
 	},
 }
-
-
-export async function registerAllCredentialConfigurations() {
-	credentialConfigurationRegistryService.register(new EdiplomasBlueprintSdJwt());
-}
-
 

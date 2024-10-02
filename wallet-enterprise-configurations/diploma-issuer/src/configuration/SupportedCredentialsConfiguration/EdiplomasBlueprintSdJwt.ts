@@ -3,7 +3,7 @@ import { VerifiableCredentialFormat, Display } from "../../types/oid4vci";
 import { SupportedCredentialProtocol } from "../../lib/CredentialIssuerConfig/SupportedCredentialProtocol";
 import { AuthorizationServerState } from "../../entities/AuthorizationServerState.entity";
 import { CredentialView } from "../../authorization/types";
-import { issuerSigner } from "../CredentialIssuerConfiguration";
+import { issuerSigner } from "../issuerSigner";
 import { CredentialSigner } from "../../services/interfaces";
 import { JWK } from "jose";
 import { parseDiplomaData } from "../datasetParser";

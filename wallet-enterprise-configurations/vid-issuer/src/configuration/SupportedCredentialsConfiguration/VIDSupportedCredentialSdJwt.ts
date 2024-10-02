@@ -8,7 +8,7 @@ import { randomUUID } from "node:crypto";
 import { CredentialSigner } from "../../services/interfaces";
 import { JWK } from "jose";
 import { Request } from "express";
-import { issuerSigner } from "../CredentialIssuerConfiguration";
+import { issuerSigner } from "../issuerSigner";
 import { parsePidData } from "../datasetParser";
 import path from "node:path";
 

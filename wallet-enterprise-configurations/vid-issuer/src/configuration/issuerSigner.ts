@@ -5,10 +5,8 @@ import fs from 'fs';
 import path from "path";
 import { HasherAlgorithm, HasherAndAlgorithm, SdJwt, SignatureAndEncryptionAlgorithm, Signer } from "@sd-jwt/core";
 import { sign, randomBytes, createHash, KeyObject } from "crypto";
-import { credentialConfigurationRegistryService } from "../services/instances";
 import { importPrivateKeyPem } from '../lib/importPrivateKeyPem';
 import { calculateJwkThumbprint, exportJWK, importX509 } from 'jose';
-import { EHICSupportedCredentialSdJwt } from './SupportedCredentialsConfiguration/EHICSupportedCredentialSdJwt';
 
 const issuerX5C: string[] = JSON.parse(fs.readFileSync(path.join(__dirname, "../../../keys/x5c.json"), 'utf-8').toString()) as string[];
 const issuerPrivateKeyPem = fs.readFileSync(path.join(__dirname, "../../../keys/pem.key"), 'utf-8').toString();
@@ -48,18 +46,9 @@ export const issuerSigner: CredentialSigner = {
 
 
 		const issuanceDate = new Date();
-		const expirationDate = (() => {
-			const expirationDate = new Date(issuanceDate);
-			expirationDate.setFullYear(expirationDate.getFullYear() + 1);
-			return expirationDate;
-		})();
-
-		// payload.vc.expirationDate = expirationDate.toISOString();
-		payload.exp = Math.floor(expirationDate.getTime() / 1000);
-
-		// payload.vc.issuanceDate = issuanceDate.toISOString();
 		payload.iat = Math.floor(issuanceDate.getTime() / 1000);
 
+		payload.exp =  Math.floor(new Date(payload.expiry_date).getTime() / 1000);
 		payload.iss = config.url;
 
 		payload.sub = await calculateJwkThumbprint(payload.cnf.jwk);
@@ -91,10 +80,4 @@ export const issuerSigner: CredentialSigner = {
 		return { jwk: jwk };
 	},
 }
-
-
-export async function registerAllCredentialConfigurations() {
-	credentialConfigurationRegistryService.register(new EHICSupportedCredentialSdJwt());
-}
-
 
