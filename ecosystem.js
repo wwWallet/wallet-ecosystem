@@ -176,7 +176,7 @@ if (action !== 'up') {
 
 
 { // wallet backend server configuration
-	const configPath = 'wallet-backend-server/config/config.development.ts';
+	const configPath = 'wallet-backend-server/config/index.ts';
 	const templatePath = 'wallet-backend-server/config/config.template.ts';
 
 	if (fs.existsSync(configPath) && forceUpdateConfigs === false) {
