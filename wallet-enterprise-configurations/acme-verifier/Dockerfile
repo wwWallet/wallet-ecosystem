@@ -14,8 +14,7 @@ COPY ./wallet-enterprise-configurations/acme-verifier/views/verifier/success.pug
 COPY ./wallet-enterprise-configurations/acme-verifier/public/styles/styles.css /app/public/styles/styles.css
 COPY ./wallet-enterprise-configurations/acme-verifier/public/images /app/public/images
 
-RUN --mount=type=secret,id=npmrc,required=true,target=./.npmrc,uid=1000 \
-    yarn cache clean && yarn install && yarn build
+RUN yarn cache clean && yarn install && yarn build
 
 # Production stage
 FROM node:16-bullseye-slim AS production
@@ -27,11 +26,10 @@ COPY --from=builder /app/public ./public
 COPY --from=builder /app/views/ ./views/
 
 
-RUN --mount=type=secret,id=npmrc,required=true,target=./.npmrc,uid=1000 \
-    yarn cache clean && yarn install --production
+RUN yarn cache clean && yarn install --production
 
 
-ENV NODE_ENV production
+ENV NODE_ENV=production
 EXPOSE 8003
 
 CMD ["node", "./dist/src/app.js"]

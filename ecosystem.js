@@ -7,35 +7,35 @@ const { execSync } = require('child_process');
 
 const issuersTrustedRootCert = `MIIB3DCCAYECFHBDWpkLi64f5ZrF0xuytj5PIrbqMAoGCCqGSM49BAMCMHAxCzAJBgNVBAYTAkdSMQ8wDQYDVQQIDAZBdGhlbnMxEDAOBgNVBAcMB0lsbGlzaWExETAPBgNVBAoMCHd3V2FsbGV0MREwDwYDVQQLDAhJZGVudGl0eTEYMBYGA1UEAwwPd3d3YWxsZXQtaXNzdWVyMB4XDTI0MDkyNjA4MTQxMloXDTM0MDkyNDA4MTQxMlowcDELMAkGA1UEBhMCR1IxDzANBgNVBAgMBkF0aGVuczEQMA4GA1UEBwwHSWxsaXNpYTERMA8GA1UECgwId3dXYWxsZXQxETAPBgNVBAsMCElkZW50aXR5MRgwFgYDVQQDDA93d3dhbGxldC1pc3N1ZXIwWTATBgcqhkjOPQIBBggqhkjOPQMBBwNCAAQtY9kUQFfDf6iocFE4rRvy3GMyYypqmX3ZjmwUeXJy0kkgRT73C8+WPkWNg/ydJHCEDDO5XuRaIaOHc9DpLpNSMAoGCCqGSM49BAMCA0kAMEYCIQDzw27nBr7E8N6Gqc83v/6+9izi/NEXBKlojwLJAeSlsAIhAO2JdjPEz3bD0stoWEg7RDtrAm8dsgryCy1W5BDGCVdN`;
 
-function copyKeys(srcPath, destPath) {
-	const fileName = path.basename(srcPath);
-	if (!fs.existsSync(destPath)) {
-		fs.mkdirSync(destPath, { recursive: true });
-	}
-	fs.copyFileSync(srcPath, path.join(destPath, fileName));
-}
+// function copyKeys(srcPath, destPath) {
+// 	const fileName = path.basename(srcPath);
+// 	if (!fs.existsSync(destPath)) {
+// 		fs.mkdirSync(destPath, { recursive: true });
+// 	}
+// 	fs.copyFileSync(srcPath, path.join(destPath, fileName));
+// }
 
-function findFilesWithExtension(dir, extension) {
-  const files = [];
-  const items = fs.readdirSync(dir);
+// function findFilesWithExtension(dir, extension) {
+//   const files = [];
+//   const items = fs.readdirSync(dir);
 
-  for (const item of items) {
-    const fullPath = path.join(dir, item);
+//   for (const item of items) {
+//     const fullPath = path.join(dir, item);
 
-    if (fs.statSync(fullPath).isDirectory()) {
-      files.push(...findFilesWithExtension(fullPath, extension));
-    } else if (item.endsWith(extension)) {
-      files.push(fullPath);
-    }
-  }
+//     if (fs.statSync(fullPath).isDirectory()) {
+//       files.push(...findFilesWithExtension(fullPath, extension));
+//     } else if (item.endsWith(extension)) {
+//       files.push(fullPath);
+//     }
+//   }
 
-  return files;
-}
+//   return files;
+// }
 
-function replaceTokenInTemplate(templateFile, token) {
-  const templateContent = fs.readFileSync(templateFile, 'utf8');
-  return templateContent.replace(/\${GITHUB_AUTH_TOKEN}/g, token);
-}
+// function replaceTokenInTemplate(templateFile, token) {
+//   const templateContent = fs.readFileSync(templateFile, 'utf8');
+//   return templateContent.replace(/\${GITHUB_AUTH_TOKEN}/g, token);
+// }
 
 let args = process.argv.slice(2);
 let action = args[0]; // up or down
@@ -89,34 +89,6 @@ for (const arg of args) {
 }
 
 const secret = "dsfkwfkwfwdfdsfSaSe2e34r4frwr42rAFdsf2lfmfsmklfwmer";
-
-const githubTokenFile = '.github-token';
-let githubToken;
-
-try {
-  githubToken = fs.readFileSync(githubTokenFile, 'utf8').trim();
-  fs.chmodSync(githubTokenFile, 0o600);
-} catch (error) {
-  console.error(`Error: ${error.message}`);
-  console.error(`Write GitHub token to '${githubTokenFile}' before running this script.`);
-  process.exit(1);
-}
-
-if (fs.existsSync(githubTokenFile)) {
-  const npmrcTemplateFiles = findFilesWithExtension('.', '.npmrc.template');
-  for (const npmrcTemplateFile of npmrcTemplateFiles) {
-    const npmrcFile = npmrcTemplateFile.replace('.template', '');
-
-    if (!fs.existsSync(npmrcFile) || forceUpdateConfigs) {
-      fs.writeFileSync(npmrcFile, '', { mode: 0o600 });
-      fs.writeFileSync(npmrcFile, replaceTokenInTemplate(npmrcTemplateFile, githubToken));
-    }
-  }
-} else {
-  console.error(`Error: No such file: ${githubTokenFile}`);
-  console.error(`Write GitHub token to '${githubTokenFile}' before running this script.`);
-  process.exit(1);
-}
 
 // MariaDB configuration
 const dbHost = 'wallet-db';
@@ -194,31 +166,31 @@ function buildImages() {
 
 
 	if (args.length <= 1 || args.includes("wallet-frontend")) {
-		execSync(`cd wallet-frontend && docker build --secret id=npmrc,src=.npmrc  -t ghcr.io/wwwallet/wallet-frontend:${imageTag} .`, { stdio: 'inherit' });
+		execSync(`cd wallet-frontend && docker build -t ghcr.io/wwwallet/wallet-frontend:${imageTag} .`, { stdio: 'inherit' });
 	}
 
 	if (args.length <= 1 || args.includes("wallet-backend-server")) {
-		execSync(`cd wallet-backend-server && docker build --secret id=npmrc,src=.npmrc  -t ghcr.io/wwwallet/wallet-backend-server:${imageTag} .`, { stdio: 'inherit' });
+		execSync(`cd wallet-backend-server && docker build -t ghcr.io/wwwallet/wallet-backend-server:${imageTag} .`, { stdio: 'inherit' });
 	}
 	
 	if (args.length <= 1 || args.includes("vid-issuer")) {
-		execSync(`cd wallet-enterprise && docker build --secret id=npmrc,src=.npmrc -t ghcr.io/wwwallet/wallet-enterprise:base -f base.Dockerfile .`, { stdio: 'inherit' });
-		execSync(`docker build --secret id=npmrc,src=.npmrc  -t ghcr.io/wwwallet/wallet-enterprise-vid-issuer:${imageTag} -f wallet-enterprise-configurations/vid-issuer/Dockerfile .`, { stdio: 'inherit' });
+		execSync(`cd wallet-enterprise && docker build -t ghcr.io/wwwallet/wallet-enterprise:base -f base.Dockerfile .`, { stdio: 'inherit' });
+		execSync(`docker build -t ghcr.io/wwwallet/wallet-enterprise-vid-issuer:${imageTag} -f wallet-enterprise-configurations/vid-issuer/Dockerfile .`, { stdio: 'inherit' });
 	}
 
 	if (args.length <= 1 || args.includes("ehic-issuer")) {
-		execSync(`cd wallet-enterprise && docker build --secret id=npmrc,src=.npmrc -t ghcr.io/wwwallet/wallet-enterprise:base -f base.Dockerfile .`, { stdio: 'inherit' });
-		execSync(`docker build --secret id=npmrc,src=.npmrc  -t ghcr.io/wwwallet/wallet-enterprise-ehic-issuer:${imageTag} -f wallet-enterprise-configurations/ehic-issuer/Dockerfile .`, { stdio: 'inherit' });
+		execSync(`cd wallet-enterprise && docker build -t ghcr.io/wwwallet/wallet-enterprise:base -f base.Dockerfile .`, { stdio: 'inherit' });
+		execSync(`docker build -t ghcr.io/wwwallet/wallet-enterprise-ehic-issuer:${imageTag} -f wallet-enterprise-configurations/ehic-issuer/Dockerfile .`, { stdio: 'inherit' });
 	}
 
 	if (args.length <= 1 || args.includes("diploma-issuer")) {
-		execSync(`cd wallet-enterprise && docker build --secret id=npmrc,src=.npmrc -t ghcr.io/wwwallet/wallet-enterprise:base -f base.Dockerfile .`, { stdio: 'inherit' });
-		execSync(`docker build --secret id=npmrc,src=.npmrc  -t ghcr.io/wwwallet/wallet-enterprise-diploma-issuer:${imageTag} -f wallet-enterprise-configurations/diploma-issuer/Dockerfile .`, { stdio: 'inherit' });
+		execSync(`cd wallet-enterprise && docker build -t ghcr.io/wwwallet/wallet-enterprise:base -f base.Dockerfile .`, { stdio: 'inherit' });
+		execSync(`docker build -t ghcr.io/wwwallet/wallet-enterprise-diploma-issuer:${imageTag} -f wallet-enterprise-configurations/diploma-issuer/Dockerfile .`, { stdio: 'inherit' });
 	}
 
 	if (args.length <= 1 || args.includes("acme-verifier")) {
-		execSync(`cd wallet-enterprise && docker build --secret id=npmrc,src=.npmrc -t ghcr.io/wwwallet/wallet-enterprise:base -f base.Dockerfile .`, { stdio: 'inherit' });
-		execSync(`docker build --secret id=npmrc,src=.npmrc  -t ghcr.io/wwwallet/wallet-enterprise-acme-verifier:${imageTag} -f wallet-enterprise-configurations/acme-verifier/Dockerfile .`, { stdio: 'inherit' });
+		execSync(`cd wallet-enterprise && docker build -t ghcr.io/wwwallet/wallet-enterprise:base -f base.Dockerfile .`, { stdio: 'inherit' });
+		execSync(`docker build -t ghcr.io/wwwallet/wallet-enterprise-acme-verifier:${imageTag} -f wallet-enterprise-configurations/acme-verifier/Dockerfile .`, { stdio: 'inherit' });
 	}
 }
 

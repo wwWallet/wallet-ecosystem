@@ -9,8 +9,6 @@ services:
     build:
       context: $PWD/wallet-enterprise
       dockerfile: development.Dockerfile
-      secrets:
-        - npmrc
     image: wallet-enterprise:dev-vid
     restart: on-failure
     ports:
@@ -44,8 +42,6 @@ services:
     build:
       context: $PWD/wallet-enterprise
       dockerfile: development.Dockerfile
-      secrets:
-        - npmrc
     image: wallet-enterprise:dev-ehic
     restart: always
     ports:
@@ -76,8 +72,6 @@ services:
     build:
       context: $PWD/wallet-enterprise
       dockerfile: development.Dockerfile
-      secrets:
-        - npmrc
     image: wallet-enterprise:dev-diploma
     restart: on-failure
     ports:
@@ -111,8 +105,6 @@ services:
     build:
       context: $PWD/wallet-enterprise
       dockerfile: development.Dockerfile
-      secrets:
-        - npmrc
     image: wallet-enterprise:dev-verifier
     restart: on-failure
     ports:
@@ -170,24 +162,11 @@ services:
       # bind-mount any sql files that should be run while initializing
       - ./db-setup/scripts/:/docker-entrypoint-initdb.d/
 
-  # wallet-phpmyadmin:
-  #   image: phpmyadmin/phpmyadmin:latest
-  #   container_name: wallet-phpmyadmin
-  #   hostname: wallet-phpmyadmin
-  #   ports:
-  #     - 8081:8081
-  #   environment:
-  #     APACHE_PORT: 8081
-  #     PMA_HOST: wallet-db
-  #     PMA_PORT: 3307
-
   wallet-backend-server:
     container_name: wallet-backend-server
     build:
       context: $PWD/wallet-backend-server
       dockerfile: development.Dockerfile
-      secrets:
-        - npmrc
     image: wallet-backend-server:dev
     restart: on-failure
     ports:
@@ -211,8 +190,6 @@ services:
     build:
       context: $PWD/wallet-frontend
       dockerfile: development.Dockerfile
-      secrets:
-        - npmrc
     image: wallet-frontend:dev
     container_name: wallet-frontend
     hostname: wallet-frontend
@@ -232,7 +209,3 @@ volumes:
   datadir:
   cache:
     driver: local
-
-secrets:
-  npmrc:
-    file: ./.npmrc
