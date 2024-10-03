@@ -154,6 +154,12 @@ if (action === "init") {
 	process.exit();
 }
 
+if (action === "build-images") {
+	console.log("Performing image building");
+	buildImages()
+	process.exit();
+}
+
 function init() {
 	const cleanupCredentialIssueTable = `DELETE FROM credential_issuer`;
 	const firstIssuerInsertion = `INSERT INTO credential_issuer (credentialIssuerIdentifier, clientId, visible) VALUES ('http://wallet-enterprise-vid-issuer:8003', '1233', 1)`;
@@ -172,6 +178,48 @@ if (action !== 'up') {
 	console.log("Error: First argument must be 'up' or 'down' or 'init'");
 	help();
 	process.exit();
+}
+
+function buildImages() {
+	// syntax: node ecosystem.js build-images <image_tag> <image name 1> <image name 2> ... <image name N>
+	// <image_tag> is required
+	// if <image name 1> <image name 2> ... <image name N> is not provided, then all images will be built
+	if (args.length < 1) {
+		console.error("<image_tag> is required");
+		console.error("Syntax: node ecosystem.js build-images <image_tag> <image name 1> <image name 2> ... <image name N>");
+		process.exit();
+	}
+
+	const imageTag = args[0];
+
+
+	if (args.length <= 1 || args.includes("wallet-frontend")) {
+		execSync(`cd wallet-frontend && docker build --secret id=npmrc,src=.npmrc  -t ghcr.io/wwwallet/wallet-frontend:${imageTag} .`, { stdio: 'inherit' });
+	}
+
+	if (args.length <= 1 || args.includes("wallet-backend-server")) {
+		execSync(`cd wallet-backend-server && docker build --secret id=npmrc,src=.npmrc  -t ghcr.io/wwwallet/wallet-backend-server:${imageTag} .`, { stdio: 'inherit' });
+	}
+	
+	if (args.length <= 1 || args.includes("vid-issuer")) {
+		execSync(`cd wallet-enterprise && docker build --secret id=npmrc,src=.npmrc -t ghcr.io/wwwallet/wallet-enterprise:base -f base.Dockerfile .`, { stdio: 'inherit' });
+		execSync(`docker build --secret id=npmrc,src=.npmrc  -t ghcr.io/wwwallet/wallet-enterprise-vid-issuer:${imageTag} -f wallet-enterprise-configurations/vid-issuer/Dockerfile .`, { stdio: 'inherit' });
+	}
+
+	if (args.length <= 1 || args.includes("ehic-issuer")) {
+		execSync(`cd wallet-enterprise && docker build --secret id=npmrc,src=.npmrc -t ghcr.io/wwwallet/wallet-enterprise:base -f base.Dockerfile .`, { stdio: 'inherit' });
+		execSync(`docker build --secret id=npmrc,src=.npmrc  -t ghcr.io/wwwallet/wallet-enterprise-ehic-issuer:${imageTag} -f wallet-enterprise-configurations/ehic-issuer/Dockerfile .`, { stdio: 'inherit' });
+	}
+
+	if (args.length <= 1 || args.includes("diploma-issuer")) {
+		execSync(`cd wallet-enterprise && docker build --secret id=npmrc,src=.npmrc -t ghcr.io/wwwallet/wallet-enterprise:base -f base.Dockerfile .`, { stdio: 'inherit' });
+		execSync(`docker build --secret id=npmrc,src=.npmrc  -t ghcr.io/wwwallet/wallet-enterprise-diploma-issuer:${imageTag} -f wallet-enterprise-configurations/diploma-issuer/Dockerfile .`, { stdio: 'inherit' });
+	}
+
+	if (args.length <= 1 || args.includes("acme-verifier")) {
+		execSync(`cd wallet-enterprise && docker build --secret id=npmrc,src=.npmrc -t ghcr.io/wwwallet/wallet-enterprise:base -f base.Dockerfile .`, { stdio: 'inherit' });
+		execSync(`docker build --secret id=npmrc,src=.npmrc  -t ghcr.io/wwwallet/wallet-enterprise-acme-verifier:${imageTag} -f wallet-enterprise-configurations/acme-verifier/Dockerfile .`, { stdio: 'inherit' });
+	}
 }
 
 
