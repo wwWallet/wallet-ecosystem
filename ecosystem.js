@@ -7,35 +7,8 @@ const { execSync } = require('child_process');
 
 const issuersTrustedRootCert = `MIIB3DCCAYECFHBDWpkLi64f5ZrF0xuytj5PIrbqMAoGCCqGSM49BAMCMHAxCzAJBgNVBAYTAkdSMQ8wDQYDVQQIDAZBdGhlbnMxEDAOBgNVBAcMB0lsbGlzaWExETAPBgNVBAoMCHd3V2FsbGV0MREwDwYDVQQLDAhJZGVudGl0eTEYMBYGA1UEAwwPd3d3YWxsZXQtaXNzdWVyMB4XDTI0MDkyNjA4MTQxMloXDTM0MDkyNDA4MTQxMlowcDELMAkGA1UEBhMCR1IxDzANBgNVBAgMBkF0aGVuczEQMA4GA1UEBwwHSWxsaXNpYTERMA8GA1UECgwId3dXYWxsZXQxETAPBgNVBAsMCElkZW50aXR5MRgwFgYDVQQDDA93d3dhbGxldC1pc3N1ZXIwWTATBgcqhkjOPQIBBggqhkjOPQMBBwNCAAQtY9kUQFfDf6iocFE4rRvy3GMyYypqmX3ZjmwUeXJy0kkgRT73C8+WPkWNg/ydJHCEDDO5XuRaIaOHc9DpLpNSMAoGCCqGSM49BAMCA0kAMEYCIQDzw27nBr7E8N6Gqc83v/6+9izi/NEXBKlojwLJAeSlsAIhAO2JdjPEz3bD0stoWEg7RDtrAm8dsgryCy1W5BDGCVdN`;
 
-// function copyKeys(srcPath, destPath) {
-// 	const fileName = path.basename(srcPath);
-// 	if (!fs.existsSync(destPath)) {
-// 		fs.mkdirSync(destPath, { recursive: true });
-// 	}
-// 	fs.copyFileSync(srcPath, path.join(destPath, fileName));
-// }
-
-// function findFilesWithExtension(dir, extension) {
-//   const files = [];
-//   const items = fs.readdirSync(dir);
-
-//   for (const item of items) {
-//     const fullPath = path.join(dir, item);
-
-//     if (fs.statSync(fullPath).isDirectory()) {
-//       files.push(...findFilesWithExtension(fullPath, extension));
-//     } else if (item.endsWith(extension)) {
-//       files.push(fullPath);
-//     }
-//   }
-
-//   return files;
-// }
-
-// function replaceTokenInTemplate(templateFile, token) {
-//   const templateContent = fs.readFileSync(templateFile, 'utf8');
-//   return templateContent.replace(/\${GITHUB_AUTH_TOKEN}/g, token);
-// }
+const acmeVerifierFriendlyName = "ACME Verifier";
+const acmeVerifierURL = "http://wallet-enterprise-acme-verifier:8005";
 
 let args = process.argv.slice(2);
 let action = args[0]; // up or down
@@ -141,8 +114,12 @@ function init() {
 	const cleanupCertificateTable = `DELETE FROM trusted_root_certificate`;
 	const firstCertificateInsertion = `INSERT INTO trusted_root_certificate (certificate) VALUES ('${issuersTrustedRootCert}')`;
 
+
+	const cleanupVerifierTable = `DELETE FROM verifier`;
+	const firstVerifierInsertion = `INSERT INTO verifier (name, url) VALUES ('${acmeVerifierFriendlyName}', '${acmeVerifierURL}')`;
+
 	return execSync(`${dockerComposeCommand} exec -t wallet-db sh -c "
-			mariadb -u ${dbUser} -p\\"${dbPassword}\\" wallet -e \\"${cleanupCredentialIssueTable}; ${firstIssuerInsertion}; ${secondIssuerInsertion}; ${thirdIssuerInsertion}; ${cleanupCertificateTable}; ${firstCertificateInsertion} \\"
+			mariadb -u ${dbUser} -p\\"${dbPassword}\\" wallet -e \\"${cleanupCredentialIssueTable}; ${firstIssuerInsertion}; ${secondIssuerInsertion}; ${thirdIssuerInsertion}; ${cleanupCertificateTable}; ${firstCertificateInsertion}; ${cleanupVerifierTable}; ${firstVerifierInsertion} \\"
 		"`, { stdio: 'inherit' });
 }
 
