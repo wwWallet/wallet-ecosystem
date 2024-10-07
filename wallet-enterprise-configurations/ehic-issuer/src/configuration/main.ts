@@ -1,6 +1,6 @@
 import { credentialConfigurationRegistryService } from "../services/instances";
-import { EHICSupportedCredentialSdJwt } from "./SupportedCredentialsConfiguration/EHICSupportedCredentialSdJwt";
+import { EHICSupportedCredentialSdJwtVCDM } from "./SupportedCredentialsConfiguration/EHICSupportedCredentialSdJwtVCDM";
 
 export async function configurationExecution() {
-	credentialConfigurationRegistryService.register(new EHICSupportedCredentialSdJwt());
+	credentialConfigurationRegistryService.register(new EHICSupportedCredentialSdJwtVCDM());
 }

@@ -1,7 +1,7 @@
 import { config } from "../../../config";
 import { CategorizedRawCredentialView, CategorizedRawCredentialViewRow } from "../../openid4vci/Metadata";
 import { VerifiableCredentialFormat } from "../../types/oid4vci";
-import { SupportedCredentialProtocol } from "../../lib/CredentialIssuerConfig/SupportedCredentialProtocol";
+import { VCDMSupportedCredentialProtocol } from "../../lib/CredentialIssuerConfig/SupportedCredentialProtocol";
 import { AuthorizationServerState } from "../../entities/AuthorizationServerState.entity";
 import { CredentialView } from "../../authorization/types";
 import { randomUUID } from "node:crypto";
@@ -15,7 +15,7 @@ import { issuerSigner } from "../issuerSigner";
 
 parseEhicData(path.join(__dirname, "../../../../dataset/ehic-dataset.xlsx")) // test parse
 
-export class EHICSupportedCredentialSdJwt implements SupportedCredentialProtocol {
+export class EHICSupportedCredentialSdJwtVCDM implements VCDMSupportedCredentialProtocol {
 
 
 	constructor() { }
@@ -139,13 +139,106 @@ export class EHICSupportedCredentialSdJwt implements SupportedCredentialProtocol
 			ssn: true,
 		}
 		const { jws } = await this.getCredentialSigner()
-			.sign(payload, {}, disclosureFrame);
+			.sign(payload, { typ: "JWT", vctm: this.metadata() }, disclosureFrame);
 		const response = {
 			format: this.getFormat(),
 			credential: jws
 		};
 
 		return response;
+	}
+
+	public metadata(): any {
+		return {
+			"vct": this.getId(),
+			"name": "EHIC",
+			"description": "This is a Verifiable ID document issued by the well known VID Issuer",
+			"display": [
+				{
+					"en-US": {
+						"name": "EHIC",
+						"rendering": {
+							"simple": {
+								"logo": {
+									"uri": config.url + "/images/ehicCard.png",
+									"uri#integrity": "sha256-94445b2ca72e9155260c8b4879112df7677e8b3df3dcee9b970b40534e26d4ab",
+									"alt_text": "EHIC Card"
+								},
+								"background_color": "#12107c",
+								"text_color": "#FFFFFF"
+							},
+						}
+					}
+				}
+			],
+			"claims": [
+				{
+					"path": ["given_name"],
+					"display": {
+						"en-US": {
+							"label": "Given Name",
+							"description": "The given name of the EHIC holder"
+						}
+					},
+					"verification": "verified",
+					"sd": "allowed"
+				},
+				{
+					"path": ["family_name"],
+					"display": {
+						"en-US": {
+							"label": "Family Name",
+							"description": "The family name of the EHIC holder"
+						}
+					},
+					"verification": "verified",
+					"sd": "allowed"
+				},
+				{
+					"path": ["birth_date"],
+					"display": {
+						"en-US": {
+							"label": "Birth Date",
+							"description": "The birth date of the EHIC holder"
+						}
+					},
+					"verification": "verified",
+					"sd": "allowed"
+				},
+				{
+					"path": ["ssn"],
+					"display": {
+						"en-US": {
+							"label": "Social Security Number",
+							"description": "The social security number of the EHIC holder"
+						}
+					},
+					"verification": "authoritative",
+					"sd": "allowed"
+				},
+			],
+			"schema": {
+				"$schema": "http://json-schema.org/draft-07/schema#",
+				"type": "object",
+				"properties": {
+					"given_name": {
+						"type": "string"
+					},
+					"family_name": {
+						"type": "string"
+					},
+					"birth_date": {
+						"type": "string",
+					},
+					"ssn": {
+						"type": "string"
+					}
+				},
+				"required": [],
+				"additionalProperties": true
+			}
+		}
+
 	}
 
 	exportCredentialSupportedObject(): any {

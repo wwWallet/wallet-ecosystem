@@ -1,6 +1,6 @@
-import { EdiplomasBlueprintSdJwt } from "./SupportedCredentialsConfiguration/EdiplomasBlueprintSdJwt";
 import { credentialConfigurationRegistryService } from "../services/instances";
+import { EdiplomasBlueprintSdJwtVCDM } from "./SupportedCredentialsConfiguration/EdiplomasBlueprintSdJwtVCDM";
 
 export async function configurationExecution() {
-	credentialConfigurationRegistryService.register(new EdiplomasBlueprintSdJwt());
+	credentialConfigurationRegistryService.register(new EdiplomasBlueprintSdJwtVCDM());
 }

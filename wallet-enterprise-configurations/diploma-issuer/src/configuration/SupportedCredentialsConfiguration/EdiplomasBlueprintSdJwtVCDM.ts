@@ -1,6 +1,6 @@
 import { config } from "../../../config";
 import { VerifiableCredentialFormat } from "../../types/oid4vci";
-import { SupportedCredentialProtocol } from "../../lib/CredentialIssuerConfig/SupportedCredentialProtocol";
+import { VCDMSupportedCredentialProtocol } from "../../lib/CredentialIssuerConfig/SupportedCredentialProtocol";
 import { AuthorizationServerState } from "../../entities/AuthorizationServerState.entity";
 import { CredentialView } from "../../authorization/types";
 import { issuerSigner } from "../issuerSigner";
@@ -14,7 +14,7 @@ import { Request } from "express";
 
 parseDiplomaData(path.join(__dirname, "../../../../dataset/diploma-dataset.xlsx"));
 
-export class EdiplomasBlueprintSdJwt implements SupportedCredentialProtocol {
+export class EdiplomasBlueprintSdJwtVCDM implements VCDMSupportedCredentialProtocol {
 
 
   constructor() { }
@@ -129,7 +129,7 @@ export class EdiplomasBlueprintSdJwt implements SupportedCredentialProtocol {
 		}
 
 		const { jws } = await this.getCredentialSigner()
-			.sign(payload, {}, disclosureFrame);
+			.sign(payload, { typ: "JWT", vctm: this.metadata() }, disclosureFrame);
 
     const response = {
       format: this.getFormat(),
@@ -138,6 +138,99 @@ export class EdiplomasBlueprintSdJwt implements SupportedCredentialProtocol {
 
 		return response;
   }
+
+	public metadata(): any {
+		return {
+			"vct": this.getId(),
+			"name": "Diploma Credential",
+			"description": "This is a Verifiable ID document issued by the well known VID Issuer",
+			"display": [
+				{
+					"en-US": {
+						"name": "Diploma Credential",
+						"rendering": {
+							"simple": {
+								"logo": {
+									"uri": config.url + "/images/EuropassUoaCard.png",
+									"uri#integrity": "sha256-c7fbfe45428aa2715f01065d812c9f6fd52f99c02e4018fb5761a7cbf4894257",
+									"alt_text": "Diploma Card"
+								},
+								"background_color": "#12107c",
+								"text_color": "#FFFFFF"
+							},
+						}
+					}
+				}
+			],
+			"claims": [
+				{
+					"path": ["title"],
+					"display": {
+						"en-US": {
+							"label": "Diploma Title",
+							"description": "The title of the Diploma"
+						}
+					},
+					"verification": "verified",
+					"sd": "allowed"
+				},
+				{
+					"path": ["grade"],
+					"display": {
+						"en-US": {
+							"label": "Grade",
+							"description": "Graduate's grade (0-10)"
+						}
+					},
+					"verification": "verified",
+					"sd": "allowed"
+				},
+				{
+					"path": ["eqf_level"],
+					"display": {
+						"en-US": {
+							"label": "EQF Level",
+							"description": "The EQF level of the diploma according to https://europass.europa.eu/en/description-eight-eqf-levels"
+						}
+					},
+					"verification": "verified",
+					"sd": "allowed"
+				},
+				{
+					"path": ["graduation_date"],
+					"display": {
+						"en-US": {
+							"label": "Graduation Date",
+							"description": "The graduation data"
+						}
+					},
+					"verification": "verified",
+					"sd": "allowed"
+				},
+			],
+			"schema": {
+				"$schema": "http://json-schema.org/draft-07/schema#",
+				"type": "object",
+				"properties": {
+					"title": {
+						"type": "string"
+					},
+					"grade": {
+						"type": "string"
+					},
+					"eqf_level": {
+						"type": "string",
+					},
+					"graduation_date": {
+						"type": "string"
+					}
+				},
+				"required": [],
+				"additionalProperties": true
+			}
+		}
+
+	}
 
 	exportCredentialSupportedObject(): any {
 		return {
