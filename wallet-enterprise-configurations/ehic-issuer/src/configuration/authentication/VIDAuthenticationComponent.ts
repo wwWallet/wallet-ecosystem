@@ -5,15 +5,11 @@ import { AuthenticationComponent } from "../../authentication/AuthenticationComp
 import AppDataSource from "../../AppDataSource";
 import { AuthorizationServerState } from "../../entities/AuthorizationServerState.entity";
 import { VerifiablePresentationEntity } from "../../entities/VerifiablePresentation.entity";
-import config from "../../../config";
+import { config } from "../../../config";
 import { CONSENT_ENTRYPOINT } from "../../authorization/constants";
-import { GrantType } from "../../types/oid4vci";
 import locale from "../locale";
-import * as qrcode from 'qrcode';
 import { openidForPresentationReceivingService, verifierConfigurationService } from "../../services/instances";
 import { UserAuthenticationMethod } from "../../types/UserAuthenticationMethod.enum";
-import { PresentationDefinitionTypeWithFormat } from "../verifier/VerifierConfigurationService";
-import base64url from "base64url";
 
 export class VIDAuthenticationComponent extends AuthenticationComponent {
 
@@ -50,33 +46,14 @@ export class VIDAuthenticationComponent extends AuthenticationComponent {
 
 	private personalIdentifierHasBeenExtracted(req: Request): boolean {
 		console.log("VID auth started")
-		if (!req.session.authenticationChain.vidAuthenticationComponent?.personalIdentifier) {
+		console.log(req.session.authenticationChain.vidAuthenticationComponent)
+		if (!req.session.authenticationChain.vidAuthenticationComponent?.family_name) {
 			return false;
 		}
 		return true
 	}
 
-	private async checkForInvalidCredentials(vp_token: string): Promise<{ valid: boolean }> {
-		const [_header, payload, _] = vp_token.split('.');
-		const parsedPayload = JSON.parse(base64url.decode(payload)) as { vp: any };
-		const credential = parsedPayload.vp.verifiableCredential[0];
-		
-		const [_credentialHeader, credentialPayload] = credential.split('.');
-
-		const parsedCredPayload = JSON.parse(base64url.decode(credentialPayload)) as any;
-		console.log("Parsed cred payload = ", parsedCredPayload)
-
-		console.log("Exp = ", parsedCredPayload.exp)
-		console.log("Now = ", Date.now() / 1000)
-		if (parsedCredPayload.exp < (Date.now() / 1000)) {
-			return { valid: false };
-		}
-
-		return { valid: true };
-	}
-
 	private async handleCallback(req: Request, res: Response): Promise<any> {
-
 		const state = req.query.state as string; // find the vp based on the state
 
 		const queryRes = await AppDataSource.getRepository(VerifiablePresentationEntity)
@@ -93,40 +70,32 @@ export class VIDAuthenticationComponent extends AuthenticationComponent {
 			.where("state.vid_auth_state = :vid_auth_state", { vid_auth_state: state })
 			.getOne();
 
-		if (!authorizationServerState || !vp_token || !queryRes.claims || !queryRes.claims["VID"] || !queryRes.raw_presentation) {
+		if (!authorizationServerState || !vp_token || !queryRes.claims || !queryRes.claims["VID"]) {
 			return;
 		}
 
-		const { valid } = await this.checkForInvalidCredentials(queryRes.raw_presentation);
-		if (!valid) {
-			return await this.redirectToFailurePage(req, res, "Credential is expired");
+
+		const family_name = queryRes.claims["VID"].filter((claim) => claim.name == 'Family Name')[0].value ?? null;
+		const given_name = queryRes.claims["VID"].filter((claim) => claim.name == 'Given Name')[0].value ?? null;
+		const birth_date = queryRes.claims["VID"].filter((claim) => claim.name == 'Birth Date')[0].value ?? null;
+
+		if (!family_name || !given_name || !birth_date) {
+			console.log("at least one of (family_name, given_name, birth_date) is missing")
+			return res.redirect('/');
 		}
-		const personalIdentifier = queryRes.claims["VID"].filter((claim) => claim.name == 'personalIdentifier')[0].value ?? null;
-		if (!personalIdentifier) {
-			return;
-		}
-		authorizationServerState.personalIdentifier = personalIdentifier;
-		authorizationServerState.ssn = personalIdentifier; // update the ssn as well, because this will be used to fetch the diplomas
+		authorizationServerState.family_name = family_name;
+		authorizationServerState.given_name = given_name;
+		authorizationServerState.birth_date = new Date(birth_date).toISOString();
 
 		req.session.authenticationChain.vidAuthenticationComponent = {
-			personalIdentifier: personalIdentifier
+			family_name: authorizationServerState.family_name,
+			given_name: authorizationServerState.given_name,
+			birth_date: authorizationServerState.birth_date,
 		};
-
-		console.log("Personal identifier = ", personalIdentifier)
-		req.authorizationServerState.ssn = personalIdentifier;
 
 		await AppDataSource.getRepository(AuthorizationServerState).save(authorizationServerState);
 		return res.redirect(this.protectedEndpoint);
 
-	}
-
-
-	private async redirectToFailurePage(_req: Request, res: Response, msg: string) {
-		res.render('error', {
-			code: 100,
-			msg: msg,
-			locale: locale,
-		})
 	}
 
 	private async askForPresentation(req: Request, res: Response): Promise<any> {
@@ -148,41 +117,23 @@ export class VIDAuthenticationComponent extends AuthenticationComponent {
 		}
 
 
-		const presentationDefinition = JSON.parse(JSON.stringify(verifierConfigurationService.getPresentationDefinitions().filter(pd => pd.id == "vid")[0])) as PresentationDefinitionTypeWithFormat;
+		const presentationDefinition = JSON.parse(JSON.stringify(verifierConfigurationService.getPresentationDefinitions().filter(pd => pd.id == "vid")[0])) as any;
 
-		const { url, stateId } = await openidForPresentationReceivingService.generateAuthorizationRequestURL({req, res}, presentationDefinition, config.url + CONSENT_ENTRYPOINT);
+		try {
+			const { url, stateId } = await openidForPresentationReceivingService.generateAuthorizationRequestURL({req, res}, presentationDefinition, config.url + CONSENT_ENTRYPOINT);
+			console.log("Authorization request url = ", url)
+			// attach the vid_auth_state with an authorization server state
+			req.authorizationServerState.vid_auth_state = stateId;
+			await AppDataSource.getRepository(AuthorizationServerState).save(req.authorizationServerState);
+			console.log("Authz state = ", req.authorizationServerState)
+			return res.redirect(url.toString());
 
-		// attach the vid_auth_state with an authorization server state
-		req.authorizationServerState.vid_auth_state = stateId;
-		await AppDataSource.getRepository(AuthorizationServerState).save(req.authorizationServerState);
-		console.log("Authz state = ", req.authorizationServerState)
-		if (req.authorizationServerState.grant_type && req.authorizationServerState.grant_type == GrantType.PRE_AUTHORIZED_CODE) {
-			// render a page which shows a QR code and a button with the url for same device authentication
-
-			let authorizationRequestQR = await new Promise((resolve) => {
-				qrcode.toDataURL(url.toString(), {
-					margin: 1,
-					errorCorrectionLevel: 'L',
-					type: 'image/png'
-				}, 
-				(err, data) => {
-					if (err) return resolve("NO_QR");
-					return resolve(data);
-				});
-			}) as string;
-			return res.render('issuer/vid-auth-component', {
-				title: "VID authentication",
-				wwwalletURL: config.wwwalletURL,
-				authorizationRequestURL: url.toString(),
-				authorizationRequestQR: authorizationRequestQR,
-				state: url.searchParams.get('state'),
-				lang: req.lang,
-				locale: locale[req.lang]
-			});
 		}
-		return res.redirect(url.toString());
+		catch(err) {
+			console.log(err);
+			return res.redirect('/');
+		}
+
 	}
 	
-	
 }
-

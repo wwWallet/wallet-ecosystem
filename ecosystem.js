@@ -4,35 +4,11 @@ const fs = require('fs');
 const path = require('path');
 const { execSync } = require('child_process');
 
-function copyKeys(srcPath, destPath) {
-	const fileName = path.basename(srcPath);
-	if (!fs.existsSync(destPath)) {
-		fs.mkdirSync(destPath, { recursive: true });
-	}
-	fs.copyFileSync(srcPath, path.join(destPath, fileName));
-}
 
-function findFilesWithExtension(dir, extension) {
-  const files = [];
-  const items = fs.readdirSync(dir);
+const issuersTrustedRootCert = `MIIB3DCCAYECFHBDWpkLi64f5ZrF0xuytj5PIrbqMAoGCCqGSM49BAMCMHAxCzAJBgNVBAYTAkdSMQ8wDQYDVQQIDAZBdGhlbnMxEDAOBgNVBAcMB0lsbGlzaWExETAPBgNVBAoMCHd3V2FsbGV0MREwDwYDVQQLDAhJZGVudGl0eTEYMBYGA1UEAwwPd3d3YWxsZXQtaXNzdWVyMB4XDTI0MDkyNjA4MTQxMloXDTM0MDkyNDA4MTQxMlowcDELMAkGA1UEBhMCR1IxDzANBgNVBAgMBkF0aGVuczEQMA4GA1UEBwwHSWxsaXNpYTERMA8GA1UECgwId3dXYWxsZXQxETAPBgNVBAsMCElkZW50aXR5MRgwFgYDVQQDDA93d3dhbGxldC1pc3N1ZXIwWTATBgcqhkjOPQIBBggqhkjOPQMBBwNCAAQtY9kUQFfDf6iocFE4rRvy3GMyYypqmX3ZjmwUeXJy0kkgRT73C8+WPkWNg/ydJHCEDDO5XuRaIaOHc9DpLpNSMAoGCCqGSM49BAMCA0kAMEYCIQDzw27nBr7E8N6Gqc83v/6+9izi/NEXBKlojwLJAeSlsAIhAO2JdjPEz3bD0stoWEg7RDtrAm8dsgryCy1W5BDGCVdN`;
 
-  for (const item of items) {
-    const fullPath = path.join(dir, item);
-
-    if (fs.statSync(fullPath).isDirectory()) {
-      files.push(...findFilesWithExtension(fullPath, extension));
-    } else if (item.endsWith(extension)) {
-      files.push(fullPath);
-    }
-  }
-
-  return files;
-}
-
-function replaceTokenInTemplate(templateFile, token) {
-  const templateContent = fs.readFileSync(templateFile, 'utf8');
-  return templateContent.replace(/\${GITHUB_AUTH_TOKEN}/g, token);
-}
+const acmeVerifierFriendlyName = "ACME Verifier";
+const acmeVerifierURL = "http://wallet-enterprise-acme-verifier:8005";
 
 let args = process.argv.slice(2);
 let action = args[0]; // up or down
@@ -66,7 +42,7 @@ for (const arg of args) {
 
 	if (arg === '-m') {
 		useOpenIdUrl = true;
-		console.log("Wallet URL is now openid:// in all configurations");
+		console.log("Wallet URL is now openid4vp:// in all configurations");
 	}
 
 	if (arg === '-d') {
@@ -87,34 +63,6 @@ for (const arg of args) {
 
 const secret = "dsfkwfkwfwdfdsfSaSe2e34r4frwr42rAFdsf2lfmfsmklfwmer";
 
-const githubTokenFile = '.github-token';
-let githubToken;
-
-try {
-  githubToken = fs.readFileSync(githubTokenFile, 'utf8').trim();
-  fs.chmodSync(githubTokenFile, 0o600);
-} catch (error) {
-  console.error(`Error: ${error.message}`);
-  console.error(`Write GitHub token to '${githubTokenFile}' before running this script.`);
-  process.exit(1);
-}
-
-if (fs.existsSync(githubTokenFile)) {
-  const npmrcTemplateFiles = findFilesWithExtension('.', '.npmrc.template');
-  for (const npmrcTemplateFile of npmrcTemplateFiles) {
-    const npmrcFile = npmrcTemplateFile.replace('.template', '');
-
-    if (!fs.existsSync(npmrcFile) || forceUpdateConfigs) {
-      fs.writeFileSync(npmrcFile, '', { mode: 0o600 });
-      fs.writeFileSync(npmrcFile, replaceTokenInTemplate(npmrcTemplateFile, githubToken));
-    }
-  }
-} else {
-  console.error(`Error: No such file: ${githubTokenFile}`);
-  console.error(`Write GitHub token to '${githubTokenFile}' before running this script.`);
-  process.exit(1);
-}
-
 // MariaDB configuration
 const dbHost = 'wallet-db';
 const dbPort = 3307;
@@ -127,7 +75,7 @@ if (!fs.existsSync(`${process.cwd()}/docker-compose.yml`) || useComposeTemplate)
 }
 
 if (useOpenIdUrl) {
-	walletClientUrl = "openid://cb";
+	walletClientUrl = "openid4vp://cb";
 }
 
 let dockerComposeCommand = 'docker-compose';
@@ -151,30 +99,28 @@ if (action === "init") {
 	process.exit();
 }
 
+if (action === "build-images") {
+	console.log("Performing image building");
+	buildImages()
+	process.exit();
+}
+
 function init() {
-	return execSync(`${dockerComposeCommand} run --rm -t --workdir /app/cli --env NODE_PATH=/cli_node_modules wallet-backend-server sh -c '
-		set -e # Exit on error
-		export DB_HOST="wallet-db"
-		export DB_PORT="3307"
-		export DB_USER="root"
-		export DB_PASSWORD="root"
-		export DB_NAME="wallet"
-		./configwallet.js create issuer \
-			--friendlyName "National VID Issuer" \
-			--url http://wallet-enterprise-vid-issuer:8003 \
-			--did did:key:zDnaexeQbRxqyGRCuMi4FNxvjyob5dFeYFr8VDWnrcdy5v14H \
-			--client_id did:key:zDnaexeQbRxqyGRCuMi4FNxvjyob5dFeYFr8VDWnrcdy5v14H
-		./configwallet.js create issuer \
-			--friendlyName "University of Athens" \
-			--url http://wallet-enterprise-diploma-issuer:8000/uoa \
-			--did did:key:zDnaeZkvNZx2YRUqLpaupbzouPs4SnRtAo4fV3UqwZ5xqBVbg \
-			--client_id did:key:zDnaeZkvNZx2YRUqLpaupbzouPs4SnRtAo4fV3UqwZ5xqBVbg
-		./configwallet.js create issuer \
-			--friendlyName "EHIC Issuer" \
-			--url http://wallet-enterprise-ehic-issuer:8004 \
-			--did did:key:zDnaemLRtZwZGm1qG9EkdBuuz71KpuNyDJgZ5KMaytD41thuL \
-			--client_id did:key:zDnaemLRtZwZGm1qG9EkdBuuz71KpuNyDJgZ5KMaytD41thuL
-	'`, { stdio: 'inherit' });
+	const cleanupCredentialIssueTable = `DELETE FROM credential_issuer`;
+	const firstIssuerInsertion = `INSERT INTO credential_issuer (credentialIssuerIdentifier, clientId, visible) VALUES ('http://wallet-enterprise-vid-issuer:8003', '1233', 1)`;
+	const secondIssuerInsertion = `INSERT INTO credential_issuer (credentialIssuerIdentifier, clientId, visible) VALUES ('http://wallet-enterprise-diploma-issuer:8000', '213213213213', 1)`;
+	const thirdIssuerInsertion = `INSERT INTO credential_issuer (credentialIssuerIdentifier, clientId, visible) VALUES ('http://wallet-enterprise-ehic-issuer:8004', '1343421314efr243', 1)`;
+
+	const cleanupCertificateTable = `DELETE FROM trusted_root_certificate`;
+	const firstCertificateInsertion = `INSERT INTO trusted_root_certificate (certificate) VALUES ('${issuersTrustedRootCert}')`;
+
+
+	const cleanupVerifierTable = `DELETE FROM verifier`;
+	const firstVerifierInsertion = `INSERT INTO verifier (name, url) VALUES ('${acmeVerifierFriendlyName}', '${acmeVerifierURL}')`;
+
+	return execSync(`${dockerComposeCommand} exec -t wallet-db sh -c "
+			mariadb -u ${dbUser} -p\\"${dbPassword}\\" wallet -e \\"${cleanupCredentialIssueTable}; ${firstIssuerInsertion}; ${secondIssuerInsertion}; ${thirdIssuerInsertion}; ${cleanupCertificateTable}; ${firstCertificateInsertion}; ${cleanupVerifierTable}; ${firstVerifierInsertion} \\"
+		"`, { stdio: 'inherit' });
 }
 
 if (action !== 'up') {
@@ -183,9 +129,51 @@ if (action !== 'up') {
 	process.exit();
 }
 
+function buildImages() {
+	// syntax: node ecosystem.js build-images <image_tag> <image name 1> <image name 2> ... <image name N>
+	// <image_tag> is required
+	// if <image name 1> <image name 2> ... <image name N> is not provided, then all images will be built
+	if (args.length < 1) {
+		console.error("<image_tag> is required");
+		console.error("Syntax: node ecosystem.js build-images <image_tag> <image name 1> <image name 2> ... <image name N>");
+		process.exit();
+	}
+
+	const imageTag = args[0];
+
+
+	if (args.length <= 1 || args.includes("wallet-frontend")) {
+		execSync(`cd wallet-frontend && docker build -t ghcr.io/wwwallet/wallet-frontend:${imageTag} .`, { stdio: 'inherit' });
+	}
+
+	if (args.length <= 1 || args.includes("wallet-backend-server")) {
+		execSync(`cd wallet-backend-server && docker build -t ghcr.io/wwwallet/wallet-backend-server:${imageTag} .`, { stdio: 'inherit' });
+	}
+	
+	if (args.length <= 1 || args.includes("vid-issuer")) {
+		execSync(`cd wallet-enterprise && docker build -t ghcr.io/wwwallet/wallet-enterprise:base -f base.Dockerfile .`, { stdio: 'inherit' });
+		execSync(`docker build -t ghcr.io/wwwallet/wallet-enterprise-vid-issuer:${imageTag} -f wallet-enterprise-configurations/vid-issuer/Dockerfile .`, { stdio: 'inherit' });
+	}
+
+	if (args.length <= 1 || args.includes("ehic-issuer")) {
+		execSync(`cd wallet-enterprise && docker build -t ghcr.io/wwwallet/wallet-enterprise:base -f base.Dockerfile .`, { stdio: 'inherit' });
+		execSync(`docker build -t ghcr.io/wwwallet/wallet-enterprise-ehic-issuer:${imageTag} -f wallet-enterprise-configurations/ehic-issuer/Dockerfile .`, { stdio: 'inherit' });
+	}
+
+	if (args.length <= 1 || args.includes("diploma-issuer")) {
+		execSync(`cd wallet-enterprise && docker build -t ghcr.io/wwwallet/wallet-enterprise:base -f base.Dockerfile .`, { stdio: 'inherit' });
+		execSync(`docker build -t ghcr.io/wwwallet/wallet-enterprise-diploma-issuer:${imageTag} -f wallet-enterprise-configurations/diploma-issuer/Dockerfile .`, { stdio: 'inherit' });
+	}
+
+	if (args.length <= 1 || args.includes("acme-verifier")) {
+		execSync(`cd wallet-enterprise && docker build -t ghcr.io/wwwallet/wallet-enterprise:base -f base.Dockerfile .`, { stdio: 'inherit' });
+		execSync(`docker build -t ghcr.io/wwwallet/wallet-enterprise-acme-verifier:${imageTag} -f wallet-enterprise-configurations/acme-verifier/Dockerfile .`, { stdio: 'inherit' });
+	}
+}
+
 
 { // wallet backend server configuration
-	const configPath = 'wallet-backend-server/config/config.development.ts';
+	const configPath = 'wallet-backend-server/config/index.ts';
 	const templatePath = 'wallet-backend-server/config/config.template.ts';
 
 	if (fs.existsSync(configPath) && forceUpdateConfigs === false) {

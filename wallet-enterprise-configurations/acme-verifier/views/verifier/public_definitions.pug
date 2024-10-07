@@ -9,7 +9,7 @@ block layout-content
           .card-title #{definition.title}
           p.card-text #{definition.description}
           .card-buttons
-            if definition.selectable === true
+            if definition._selectable === true
               button.btn.btn-primary(onclick=`window.location.href = "/verifier/public/definitions/selectable-presentation-request/${definition.id}"`) Present
             else
               button.btn.btn-primary(onclick=`window.location.href = "/verifier/public/definitions/presentation-request/${definition.id}"`) Present

@@ -9,8 +9,6 @@ services:
     build:
       context: $PWD/wallet-enterprise
       dockerfile: development.Dockerfile
-      secrets:
-        - npmrc
     image: wallet-enterprise:dev-vid
     restart: on-failure
     ports:
@@ -20,7 +18,8 @@ services:
         condition: service_healthy
     volumes:
       - ./wallet-enterprise:/app:rw
-      - ./wallet-enterprise-configurations/vid-issuer/config/config.development.ts:/app/config/config.development.ts:rw
+      - ./wallet-enterprise-configurations/vid-issuer/dataset:/app/dataset:rw
+      - ./wallet-enterprise-configurations/vid-issuer/config/index.ts:/app/config/index.ts:rw
       - ./wallet-enterprise-configurations/vid-issuer/keys:/app/keys:rw
       - ./wallet-enterprise-configurations/vid-issuer/src/configuration:/app/src/configuration:rw
       - ./wallet-enterprise-configurations/vid-issuer/public/styles/styles.css:/app/public/styles/styles.css:rw
@@ -43,8 +42,6 @@ services:
     build:
       context: $PWD/wallet-enterprise
       dockerfile: development.Dockerfile
-      secrets:
-        - npmrc
     image: wallet-enterprise:dev-ehic
     restart: always
     ports:
@@ -54,7 +51,8 @@ services:
         condition: service_healthy
     volumes:
       - ./wallet-enterprise:/app:rw
-      - ./wallet-enterprise-configurations/ehic-issuer/config/config.development.ts:/app/config/config.development.ts:rw
+      - ./wallet-enterprise-configurations/ehic-issuer/dataset:/app/dataset:rw
+      - ./wallet-enterprise-configurations/ehic-issuer/config/index.ts:/app/config/index.ts:rw
       - ./wallet-enterprise-configurations/ehic-issuer/keys:/app/keys:rw
       - ./wallet-enterprise-configurations/ehic-issuer/src/configuration:/app/src/configuration:rw
       - ./wallet-enterprise-configurations/ehic-issuer/views/header.pug:/app/views/header.pug:rw
@@ -74,8 +72,6 @@ services:
     build:
       context: $PWD/wallet-enterprise
       dockerfile: development.Dockerfile
-      secrets:
-        - npmrc
     image: wallet-enterprise:dev-diploma
     restart: on-failure
     ports:
@@ -85,7 +81,8 @@ services:
         condition: service_healthy
     volumes:
       - ./wallet-enterprise:/app:rw
-      - ./wallet-enterprise-configurations/diploma-issuer/config/config.development.ts:/app/config/config.development.ts:rw
+      - ./wallet-enterprise-configurations/diploma-issuer/dataset:/app/dataset:rw
+      - ./wallet-enterprise-configurations/diploma-issuer/config/index.ts:/app/config/index.ts:rw
       - ./wallet-enterprise-configurations/diploma-issuer/keys:/app/keys:rw
       - ./wallet-enterprise-configurations/diploma-issuer/src/configuration:/app/src/configuration:rw
       - ./wallet-enterprise-configurations/diploma-issuer/views/header.pug:/app/views/header.pug:rw
@@ -108,8 +105,6 @@ services:
     build:
       context: $PWD/wallet-enterprise
       dockerfile: development.Dockerfile
-      secrets:
-        - npmrc
     image: wallet-enterprise:dev-verifier
     restart: on-failure
     ports:
@@ -119,7 +114,7 @@ services:
         condition: service_healthy
     volumes:
       - ./wallet-enterprise:/app:rw
-      - ./wallet-enterprise-configurations/acme-verifier/config/config.development.ts:/app/config/config.development.ts:rw
+      - ./wallet-enterprise-configurations/acme-verifier/config/index.ts:/app/config/index.ts:rw
       - ./wallet-enterprise-configurations/acme-verifier/keys:/app/keys:rw
       - ./wallet-enterprise-configurations/acme-verifier/src/configuration:/app/src/configuration:rw
       - ./wallet-enterprise-configurations/acme-verifier/public/styles/styles.css:/app/public/styles/styles.css:rw
@@ -167,24 +162,11 @@ services:
       # bind-mount any sql files that should be run while initializing
       - ./db-setup/scripts/:/docker-entrypoint-initdb.d/
 
-  # wallet-phpmyadmin:
-  #   image: phpmyadmin/phpmyadmin:latest
-  #   container_name: wallet-phpmyadmin
-  #   hostname: wallet-phpmyadmin
-  #   ports:
-  #     - 8081:8081
-  #   environment:
-  #     APACHE_PORT: 8081
-  #     PMA_HOST: wallet-db
-  #     PMA_PORT: 3307
-
   wallet-backend-server:
     container_name: wallet-backend-server
     build:
       context: $PWD/wallet-backend-server
       dockerfile: development.Dockerfile
-      secrets:
-        - npmrc
     image: wallet-backend-server:dev
     restart: on-failure
     ports:
@@ -208,8 +190,6 @@ services:
     build:
       context: $PWD/wallet-frontend
       dockerfile: development.Dockerfile
-      secrets:
-        - npmrc
     image: wallet-frontend:dev
     container_name: wallet-frontend
     hostname: wallet-frontend
@@ -229,7 +209,3 @@ volumes:
   datadir:
   cache:
     driver: local
-
-secrets:
-  npmrc:
-    file: ./.npmrc

@@ -52,10 +52,11 @@ const locale = {
 			acknowledgement: "By continuing, you acknowledge that the information is correct and that you agree with its use for the retrieval of your University Degrees.",
 			back: "Back",
 			proceed: "Confirm and Proceed",
-			firstName: "First Name",
-			lastName: "Last Name",
+			given_name: "Given Name",
+			family_name: "Family Name",
 			ssn: "Social Security Number",
-			taxisId: "Tax Identification"
+			taxisId: "Tax Identification",
+			document_number: "Document Number",
 		}
 	}
 }

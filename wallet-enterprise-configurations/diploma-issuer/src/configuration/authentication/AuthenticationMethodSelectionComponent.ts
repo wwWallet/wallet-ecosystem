@@ -5,13 +5,10 @@ import { AuthenticationComponent } from "../../authentication/AuthenticationComp
 import AppDataSource from "../../AppDataSource";
 import { AuthorizationServerState } from "../../entities/AuthorizationServerState.entity";
 import locale from "../locale";
-import { appContainer } from "../../services/inversify.config";
-import { CredentialIssuersConfigurationService } from "../CredentialIssuersConfigurationService";
 import { UserAuthenticationMethod } from "../../types/UserAuthenticationMethod.enum";
 
 
 export class AuthenticationMethodSelectionComponent extends AuthenticationComponent {
-	credentialIssuersConfigurationService = appContainer.resolve(CredentialIssuersConfigurationService);
 
 	constructor(
 		override identifier: string,

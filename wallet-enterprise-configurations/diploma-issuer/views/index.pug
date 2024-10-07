@@ -1,15 +1,18 @@
 extends layout.pug
 block layout-content
 
-	form#Index(method="POST")
+	#Index
 		section.IssuerOrVerifierLayout
-			div.item.IssuerSection
+			div.MainArea.IssuerSection
 				.ItemLayout
 					i(class=`fa ${locale.landingPageFaClass ? locale.landingPageFaClass : "fa-id-card-o"} LargeIcon`)
 					p.title #{locale.index.phrase}
 					p.text-area #{locale.index.subtitle}
-					button.Btn.Large.Landing(id="mainBtn" type="submit") #{locale.index.proceed}
-					input(type="hidden" id="initiate_pre_authorized" name="initiate_pre_authorized" value="true")
+					.image-container
+						img(src=credentialOfferQR)
+					| - OR -
+					button.Btn.Large.Landing(id="mainBtn" onclick=`window.location.href = "${credentialOfferURL}"`) #{locale.index.proceed}
+
 			//- div.item.VerifierSection
 			//- 	.ItemLayout
 			//- 		i.fa.fa-university.LargeIcon

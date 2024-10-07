@@ -1,24 +1,17 @@
 import { injectable } from "inversify";
 import { OpenidForPresentationsConfiguration } from "../../services/types/OpenidForPresentationsConfiguration.type";
 import { authorizationServerMetadataConfiguration } from "../../authorizationServiceConfiguration";
-import config from "../../../config";
+import { config } from "../../../config";
 import { VerifierConfigurationInterface } from "../../services/interfaces";
-import { InputDescriptorType } from "@wwwallet/ssi-sdk";
 import "reflect-metadata";
-
-export type PresentationDefinitionTypeWithFormat = {
-	id: string;
-	format?: any;
-	input_descriptors: InputDescriptorType[];
-};
 
 @injectable()
 export class VerifierConfigurationService implements VerifierConfigurationInterface {
 
-	getPresentationDefinitions(): PresentationDefinitionTypeWithFormat[] {
+	getPresentationDefinitions(): any[] {
 		return [
 			{
-				"id": "vid", // scope name
+				"id": "vid",
 				"format": { "vc+sd-jwt": { alg: [ 'ES256' ] }, jwt_vp: { alg: [ 'ES256' ] } },
 				"input_descriptors": [
 					{
@@ -26,18 +19,34 @@ export class VerifierConfigurationService implements VerifierConfigurationInterf
 						"constraints": {
 							"fields": [
 								{
+									"name": "Family Name",
 									"path": [
-										"$.credentialSubject.personalIdentifier"
+										"$.family_name"
 									],
 									"filter": {}
 								},
 								{
+									"name": "Given Name",
 									"path": [
-										"$.credentialSchema.id"
+										"$.given_name"
+									],
+									"filter": {}
+								},
+								{
+									"name": "Birth Date",
+									"path": [
+										"$.birth_date"
+									],
+									"filter": {}
+								},
+								{
+									"name": "Credential Type",
+									"path": [
+										"$.vct"
 									],
 									"filter": {
 										"type": "string",
-										"const": "https://api-pilot.ebsi.eu/trusted-schemas-registry/v2/schemas/z8Y6JJnebU2UuQQNc2R8GYqkEiAMj3Hd861rQhsoNWxsM"
+										"const": "urn:credential:vid"
 									}
 								}
 							]
