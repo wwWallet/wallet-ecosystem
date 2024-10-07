@@ -1,7 +1,7 @@
 import { config } from "../../../config";
 import { CategorizedRawCredentialView, CategorizedRawCredentialViewRow } from "../../openid4vci/Metadata";
-import { VerifiableCredentialFormat, Display } from "../../types/oid4vci";
-import { SupportedCredentialProtocol } from "../../lib/CredentialIssuerConfig/SupportedCredentialProtocol";
+import { VerifiableCredentialFormat } from "../../types/oid4vci";
+import { VCDMSupportedCredentialProtocol } from "../../lib/CredentialIssuerConfig/SupportedCredentialProtocol";
 import { AuthorizationServerState } from "../../entities/AuthorizationServerState.entity";
 import { CredentialView } from "../../authorization/types";
 import { randomUUID } from "node:crypto";
@@ -15,7 +15,7 @@ import path from "node:path";
 
 parsePidData(path.join(__dirname, "../../../../dataset/vid-dataset.xlsx")) // test parse
 
-export class VIDSupportedCredentialSdJwt implements SupportedCredentialProtocol {
+export class VIDSupportedCredentialSdJwtVCDM implements VCDMSupportedCredentialProtocol {
 
 
 	constructor() { }
@@ -37,7 +37,8 @@ export class VIDSupportedCredentialSdJwt implements SupportedCredentialProtocol 
 	getTypes(): string[] {
 		return ["VerifiableCredential", "VerifiableAttestation", "VerifiableId", this.getId()];
 	}
-	getDisplay(): Display {
+
+	getDisplay() {
 		return {
 			name: "Verifiable ID",
 			description: "This is a Verifiable ID verifiable credential issued by the well-known VID Issuer",
@@ -46,7 +47,6 @@ export class VIDSupportedCredentialSdJwt implements SupportedCredentialProtocol 
 			locale: 'en-US',
 		}
 	}
-
 
 	async getProfile(userSession: AuthorizationServerState): Promise<CredentialView | null> {
 		if (!userSession?.pid_id) {
@@ -132,7 +132,7 @@ export class VIDSupportedCredentialSdJwt implements SupportedCredentialProtocol 
 			document_number: true,
 		}
 		const { jws } = await this.getCredentialSigner()
-			.sign(payload, {}, disclosureFrame);
+			.sign(payload, { typ: 'JWT', vctm: this.metadata() }, disclosureFrame);
 		const response = {
 			format: this.getFormat(),
 			credential: jws
@@ -141,12 +141,105 @@ export class VIDSupportedCredentialSdJwt implements SupportedCredentialProtocol 
 		return response;
 	}
 
+	public metadata(): any {
+		return {
+			"vct": this.getId(),
+			"name": "Verifiable ID",
+			"description": "This is a Verifiable ID document issued by the well known VID Issuer",
+			"display": [
+				{
+					"en-US": {
+						"name": "Verifiable ID",
+						"rendering": {
+							"simple": {
+								"logo": {
+									"uri": config.url + "/images/vidCard.png",
+									"uri#integrity": "sha256-acda3404c2cf46da192cf245ccc6b91edce8869122fa5a6636284f1a60ffcd86",
+									"alt_text": "VID Card"
+								},
+								"background_color": "#12107c",
+								"text_color": "#FFFFFF"
+							},
+						}
+					}
+				}
+			],
+			"claims": [
+				{
+					"path": ["given_name"],
+					"display": {
+						"en-US": {
+							"label": "Given Name",
+							"description": "The given name of the VID holder"
+						}
+					},
+					"verification": "verified",
+					"sd": "allowed"
+				},
+				{
+					"path": ["family_name"],
+					"display": {
+						"en-US": {
+							"label": "Family Name",
+							"description": "The family name of the VID holder"
+						}
+					},
+					"verification": "verified",
+					"sd": "allowed"
+				},
+				{
+					"path": ["birth_date"],
+					"display": {
+						"en-US": {
+							"label": "Birth Date",
+							"description": "The birth date of the VID holder"
+						}
+					},
+					"verification": "verified",
+					"sd": "allowed"
+				},
+				{
+					"path": ["issuing_authority"],
+					"display": {
+						"en-US": {
+							"label": "Issuing Authority",
+							"description": "The country code of the authority that issued this credential"
+						}
+					},
+					"verification": "authoritative",
+					"sd": "allowed"
+				},
+			],
+			"schema": {
+				"$schema": "http://json-schema.org/draft-07/schema#",
+				"type": "object",
+				"properties": {
+					"given_name": {
+						"type": "string"
+					},
+					"family_name": {
+						"type": "string"
+					},
+					"birth_date": {
+						"type": "string",
+					},
+					"issuing_authority": {
+						"type": "string"
+					}
+				},
+				"required": [],
+				"additionalProperties": true
+			}
+		}
+
+	}
+
 	exportCredentialSupportedObject(): any {
 		return {
 			scope: this.getScope(),
 			vct: this.getId(),
-			format: this.getFormat(),
 			display: [this.getDisplay()],
+			format: this.getFormat(),
 			cryptographic_binding_methods_supported: ["ES256"],
 			credential_signing_alg_values_supported: ["ES256"],
 			proof_types_supported: {

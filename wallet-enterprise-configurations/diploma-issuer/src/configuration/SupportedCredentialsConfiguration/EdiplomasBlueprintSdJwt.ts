@@ -1,5 +1,5 @@
 import { config } from "../../../config";
-import { VerifiableCredentialFormat, Display } from "../../types/oid4vci";
+import { VerifiableCredentialFormat } from "../../types/oid4vci";
 import { SupportedCredentialProtocol } from "../../lib/CredentialIssuerConfig/SupportedCredentialProtocol";
 import { AuthorizationServerState } from "../../entities/AuthorizationServerState.entity";
 import { CredentialView } from "../../authorization/types";
@@ -37,7 +37,7 @@ export class EdiplomasBlueprintSdJwt implements SupportedCredentialProtocol {
   getTypes(): string[] {
     return ["VerifiableCredential", "VerifiableAttestation", "Bachelor", this.getId()];
   }
-  getDisplay(): Display {
+  getDisplay() {
 		return {
 			name: "Bachelor Diploma",
 			description: "This is a Bachelor Diploma verifiable credential issued by the well-known eDiplomas",

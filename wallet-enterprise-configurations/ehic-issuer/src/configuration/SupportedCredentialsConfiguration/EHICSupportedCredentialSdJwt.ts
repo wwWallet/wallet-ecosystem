@@ -1,6 +1,6 @@
 import { config } from "../../../config";
 import { CategorizedRawCredentialView, CategorizedRawCredentialViewRow } from "../../openid4vci/Metadata";
-import { VerifiableCredentialFormat, Display } from "../../types/oid4vci";
+import { VerifiableCredentialFormat } from "../../types/oid4vci";
 import { SupportedCredentialProtocol } from "../../lib/CredentialIssuerConfig/SupportedCredentialProtocol";
 import { AuthorizationServerState } from "../../entities/AuthorizationServerState.entity";
 import { CredentialView } from "../../authorization/types";
@@ -37,7 +37,7 @@ export class EHICSupportedCredentialSdJwt implements SupportedCredentialProtocol
 	getTypes(): string[] {
 		return ["VerifiableCredential", "VerifiableAttestation", "EuropeanHealthInsuranceCard", this.getId()];
 	}
-	getDisplay(): Display {
+	getDisplay() {
 		return {
 			name: "EHIC",
 			description: "This is a European Health Insurance Card verifiable credential issued by the well-known EHIC Issuer",
