@@ -115,6 +115,8 @@ export class EdiplomasBlueprintSdJwtVCDM implements VCDMSupportedCredentialProto
 			},
 			"vct": this.getId(),
 			"jti": `urn:credential:diploma:${randomUUID()}`,
+			"family_name": diplomaEntry.family_name,
+			"given_name": diplomaEntry.given_name,
 			"title": diplomaEntry.title,
 			"grade": String(diplomaEntry.grade),
 			"eqf_level": String(diplomaEntry.eqf_level),
