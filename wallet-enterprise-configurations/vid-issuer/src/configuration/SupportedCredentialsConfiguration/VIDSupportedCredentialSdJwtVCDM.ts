@@ -74,7 +74,7 @@ export class VIDSupportedCredentialSdJwtVCDM implements VCDMSupportedCredentialP
 					credential_id: this.getId(),
 					credential_supported_object: this.exportCredentialSupportedObject(),
 					view: rowsObject,
-					deferredFlow: false,
+					credential_image: ""
 				}
 			})
 		return credentialViews[0];

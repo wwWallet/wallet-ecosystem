@@ -69,7 +69,7 @@ export class EdiplomasBlueprintSdJwtVCDM implements VCDMSupportedCredentialProto
 
 		const credentialView: CredentialView = {
 			credential_id: diplomaEntry.certificateId,
-			deferredFlow: false,
+			credential_image: "",
 			credential_supported_object: this.exportCredentialSupportedObject(),
 			view: {
 				rows: [
