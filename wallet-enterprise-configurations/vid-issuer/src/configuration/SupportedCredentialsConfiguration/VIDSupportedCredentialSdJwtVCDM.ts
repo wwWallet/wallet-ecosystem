@@ -160,6 +160,9 @@ export class VIDSupportedCredentialSdJwtVCDM implements VCDMSupportedCredentialP
 								"background_color": "#12107c",
 								"text_color": "#FFFFFF"
 							},
+							"svg_templates": {
+									"uri": config.url + "/images/idTemplate.svg",
+							},
 						}
 					}
 				}

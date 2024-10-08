@@ -158,6 +158,9 @@ export class EdiplomasBlueprintSdJwtVCDM implements VCDMSupportedCredentialProto
 								"background_color": "#12107c",
 								"text_color": "#FFFFFF"
 							},
+							"svg_templates": {
+								"uri": config.url + "/images/diplomaTemplate.svg",
+							},
 						}
 					}
 				}
