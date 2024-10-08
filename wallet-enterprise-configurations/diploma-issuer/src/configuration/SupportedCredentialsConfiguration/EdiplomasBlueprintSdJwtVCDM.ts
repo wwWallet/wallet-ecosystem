@@ -1,6 +1,9 @@
 import { config } from "../../../config";
 import { VerifiableCredentialFormat } from "../../types/oid4vci";
+import { CategorizedRawCredentialView, CategorizedRawCredentialViewRow } from "../../openid4vci/Metadata";
 import { VCDMSupportedCredentialProtocol } from "../../lib/CredentialIssuerConfig/SupportedCredentialProtocol";
+import { formatDateDDMMYYYY } from "../../lib/formatDate";
+import { generateDataUriFromSvg } from "../../lib/generateDataUriFromSvg";
 import { AuthorizationServerState } from "../../entities/AuthorizationServerState.entity";
 import { CredentialView } from "../../authorization/types";
 import { issuerSigner } from "../issuerSigner";
@@ -10,14 +13,14 @@ import { parseDiplomaData } from "../datasetParser";
 import path from "path";
 import { randomUUID } from "crypto";
 import { Request } from "express";
-
+import fs from 'fs';
 
 parseDiplomaData(path.join(__dirname, "../../../../dataset/diploma-dataset.xlsx"));
 
 export class EdiplomasBlueprintSdJwtVCDM implements VCDMSupportedCredentialProtocol {
 
 
-  constructor() { }
+	constructor() { }
 
 
 	getId(): string {
@@ -31,13 +34,13 @@ export class EdiplomasBlueprintSdJwtVCDM implements VCDMSupportedCredentialProto
 		return issuerSigner;
 	}
 
-  getFormat(): VerifiableCredentialFormat {
-    return VerifiableCredentialFormat.VC_SD_JWT;
-  }
-  getTypes(): string[] {
-    return ["VerifiableCredential", "VerifiableAttestation", "Bachelor", this.getId()];
-  }
-  getDisplay() {
+	getFormat(): VerifiableCredentialFormat {
+		return VerifiableCredentialFormat.VC_SD_JWT;
+	}
+	getTypes(): string[] {
+		return ["VerifiableCredential", "VerifiableAttestation", "Bachelor", this.getId()];
+	}
+	getDisplay() {
 		return {
 			name: "Bachelor Diploma",
 			description: "This is a Bachelor Diploma verifiable credential issued by the well-known eDiplomas",
@@ -45,21 +48,21 @@ export class EdiplomasBlueprintSdJwtVCDM implements VCDMSupportedCredentialProto
 			background_color: "#4CC3DD",
 			locale: 'en-US',
 		}
-  }
+	}
 
 
-  async getProfile(userSession: AuthorizationServerState): Promise<CredentialView | null> {
+	async getProfile(userSession: AuthorizationServerState): Promise<CredentialView | null> {
 		if (!userSession?.document_number) {
 			console.log("Cannot generate credential: (document_number) is missing");
 			return null;
 		}
 
-		
+
 		const diplomaEntries = parseDiplomaData(path.join(__dirname, "../../../../dataset/diploma-dataset.xlsx"));
 		if (!diplomaEntries || diplomaEntries.length == 0) {
 			throw new Error("No diploma entries found");
 		}
-		const diplomaEntry = diplomaEntries.filter((diploma) => 
+		const diplomaEntry = diplomaEntries.filter((diploma) =>
 			String(diploma.vid_document_number) == userSession.document_number
 		)[0];
 		if (!diplomaEntry) {
@@ -67,24 +70,30 @@ export class EdiplomasBlueprintSdJwtVCDM implements VCDMSupportedCredentialProto
 			throw new Error("Could not generate credential response");
 		}
 
-		const credentialView: CredentialView = {
-			credential_id: diplomaEntry.certificateId,
-			credential_image: "",
-			credential_supported_object: this.exportCredentialSupportedObject(),
-			view: {
-				rows: [
-					{ name: "Given Name", value: diplomaEntry.given_name },
-					{ name: "Family Name", value: diplomaEntry.family_name },
-					{ name: "Title", value: diplomaEntry.title },
-					{ name: "Grade", value: diplomaEntry.grade },
-					{ name: "Graduation date", value: diplomaEntry.graduation_date },
-					{ name: "Blueprint ID", value: "#" + diplomaEntry.blueprint_id  },
+		const svgText = fs.readFileSync(path.join(__dirname, "../../../../public/images/diplomaTemplate.svg"), 'utf-8');
 
-				]
-			}
-		};
-		return credentialView;
-  }
+		const credentialViews: CredentialView[] = diplomaEntries
+			.map((diplomaEntry) => {
+				const rows: CategorizedRawCredentialViewRow[] = [
+					{ name: "given_name", value: diplomaEntry.given_name },
+					{ name: "family_name", value: diplomaEntry.family_name },
+					{ name: "title", value: diplomaEntry.title },
+					{ name: "grade", value: diplomaEntry.grade },
+					{ name: "graduation_date", value: formatDateDDMMYYYY(diplomaEntry.graduation_date) },
+					{ name: "blueprint_id", value: "#" + diplomaEntry.blueprint_id },
+				];
+				const rowsObject: CategorizedRawCredentialView = { rows };
+				const dataUri = generateDataUriFromSvg(svgText, rows);
+
+				return {
+					credential_id: diplomaEntry.certificateId,
+					credential_supported_object: this.exportCredentialSupportedObject(),
+					view: rowsObject,
+					credential_image: dataUri,
+				}
+			})
+		return credentialViews[0];
+	}
 
 	async generateCredentialResponse(userSession: AuthorizationServerState, request: Request, holderPublicKeyJwk: JWK): Promise<{ format: VerifiableCredentialFormat; credential: any; }> {
 		if (!userSession?.document_number) {
@@ -95,7 +104,7 @@ export class EdiplomasBlueprintSdJwtVCDM implements VCDMSupportedCredentialProto
 		if (!diplomaEntries || diplomaEntries.length == 0) {
 			throw new Error("No diploma entries found");
 		}
-		const diplomaEntry = diplomaEntries.filter((diploma) => 
+		const diplomaEntry = diplomaEntries.filter((diploma) =>
 			String(diploma.vid_document_number) == userSession.document_number
 		)[0];
 
@@ -120,7 +129,7 @@ export class EdiplomasBlueprintSdJwtVCDM implements VCDMSupportedCredentialProto
 			"title": diplomaEntry.title,
 			"grade": String(diplomaEntry.grade),
 			"eqf_level": String(diplomaEntry.eqf_level),
-			"graduation_date": diplomaEntry.graduation_date,
+			"graduation_date": new Date(diplomaEntry.graduation_date).toISOString()
 		};
 
 		const disclosureFrame = {
@@ -133,13 +142,13 @@ export class EdiplomasBlueprintSdJwtVCDM implements VCDMSupportedCredentialProto
 		const { jws } = await this.getCredentialSigner()
 			.sign(payload, { typ: "JWT", vctm: this.metadata() }, disclosureFrame);
 
-    const response = {
-      format: this.getFormat(),
-      credential: jws
-    };
+		const response = {
+			format: this.getFormat(),
+			credential: jws
+		};
 
 		return response;
-  }
+	}
 
 	public metadata(): any {
 		return {

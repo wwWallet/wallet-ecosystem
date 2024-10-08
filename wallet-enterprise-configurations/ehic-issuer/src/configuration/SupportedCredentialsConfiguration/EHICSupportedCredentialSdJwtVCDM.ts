@@ -2,6 +2,8 @@ import { config } from "../../../config";
 import { CategorizedRawCredentialView, CategorizedRawCredentialViewRow } from "../../openid4vci/Metadata";
 import { VerifiableCredentialFormat } from "../../types/oid4vci";
 import { VCDMSupportedCredentialProtocol } from "../../lib/CredentialIssuerConfig/SupportedCredentialProtocol";
+import { formatDateDDMMYYYY } from "../../lib/formatDate";
+import { generateDataUriFromSvg } from "../../lib/generateDataUriFromSvg";
 import { AuthorizationServerState } from "../../entities/AuthorizationServerState.entity";
 import { CredentialView } from "../../authorization/types";
 import { randomUUID } from "node:crypto";
@@ -11,7 +13,7 @@ import { Request } from "express";
 import { parseEhicData } from "../datasetParser";
 import path from "node:path";
 import { issuerSigner } from "../issuerSigner";
-
+import fs from 'fs';
 
 parseEhicData(path.join(__dirname, "../../../../dataset/ehic-dataset.xlsx")) // test parse
 
@@ -67,21 +69,24 @@ export class EHICSupportedCredentialSdJwtVCDM implements VCDMSupportedCredential
 			new Date(ehic.birth_date).toISOString() == new Date(userSession.birth_date as string).toISOString()
 		);
 		console.log("Ehic = ", ehics)
+		const svgText = fs.readFileSync(path.join(__dirname, "../../../../public/images/ehicTemplate.svg"), 'utf-8');
 		const credentialViews: CredentialView[] = ehics
 			.map((ehic) => {
 				const rows: CategorizedRawCredentialViewRow[] = [
-					{ name: "Family Name", value: ehic.family_name },
-					{ name: "Given Name", value: ehic.given_name },
-					{ name: "SSN", value: String(ehic.ssn) },
-					{ name: "Date of Birth", value: ehic.birth_date },
+					{ name: "family_name", value: ehic.family_name },
+					{ name: "given_name", value: ehic.given_name },
+					{ name: "ssn", value: String(ehic.ssn) },
+					{ name: "birth_date", value: formatDateDDMMYYYY(ehic.birth_date) },
+					{ name: "expiry_date", value: formatDateDDMMYYYY(ehic.expiry_date) },
 				];
 				const rowsObject: CategorizedRawCredentialView = { rows };
+				const dataUri = generateDataUriFromSvg(svgText, rows);
 
 				return {
 					credential_id: this.getId(),
 					credential_supported_object: this.exportCredentialSupportedObject(),
 					view: rowsObject,
-					credential_image: "",
+					credential_image: dataUri,
 				}
 			})
 		return credentialViews[0];
@@ -119,7 +124,7 @@ export class EHICSupportedCredentialSdJwtVCDM implements VCDMSupportedCredential
 			family_name: ehicEntry.family_name,
 			given_name: ehicEntry.given_name,
 			ssn: ehicEntry.ssn,
-			birth_date: ehicEntry.birth_date
+			birth_date: new Date(ehicEntry.birth_date).toISOString()
 		};
 
 		const payload = {
