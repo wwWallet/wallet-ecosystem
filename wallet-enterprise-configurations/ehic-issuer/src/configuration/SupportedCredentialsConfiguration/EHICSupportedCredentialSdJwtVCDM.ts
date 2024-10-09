@@ -138,6 +138,7 @@ export class EHICSupportedCredentialSdJwtVCDM implements VCDMSupportedCredential
 			birth_date: new Date(ehicEntry.birth_date).toISOString(),
 			issuer_institution_code: String(ehicEntry.issuer_institution_code),
 			issuer_country: String(ehicEntry.issuer_country),
+			expiry_date: new Date(ehicEntry.expiry_date).toISOString(),
 		};
 
 		const payload = {

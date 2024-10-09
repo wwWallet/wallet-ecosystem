@@ -18,5 +18,5 @@
 	<text x="45" y="450" font-family="math" font-size="30" fill="#625f60" ont-weight="normal">{{/graduation_date}}</text>
 
 	<text x="450" y="420" font-family="math" font-size="25" fill="#5d8cd5" font-weight="bold">EXPIRY DATE</text>
-	<text x="450" y="450" font-family="math" font-size="30" fill="#625f60" ont-weight="normal">{{/exp}}</text>
+	<text x="450" y="450" font-family="math" font-size="30" fill="#625f60" ont-weight="normal">{{/expiry_date}}</text>
 </svg>
