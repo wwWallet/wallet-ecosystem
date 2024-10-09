@@ -6,6 +6,7 @@ WORKDIR /app
 RUN rm -rf src/configuration/
 COPY ./wallet-enterprise-configurations/ehic-issuer/src/configuration/ src/configuration/
 COPY ./wallet-enterprise-configurations/ehic-issuer/views/header.pug views/header.pug
+COPY ./wallet-enterprise-configurations/ehic-issuer/public/images public/images
 
 
 RUN yarn cache clean && yarn install && yarn build
