@@ -2,6 +2,8 @@ import { config } from "../../../config";
 import { CategorizedRawCredentialView, CategorizedRawCredentialViewRow } from "../../openid4vci/Metadata";
 import { VerifiableCredentialFormat } from "../../types/oid4vci";
 import { VCDMSupportedCredentialProtocol } from "../../lib/CredentialIssuerConfig/SupportedCredentialProtocol";
+import { formatDateDDMMYYYY } from "../../lib/formatDate";
+import { generateDataUriFromSvg } from "../../lib/generateDataUriFromSvg";
 import { AuthorizationServerState } from "../../entities/AuthorizationServerState.entity";
 import { CredentialView } from "../../authorization/types";
 import { randomUUID } from "node:crypto";
@@ -11,7 +13,7 @@ import { Request } from "express";
 import { issuerSigner } from "../issuerSigner";
 import { parsePidData } from "../datasetParser";
 import path from "node:path";
-
+import fs from 'fs';
 
 parsePidData(path.join(__dirname, "../../../../dataset/vid-dataset.xlsx")) // test parse
 
@@ -59,22 +61,33 @@ export class VIDSupportedCredentialSdJwtVCDM implements VCDMSupportedCredentialP
 			return null;
 		}
 
+		const svgText = fs.readFileSync(path.join(__dirname, "../../../../public/images/idTemplate.svg"), 'utf-8');
 		const vids = users.filter(u => String(u.pid_id) == userSession?.pid_id);
 		const credentialViews: CredentialView[] = vids
 			.map((vid) => {
 				const rows: CategorizedRawCredentialViewRow[] = [
 					{ name: "Family Name", value: vid.family_name },
 					{ name: "Given Name", value: vid.given_name },
-					{ name: "Document number", value: vid.document_number },
-					{ name: "Date of Birth", value: vid.birth_date },
+					{ name: "Document Number", value: vid.document_number },
+					{ name: "Birth Date", value: formatDateDDMMYYYY(vid.birth_date) },
+					{ name: "Expiry Date", value: formatDateDDMMYYYY(vid.expiry_date) },
 				];
 				const rowsObject: CategorizedRawCredentialView = { rows };
+
+				const pathsWithValues = [
+					{ path: "family_name", value: vid.family_name },
+					{ path: "given_name", value: vid.given_name },
+					{ path: "document_number", value: vid.document_number },
+					{ path: "birth_date", value: formatDateDDMMYYYY(vid.birth_date) },
+					{ path: "expiry_date", value: formatDateDDMMYYYY(vid.expiry_date) }
+				];
+				const dataUri = generateDataUriFromSvg(svgText, pathsWithValues);
 
 				return {
 					credential_id: this.getId(),
 					credential_supported_object: this.exportCredentialSupportedObject(),
 					view: rowsObject,
-					credential_image: ""
+					credential_image: dataUri,
 				}
 			})
 		return credentialViews[0];
@@ -106,7 +119,7 @@ export class VIDSupportedCredentialSdJwtVCDM implements VCDMSupportedCredentialP
 		const vid = {
 			family_name: vidEntry.family_name,
 			given_name: vidEntry.given_name,
-			birth_date: vidEntry.birth_date,
+			birth_date: new Date(vidEntry.birth_date).toISOString(),
 			issuing_authority: vidEntry.issuing_authority,
 			issuing_country: vidEntry.issuing_country,
 			document_number: String(vidEntry.document_number),
@@ -160,6 +173,11 @@ export class VIDSupportedCredentialSdJwtVCDM implements VCDMSupportedCredentialP
 								"background_color": "#12107c",
 								"text_color": "#FFFFFF"
 							},
+							"svg_templates": [
+								{
+									"uri": config.url + "/images/idTemplate.svg",
+								}
+							],
 						}
 					}
 				}
