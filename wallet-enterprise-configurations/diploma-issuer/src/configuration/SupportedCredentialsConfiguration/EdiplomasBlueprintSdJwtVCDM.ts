@@ -81,14 +81,16 @@ export class EdiplomasBlueprintSdJwtVCDM implements VCDMSupportedCredentialProto
 					{ name: "Grade", value: diplomaEntry.grade },
 					{ name: "Graduation Date", value: formatDateDDMMYYYY(diplomaEntry.graduation_date) },
 					{ name: "Blueprint ID", value: "#" + diplomaEntry.blueprint_id },
+					{ name: "Expiry Date", value: formatDateDDMMYYYY(diplomaEntry.expiry_date) },
 				];
 				const rowsObject: CategorizedRawCredentialView = { rows };
 
 				const pathsWithValues = [
 					{ path: "given_name", value: diplomaEntry.given_name },
 					{ path: "family_name", value: diplomaEntry.family_name },
-					{ path: "Title", value: diplomaEntry.title },
-					{ path: "Grade", value: diplomaEntry.grade },
+					{ path: "title", value: diplomaEntry.title },
+					{ path: "graduation_date", value: formatDateDDMMYYYY(diplomaEntry.graduation_date) },
+					{ path: "expiry_date", value: formatDateDDMMYYYY(diplomaEntry.expiry_date) },
 				];
 				const dataUri = generateDataUriFromSvg(svgText, pathsWithValues);
 
@@ -176,9 +178,11 @@ export class EdiplomasBlueprintSdJwtVCDM implements VCDMSupportedCredentialProto
 								"background_color": "#12107c",
 								"text_color": "#FFFFFF"
 							},
-							"svg_templates": {
-								"uri": config.url + "/images/diplomaTemplate.svg",
-							},
+							"svg_templates": [
+								{
+									"uri": config.url + "/images/diplomaTemplate.svg",
+								}
+							],
 						}
 					}
 				}

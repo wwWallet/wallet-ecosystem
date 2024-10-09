@@ -63,7 +63,7 @@ export class EHICSupportedCredentialSdJwtVCDM implements VCDMSupportedCredential
 			return null;
 		}
 
-		const ehics = users.filter((ehic) => 
+		const ehics = users.filter((ehic) =>
 			ehic.family_name == userSession.family_name &&
 			ehic.given_name == userSession.given_name &&
 			new Date(ehic.birth_date).toISOString() == new Date(userSession.birth_date as string).toISOString()
@@ -120,7 +120,7 @@ export class EHICSupportedCredentialSdJwtVCDM implements VCDMSupportedCredential
 			throw new Error("Not the correct credential");
 		}
 
-		const ehicEntry = users.filter((ehic) => 
+		const ehicEntry = users.filter((ehic) =>
 			ehic.family_name == userSession.family_name &&
 			ehic.given_name == userSession.given_name &&
 			new Date(ehic.birth_date).toISOString() == new Date(userSession.birth_date as string).toISOString()
@@ -187,9 +187,11 @@ export class EHICSupportedCredentialSdJwtVCDM implements VCDMSupportedCredential
 								"background_color": "#12107c",
 								"text_color": "#FFFFFF"
 							},
-							"svg_templates": {
-								"uri": config.url + "/images/ehicTemplate.svg",
-							},
+							"svg_templates": [
+								{
+									"uri": config.url + "/images/ehicTemplate.svg",
+								}
+							],
 						}
 					}
 				}

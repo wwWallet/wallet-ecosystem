@@ -76,8 +76,8 @@ export class VIDSupportedCredentialSdJwtVCDM implements VCDMSupportedCredentialP
 
 				const pathsWithValues = [
 					{ path: "family_name", value: vid.family_name },
-					{ path: "given_name", value: vid.given_name},
-					{ path: "document_number", value: vid.document_number},
+					{ path: "given_name", value: vid.given_name },
+					{ path: "document_number", value: vid.document_number },
 					{ path: "birth_date", value: formatDateDDMMYYYY(vid.birth_date) },
 					{ path: "expiry_date", value: formatDateDDMMYYYY(vid.expiry_date) }
 				];
@@ -173,9 +173,11 @@ export class VIDSupportedCredentialSdJwtVCDM implements VCDMSupportedCredentialP
 								"background_color": "#12107c",
 								"text_color": "#FFFFFF"
 							},
-							"svg_templates": {
-								"uri": config.url + "/images/idTemplate.svg",
-							},
+							"svg_templates": [
+								{
+									"uri": config.url + "/images/idTemplate.svg",
+								}
+							],
 						}
 					}
 				}
