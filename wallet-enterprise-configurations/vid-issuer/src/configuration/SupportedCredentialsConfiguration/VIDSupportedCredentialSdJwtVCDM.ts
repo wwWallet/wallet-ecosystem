@@ -1,7 +1,9 @@
 import { config } from "../../../config";
 import { CategorizedRawCredentialView, CategorizedRawCredentialViewRow } from "../../openid4vci/Metadata";
-import { VerifiableCredentialFormat, Display } from "../../types/oid4vci";
-import { SupportedCredentialProtocol } from "../../lib/CredentialIssuerConfig/SupportedCredentialProtocol";
+import { VerifiableCredentialFormat } from "../../types/oid4vci";
+import { VCDMSupportedCredentialProtocol } from "../../lib/CredentialIssuerConfig/SupportedCredentialProtocol";
+import { formatDateDDMMYYYY } from "../../lib/formatDate";
+import { generateDataUriFromSvg } from "../../lib/generateDataUriFromSvg";
 import { AuthorizationServerState } from "../../entities/AuthorizationServerState.entity";
 import { CredentialView } from "../../authorization/types";
 import { randomUUID } from "node:crypto";
@@ -11,11 +13,11 @@ import { Request } from "express";
 import { issuerSigner } from "../issuerSigner";
 import { parsePidData } from "../datasetParser";
 import path from "node:path";
-
+import fs from 'fs';
 
 parsePidData(path.join(__dirname, "../../../../dataset/vid-dataset.xlsx")) // test parse
 
-export class VIDSupportedCredentialSdJwt implements SupportedCredentialProtocol {
+export class VIDSupportedCredentialSdJwtVCDM implements VCDMSupportedCredentialProtocol {
 
 
 	constructor() { }
@@ -37,7 +39,8 @@ export class VIDSupportedCredentialSdJwt implements SupportedCredentialProtocol 
 	getTypes(): string[] {
 		return ["VerifiableCredential", "VerifiableAttestation", "VerifiableId", this.getId()];
 	}
-	getDisplay(): Display {
+
+	getDisplay() {
 		return {
 			name: "Verifiable ID",
 			description: "This is a Verifiable ID verifiable credential issued by the well-known VID Issuer",
@@ -46,7 +49,6 @@ export class VIDSupportedCredentialSdJwt implements SupportedCredentialProtocol 
 			locale: 'en-US',
 		}
 	}
-
 
 	async getProfile(userSession: AuthorizationServerState): Promise<CredentialView | null> {
 		if (!userSession?.pid_id) {
@@ -59,22 +61,33 @@ export class VIDSupportedCredentialSdJwt implements SupportedCredentialProtocol 
 			return null;
 		}
 
+		const svgText = fs.readFileSync(path.join(__dirname, "../../../../public/images/idTemplate.svg"), 'utf-8');
 		const vids = users.filter(u => String(u.pid_id) == userSession?.pid_id);
 		const credentialViews: CredentialView[] = vids
 			.map((vid) => {
 				const rows: CategorizedRawCredentialViewRow[] = [
 					{ name: "Family Name", value: vid.family_name },
 					{ name: "Given Name", value: vid.given_name },
-					{ name: "Document number", value: vid.document_number },
-					{ name: "Date of Birth", value: vid.birth_date },
+					{ name: "Document Number", value: vid.document_number },
+					{ name: "Birth Date", value: formatDateDDMMYYYY(vid.birth_date) },
+					{ name: "Expiry Date", value: formatDateDDMMYYYY(vid.expiry_date) },
 				];
 				const rowsObject: CategorizedRawCredentialView = { rows };
+
+				const pathsWithValues = [
+					{ path: "family_name", value: vid.family_name },
+					{ path: "given_name", value: vid.given_name },
+					{ path: "document_number", value: vid.document_number },
+					{ path: "birth_date", value: formatDateDDMMYYYY(vid.birth_date) },
+					{ path: "expiry_date", value: formatDateDDMMYYYY(vid.expiry_date) }
+				];
+				const dataUri = generateDataUriFromSvg(svgText, pathsWithValues);
 
 				return {
 					credential_id: this.getId(),
 					credential_supported_object: this.exportCredentialSupportedObject(),
 					view: rowsObject,
-					deferredFlow: false,
+					credential_image: dataUri,
 				}
 			})
 		return credentialViews[0];
@@ -106,7 +119,7 @@ export class VIDSupportedCredentialSdJwt implements SupportedCredentialProtocol 
 		const vid = {
 			family_name: vidEntry.family_name,
 			given_name: vidEntry.given_name,
-			birth_date: vidEntry.birth_date,
+			birth_date: new Date(vidEntry.birth_date).toISOString(),
 			issuing_authority: vidEntry.issuing_authority,
 			issuing_country: vidEntry.issuing_country,
 			document_number: String(vidEntry.document_number),
@@ -132,7 +145,7 @@ export class VIDSupportedCredentialSdJwt implements SupportedCredentialProtocol 
 			document_number: true,
 		}
 		const { jws } = await this.getCredentialSigner()
-			.sign(payload, {}, disclosureFrame);
+			.sign(payload, { typ: 'JWT', vctm: this.metadata() }, disclosureFrame);
 		const response = {
 			format: this.getFormat(),
 			credential: jws
@@ -141,12 +154,110 @@ export class VIDSupportedCredentialSdJwt implements SupportedCredentialProtocol 
 		return response;
 	}
 
+	public metadata(): any {
+		return {
+			"vct": this.getId(),
+			"name": "Verifiable ID",
+			"description": "This is a Verifiable ID document issued by the well known VID Issuer",
+			"display": [
+				{
+					"en-US": {
+						"name": "Verifiable ID",
+						"rendering": {
+							"simple": {
+								"logo": {
+									"uri": config.url + "/images/vidCard.png",
+									"uri#integrity": "sha256-acda3404c2cf46da192cf245ccc6b91edce8869122fa5a6636284f1a60ffcd86",
+									"alt_text": "VID Card"
+								},
+								"background_color": "#12107c",
+								"text_color": "#FFFFFF"
+							},
+							"svg_templates": [
+								{
+									"uri": config.url + "/images/idTemplate.svg",
+								}
+							],
+						}
+					}
+				}
+			],
+			"claims": [
+				{
+					"path": ["given_name"],
+					"display": {
+						"en-US": {
+							"label": "Given Name",
+							"description": "The given name of the VID holder"
+						}
+					},
+					"verification": "verified",
+					"sd": "allowed"
+				},
+				{
+					"path": ["family_name"],
+					"display": {
+						"en-US": {
+							"label": "Family Name",
+							"description": "The family name of the VID holder"
+						}
+					},
+					"verification": "verified",
+					"sd": "allowed"
+				},
+				{
+					"path": ["birth_date"],
+					"display": {
+						"en-US": {
+							"label": "Birth Date",
+							"description": "The birth date of the VID holder"
+						}
+					},
+					"verification": "verified",
+					"sd": "allowed"
+				},
+				{
+					"path": ["issuing_authority"],
+					"display": {
+						"en-US": {
+							"label": "Issuing Authority",
+							"description": "The country code of the authority that issued this credential"
+						}
+					},
+					"verification": "authoritative",
+					"sd": "allowed"
+				},
+			],
+			"schema": {
+				"$schema": "http://json-schema.org/draft-07/schema#",
+				"type": "object",
+				"properties": {
+					"given_name": {
+						"type": "string"
+					},
+					"family_name": {
+						"type": "string"
+					},
+					"birth_date": {
+						"type": "string",
+					},
+					"issuing_authority": {
+						"type": "string"
+					}
+				},
+				"required": [],
+				"additionalProperties": true
+			}
+		}
+
+	}
+
 	exportCredentialSupportedObject(): any {
 		return {
 			scope: this.getScope(),
 			vct: this.getId(),
-			format: this.getFormat(),
 			display: [this.getDisplay()],
+			format: this.getFormat(),
 			cryptographic_binding_methods_supported: ["ES256"],
 			credential_signing_alg_values_supported: ["ES256"],
 			proof_types_supported: {

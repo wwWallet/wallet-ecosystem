@@ -149,7 +149,11 @@ function buildImages() {
 	if (args.length <= 1 || args.includes("wallet-backend-server")) {
 		execSync(`cd wallet-backend-server && docker build -t ghcr.io/wwwallet/wallet-backend-server:${imageTag} .`, { stdio: 'inherit' });
 	}
-	
+
+	if (args.length <= 1 || args.includes("wallet-enterprise")) {
+		execSync(`docker build -t ghcr.io/wwwallet/wallet-enterprise:${imageTag} wallet-enterprise`, { stdio: 'inherit' });
+	}
+
 	if (args.length <= 1 || args.includes("vid-issuer")) {
 		execSync(`cd wallet-enterprise && docker build -t ghcr.io/wwwallet/wallet-enterprise:base -f base.Dockerfile .`, { stdio: 'inherit' });
 		execSync(`docker build -t ghcr.io/wwwallet/wallet-enterprise-vid-issuer:${imageTag} -f wallet-enterprise-configurations/vid-issuer/Dockerfile .`, { stdio: 'inherit' });

@@ -1,8 +1,8 @@
 import { credentialConfigurationRegistryService } from "../services/instances";
-import { VIDSupportedCredentialSdJwt } from "./SupportedCredentialsConfiguration/VIDSupportedCredentialSdJwt";
+import { VIDSupportedCredentialSdJwtVCDM } from "./SupportedCredentialsConfiguration/VIDSupportedCredentialSdJwtVCDM";
 
 export async function configurationExecution() {
-	credentialConfigurationRegistryService.register(new VIDSupportedCredentialSdJwt());
+	credentialConfigurationRegistryService.register(new VIDSupportedCredentialSdJwtVCDM());
 }
 
 
