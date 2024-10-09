@@ -62,45 +62,52 @@ export class EHICSupportedCredentialSdJwtVCDM implements VCDMSupportedCredential
 			console.error("Failed to load users")
 			return null;
 		}
+		try {
 
-		const ehics = users.filter((ehic) =>
-			ehic.family_name == userSession.family_name &&
-			ehic.given_name == userSession.given_name &&
-			new Date(ehic.birth_date).toISOString() == new Date(userSession.birth_date as string).toISOString()
-		);
-		console.log("Ehic = ", ehics)
-		const svgText = fs.readFileSync(path.join(__dirname, "../../../../public/images/ehicTemplate.svg"), 'utf-8');
-		const credentialViews: CredentialView[] = ehics
-			.map((ehic) => {
-				const rows: CategorizedRawCredentialViewRow[] = [
-					{ name: "Family Name", value: ehic.family_name },
-					{ name: "Given Name", value: ehic.given_name },
-					{ name: "SSN", value: String(ehic.ssn) },
-					{ name: "Birth Date", value: formatDateDDMMYYYY(ehic.birth_date) },
-					{ name: "Issuer Country", value: ehic.issuer_country },
-					{ name: "Issuer Instutution Code", value: ehic.issuer_institution_code },
+			const ehics = users.filter((ehic) =>
+				ehic.family_name == userSession.family_name &&
+				ehic.given_name == userSession.given_name &&
+				new Date(ehic.birth_date).toISOString() == new Date(userSession.birth_date as string).toISOString()
+			);
+			console.log("Ehic = ", ehics)
+			const svgText = fs.readFileSync(path.join(__dirname, "../../../../public/images/ehicTemplate.svg"), 'utf-8');
+			const credentialViews: CredentialView[] = ehics
+				.map((ehic) => {
+					const rows: CategorizedRawCredentialViewRow[] = [
+						{ name: "Family Name", value: ehic.family_name },
+						{ name: "Given Name", value: ehic.given_name },
+						{ name: "SSN", value: String(ehic.ssn) },
+						{ name: "Birth Date", value: formatDateDDMMYYYY(ehic.birth_date) },
+						{ name: "Issuer Country", value: ehic.issuer_country },
+						{ name: "Issuer Instutution Code", value: ehic.issuer_institution_code },
+	
+					];
+					const rowsObject: CategorizedRawCredentialView = { rows };
+					const pathsWithValues = [
+						{ path: "family_name", value: ehic.family_name },
+						{ path: "given_name", value: ehic.given_name },
+						{ path: "ssn", value: String(ehic.ssn) },
+						{ path: "birth_date", value: formatDateDDMMYYYY(ehic.birth_date) },
+						{ path: "expiry_date", value: formatDateDDMMYYYY(ehic.expiry_date) },
+						{ path: "issuer_country", value: String(ehic.issuer_country) },
+						{ path: "issuer_institution_code", value: String(ehic.issuer_institution_code) },
+					];
+					const dataUri = generateDataUriFromSvg(svgText, pathsWithValues);
+	
+					return {
+						credential_id: this.getId(),
+						credential_supported_object: this.exportCredentialSupportedObject(),
+						view: rowsObject,
+						credential_image: dataUri,
+					}
+				})
+			return credentialViews[0];
+		}
+		catch(err) {
+			console.error(err)
+			return null;
+		}
 
-				];
-				const rowsObject: CategorizedRawCredentialView = { rows };
-				const pathsWithValues = [
-					{ path: "family_name", value: ehic.family_name },
-					{ path: "given_name", value: ehic.given_name },
-					{ path: "ssn", value: String(ehic.ssn) },
-					{ path: "birth_date", value: formatDateDDMMYYYY(ehic.birth_date) },
-					{ path: "expiry_date", value: formatDateDDMMYYYY(ehic.expiry_date) },
-					{ path: "issuer_country", value: String(ehic.issuer_country) },
-					{ path: "issuer_institution_code", value: String(ehic.issuer_institution_code) },
-				];
-				const dataUri = generateDataUriFromSvg(svgText, pathsWithValues);
-
-				return {
-					credential_id: this.getId(),
-					credential_supported_object: this.exportCredentialSupportedObject(),
-					view: rowsObject,
-					credential_image: dataUri,
-				}
-			})
-		return credentialViews[0];
 	}
 
 	async generateCredentialResponse(userSession: AuthorizationServerState, request: Request, holderPublicKeyJwk: JWK): Promise<{ format: VerifiableCredentialFormat; credential: any; }> {
