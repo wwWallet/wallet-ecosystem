@@ -75,15 +75,22 @@ export class EdiplomasBlueprintSdJwtVCDM implements VCDMSupportedCredentialProto
 		const credentialViews: CredentialView[] = diplomaEntries
 			.map((diplomaEntry) => {
 				const rows: CategorizedRawCredentialViewRow[] = [
-					{ name: "given_name", value: diplomaEntry.given_name },
-					{ name: "family_name", value: diplomaEntry.family_name },
-					{ name: "title", value: diplomaEntry.title },
-					{ name: "grade", value: diplomaEntry.grade },
-					{ name: "graduation_date", value: formatDateDDMMYYYY(diplomaEntry.graduation_date) },
-					{ name: "blueprint_id", value: "#" + diplomaEntry.blueprint_id },
+					{ name: "Given Name", value: diplomaEntry.given_name },
+					{ name: "Family Name", value: diplomaEntry.family_name },
+					{ name: "Title", value: diplomaEntry.title },
+					{ name: "Grade", value: diplomaEntry.grade },
+					{ name: "Graduation Date", value: formatDateDDMMYYYY(diplomaEntry.graduation_date) },
+					{ name: "Blueprint ID", value: "#" + diplomaEntry.blueprint_id },
 				];
 				const rowsObject: CategorizedRawCredentialView = { rows };
-				const dataUri = generateDataUriFromSvg(svgText, rows);
+
+				const pathsWithValues = [
+					{ path: "given_name", value: diplomaEntry.given_name },
+					{ path: "family_name", value: diplomaEntry.family_name },
+					{ path: "Title", value: diplomaEntry.title },
+					{ path: "Grade", value: diplomaEntry.grade },
+				];
+				const dataUri = generateDataUriFromSvg(svgText, pathsWithValues);
 
 				return {
 					credential_id: diplomaEntry.certificateId,

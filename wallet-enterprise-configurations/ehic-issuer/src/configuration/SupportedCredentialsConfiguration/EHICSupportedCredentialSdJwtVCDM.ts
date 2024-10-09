@@ -73,14 +73,25 @@ export class EHICSupportedCredentialSdJwtVCDM implements VCDMSupportedCredential
 		const credentialViews: CredentialView[] = ehics
 			.map((ehic) => {
 				const rows: CategorizedRawCredentialViewRow[] = [
-					{ name: "family_name", value: ehic.family_name },
-					{ name: "given_name", value: ehic.given_name },
-					{ name: "ssn", value: String(ehic.ssn) },
-					{ name: "birth_date", value: formatDateDDMMYYYY(ehic.birth_date) },
-					{ name: "expiry_date", value: formatDateDDMMYYYY(ehic.expiry_date) },
+					{ name: "Family Name", value: ehic.family_name },
+					{ name: "Given Name", value: ehic.given_name },
+					{ name: "SSN", value: String(ehic.ssn) },
+					{ name: "Birth Date", value: formatDateDDMMYYYY(ehic.birth_date) },
+					{ name: "Issuer Country", value: ehic.issuer_country },
+					{ name: "Issuer Instutution Code", value: ehic.issuer_institution_code },
+
 				];
 				const rowsObject: CategorizedRawCredentialView = { rows };
-				const dataUri = generateDataUriFromSvg(svgText, rows);
+				const pathsWithValues = [
+					{ path: "family_name", value: ehic.family_name },
+					{ path: "given_name", value: ehic.given_name },
+					{ path: "ssn", value: String(ehic.ssn) },
+					{ path: "birth_date", value: formatDateDDMMYYYY(ehic.birth_date) },
+					{ path: "expiry_date", value: formatDateDDMMYYYY(ehic.expiry_date) },
+					{ path: "issuer_country", value: String(ehic.issuer_country) },
+					{ path: "issuer_institution_code", value: String(ehic.issuer_institution_code) },
+				];
+				const dataUri = generateDataUriFromSvg(svgText, pathsWithValues);
 
 				return {
 					credential_id: this.getId(),
@@ -123,8 +134,10 @@ export class EHICSupportedCredentialSdJwtVCDM implements VCDMSupportedCredential
 		const ehic = {
 			family_name: ehicEntry.family_name,
 			given_name: ehicEntry.given_name,
-			ssn: ehicEntry.ssn,
-			birth_date: new Date(ehicEntry.birth_date).toISOString()
+			ssn: String(ehicEntry.ssn),
+			birth_date: new Date(ehicEntry.birth_date).toISOString(),
+			issuer_institution_code: String(ehicEntry.issuer_institution_code),
+			issuer_country: String(ehicEntry.issuer_country),
 		};
 
 		const payload = {
@@ -134,7 +147,7 @@ export class EHICSupportedCredentialSdJwtVCDM implements VCDMSupportedCredential
 			"vct": this.getId(),
 			"jti": `urn:ehic:${randomUUID()}`,
 			...ehic,
-			ssn: String(ehic.ssn)
+			ssn: String(ehic.ssn),
 		};
 
 		const disclosureFrame = {
@@ -142,6 +155,8 @@ export class EHICSupportedCredentialSdJwtVCDM implements VCDMSupportedCredential
 			given_name: true,
 			birth_date: true,
 			ssn: true,
+			issuer_institution_code: true,
+			issuer_country: false,
 		}
 		const { jws } = await this.getCredentialSigner()
 			.sign(payload, { typ: "JWT", vctm: this.metadata() }, disclosureFrame);

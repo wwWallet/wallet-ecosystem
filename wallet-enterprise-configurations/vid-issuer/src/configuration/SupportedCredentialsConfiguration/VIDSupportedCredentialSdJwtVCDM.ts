@@ -66,15 +66,22 @@ export class VIDSupportedCredentialSdJwtVCDM implements VCDMSupportedCredentialP
 		const credentialViews: CredentialView[] = vids
 			.map((vid) => {
 				const rows: CategorizedRawCredentialViewRow[] = [
-					{ name: "family_name", value: vid.family_name },
-					{ name: "given_name", value: vid.given_name },
-					{ name: "document_number", value: vid.document_number },
-					{ name: "birth_date", value: formatDateDDMMYYYY(vid.birth_date) },
-					{ name: "issuance_date", value: formatDateDDMMYYYY(vid.issuance_date) },
-					{ name: "expiry_date", value: formatDateDDMMYYYY(vid.expiry_date) },
+					{ name: "Family Name", value: vid.family_name },
+					{ name: "Given Name", value: vid.given_name },
+					{ name: "Document Number", value: vid.document_number },
+					{ name: "Birth Date", value: formatDateDDMMYYYY(vid.birth_date) },
+					{ name: "Expiry Date", value: formatDateDDMMYYYY(vid.expiry_date) },
 				];
 				const rowsObject: CategorizedRawCredentialView = { rows };
-				const dataUri = generateDataUriFromSvg(svgText, rows);
+
+				const pathsWithValues = [
+					{ path: "family_name", value: vid.family_name },
+					{ path: "given_name", value: vid.given_name},
+					{ path: "document_number", value: vid.document_number},
+					{ path: "birth_date", value: formatDateDDMMYYYY(vid.birth_date) },
+					{ path: "expiry_date", value: formatDateDDMMYYYY(vid.expiry_date) }
+				];
+				const dataUri = generateDataUriFromSvg(svgText, pathsWithValues);
 
 				return {
 					credential_id: this.getId(),
