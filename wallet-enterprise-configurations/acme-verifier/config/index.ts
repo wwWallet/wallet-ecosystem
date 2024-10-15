@@ -17,4 +17,8 @@ export const config = {
 	},
 	wwwalletURL: "http://localhost:3000/cb",
 	trustedRootCertificates: [],
+	sessionIdCookieConfiguration: {
+		maxAge: 900000, // 15-mins
+		secure: false
+	}
 }
