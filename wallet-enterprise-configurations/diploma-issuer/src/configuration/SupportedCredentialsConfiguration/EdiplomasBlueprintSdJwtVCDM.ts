@@ -65,6 +65,8 @@ export class EdiplomasBlueprintSdJwtVCDM implements VCDMSupportedCredentialProto
 		const diplomaEntry = diplomaEntries.filter((diploma) =>
 			String(diploma.vid_document_number) == userSession.document_number
 		)[0];
+
+		console.log("Diploma entry = ", diplomaEntry)
 		if (!diplomaEntry) {
 			console.error("Possibly raw data not found")
 			throw new Error("Could not generate credential response");
@@ -72,36 +74,33 @@ export class EdiplomasBlueprintSdJwtVCDM implements VCDMSupportedCredentialProto
 
 		const svgText = fs.readFileSync(path.join(__dirname, "../../../../public/images/diplomaTemplate.svg"), 'utf-8');
 
-		const credentialViews: CredentialView[] = diplomaEntries
-			.map((diplomaEntry) => {
-				const rows: CategorizedRawCredentialViewRow[] = [
-					{ name: "Given Name", value: diplomaEntry.given_name },
-					{ name: "Family Name", value: diplomaEntry.family_name },
-					{ name: "Title", value: diplomaEntry.title },
-					{ name: "Grade", value: diplomaEntry.grade },
-					{ name: "Graduation Date", value: formatDateDDMMYYYY(diplomaEntry.graduation_date) },
-					{ name: "Blueprint ID", value: "#" + diplomaEntry.blueprint_id },
-					{ name: "Expiry Date", value: formatDateDDMMYYYY(diplomaEntry.expiry_date) },
-				];
-				const rowsObject: CategorizedRawCredentialView = { rows };
+		const rows: CategorizedRawCredentialViewRow[] = [
+			{ name: "Given Name", value: diplomaEntry.given_name },
+			{ name: "Family Name", value: diplomaEntry.family_name },
+			{ name: "Title", value: diplomaEntry.title },
+			{ name: "Grade", value: diplomaEntry.grade },
+			{ name: "Graduation Date", value: formatDateDDMMYYYY(diplomaEntry.graduation_date) },
+			{ name: "Blueprint ID", value: "#" + diplomaEntry.blueprint_id },
+			{ name: "Expiry Date", value: formatDateDDMMYYYY(diplomaEntry.expiry_date) },
+		];
+		const rowsObject: CategorizedRawCredentialView = { rows };
 
-				const pathsWithValues = [
-					{ path: "given_name", value: diplomaEntry.given_name },
-					{ path: "family_name", value: diplomaEntry.family_name },
-					{ path: "title", value: diplomaEntry.title },
-					{ path: "graduation_date", value: formatDateDDMMYYYY(diplomaEntry.graduation_date) },
-					{ path: "expiry_date", value: formatDateDDMMYYYY(diplomaEntry.expiry_date) },
-				];
-				const dataUri = generateDataUriFromSvg(svgText, pathsWithValues);
+		const pathsWithValues = [
+			{ path: "given_name", value: diplomaEntry.given_name },
+			{ path: "family_name", value: diplomaEntry.family_name },
+			{ path: "title", value: diplomaEntry.title },
+			{ path: "graduation_date", value: formatDateDDMMYYYY(diplomaEntry.graduation_date) },
+			{ path: "expiry_date", value: formatDateDDMMYYYY(diplomaEntry.expiry_date) },
+		];
+		const dataUri = generateDataUriFromSvg(svgText, pathsWithValues);
 
-				return {
-					credential_id: diplomaEntry.certificateId,
-					credential_supported_object: this.exportCredentialSupportedObject(),
-					view: rowsObject,
-					credential_image: dataUri,
-				}
-			})
-		return credentialViews[0];
+		const credentialView = {
+			credential_id: diplomaEntry.certificateId,
+			credential_supported_object: this.exportCredentialSupportedObject(),
+			view: rowsObject,
+			credential_image: dataUri,
+		};
+		return credentialView;
 	}
 
 	async generateCredentialResponse(userSession: AuthorizationServerState, request: Request, holderPublicKeyJwk: JWK): Promise<{ format: VerifiableCredentialFormat; credential: any; }> {
