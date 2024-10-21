@@ -15,6 +15,7 @@ export const config = {
 		skipConsent: false,
 		defaultCredentialConfigurationIds: [],
 	},
+	appType: 'VERIFIER', //ISSUER,VERIFIER
 	wwwalletURL: "http://localhost:3000/cb",
 	trustedRootCertificates: [],
 	sessionIdCookieConfiguration: {

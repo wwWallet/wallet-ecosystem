@@ -18,8 +18,9 @@ export const config = {
 	],
 	issuanceFlow: {
 		skipConsent: false,
-		defaultCredentialConfigurationIds: [ "urn:credential:diploma" ],
+		defaultCredentialConfigurationIds: ["urn:credential:diploma"],
 	},
+	appType: 'ISSUER', //ISSUER,VERIFIER
 	wwwalletURL: "http://localhost:3000/cb",
 	trustedRootCertificates: [
 		`-----BEGIN CERTIFICATE-----

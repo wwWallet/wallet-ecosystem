@@ -1,8 +1,7 @@
 const locale = {
 	en: {
 		header: {
-			title: "ACME Verifier",
-			subtitle: "Send your VCs to Acme Corp",
+			title: "",
 		},
 		footer: {
 			services: "Services",

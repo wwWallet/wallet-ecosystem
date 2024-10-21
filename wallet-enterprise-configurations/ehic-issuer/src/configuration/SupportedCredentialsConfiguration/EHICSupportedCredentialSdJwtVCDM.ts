@@ -43,7 +43,7 @@ export class EHICSupportedCredentialSdJwtVCDM implements VCDMSupportedCredential
 		return {
 			name: "EHIC",
 			description: "This is a European Health Insurance Card verifiable credential issued by the well-known EHIC Issuer",
-			background_image: { uri: config.url + "/images/ehicCard.png" },
+			background_image: { uri: config.url + "/images/card.png" },
 			background_color: "#4CC3DD",
 			locale: 'en-US',
 		}
@@ -70,7 +70,7 @@ export class EHICSupportedCredentialSdJwtVCDM implements VCDMSupportedCredential
 				new Date(ehic.birth_date).toISOString() == new Date(userSession.birth_date as string).toISOString()
 			);
 			console.log("Ehic = ", ehics)
-			const svgText = fs.readFileSync(path.join(__dirname, "../../../../public/images/ehicTemplate.svg"), 'utf-8');
+			const svgText = fs.readFileSync(path.join(__dirname, "../../../../public/images/template.svg"), 'utf-8');
 			const credentialViews: CredentialView[] = ehics
 				.map((ehic) => {
 					const rows: CategorizedRawCredentialViewRow[] = [
@@ -188,7 +188,7 @@ export class EHICSupportedCredentialSdJwtVCDM implements VCDMSupportedCredential
 						"rendering": {
 							"simple": {
 								"logo": {
-									"uri": config.url + "/images/ehicCard.png",
+									"uri": config.url + "/images/card.png",
 									"uri#integrity": "sha256-94445b2ca72e9155260c8b4879112df7677e8b3df3dcee9b970b40534e26d4ab",
 									"alt_text": "EHIC Card"
 								},
@@ -197,7 +197,7 @@ export class EHICSupportedCredentialSdJwtVCDM implements VCDMSupportedCredential
 							},
 							"svg_templates": [
 								{
-									"uri": config.url + "/images/ehicTemplate.svg",
+									"uri": config.url + "/images/template.svg",
 								}
 							],
 						}

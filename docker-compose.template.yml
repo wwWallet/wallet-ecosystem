@@ -22,10 +22,8 @@ services:
       - ./wallet-enterprise-configurations/vid-issuer/config/index.ts:/app/config/index.ts:rw
       - ./wallet-enterprise-configurations/vid-issuer/keys:/app/keys:rw
       - ./wallet-enterprise-configurations/vid-issuer/src/configuration:/app/src/configuration:rw
-      - ./wallet-enterprise-configurations/vid-issuer/public/styles/styles.css:/app/public/styles/styles.css:rw
       - ./wallet-enterprise-configurations/vid-issuer/public/images:/app/public/images:rw
-      - ./wallet-enterprise-configurations/vid-issuer/views/header.pug:/app/views/header.pug:rw
-      - ./wallet-enterprise-configurations/vid-issuer/views/index.pug:/app/views/index.pug:rw
+      - ./wallet-enterprise-configurations/vid-issuer/public/styles/main.css:/app/public/styles/main.css:rw
       - ./.vscode/:/app/.vscode:rw
       - type: tmpfs
         target: /app/dist  # Not /dist here because of relative imports that assume dist/ and keys/, views/ etc. are sibling dirs
@@ -55,8 +53,8 @@ services:
       - ./wallet-enterprise-configurations/ehic-issuer/config/index.ts:/app/config/index.ts:rw
       - ./wallet-enterprise-configurations/ehic-issuer/keys:/app/keys:rw
       - ./wallet-enterprise-configurations/ehic-issuer/src/configuration:/app/src/configuration:rw
-      - ./wallet-enterprise-configurations/ehic-issuer/views/header.pug:/app/views/header.pug:rw
       - ./wallet-enterprise-configurations/ehic-issuer/public/images:/app/public/images:rw
+      - ./wallet-enterprise-configurations/ehic-issuer/public/styles/main.css:/app/public/styles/main.css:rw
       - ./.vscode/:/app/.vscode:rw
       - type: tmpfs
         target: /app/dist  # Not /dist here because of relative imports that assume dist/ and keys/, views/ etc. are sibling dirs
@@ -86,10 +84,8 @@ services:
       - ./wallet-enterprise-configurations/diploma-issuer/config/index.ts:/app/config/index.ts:rw
       - ./wallet-enterprise-configurations/diploma-issuer/keys:/app/keys:rw
       - ./wallet-enterprise-configurations/diploma-issuer/src/configuration:/app/src/configuration:rw
-      - ./wallet-enterprise-configurations/diploma-issuer/views/header.pug:/app/views/header.pug:rw
-      - ./wallet-enterprise-configurations/diploma-issuer/views/index.pug:/app/views/index.pug:rw
-      - ./wallet-enterprise-configurations/diploma-issuer/public/styles/styles.css:/app/public/styles/styles.css:rw
       - ./wallet-enterprise-configurations/diploma-issuer/public/images:/app/public/images:rw
+      - ./wallet-enterprise-configurations/diploma-issuer/public/styles/main.css:/app/public/styles/main.css:rw
       - ./.vscode/:/app/.vscode:rw
       - type: tmpfs
         target: /app/dist
@@ -118,12 +114,7 @@ services:
       - ./wallet-enterprise-configurations/acme-verifier/config/index.ts:/app/config/index.ts:rw
       - ./wallet-enterprise-configurations/acme-verifier/keys:/app/keys:rw
       - ./wallet-enterprise-configurations/acme-verifier/src/configuration:/app/src/configuration:rw
-      - ./wallet-enterprise-configurations/acme-verifier/public/styles/styles.css:/app/public/styles/styles.css:rw
-      - ./wallet-enterprise-configurations/acme-verifier/views/index.pug:/app/views/index.pug:rw
-      - ./wallet-enterprise-configurations/acme-verifier/views/header.pug:/app/views/header.pug:rw
-      - ./wallet-enterprise-configurations/acme-verifier/views/verifier/public_definitions.pug:/app/views/verifier/public_definitions.pug:rw
-      - ./wallet-enterprise-configurations/acme-verifier/views/verifier/QR.pug:/app/views/verifier/QR.pug:rw
-      - ./wallet-enterprise-configurations/acme-verifier/views/verifier/success.pug:/app/views/verifier/success.pug:rw
+      - ./wallet-enterprise-configurations/acme-verifier/public/styles/main.css:/app/public/styles/main.css:rw
       - ./wallet-enterprise-configurations/acme-verifier/public/images:/app/public/images:rw
       - ./.vscode/:/app/.vscode:rw
       - type: tmpfs

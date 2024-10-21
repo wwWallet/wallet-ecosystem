@@ -20,6 +20,7 @@ export const config = {
 		skipConsent: false,
 		defaultCredentialConfigurationIds: [ "urn:credential:ehic" ],
 	},
+	appType: 'ISSUER', //ISSUER,VERIFIER
 	wwwalletURL: "http://localhost:3000/cb",
 	trustedRootCertificates: [
 		`-----BEGIN CERTIFICATE-----

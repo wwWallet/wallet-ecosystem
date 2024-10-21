@@ -1,0 +1,101 @@
+:root {
+	--primary-color: #003476;
+	--header-bg-color: var(--primary-color);
+	--header-item-color: white;
+	--layout-bg-color: rgb(255, 255, 255);
+	--secondary-color: #778DA9;
+	--secondary-light-color: #E0E1DD;
+	--light-gray: #f5f5f5;
+	--dark-gray: #333333;
+	--error-red: rgb(209, 3, 3);
+	--link-light-blue: rgb(0, 162, 255);
+	--btn-yellow: #F9CA1A;
+	--btn-yellow-hov: #caa418;
+}
+
+/* comment/uncomment to hide ribbon demo */
+.ribbon{
+	display: block;
+}
+
+.menu-area{
+	display: none;
+}
+
+/* Profile Page */
+
+.personal-container {
+	background-color: #fff;
+	box-shadow: 0px 3px 15px rgba(0, 0, 0, 0.2);
+	border: 0px solid;
+	margin-top: 40px;
+	width: 80vw;
+	max-width: 750px;
+	display: block;
+	margin: 50px auto 70px auto;
+	padding: 10px 40px;
+}
+
+.personal-container h2 {
+	font-size: 28px;
+	text-align: center;
+	opacity: 0.65;
+	font-weight: 700;
+	padding-top: 25px;
+}
+
+.personal-container .info-table {
+	width: 100%;
+	display: table;
+	border-collapse: collapse;
+	border-spacing: 0;
+}
+
+.personal-container .striped tr:nth-child(2n+1) {
+	background-color: rgba(242, 242, 242, 0.5);
+}
+
+.personal-container .striped tr {
+	border-bottom: none;
+}
+
+.personal-container .striped td,
+.personal-container .striped th {
+	padding: 8px 10px;
+	display: table-cell;
+	text-align: left;
+	vertical-align: middle;
+}
+
+hr {
+	margin-top: 2rem;
+	margin-bottom: 1rem;
+	border: 0;
+	border-top-width: 0px;
+	border-top-style: none;
+	border-top: 1px solid rgba(0, 0, 0, .1);
+}
+
+.personal-container .action-group {
+	width: 100%;
+	padding: 10px 0;
+	display: flex;
+	justify-content: end;
+}
+
+.personal-container .action-group button {
+	min-width: 150px;
+	max-width: none !important;
+	padding: 1rem;
+	font-size: 17px;
+}
+
+.personal-container .gray {
+	margin-right: 2%;
+	color: #000;
+	background-color: #e9e9ed;
+}
+
+.personal-container .gray:hover {
+	background-color: #e0e0e0;
+}
