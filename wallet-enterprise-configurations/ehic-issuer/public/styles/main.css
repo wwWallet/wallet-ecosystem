@@ -13,11 +13,16 @@
 	--btn-yellow-hov: #caa418;
 }
 
-/* comment/uncomment to hide ribbon demo */
-.ribbon{
+/* comment/uncomment or block/none to hide them */
+.ribbon {
 	display: block;
 }
 
-.menu-area{
+.menu-area {
 	display: none;
 }
+/* -------- end -------- */
+
+/* overwrite Style */
+
+/* -------- end -------- */
