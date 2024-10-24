@@ -6,12 +6,7 @@ WORKDIR /app
 COPY wallet-enterprise/ .
 RUN rm -rf /app/src/configuration/
 COPY ./wallet-enterprise-configurations/acme-verifier/src/configuration/ /app/src/configuration/
-COPY ./wallet-enterprise-configurations/acme-verifier/views/index.pug /app/views/index.pug
-COPY ./wallet-enterprise-configurations/acme-verifier/views/header.pug /app/views/header.pug
-COPY ./wallet-enterprise-configurations/acme-verifier/views/verifier/public_definitions.pug /app/views/verifier/public_definitions.pug
-COPY ./wallet-enterprise-configurations/acme-verifier/views/verifier/QR.pug /app/views/verifier/QR.pug
-COPY ./wallet-enterprise-configurations/acme-verifier/views/verifier/success.pug /app/views/verifier/success.pug
-COPY ./wallet-enterprise-configurations/acme-verifier/public/styles/styles.css /app/public/styles/styles.css
+COPY ./wallet-enterprise-configurations/acme-verifier/public/styles/main.css /app/public/styles/main.css
 COPY ./wallet-enterprise-configurations/acme-verifier/public/images /app/public/images
 
 RUN yarn cache clean && yarn install && yarn build

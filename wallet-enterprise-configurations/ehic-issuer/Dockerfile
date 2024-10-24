@@ -5,7 +5,7 @@ WORKDIR /app
 # COPY wallet-enterprise/ .
 RUN rm -rf src/configuration/
 COPY ./wallet-enterprise-configurations/ehic-issuer/src/configuration/ src/configuration/
-COPY ./wallet-enterprise-configurations/ehic-issuer/views/header.pug views/header.pug
+COPY ./wallet-enterprise-configurations/ehic-issuer/public/styles/main.css public/styles/main.css
 COPY ./wallet-enterprise-configurations/ehic-issuer/public/images public/images
 
 

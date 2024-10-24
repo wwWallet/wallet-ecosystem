@@ -44,7 +44,7 @@ export class VIDSupportedCredentialSdJwtVCDM implements VCDMSupportedCredentialP
 		return {
 			name: "Verifiable ID",
 			description: "This is a Verifiable ID verifiable credential issued by the well-known VID Issuer",
-			background_image: { uri: config.url + "/images/vidCard.png" },
+			background_image: { uri: config.url + "/images/card.png" },
 			background_color: "#4CC3DD",
 			locale: 'en-US',
 		}
@@ -61,7 +61,7 @@ export class VIDSupportedCredentialSdJwtVCDM implements VCDMSupportedCredentialP
 			return null;
 		}
 
-		const svgText = fs.readFileSync(path.join(__dirname, "../../../../public/images/idTemplate.svg"), 'utf-8');
+		const svgText = fs.readFileSync(path.join(__dirname, "../../../../public/images/template.svg"), 'utf-8');
 		const vids = users.filter(u => String(u.pid_id) == userSession?.pid_id);
 		const credentialViews: CredentialView[] = vids
 			.map((vid) => {
@@ -166,7 +166,7 @@ export class VIDSupportedCredentialSdJwtVCDM implements VCDMSupportedCredentialP
 						"rendering": {
 							"simple": {
 								"logo": {
-									"uri": config.url + "/images/vidCard.png",
+									"uri": config.url + "/images/card.png",
 									"uri#integrity": "sha256-acda3404c2cf46da192cf245ccc6b91edce8869122fa5a6636284f1a60ffcd86",
 									"alt_text": "VID Card"
 								},
@@ -175,7 +175,7 @@ export class VIDSupportedCredentialSdJwtVCDM implements VCDMSupportedCredentialP
 							},
 							"svg_templates": [
 								{
-									"uri": config.url + "/images/idTemplate.svg",
+									"uri": config.url + "/images/template.svg",
 								}
 							],
 						}

@@ -5,10 +5,8 @@ WORKDIR /app
 COPY wallet-enterprise/ .
 RUN rm -rf src/configuration/
 COPY ./wallet-enterprise-configurations/diploma-issuer/src/configuration /app/src/configuration
-COPY ./wallet-enterprise-configurations/diploma-issuer/public/styles/styles.css /app/public/styles/styles.css
+COPY ./wallet-enterprise-configurations/diploma-issuer/public/styles/main.css /app/public/styles/main.css
 COPY ./wallet-enterprise-configurations/diploma-issuer/public/images /app/public/images
-COPY ./wallet-enterprise-configurations/diploma-issuer/views/header.pug /app/views/header.pug
-COPY ./wallet-enterprise-configurations/diploma-issuer/views/index.pug /app/views/index.pug
 
 RUN yarn cache clean && yarn install && yarn build
 

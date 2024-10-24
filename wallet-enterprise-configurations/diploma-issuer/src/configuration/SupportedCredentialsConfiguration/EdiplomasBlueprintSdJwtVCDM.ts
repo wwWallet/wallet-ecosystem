@@ -44,7 +44,7 @@ export class EdiplomasBlueprintSdJwtVCDM implements VCDMSupportedCredentialProto
 		return {
 			name: "Bachelor Diploma",
 			description: "This is a Bachelor Diploma verifiable credential issued by the well-known eDiplomas",
-			background_image: { uri: config.url + "/images/EuropassUoaCard.png" },
+			background_image: { uri: config.url + "/images/card.png" },
 			background_color: "#4CC3DD",
 			locale: 'en-US',
 		}
@@ -72,7 +72,7 @@ export class EdiplomasBlueprintSdJwtVCDM implements VCDMSupportedCredentialProto
 			throw new Error("Could not generate credential response");
 		}
 
-		const svgText = fs.readFileSync(path.join(__dirname, "../../../../public/images/diplomaTemplate.svg"), 'utf-8');
+		const svgText = fs.readFileSync(path.join(__dirname, "../../../../public/images/template.svg"), 'utf-8');
 
 		const rows: CategorizedRawCredentialViewRow[] = [
 			{ name: "Given Name", value: diplomaEntry.given_name },
@@ -171,7 +171,7 @@ export class EdiplomasBlueprintSdJwtVCDM implements VCDMSupportedCredentialProto
 						"rendering": {
 							"simple": {
 								"logo": {
-									"uri": config.url + "/images/EuropassUoaCard.png",
+									"uri": config.url + "/images/card.png",
 									"uri#integrity": "sha256-c7fbfe45428aa2715f01065d812c9f6fd52f99c02e4018fb5761a7cbf4894257",
 									"alt_text": "Diploma Card"
 								},
@@ -180,7 +180,7 @@ export class EdiplomasBlueprintSdJwtVCDM implements VCDMSupportedCredentialProto
 							},
 							"svg_templates": [
 								{
-									"uri": config.url + "/images/diplomaTemplate.svg",
+									"uri": config.url + "/images/template.svg",
 								}
 							],
 						}
