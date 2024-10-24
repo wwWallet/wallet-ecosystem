@@ -5,10 +5,8 @@ WORKDIR /app
 COPY wallet-enterprise/ .
 RUN rm -rf src/configuration/
 COPY ./wallet-enterprise-configurations/vid-issuer/src/configuration/ src/configuration/
-COPY ./wallet-enterprise-configurations/vid-issuer/public/styles/styles.css public/styles/styles.css
+COPY ./wallet-enterprise-configurations/vid-issuer/public/styles/main.css public/styles/main.css
 COPY ./wallet-enterprise-configurations/vid-issuer/public/images/ public/images/
-COPY ./wallet-enterprise-configurations/vid-issuer/views/header.pug /app/views/header.pug
-COPY ./wallet-enterprise-configurations/vid-issuer/views/index.pug /app/views/index.pug
 
 RUN yarn cache clean && yarn install && yarn build
 
