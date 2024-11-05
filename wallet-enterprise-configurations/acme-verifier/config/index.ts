@@ -15,6 +15,9 @@ export const config = {
 		skipConsent: false,
 		defaultCredentialConfigurationIds: [],
 	},
+	presentationFlow: {
+		response_mode: "direct_post.jwt"
+	},
 	appType: 'VERIFIER', //ISSUER,VERIFIER
 	wwwalletURL: "http://localhost:3000/cb",
 	trustedRootCertificates: [],
