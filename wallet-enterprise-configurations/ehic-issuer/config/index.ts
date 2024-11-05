@@ -20,6 +20,9 @@ export const config = {
 		skipConsent: false,
 		defaultCredentialConfigurationIds: [ "urn:credential:ehic" ],
 	},
+	presentationFlow: {
+		response_mode: "direct_post.jwt"
+	},
 	appType: 'ISSUER', //ISSUER,VERIFIER
 	wwwalletURL: "http://localhost:3000/cb",
 	trustedRootCertificates: [
