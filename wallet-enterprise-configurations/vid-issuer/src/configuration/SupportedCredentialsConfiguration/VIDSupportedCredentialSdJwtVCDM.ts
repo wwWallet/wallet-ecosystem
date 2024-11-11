@@ -143,6 +143,8 @@ export class VIDSupportedCredentialSdJwtVCDM implements VCDMSupportedCredentialP
 			issuing_authority: true,
 			issuing_country: true,
 			document_number: true,
+			issuance_date: true,
+			expiry_date: true,
 		}
 		const { jws } = await this.getCredentialSigner()
 			.sign(payload, { typ: 'JWT', vctm: this.metadata() }, disclosureFrame);
@@ -192,7 +194,8 @@ export class VIDSupportedCredentialSdJwtVCDM implements VCDMSupportedCredentialP
 						}
 					},
 					"verification": "verified",
-					"sd": "allowed"
+					"sd": "allowed",
+					"svg_id": "given_name"
 				},
 				{
 					"path": ["family_name"],
@@ -203,7 +206,8 @@ export class VIDSupportedCredentialSdJwtVCDM implements VCDMSupportedCredentialP
 						}
 					},
 					"verification": "verified",
-					"sd": "allowed"
+					"sd": "allowed",
+					"svg_id": "family_name"
 				},
 				{
 					"path": ["birth_date"],
@@ -214,7 +218,8 @@ export class VIDSupportedCredentialSdJwtVCDM implements VCDMSupportedCredentialP
 						}
 					},
 					"verification": "verified",
-					"sd": "allowed"
+					"sd": "allowed",
+					"svg_id": "birth_date"
 				},
 				{
 					"path": ["issuing_authority"],
@@ -225,8 +230,33 @@ export class VIDSupportedCredentialSdJwtVCDM implements VCDMSupportedCredentialP
 						}
 					},
 					"verification": "authoritative",
-					"sd": "allowed"
+					"sd": "allowed",
+					"svg_id": "issuing_authority"
 				},
+				{
+					"path": ["issuance_date"],
+					"display": {
+						"en-US": {
+							"label": "Issuance Date",
+							"description": "The date and time issued this credential"
+						}
+					},
+					"verification": "authoritative",
+					"sd": "allowed",
+					"svg_id": "issuance_date"
+				},
+				{
+					"path": ["expiry_date"],
+					"display": {
+						"en-US": {
+							"label": "Expiry Date",
+							"description": "The date and time expired this credential"
+						}
+					},
+					"verification": "authoritative",
+					"sd": "allowed",
+					"svg_id": "expiry_date"
+				}
 			],
 			"schema": {
 				"$schema": "http://json-schema.org/draft-07/schema#",
@@ -242,6 +272,12 @@ export class VIDSupportedCredentialSdJwtVCDM implements VCDMSupportedCredentialP
 						"type": "string",
 					},
 					"issuing_authority": {
+						"type": "string"
+					},
+					"issuance_date": {
+						"type": "string"
+					},
+					"expiry_date": {
 						"type": "string"
 					}
 				},

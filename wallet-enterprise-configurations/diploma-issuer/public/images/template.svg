@@ -6,17 +6,17 @@
 />
 
 	<text x="45" y="180" font-family="math" font-size="25" fill="#5d8cd5" font-weight="bold">TITLE</text>
-	<text x="45" y="210" font-family="math" font-size="30" fill="#625f60" font-weight="normal">{{/title}}</text>
+	<text x="45" y="210" font-family="math" font-size="30" fill="#625f60" font-weight="normal">{{title}}</text>
 
 	<text x="45" y="260" font-family="math" font-size="25" fill="#5d8cd5" font-weight="bold">FAMILY NAME</text>
-	<text x="45" y="290" font-family="math" font-size="30" fill="#625f60" font-weight="normal">{{/family_name}}</text>
+	<text x="45" y="290" font-family="math" font-size="30" fill="#625f60" font-weight="normal">{{family_name}}</text>
 
 	<text x="45" y="340" font-family="math" font-size="25" fill="#5d8cd5" font-weight="bold">FIRST NAME</text>
-	<text x="45" y="370" font-family="math" font-size="30" fill="#625f60" ont-weight="normal">{{/given_name}}</text>
+	<text x="45" y="370" font-family="math" font-size="30" fill="#625f60" ont-weight="normal">{{given_name}}</text>
 
 	<text x="45" y="420" font-family="math" font-size="25" fill="#5d8cd5" font-weight="bold">GRADUATION DATE</text>
-	<text x="45" y="450" font-family="math" font-size="30" fill="#625f60" ont-weight="normal">{{/graduation_date}}</text>
+	<text x="45" y="450" font-family="math" font-size="30" fill="#625f60" ont-weight="normal">{{graduation_date}}</text>
 
 	<text x="450" y="420" font-family="math" font-size="25" fill="#5d8cd5" font-weight="bold">EXPIRY DATE</text>
-	<text x="450" y="450" font-family="math" font-size="30" fill="#625f60" ont-weight="normal">{{/expiry_date}}</text>
+	<text x="450" y="450" font-family="math" font-size="30" fill="#625f60" ont-weight="normal">{{expiry_date}}</text>
 </svg>

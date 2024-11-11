@@ -9,19 +9,18 @@
 	<text x="45" y="70" font-family="Arial, Helvetica, sans-serif" font-size="30" fill="#2f2f2f" font-weight="bold">IDENTITY CARD</text>
 
 	<text x="320" y="130" font-family="Arial, Helvetica, sans-serif" font-size="20" fill="#2f2f2f" font-weight="light">Family Name</text>
-	<text x="320" y="160" font-family="Arial, Helvetica, sans-serif" font-size="25" fill="#2f2f2f" font-weight="normal">{{/family_name}}</text>
+	<text x="320" y="160" font-family="Arial, Helvetica, sans-serif" font-size="25" fill="#2f2f2f" font-weight="normal">{{family_name}}</text>
 
 	<text x="320" y="210" font-family="Arial, Helvetica, sans-serif" font-size="20" fill="#2f2f2f" font-weight="light">First Name</text>
-	<text x="320" y="240" font-family="Arial, Helvetica, sans-serif" font-size="25" fill="#2f2f2f" font-weight="normal">{{/given_name}}</text>
+	<text x="320" y="240" font-family="Arial, Helvetica, sans-serif" font-size="25" fill="#2f2f2f" font-weight="normal">{{given_name}}</text>
 
 	<text x="320" y="290" font-family="Arial, Helvetica, sans-serif" font-size="20" fill="#2f2f2f" font-weight="light">Date of Birth</text>
-	<text x="320" y="320" font-family="Arial, Helvetica, sans-serif" font-size="25" fill="#2f2f2f" font-weight="normal">{{/birth_date}}</text>
+	<text x="320" y="320" font-family="Arial, Helvetica, sans-serif" font-size="25" fill="#2f2f2f" font-weight="normal">{{birth_date}}</text>
 
 	<text x="320" y="370" font-family="Arial, Helvetica, sans-serif" font-size="20" fill="#2f2f2f" font-weight="light">Date of Issue</text>
-	<text x="320" y="400" font-family="Arial, Helvetica, sans-serif" font-size="25" fill="#2f2f2f" font-weight="normal">{{/issuance_date}}</text>
+	<text x="320" y="400" font-family="Arial, Helvetica, sans-serif" font-size="25" fill="#2f2f2f" font-weight="normal">{{issuance_date}}</text>
 
 	<text x="500" y="370" font-family="Arial, Helvetica, sans-serif" font-size="20" fill="#2f2f2f" font-weight="light">Date of Expiry</text>
-	<text x="500" y="400" font-family="Arial, Helvetica, sans-serif" font-size="25" fill="#2f2f2f" font-weight="normal">{{/expiry_date}}</text>
-
+	<text x="500" y="400" font-family="Arial, Helvetica, sans-serif" font-size="25" fill="#2f2f2f" font-weight="normal">{{expiry_date}}</text>
 
 </svg>
