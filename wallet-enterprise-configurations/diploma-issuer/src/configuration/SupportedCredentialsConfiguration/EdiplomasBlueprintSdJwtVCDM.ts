@@ -189,6 +189,30 @@ export class EdiplomasBlueprintSdJwtVCDM implements VCDMSupportedCredentialProto
 			],
 			"claims": [
 				{
+					"path": ["given_name"],
+					"display": {
+						"en-US": {
+							"label": "Given Name",
+							"description": "The given name of the Diploma Holder"
+						}
+					},
+					"verification": "verified",
+					"sd": "allowed",
+					"svg_id": "given_name"
+				},
+				{
+					"path": ["family_name"],
+					"display": {
+						"en-US": {
+							"label": "Family Name",
+							"description": "The family name of the Diploma Holder"
+						}
+					},
+					"verification": "verified",
+					"sd": "allowed",
+					"svg_id": "family_name"
+				},
+				{
 					"path": ["title"],
 					"display": {
 						"en-US": {
@@ -197,7 +221,9 @@ export class EdiplomasBlueprintSdJwtVCDM implements VCDMSupportedCredentialProto
 						}
 					},
 					"verification": "verified",
-					"sd": "allowed"
+					"sd": "allowed",
+					"svg_id": "title"
+
 				},
 				{
 					"path": ["grade"],
@@ -230,8 +256,21 @@ export class EdiplomasBlueprintSdJwtVCDM implements VCDMSupportedCredentialProto
 						}
 					},
 					"verification": "verified",
-					"sd": "allowed"
+					"sd": "allowed",
+					"svg_id": "graduation_date"
 				},
+				{
+					"path": ["expiry_date"],
+					"display": {
+						"en-US": {
+							"label": "Expiry Date",
+							"description": "The date and time expired this credential"
+						}
+					},
+					"verification": "authoritative",
+					"sd": "allowed",
+					"svg_id": "expiry_date"
+				}
 			],
 			"schema": {
 				"$schema": "http://json-schema.org/draft-07/schema#",

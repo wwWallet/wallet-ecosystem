@@ -214,7 +214,8 @@ export class EHICSupportedCredentialSdJwtVCDM implements VCDMSupportedCredential
 						}
 					},
 					"verification": "verified",
-					"sd": "allowed"
+					"sd": "allowed",
+					"svg_id": "given_name"
 				},
 				{
 					"path": ["family_name"],
@@ -225,7 +226,8 @@ export class EHICSupportedCredentialSdJwtVCDM implements VCDMSupportedCredential
 						}
 					},
 					"verification": "verified",
-					"sd": "allowed"
+					"sd": "allowed",
+					"svg_id": "family_name"
 				},
 				{
 					"path": ["birth_date"],
@@ -236,7 +238,8 @@ export class EHICSupportedCredentialSdJwtVCDM implements VCDMSupportedCredential
 						}
 					},
 					"verification": "verified",
-					"sd": "allowed"
+					"sd": "allowed",
+					"svg_id": "birth_date"
 				},
 				{
 					"path": ["ssn"],
@@ -247,8 +250,45 @@ export class EHICSupportedCredentialSdJwtVCDM implements VCDMSupportedCredential
 						}
 					},
 					"verification": "authoritative",
-					"sd": "allowed"
+					"sd": "allowed",
+					"svg_id": "ssn"
 				},
+				{
+					"path": ["issuer_country"],
+					"display": {
+						"en-US": {
+							"label": "Issuer Country",
+							"description": "The issuer country of the EHIC holder"
+						}
+					},
+					"verification": "authoritative",
+					"sd": "allowed",
+					"svg_id": "issuer_country"
+				},
+				{
+					"path": ["issuer_institution_code"],
+					"display": {
+						"en-US": {
+							"label": "Issuer Institution Code",
+							"description": "The issuer institution code of the EHIC holder"
+						}
+					},
+					"verification": "authoritative",
+					"sd": "allowed",
+					"svg_id": "issuer_institution_code"
+				},
+				{
+					"path": ["expiry_date"],
+					"display": {
+						"en-US": {
+							"label": "Expiry Date",
+							"description": "The date and time expired this credential"
+						}
+					},
+					"verification": "authoritative",
+					"sd": "allowed",
+					"svg_id": "expiry_date"
+				}
 			],
 			"schema": {
 				"$schema": "http://json-schema.org/draft-07/schema#",
@@ -264,6 +304,15 @@ export class EHICSupportedCredentialSdJwtVCDM implements VCDMSupportedCredential
 						"type": "string",
 					},
 					"ssn": {
+						"type": "string"
+					},
+					"issuer_institution_code": {
+						"type": "string"
+					},
+					"issuer_country": {
+						"type": "string"
+					},
+					"expiry_date": {
 						"type": "string"
 					}
 				},
