@@ -142,6 +142,8 @@ export class EdiplomasBlueprintSdJwtVCDM implements VCDMSupportedCredentialProto
 		};
 
 		const disclosureFrame = {
+			family_name: true,
+			given_name: true,
 			title: true,
 			grade: true,
 			eqf_level: false, // no ability to hide

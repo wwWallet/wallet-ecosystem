@@ -164,7 +164,7 @@ export class EHICSupportedCredentialSdJwtVCDM implements VCDMSupportedCredential
 			birth_date: true,
 			ssn: true,
 			issuer_institution_code: true,
-			issuer_country: false,
+			issuer_country: true,
 		}
 		const { jws } = await this.getCredentialSigner()
 			.sign(payload, { typ: "JWT", vctm: this.metadata() }, disclosureFrame);
