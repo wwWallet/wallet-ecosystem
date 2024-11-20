@@ -20,7 +20,7 @@ export const config = {
 		skipConsent: false,
 		defaultCredentialConfigurationIds: [ "urn:credential:vid" ],
 		batchCredentialIssuance: {
-			batchSize: 5,
+			batchSize: 1,
 		}
 	},
 	presentationFlow: {
