@@ -14,6 +14,7 @@ import path from "path";
 import { randomUUID } from "crypto";
 import { Request } from "express";
 import fs from 'fs';
+import base64url from 'base64url';
 
 parseDiplomaData(path.join(__dirname, "../../../../dataset/diploma-dataset.xlsx"));
 
@@ -151,7 +152,7 @@ export class EdiplomasBlueprintSdJwtVCDM implements VCDMSupportedCredentialProto
 		}
 
 		const { jws } = await this.getCredentialSigner()
-			.sign(payload, { typ: "JWT", vctm: this.metadata() }, disclosureFrame);
+			.sign(payload, { typ: "vc+sd-jwt", vctm: [ base64url.encode(JSON.stringify(this.metadata())) ] }, disclosureFrame);
 
 		const response = {
 			format: this.getFormat(),

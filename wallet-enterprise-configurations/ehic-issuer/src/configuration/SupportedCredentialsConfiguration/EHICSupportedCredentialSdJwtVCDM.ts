@@ -14,6 +14,7 @@ import { parseEhicData } from "../datasetParser";
 import path from "node:path";
 import { issuerSigner } from "../issuerSigner";
 import fs from 'fs';
+import base64url from 'base64url';
 
 parseEhicData(path.join(__dirname, "../../../../dataset/ehic-dataset.xlsx")) // test parse
 
@@ -167,7 +168,7 @@ export class EHICSupportedCredentialSdJwtVCDM implements VCDMSupportedCredential
 			issuer_country: true,
 		}
 		const { jws } = await this.getCredentialSigner()
-			.sign(payload, { typ: "JWT", vctm: this.metadata() }, disclosureFrame);
+			.sign(payload, { typ: "vc+sd-jwt", vctm: [ base64url.encode(JSON.stringify(this.metadata())) ] }, disclosureFrame);
 		const response = {
 			format: this.getFormat(),
 			credential: jws
