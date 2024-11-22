@@ -139,39 +139,40 @@ function buildImages() {
 		process.exit();
 	}
 
-	const imageTag = args[0];
+	const imageRegistry = args[0];
+	const imageTag = args[1];
 
 
-	if (args.length <= 1 || args.includes("wallet-frontend")) {
-		execSync(`cd wallet-frontend && docker build -t ghcr.io/wwwallet/wallet-frontend:${imageTag} .`, { stdio: 'inherit' });
+	if (args.length <= 2 || args.includes("wallet-frontend")) {
+		execSync(`cd wallet-frontend && docker build -t ${imageRegistry}/wallet-frontend:${imageTag} .`, { stdio: 'inherit' });
 	}
 
-	if (args.length <= 1 || args.includes("wallet-backend-server")) {
-		execSync(`cd wallet-backend-server && docker build -t ghcr.io/wwwallet/wallet-backend-server:${imageTag} .`, { stdio: 'inherit' });
+	if (args.length <= 2 || args.includes("wallet-backend-server")) {
+		execSync(`cd wallet-backend-server && docker build -t ${imageRegistry}/wallet-backend-server:${imageTag} .`, { stdio: 'inherit' });
 	}
 
-	if (args.length <= 1 || args.includes("wallet-enterprise")) {
-		execSync(`docker build -t ghcr.io/wwwallet/wallet-enterprise:${imageTag} wallet-enterprise`, { stdio: 'inherit' });
+	if (args.length <= 2 || args.includes("wallet-enterprise")) {
+		execSync(`docker build -t ${imageRegistry}/wallet-enterprise:${imageTag} wallet-enterprise`, { stdio: 'inherit' });
 	}
 
-	if (args.length <= 1 || args.includes("vid-issuer")) {
-		execSync(`cd wallet-enterprise && docker build -t ghcr.io/wwwallet/wallet-enterprise:base -f base.Dockerfile .`, { stdio: 'inherit' });
-		execSync(`docker build -t ghcr.io/wwwallet/wallet-enterprise-vid-issuer:${imageTag} -f wallet-enterprise-configurations/vid-issuer/Dockerfile .`, { stdio: 'inherit' });
+	if (args.length <= 2 || args.includes("vid-issuer")) {
+		execSync(`cd wallet-enterprise && docker build -t ${imageRegistry}/wallet-enterprise:base -f base.Dockerfile .`, { stdio: 'inherit' });
+		execSync(`docker build -t ${imageRegistry}/wallet-enterprise-vid-issuer:${imageTag} -f wallet-enterprise-configurations/vid-issuer/Dockerfile .`, { stdio: 'inherit' });
 	}
 
-	if (args.length <= 1 || args.includes("ehic-issuer")) {
-		execSync(`cd wallet-enterprise && docker build -t ghcr.io/wwwallet/wallet-enterprise:base -f base.Dockerfile .`, { stdio: 'inherit' });
-		execSync(`docker build -t ghcr.io/wwwallet/wallet-enterprise-ehic-issuer:${imageTag} -f wallet-enterprise-configurations/ehic-issuer/Dockerfile .`, { stdio: 'inherit' });
+	if (args.length <= 2 || args.includes("ehic-issuer")) {
+		execSync(`cd wallet-enterprise && docker build -t ${imageRegistry}/wallet-enterprise:base -f base.Dockerfile .`, { stdio: 'inherit' });
+		execSync(`docker build -t ${imageRegistry}/wallet-enterprise-ehic-issuer:${imageTag} -f wallet-enterprise-configurations/ehic-issuer/Dockerfile .`, { stdio: 'inherit' });
 	}
 
-	if (args.length <= 1 || args.includes("diploma-issuer")) {
-		execSync(`cd wallet-enterprise && docker build -t ghcr.io/wwwallet/wallet-enterprise:base -f base.Dockerfile .`, { stdio: 'inherit' });
-		execSync(`docker build -t ghcr.io/wwwallet/wallet-enterprise-diploma-issuer:${imageTag} -f wallet-enterprise-configurations/diploma-issuer/Dockerfile .`, { stdio: 'inherit' });
+	if (args.length <= 2 || args.includes("diploma-issuer")) {
+		execSync(`cd wallet-enterprise && docker build -t ${imageRegistry}/wallet-enterprise:base -f base.Dockerfile .`, { stdio: 'inherit' });
+		execSync(`docker build -t ${imageRegistry}/wallet-enterprise-diploma-issuer:${imageTag} -f wallet-enterprise-configurations/diploma-issuer/Dockerfile .`, { stdio: 'inherit' });
 	}
 
-	if (args.length <= 1 || args.includes("acme-verifier")) {
-		execSync(`cd wallet-enterprise && docker build -t ghcr.io/wwwallet/wallet-enterprise:base -f base.Dockerfile .`, { stdio: 'inherit' });
-		execSync(`docker build -t ghcr.io/wwwallet/wallet-enterprise-acme-verifier:${imageTag} -f wallet-enterprise-configurations/acme-verifier/Dockerfile .`, { stdio: 'inherit' });
+	if (args.length <= 2 || args.includes("acme-verifier")) {
+		execSync(`cd wallet-enterprise && docker build -t ${imageRegistry}/wallet-enterprise:base -f base.Dockerfile .`, { stdio: 'inherit' });
+		execSync(`docker build -t ${imageRegistry}/wallet-enterprise-acme-verifier:${imageTag} -f wallet-enterprise-configurations/acme-verifier/Dockerfile .`, { stdio: 'inherit' });
 	}
 }
 
