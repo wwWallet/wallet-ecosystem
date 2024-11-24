@@ -44,9 +44,10 @@ export class EdiplomasBlueprintSdJwtVCDM implements VCDMSupportedCredentialProto
 	getDisplay() {
 		return {
 			name: "Bachelor Diploma",
-			description: "This is a Bachelor Diploma verifiable credential issued by the well-known eDiplomas",
-			background_image: { uri: config.url + "/images/card.png" },
+			description: "This is a Bachelor Diploma verifiable credential",
+			background_image: { uri: config.url + "/images/background-image.png" },
 			background_color: "#4CC3DD",
+			text_color: "#FFFFFF",
 			locale: 'en-US',
 		}
 	}
@@ -166,7 +167,7 @@ export class EdiplomasBlueprintSdJwtVCDM implements VCDMSupportedCredentialProto
 		return {
 			"vct": this.getId(),
 			"name": "Diploma Credential",
-			"description": "This is a Verifiable ID document issued by the well known VID Issuer",
+			"description": "This is a Bachelor Diploma verifiable credential",
 			"display": [
 				{
 					"lang": "en-US",
@@ -174,11 +175,11 @@ export class EdiplomasBlueprintSdJwtVCDM implements VCDMSupportedCredentialProto
 					"rendering": {
 						"simple": {
 							"logo": {
-								"uri": config.url + "/images/card.png",
+								"uri": config.url + "/images/logo.png",
 								"uri#integrity": "sha256-c7fbfe45428aa2715f01065d812c9f6fd52f99c02e4018fb5761a7cbf4894257",
-								"alt_text": "Diploma Card"
+								"alt_text": "Diploma Logo"
 							},
-							"background_color": "#12107c",
+							"background_color": "#4CC3DD",
 							"text_color": "#FFFFFF"
 						},
 						"svg_templates": [

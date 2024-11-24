@@ -43,9 +43,10 @@ export class EHICSupportedCredentialSdJwtVCDM implements VCDMSupportedCredential
 	getDisplay() {
 		return {
 			name: "EHIC",
-			description: "This is a European Health Insurance Card verifiable credential issued by the well-known EHIC Issuer",
-			background_image: { uri: config.url + "/images/card.png" },
-			background_color: "#4CC3DD",
+			description: "This is a European Health Insurance Card verifiable credential",
+			background_image: { uri: config.url + "/images/background-image.png" },
+			background_color: "#1b263b",
+			text_color: "#FFFFFF",
 			locale: 'en-US',
 		}
 	}
@@ -181,19 +182,14 @@ export class EHICSupportedCredentialSdJwtVCDM implements VCDMSupportedCredential
 		return {
 			"vct": this.getId(),
 			"name": "EHIC",
-			"description": "This is a Verifiable ID document issued by the well known VID Issuer",
+			"description": "This is a European Health Insurance Card verifiable credential",
 			"display": [
 				{
 					"lang": "en-US",
 					"name": "EHIC",
 					"rendering": {
 						"simple": {
-							"logo": {
-								"uri": config.url + "/images/card.png",
-								"uri#integrity": "sha256-94445b2ca72e9155260c8b4879112df7677e8b3df3dcee9b970b40534e26d4ab",
-								"alt_text": "EHIC Card"
-							},
-							"background_color": "#12107c",
+							"background_color": "#1b263b",
 							"text_color": "#FFFFFF"
 						},
 						"svg_templates": [

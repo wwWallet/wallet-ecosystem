@@ -45,8 +45,9 @@ export class VIDSupportedCredentialSdJwtVCDM implements VCDMSupportedCredentialP
 		return {
 			name: "Verifiable ID",
 			description: "This is a Verifiable ID verifiable credential issued by the well-known VID Issuer",
-			background_image: { uri: config.url + "/images/card.png" },
+			background_image: { uri: config.url + "/images/background-image.png" },
 			background_color: "#4CC3DD",
+			text_color: "#FFFFFF",
 			locale: 'en-US',
 		}
 	}
@@ -169,11 +170,11 @@ export class VIDSupportedCredentialSdJwtVCDM implements VCDMSupportedCredentialP
 					"rendering": {
 						"simple": {
 							"logo": {
-								"uri": config.url + "/images/card.png",
+								"uri": config.url + "/images/logo.png",
 								"uri#integrity": "sha256-acda3404c2cf46da192cf245ccc6b91edce8869122fa5a6636284f1a60ffcd86",
-								"alt_text": "VID Card"
+								"alt_text": "VID Logo"
 							},
-							"background_color": "#12107c",
+							"background_color": "#4cc3dd",
 							"text_color": "#FFFFFF"
 						},
 						"svg_templates": [
