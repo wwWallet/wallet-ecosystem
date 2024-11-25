@@ -14,6 +14,7 @@ import { parseEhicData } from "../datasetParser";
 import path from "node:path";
 import { issuerSigner } from "../issuerSigner";
 import fs from 'fs';
+import base64url from 'base64url';
 
 parseEhicData(path.join(__dirname, "../../../../dataset/ehic-dataset.xlsx")) // test parse
 
@@ -42,9 +43,10 @@ export class EHICSupportedCredentialSdJwtVCDM implements VCDMSupportedCredential
 	getDisplay() {
 		return {
 			name: "EHIC",
-			description: "This is a European Health Insurance Card verifiable credential issued by the well-known EHIC Issuer",
-			background_image: { uri: config.url + "/images/card.png" },
-			background_color: "#4CC3DD",
+			description: "This is a European Health Insurance Card verifiable credential",
+			background_image: { uri: config.url + "/images/background-image.png" },
+			background_color: "#1b263b",
+			text_color: "#FFFFFF",
 			locale: 'en-US',
 		}
 	}
@@ -80,7 +82,7 @@ export class EHICSupportedCredentialSdJwtVCDM implements VCDMSupportedCredential
 						{ name: "Birth Date", value: formatDateDDMMYYYY(ehic.birth_date) },
 						{ name: "Issuer Country", value: ehic.issuer_country },
 						{ name: "Issuer Instutution Code", value: ehic.issuer_institution_code },
-	
+
 					];
 					const rowsObject: CategorizedRawCredentialView = { rows };
 					const pathsWithValues = [
@@ -93,7 +95,7 @@ export class EHICSupportedCredentialSdJwtVCDM implements VCDMSupportedCredential
 						{ path: "issuer_institution_code", value: String(ehic.issuer_institution_code) },
 					];
 					const dataUri = generateDataUriFromSvg(svgText, pathsWithValues);
-	
+
 					return {
 						credential_id: this.getId(),
 						credential_supported_object: this.exportCredentialSupportedObject(),
@@ -103,7 +105,7 @@ export class EHICSupportedCredentialSdJwtVCDM implements VCDMSupportedCredential
 				})
 			return credentialViews[0];
 		}
-		catch(err) {
+		catch (err) {
 			console.error(err)
 			return null;
 		}
@@ -167,7 +169,7 @@ export class EHICSupportedCredentialSdJwtVCDM implements VCDMSupportedCredential
 			issuer_country: true,
 		}
 		const { jws } = await this.getCredentialSigner()
-			.sign(payload, { typ: "JWT", vctm: this.metadata() }, disclosureFrame);
+			.sign(payload, { typ: "vc+sd-jwt", vctm: [base64url.encode(JSON.stringify(this.metadata()))] }, disclosureFrame);
 		const response = {
 			format: this.getFormat(),
 			credential: jws
@@ -180,145 +182,103 @@ export class EHICSupportedCredentialSdJwtVCDM implements VCDMSupportedCredential
 		return {
 			"vct": this.getId(),
 			"name": "EHIC",
-			"description": "This is a Verifiable ID document issued by the well known VID Issuer",
+			"description": "This is a European Health Insurance Card verifiable credential",
 			"display": [
 				{
-					"en-US": {
-						"name": "EHIC",
-						"rendering": {
-							"simple": {
-								"logo": {
-									"uri": config.url + "/images/card.png",
-									"uri#integrity": "sha256-94445b2ca72e9155260c8b4879112df7677e8b3df3dcee9b970b40534e26d4ab",
-									"alt_text": "EHIC Card"
-								},
-								"background_color": "#12107c",
-								"text_color": "#FFFFFF"
-							},
-							"svg_templates": [
-								{
-									"uri": config.url + "/images/template.svg",
-								}
-							],
-						}
+					"lang": "en-US",
+					"name": "EHIC",
+					"rendering": {
+						"simple": {
+							"background_color": "#1b263b",
+							"text_color": "#FFFFFF"
+						},
+						"svg_templates": [
+							{
+								"uri": config.url + "/images/template.svg",
+							}
+						],
 					}
 				}
 			],
 			"claims": [
 				{
 					"path": ["given_name"],
-					"display": {
-						"en-US": {
+					"display": [
+						{
+							"lang": "en-US",
 							"label": "Given Name",
 							"description": "The given name of the EHIC holder"
 						}
-					},
-					"verification": "verified",
-					"sd": "allowed",
+					],
 					"svg_id": "given_name"
 				},
 				{
 					"path": ["family_name"],
-					"display": {
-						"en-US": {
+					"display": [
+						{
+							"lang": "en-US",
 							"label": "Family Name",
 							"description": "The family name of the EHIC holder"
 						}
-					},
-					"verification": "verified",
-					"sd": "allowed",
+					],
 					"svg_id": "family_name"
 				},
 				{
 					"path": ["birth_date"],
-					"display": {
-						"en-US": {
+					"display": [
+						{
+							"lang": "en-US",
 							"label": "Birth Date",
 							"description": "The birth date of the EHIC holder"
 						}
-					},
-					"verification": "verified",
-					"sd": "allowed",
+					],
 					"svg_id": "birth_date"
 				},
 				{
 					"path": ["ssn"],
-					"display": {
-						"en-US": {
+					"display": [
+						{
+							"lang": "en-US",
 							"label": "Social Security Number",
 							"description": "The social security number of the EHIC holder"
 						}
-					},
-					"verification": "authoritative",
-					"sd": "allowed",
+					],
 					"svg_id": "ssn"
 				},
 				{
 					"path": ["issuer_country"],
-					"display": {
-						"en-US": {
+					"display": [
+						{
+							"lang": "en-US",
 							"label": "Issuer Country",
 							"description": "The issuer country of the EHIC holder"
 						}
-					},
-					"verification": "authoritative",
-					"sd": "allowed",
+					],
 					"svg_id": "issuer_country"
 				},
 				{
 					"path": ["issuer_institution_code"],
-					"display": {
-						"en-US": {
+					"display": [
+						{
+							"lang": "en-US",
 							"label": "Issuer Institution Code",
 							"description": "The issuer institution code of the EHIC holder"
 						}
-					},
-					"verification": "authoritative",
-					"sd": "allowed",
+					],
 					"svg_id": "issuer_institution_code"
 				},
 				{
 					"path": ["expiry_date"],
-					"display": {
-						"en-US": {
+					"display": [
+						{
+							"lang": "en-US",
 							"label": "Expiry Date",
 							"description": "The date and time expired this credential"
 						}
-					},
-					"verification": "authoritative",
-					"sd": "allowed",
+					],
 					"svg_id": "expiry_date"
 				}
 			],
-			"schema": {
-				"$schema": "http://json-schema.org/draft-07/schema#",
-				"type": "object",
-				"properties": {
-					"given_name": {
-						"type": "string"
-					},
-					"family_name": {
-						"type": "string"
-					},
-					"birth_date": {
-						"type": "string",
-					},
-					"ssn": {
-						"type": "string"
-					},
-					"issuer_institution_code": {
-						"type": "string"
-					},
-					"issuer_country": {
-						"type": "string"
-					},
-					"expiry_date": {
-						"type": "string"
-					}
-				},
-				"required": [],
-				"additionalProperties": true
-			}
 		}
 
 	}

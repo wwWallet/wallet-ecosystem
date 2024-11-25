@@ -9,6 +9,7 @@ import { CredentialView } from "../../authorization/types";
 import { randomUUID } from "node:crypto";
 import { CredentialSigner } from "../../services/interfaces";
 import { JWK } from "jose";
+import base64url from "base64url";
 import { Request } from "express";
 import { issuerSigner } from "../issuerSigner";
 import { parsePidData } from "../datasetParser";
@@ -44,8 +45,9 @@ export class VIDSupportedCredentialSdJwtVCDM implements VCDMSupportedCredentialP
 		return {
 			name: "Verifiable ID",
 			description: "This is a Verifiable ID verifiable credential issued by the well-known VID Issuer",
-			background_image: { uri: config.url + "/images/card.png" },
+			background_image: { uri: config.url + "/images/background-image.png" },
 			background_color: "#4CC3DD",
+			text_color: "#FFFFFF",
 			locale: 'en-US',
 		}
 	}
@@ -147,7 +149,7 @@ export class VIDSupportedCredentialSdJwtVCDM implements VCDMSupportedCredentialP
 			expiry_date: true,
 		}
 		const { jws } = await this.getCredentialSigner()
-			.sign(payload, { typ: 'JWT', vctm: this.metadata() }, disclosureFrame);
+			.sign(payload, { typ: "vc+sd-jwt", vctm: [base64url.encode(JSON.stringify(this.metadata()))] }, disclosureFrame);
 		const response = {
 			format: this.getFormat(),
 			credential: jws
@@ -163,127 +165,94 @@ export class VIDSupportedCredentialSdJwtVCDM implements VCDMSupportedCredentialP
 			"description": "This is a Verifiable ID document issued by the well known VID Issuer",
 			"display": [
 				{
-					"en-US": {
-						"name": "Verifiable ID",
-						"rendering": {
-							"simple": {
-								"logo": {
-									"uri": config.url + "/images/card.png",
-									"uri#integrity": "sha256-acda3404c2cf46da192cf245ccc6b91edce8869122fa5a6636284f1a60ffcd86",
-									"alt_text": "VID Card"
-								},
-								"background_color": "#12107c",
-								"text_color": "#FFFFFF"
+					"lang": "en-US",
+					"name": "Verifiable ID",
+					"rendering": {
+						"simple": {
+							"logo": {
+								"uri": config.url + "/images/logo.png",
+								"uri#integrity": "sha256-acda3404c2cf46da192cf245ccc6b91edce8869122fa5a6636284f1a60ffcd86",
+								"alt_text": "VID Logo"
 							},
-							"svg_templates": [
-								{
-									"uri": config.url + "/images/template.svg",
-								}
-							],
-						}
+							"background_color": "#4cc3dd",
+							"text_color": "#FFFFFF"
+						},
+						"svg_templates": [
+							{
+								"uri": config.url + "/images/template.svg",
+							}
+						],
 					}
 				}
 			],
 			"claims": [
 				{
 					"path": ["given_name"],
-					"display": {
-						"en-US": {
+					"display": [
+						{
+							"lang": "en-US",
 							"label": "Given Name",
 							"description": "The given name of the VID holder"
 						}
-					},
-					"verification": "verified",
-					"sd": "allowed",
+					],
 					"svg_id": "given_name"
 				},
 				{
 					"path": ["family_name"],
-					"display": {
-						"en-US": {
+					"display": [
+						{
+							"lang": "en-US",
 							"label": "Family Name",
 							"description": "The family name of the VID holder"
 						}
-					},
-					"verification": "verified",
-					"sd": "allowed",
+					],
 					"svg_id": "family_name"
 				},
 				{
 					"path": ["birth_date"],
-					"display": {
-						"en-US": {
-							"label": "Birth Date",
+					"display": [
+						{
+							"lang": "en-US",
+							"label": "Birth date",
 							"description": "The birth date of the VID holder"
 						}
-					},
-					"verification": "verified",
-					"sd": "allowed",
+					],
 					"svg_id": "birth_date"
 				},
 				{
 					"path": ["issuing_authority"],
-					"display": {
-						"en-US": {
-							"label": "Issuing Authority",
-							"description": "The country code of the authority that issued this credential"
+					"display": [
+						{
+							"lang": "en-US",
+							"label": "Issuing authority",
+							"description": "The issuing authority of the VID credential"
 						}
-					},
-					"verification": "authoritative",
-					"sd": "allowed",
+					],
 					"svg_id": "issuing_authority"
 				},
 				{
 					"path": ["issuance_date"],
-					"display": {
-						"en-US": {
-							"label": "Issuance Date",
-							"description": "The date and time issued this credential"
+					"display": [
+						{
+							"lang": "en-US",
+							"label": "Issuance date",
+							"description": "The date that the credential was issued"
 						}
-					},
-					"verification": "authoritative",
-					"sd": "allowed",
+					],
 					"svg_id": "issuance_date"
 				},
 				{
 					"path": ["expiry_date"],
-					"display": {
-						"en-US": {
-							"label": "Expiry Date",
-							"description": "The date and time expired this credential"
+					"display": [
+						{
+							"lang": "en-US",
+							"label": "Issuance date",
+							"description": "The date that the credential will expire"
 						}
-					},
-					"verification": "authoritative",
-					"sd": "allowed",
+					],
 					"svg_id": "expiry_date"
 				}
 			],
-			"schema": {
-				"$schema": "http://json-schema.org/draft-07/schema#",
-				"type": "object",
-				"properties": {
-					"given_name": {
-						"type": "string"
-					},
-					"family_name": {
-						"type": "string"
-					},
-					"birth_date": {
-						"type": "string",
-					},
-					"issuing_authority": {
-						"type": "string"
-					},
-					"issuance_date": {
-						"type": "string"
-					},
-					"expiry_date": {
-						"type": "string"
-					}
-				},
-				"required": [],
-				"additionalProperties": true
-			}
 		}
 
 	}

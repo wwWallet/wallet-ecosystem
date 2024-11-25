@@ -14,6 +14,7 @@ import path from "path";
 import { randomUUID } from "crypto";
 import { Request } from "express";
 import fs from 'fs';
+import base64url from 'base64url';
 
 parseDiplomaData(path.join(__dirname, "../../../../dataset/diploma-dataset.xlsx"));
 
@@ -43,9 +44,10 @@ export class EdiplomasBlueprintSdJwtVCDM implements VCDMSupportedCredentialProto
 	getDisplay() {
 		return {
 			name: "Bachelor Diploma",
-			description: "This is a Bachelor Diploma verifiable credential issued by the well-known eDiplomas",
-			background_image: { uri: config.url + "/images/card.png" },
+			description: "This is a Bachelor Diploma verifiable credential",
+			background_image: { uri: config.url + "/images/background-image.png" },
 			background_color: "#4CC3DD",
+			text_color: "#FFFFFF",
 			locale: 'en-US',
 		}
 	}
@@ -151,7 +153,7 @@ export class EdiplomasBlueprintSdJwtVCDM implements VCDMSupportedCredentialProto
 		}
 
 		const { jws } = await this.getCredentialSigner()
-			.sign(payload, { typ: "JWT", vctm: this.metadata() }, disclosureFrame);
+			.sign(payload, { typ: "vc+sd-jwt", vctm: [base64url.encode(JSON.stringify(this.metadata()))] }, disclosureFrame);
 
 		const response = {
 			format: this.getFormat(),
@@ -165,137 +167,107 @@ export class EdiplomasBlueprintSdJwtVCDM implements VCDMSupportedCredentialProto
 		return {
 			"vct": this.getId(),
 			"name": "Diploma Credential",
-			"description": "This is a Verifiable ID document issued by the well known VID Issuer",
+			"description": "This is a Bachelor Diploma verifiable credential",
 			"display": [
 				{
-					"en-US": {
-						"name": "Diploma Credential",
-						"rendering": {
-							"simple": {
-								"logo": {
-									"uri": config.url + "/images/card.png",
-									"uri#integrity": "sha256-c7fbfe45428aa2715f01065d812c9f6fd52f99c02e4018fb5761a7cbf4894257",
-									"alt_text": "Diploma Card"
-								},
-								"background_color": "#12107c",
-								"text_color": "#FFFFFF"
+					"lang": "en-US",
+					"name": "Diploma Credential",
+					"rendering": {
+						"simple": {
+							"logo": {
+								"uri": config.url + "/images/logo.png",
+								"uri#integrity": "sha256-c7fbfe45428aa2715f01065d812c9f6fd52f99c02e4018fb5761a7cbf4894257",
+								"alt_text": "Diploma Logo"
 							},
-							"svg_templates": [
-								{
-									"uri": config.url + "/images/template.svg",
-								}
-							],
-						}
+							"background_color": "#4CC3DD",
+							"text_color": "#FFFFFF"
+						},
+						"svg_templates": [
+							{
+								"uri": config.url + "/images/template.svg",
+							}
+						],
 					}
 				}
 			],
 			"claims": [
 				{
 					"path": ["given_name"],
-					"display": {
-						"en-US": {
+					"display": [
+						{
+							"lang": "en-US",
 							"label": "Given Name",
 							"description": "The given name of the Diploma Holder"
 						}
-					},
-					"verification": "verified",
-					"sd": "allowed",
+					],
 					"svg_id": "given_name"
 				},
 				{
 					"path": ["family_name"],
-					"display": {
-						"en-US": {
+					"display": [
+						{
+							"lang": "en-US",
 							"label": "Family Name",
 							"description": "The family name of the Diploma Holder"
 						}
-					},
-					"verification": "verified",
-					"sd": "allowed",
+					],
 					"svg_id": "family_name"
 				},
 				{
 					"path": ["title"],
-					"display": {
-						"en-US": {
+					"display": [
+						{
+							"lang": "en-US",
 							"label": "Diploma Title",
 							"description": "The title of the Diploma"
 						}
-					},
-					"verification": "verified",
-					"sd": "allowed",
+					],
 					"svg_id": "title"
-
 				},
 				{
 					"path": ["grade"],
-					"display": {
-						"en-US": {
+					"display": [
+						{
+							"lang": "en-US",
 							"label": "Grade",
 							"description": "Graduate's grade (0-10)"
 						}
-					},
-					"verification": "verified",
-					"sd": "allowed"
+					],
 				},
 				{
 					"path": ["eqf_level"],
-					"display": {
-						"en-US": {
+					"display": [
+						{
+							"lang": "en-US",
 							"label": "EQF Level",
 							"description": "The EQF level of the diploma according to https://europass.europa.eu/en/description-eight-eqf-levels"
 						}
-					},
-					"verification": "verified",
-					"sd": "allowed"
+					],
 				},
 				{
 					"path": ["graduation_date"],
-					"display": {
-						"en-US": {
+					"display": [
+						{
+							"lang": "en-US",
 							"label": "Graduation Date",
 							"description": "The graduation data"
 						}
-					},
-					"verification": "verified",
-					"sd": "allowed",
+					],
 					"svg_id": "graduation_date"
 				},
 				{
 					"path": ["expiry_date"],
-					"display": {
-						"en-US": {
+					"display": [
+						{
+							"lang": "en-US",
 							"label": "Expiry Date",
 							"description": "The date and time expired this credential"
 						}
-					},
-					"verification": "authoritative",
-					"sd": "allowed",
+					],
 					"svg_id": "expiry_date"
 				}
 			],
-			"schema": {
-				"$schema": "http://json-schema.org/draft-07/schema#",
-				"type": "object",
-				"properties": {
-					"title": {
-						"type": "string"
-					},
-					"grade": {
-						"type": "string"
-					},
-					"eqf_level": {
-						"type": "string",
-					},
-					"graduation_date": {
-						"type": "string"
-					}
-				},
-				"required": [],
-				"additionalProperties": true
-			}
 		}
-
 	}
 
 	exportCredentialSupportedObject(): any {
