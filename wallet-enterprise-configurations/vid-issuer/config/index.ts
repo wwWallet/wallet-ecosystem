@@ -19,6 +19,9 @@ export const config = {
 	issuanceFlow: {
 		skipConsent: false,
 		defaultCredentialConfigurationIds: [ "urn:credential:vid" ],
+		batchCredentialIssuance: {
+			batchSize: 1,
+		}
 	},
 	presentationFlow: {
 		response_mode: "direct_post.jwt"
