@@ -21,10 +21,11 @@ export class VerifierConfigurationService implements VerifierConfigurationInterf
 		return [
 			{
 				"id": "vid",
-				"format": { "vc+sd-jwt": { alg: [ 'ES256' ] }, jwt_vp: { alg: [ 'ES256' ] } },
+				"format": { "vc+sd-jwt": { alg: [ 'ES256' ] } },
 				"input_descriptors": [
 					{
 						"id": "VID",
+						"format": { "vc+sd-jwt": { alg: [ 'ES256' ] } },
 						"constraints": {
 							"fields": [
 								{
