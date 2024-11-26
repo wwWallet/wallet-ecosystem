@@ -12,6 +12,7 @@ import { PublicKeyResolverChain } from "../../vp_token/PublicKeyResolverChain";
 
 const verifiableIdDescriptor = {
 	"id": "VerifiableId",
+	"format": { "vc+sd-jwt": { alg: [ 'ES256' ] } },
 	"constraints": {
 		"fields": [
 			{
@@ -45,6 +46,7 @@ const verifiableIdDescriptor = {
 
 const bachelorDescriptor = {
 	"id": "Bachelor",
+	"format": { "vc+sd-jwt": { alg: [ 'ES256' ] } },
 	"constraints": {
 		"fields": [
 			{
@@ -78,6 +80,7 @@ const bachelorDescriptor = {
 
 const europeanHealthInsuranceCardDescriptor = {
 	"id": "EuropeanHealthInsuranceCard",
+	"format": { "vc+sd-jwt": { alg: [ 'ES256' ] } },
 	"constraints": {
 		"fields": [
 			{
@@ -146,7 +149,7 @@ export class VerifierConfigurationService implements VerifierConfigurationInterf
 				"id": "VerifiableId",
 				"title": "Verifiable ID",
 				"description": "Required Fields: VC type, Given Name, Family Name & Birthdate",
-				"format": { "vc+sd-jwt": { alg: ['ES256'] }, jwt_vc_json: { alg: ['ES256'] }, jwt_vp: { alg: ['ES256'] } },
+				"format": { "vc+sd-jwt": { alg: [ 'ES256' ] } },
 				"input_descriptors": [
 					verifiableIdDescriptor
 				]
@@ -155,7 +158,7 @@ export class VerifierConfigurationService implements VerifierConfigurationInterf
 				"id": "Bachelor",
 				"title": "Bachelor Diploma",
 				"description": "Required Fields: VC type, Grade, EQF Level & Diploma Title",
-				"format": { "vc+sd-jwt": { alg: ['ES256'] }, jwt_vc_json: { alg: ['ES256'] }, jwt_vp: { alg: ['ES256'] } },
+				"format": { "vc+sd-jwt": { alg: [ 'ES256' ] } },
 				"input_descriptors": [
 					bachelorDescriptor
 				]
@@ -164,7 +167,7 @@ export class VerifierConfigurationService implements VerifierConfigurationInterf
 				"id": "EuropeanHealthInsuranceCard",
 				"title": "European HealthInsurance Card",
 				"description": "Required Fields: VC type, SSN, Family Name, Given Name & Birth Date",
-				"format": { "vc+sd-jwt": { alg: ['ES256'] }, jwt_vc_json: { alg: ['ES256'] }, jwt_vp: { alg: ['ES256'] } },
+				"format": { "vc+sd-jwt": { alg: [ 'ES256' ] } },
 				"input_descriptors": [
 					europeanHealthInsuranceCardDescriptor
 				]
@@ -173,7 +176,7 @@ export class VerifierConfigurationService implements VerifierConfigurationInterf
 				"id": "VIDAndEuropeanHealthInsuranceCard",
 				"title": "VID + EHIC",
 				"description": "",
-				"format": { "vc+sd-jwt": { alg: ['ES256'] }, jwt_vc_json: { alg: ['ES256'] }, jwt_vp: { alg: ['ES256'] } },
+				"format": { "vc+sd-jwt": { alg: [ 'ES256' ] } },
 				"input_descriptors": [
 					verifiableIdDescriptor,
 					europeanHealthInsuranceCardDescriptor
