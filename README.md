@@ -32,4 +32,4 @@ Visit https://wwwallet.github.io/wallet-docs/
 
 ## Contribution Guidelines
 
-Visit https://wwwallet.github.io/wallet-docs/docs/development-environment-setup/contribution-guidelines
+Want to contribute? Check out our [Contribution Guidelines](https://github.com/wwWallet/.github/blob/main/CONTRIBUTING.md) for more details!
