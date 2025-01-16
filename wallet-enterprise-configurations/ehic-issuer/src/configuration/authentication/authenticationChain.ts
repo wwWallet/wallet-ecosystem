@@ -1,12 +1,13 @@
 import { CONSENT_ENTRYPOINT, VERIFIER_PANEL_ENTRYPOINT } from "../../authorization/constants";
 import { AuthenticationChainBuilder } from "../../authentication/AuthenticationComponent";
 import { VerifierAuthenticationComponent } from "./VerifierAuthenticationComponent";
-import { AuthenticationMethodSelectionComponent } from "./AuthenticationMethodSelectionComponent";
 import { GenericVIDAuthenticationComponent } from "../../authentication/authenticationComponentTemplates/GenericVIDAuthenticationComponent";
 import path from "path";
 import { parseEhicData } from "../datasetParser";
 import { GenericLocalAuthenticationComponent } from "../../authentication/authenticationComponentTemplates/GenericLocalAuthenticationComponent";
 // import { ClientSelectionComponent } from "./ClientSelectionComponent";
+import { GenericAuthenticationMethodSelectionComponent } from "../../authentication/authenticationComponentTemplates/GenericAuthenticationMethodSelectionComponent";
+import { UserAuthenticationMethod } from "../../types/UserAuthenticationMethod.enum";
 
 
 const datasetName = "ehic-dataset.xlsx"
@@ -17,7 +18,8 @@ parseEhicData(path.join(__dirname, "../../../../dataset/" + datasetName)) // tes
 
 export const authChain = new AuthenticationChainBuilder()
 	// .addAuthenticationComponent(new ClientSelectionComponent("client-selection", CONSENT_ENTRYPOINT))
-	.addAuthenticationComponent(new AuthenticationMethodSelectionComponent("auth-method", CONSENT_ENTRYPOINT))
+	// .addAuthenticationComponent(new AuthenticationMethodSelectionComponent("auth-method", CONSENT_ENTRYPOINT))
+	.addAuthenticationComponent(new GenericAuthenticationMethodSelectionComponent("auth-method", CONSENT_ENTRYPOINT, [ { code: UserAuthenticationMethod.VID_AUTH, description: "Authentication with VID" }, { code: UserAuthenticationMethod.SSO, description: "Authentication with National Services" } ]))
 	.addAuthenticationComponent(new GenericVIDAuthenticationComponent("vid-authentication", CONSENT_ENTRYPOINT, {
 		"family_name": { input_descriptor_constraint_field_name: "Family Name" },
 		"given_name": { input_descriptor_constraint_field_name: "Given Name" },

@@ -1,5 +1,6 @@
 const locale = {
 	en: {
+		ReturnToMainPage: "Return",
 		landingPageFaClass: "fa-graduation-cap",
 		header: {
 			title: "eDiplomas Issuer",
@@ -46,6 +47,9 @@ const locale = {
 				networkError: "Network error occured",
 			}
 		},
+		VIDAuthenticationComponent: {
+			title: "Authenticate using VID"
+		},
 		personalInfo: {
 			title: "Personal Identifiable Information",
 			subtitle: "Please review the following personal identifiable information (PII) that has been retrieved for you by the National Authentication Service.",
@@ -57,6 +61,10 @@ const locale = {
 			ssn: "Social Security Number",
 			taxisId: "Tax Identification",
 			document_number: "Document Number",
+		},
+		AuthenticationMethodComponent: {
+			title: "Authentication Method",
+			label: "Choose between authenticating via presenting a Verifiable ID or via a conventional 3rd-party authentication service (e.g., National Authentication Service, Google):",
 		}
 	}
 }

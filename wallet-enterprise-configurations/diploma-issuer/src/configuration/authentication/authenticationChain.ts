@@ -2,11 +2,12 @@ import { CONSENT_ENTRYPOINT, VERIFIER_PANEL_ENTRYPOINT } from "../../authorizati
 import { AuthenticationChainBuilder } from "../../authentication/AuthenticationComponent";
 import { VerifierAuthenticationComponent } from "./VerifierAuthenticationComponent";
 import { InspectPersonalInfoComponent } from "./InspectPersonalInfoComponent";
-import { AuthenticationMethodSelectionComponent } from "./AuthenticationMethodSelectionComponent";
 import { GenericVIDAuthenticationComponent } from "../../authentication/authenticationComponentTemplates/GenericVIDAuthenticationComponent";
 import { GenericLocalAuthenticationComponent } from "../../authentication/authenticationComponentTemplates/GenericLocalAuthenticationComponent";
 import { parseDiplomaData } from "../datasetParser";
 import path from "path";
+import { GenericAuthenticationMethodSelectionComponent } from "../../authentication/authenticationComponentTemplates/GenericAuthenticationMethodSelectionComponent";
+import { UserAuthenticationMethod } from "../../types/UserAuthenticationMethod.enum";
 
 
 const datasetName = "diploma-dataset.xlsx";
@@ -14,7 +15,8 @@ parseDiplomaData(path.join(__dirname, "../../../../dataset/" + datasetName));
 
 export const authChain = new AuthenticationChainBuilder()
 	// .addAuthenticationComponent(new ClientSelectionComponent("client-selection", CONSENT_ENTRYPOINT))
-	.addAuthenticationComponent(new AuthenticationMethodSelectionComponent("auth-method", CONSENT_ENTRYPOINT))
+	// .addAuthenticationComponent(new AuthenticationMethodSelectionComponent("auth-method", CONSENT_ENTRYPOINT))
+	.addAuthenticationComponent(new GenericAuthenticationMethodSelectionComponent("auth-method", CONSENT_ENTRYPOINT, [ { code: UserAuthenticationMethod.VID_AUTH, description: "Authentication with VID" }, { code: UserAuthenticationMethod.SSO, description: "Authentication with National Services" } ]))
 	.addAuthenticationComponent(new GenericVIDAuthenticationComponent("vid-auth", CONSENT_ENTRYPOINT, {
 		"document_number": { input_descriptor_constraint_field_name: "Document Number", parser: (val: any) => String(val) },
 	}))
