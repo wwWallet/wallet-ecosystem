@@ -1,5 +1,6 @@
 const locale = {
 	en: {
+		ReturnToMainPage: "Return",
 		header: {
 			title: "",
 		},
