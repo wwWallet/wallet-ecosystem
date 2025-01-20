@@ -48,7 +48,11 @@ export const issuerSigner: CredentialSigner = {
 		const issuanceDate = new Date();
 		payload.iat = Math.floor(issuanceDate.getTime() / 1000);
 
-		payload.exp =  Math.floor(new Date(payload.expiry_date).getTime() / 1000);
+		// set token expiration to one year
+		const expirationDate = new Date();
+		expirationDate.setFullYear(expirationDate.getFullYear() + 1);
+		payload.exp = Math.floor(expirationDate.getTime() / 1000);
+
 		payload.iss = config.url;
 
 		payload.sub = await calculateJwkThumbprint(payload.cnf.jwk);

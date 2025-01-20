@@ -46,13 +46,11 @@ export const issuerSigner: CredentialSigner = {
 
 
 		const issuanceDate = new Date();
-		const expirationDate = (() => {
-			const expirationDate = new Date(issuanceDate);
-			expirationDate.setFullYear(expirationDate.getFullYear() + 1);
-			return expirationDate;
-		})();
 
-		// payload.vc.expirationDate = expirationDate.toISOString();
+
+		// set token expiration to one year
+		const expirationDate = new Date();
+		expirationDate.setFullYear(expirationDate.getFullYear() + 1);
 		payload.exp = Math.floor(expirationDate.getTime() / 1000);
 
 		// payload.vc.issuanceDate = issuanceDate.toISOString();
