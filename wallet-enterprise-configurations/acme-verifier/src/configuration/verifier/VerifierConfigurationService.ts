@@ -22,7 +22,7 @@ const verifiableIdDescriptor = {
 				],
 				"filter": {
 					"type": "string",
-					"const": "urn:credential:vid"
+					"const": "eu.europa.ec.eudi.pid.1"
 				}
 			},
 			{
