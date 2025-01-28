@@ -32,7 +32,7 @@ export class VIDSupportedCredentialSdJwtVCDM implements VCDMSupportedCredentialP
 	}
 
 	getId(): string {
-		return "urn:credential:vid"
+		return "eu.europa.ec.eudi.pid.1"
 	}
 	getFormat(): VerifiableCredentialFormat {
 		return VerifiableCredentialFormat.VC_SD_JWT;
@@ -121,12 +121,13 @@ export class VIDSupportedCredentialSdJwtVCDM implements VCDMSupportedCredentialP
 		const vid = {
 			family_name: vidEntry.family_name,
 			given_name: vidEntry.given_name,
-			birth_date: new Date(vidEntry.birth_date).toISOString(),
+			birth_date: new Date(vidEntry.birth_date).toISOString().split('T')[0],  // full-date format, according to ARF PID Rulebook
 			issuing_authority: vidEntry.issuing_authority,
 			issuing_country: vidEntry.issuing_country,
 			document_number: String(vidEntry.document_number),
-			issuance_date: new Date().toISOString(),
-			expiry_date: new Date(vidEntry.expiry_date).toISOString(),
+			issuance_date: new Date().toISOString().split('T')[0],  // full-date format, according to ARF PID Rulebook
+			expiry_date: new Date(vidEntry.expiry_date).toISOString().split('T')[0],  // full-date format, according to ARF PID Rulebook
+			age_over_18: true,
 		};
 
 		const payload = {
@@ -147,6 +148,7 @@ export class VIDSupportedCredentialSdJwtVCDM implements VCDMSupportedCredentialP
 			document_number: true,
 			issuance_date: true,
 			expiry_date: true,
+			age_over_18: true,
 		}
 		const { jws } = await this.getCredentialSigner()
 			.sign(payload, { typ: "vc+sd-jwt", vctm: [base64url.encode(JSON.stringify(this.metadata()))] }, disclosureFrame);
