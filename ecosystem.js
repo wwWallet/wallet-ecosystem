@@ -110,6 +110,7 @@ function init() {
 	const firstIssuerInsertion = `INSERT INTO credential_issuer (credentialIssuerIdentifier, clientId, visible) VALUES ('http://wallet-enterprise-vid-issuer:8003', '1233', 1)`;
 	const secondIssuerInsertion = `INSERT INTO credential_issuer (credentialIssuerIdentifier, clientId, visible) VALUES ('http://wallet-enterprise-diploma-issuer:8000', '213213213213', 1)`;
 	const thirdIssuerInsertion = `INSERT INTO credential_issuer (credentialIssuerIdentifier, clientId, visible) VALUES ('http://wallet-enterprise-ehic-issuer:8004', '1343421314efr243', 1)`;
+	const fourthIssuerInsertion = `INSERT INTO credential_issuer (credentialIssuerIdentifier, clientId, visible) VALUES ('http://wallet-enterprise-ruthless-issuer:8010', '1343421314efr243', 1)`;
 
 	const cleanupCertificateTable = `DELETE FROM trusted_root_certificate`;
 	const firstCertificateInsertion = `INSERT INTO trusted_root_certificate (certificate) VALUES ('${issuersTrustedRootCert}')`;
@@ -119,7 +120,7 @@ function init() {
 	const firstVerifierInsertion = `INSERT INTO verifier (name, url) VALUES ('${acmeVerifierFriendlyName}', '${acmeVerifierURL}')`;
 
 	return execSync(`${dockerComposeCommand} exec -t wallet-db sh -c "
-			mariadb -u ${dbUser} -p\\"${dbPassword}\\" wallet -e \\"${cleanupCredentialIssueTable}; ${firstIssuerInsertion}; ${secondIssuerInsertion}; ${thirdIssuerInsertion}; ${cleanupCertificateTable}; ${firstCertificateInsertion}; ${cleanupVerifierTable}; ${firstVerifierInsertion} \\"
+			mariadb -u ${dbUser} -p\\"${dbPassword}\\" wallet -e \\"${cleanupCredentialIssueTable}; ${firstIssuerInsertion}; ${secondIssuerInsertion}; ${thirdIssuerInsertion};${fourthIssuerInsertion}; ${cleanupCertificateTable}; ${firstCertificateInsertion}; ${cleanupVerifierTable}; ${firstVerifierInsertion} \\"
 		"`, { stdio: 'inherit' });
 }
 
@@ -163,6 +164,11 @@ function buildImages() {
 	if (args.length <= 2 || args.includes("ehic-issuer")) {
 		execSync(`cd wallet-enterprise && docker build -t ${imageRegistry}/wallet-enterprise:base -f base.Dockerfile .`, { stdio: 'inherit' });
 		execSync(`docker build -t ${imageRegistry}/wallet-enterprise-ehic-issuer:${imageTag} -f wallet-enterprise-configurations/ehic-issuer/Dockerfile .`, { stdio: 'inherit' });
+	}
+
+	if (args.length <= 2 || args.includes("ruthless-issuer")) {
+		execSync(`cd wallet-enterprise && docker build -t ${imageRegistry}/wallet-enterprise:base -f base.Dockerfile .`, { stdio: 'inherit' });
+		execSync(`docker build -t ${imageRegistry}/wallet-enterprise-ruthless-issuer:${imageTag} -f wallet-enterprise-configurations/ruthless-issuer/Dockerfile .`, { stdio: 'inherit' });
 	}
 
 	if (args.length <= 2 || args.includes("diploma-issuer")) {

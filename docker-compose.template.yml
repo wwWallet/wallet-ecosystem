@@ -65,6 +65,37 @@ services:
           limits:
             memory: 1G
 
+  wallet-enterprise-ruthless-issuer:
+    container_name: wallet-enterprise-ruthless-issuer
+    hostname: wallet-enterprise-ruthless-issuer
+    build:
+      context: $PWD/wallet-enterprise
+      dockerfile: development.Dockerfile
+    image: wallet-enterprise:dev-ruthless
+    restart: always
+    ports:
+      - 8010:8010
+    depends_on:
+      wallet-db:
+        condition: service_healthy
+    volumes:
+      - ./wallet-enterprise:/app:rw
+      - ./wallet-enterprise-configurations/ruthless-issuer/dataset:/app/dataset:rw
+      - ./wallet-enterprise-configurations/ruthless-issuer/config/index.ts:/app/config/index.ts:rw
+      - ./wallet-enterprise-configurations/ruthless-issuer/keys:/app/keys:rw
+      - ./wallet-enterprise-configurations/ruthless-issuer/src/configuration:/app/src/configuration:rw
+      - ./wallet-enterprise-configurations/ruthless-issuer/public/images:/app/public/images:rw
+      - ./wallet-enterprise-configurations/ruthless-issuer/public/styles/main.css:/app/public/styles/main.css:rw
+      - ./.vscode/:/app/.vscode:rw
+      - type: tmpfs
+        target: /app/dist  # Not /dist here because of relative imports that assume dist/ and keys/, views/ etc. are sibling dirs
+        tmpfs:
+          mode: 01777
+    deploy:
+      resources:
+          limits:
+            memory: 1G
+
   wallet-enterprise-diploma-issuer:
     container_name: wallet-enterprise-diploma-issuer
     hostname: wallet-enterprise-diploma-issuer
