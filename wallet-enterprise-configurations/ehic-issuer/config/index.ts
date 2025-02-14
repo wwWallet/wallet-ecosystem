@@ -24,6 +24,7 @@ export const config = {
 		response_mode: "direct_post.jwt"
 	},
 	appType: 'ISSUER', //ISSUER,VERIFIER
+	supportsdjwtvc: false,
 	wwwalletURL: "http://localhost:3000/cb",
 	trustedRootCertificates: [
 		`-----BEGIN CERTIFICATE-----

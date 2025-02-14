@@ -19,6 +19,7 @@ export const config = {
 		response_mode: "direct_post.jwt"
 	},
 	appType: 'VERIFIER', //ISSUER,VERIFIER
+	supportsdjwtvc: false,
 	wwwalletURL: "http://localhost:3000/cb",
 	trustedRootCertificates: [],
 	sessionIdCookieConfiguration: {
