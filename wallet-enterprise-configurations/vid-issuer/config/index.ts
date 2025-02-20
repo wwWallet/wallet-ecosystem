@@ -29,4 +29,5 @@ export const config = {
 	appType: 'ISSUER', //ISSUER,VERIFIER
 	wwwalletURL: "http://localhost:3000/cb",
 	trustedRootCertificates: [],
+	clockTolerance: 60,
 }

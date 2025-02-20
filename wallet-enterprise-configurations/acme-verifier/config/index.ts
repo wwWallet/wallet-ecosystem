@@ -24,5 +24,6 @@ export const config = {
 	sessionIdCookieConfiguration: {
 		maxAge: 900000, // 15-mins
 		secure: false
-	}
+	},
+	clockTolerance: 60,
 }
