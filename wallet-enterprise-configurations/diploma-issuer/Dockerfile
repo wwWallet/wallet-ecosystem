@@ -11,9 +11,10 @@ COPY ./wallet-enterprise-configurations/diploma-issuer/public/images /app/public
 RUN yarn cache clean && yarn install && yarn build
 
 # Production stage
-FROM node:16-bullseye-slim AS production
+FROM node:22-bullseye-slim AS production
 WORKDIR /app
 
+COPY --from=builder /app/lib/core/ ./lib/core/
 COPY --from=builder /app/package.json .
 COPY --from=builder /app/dist/ ./dist/
 COPY --from=builder /app/public/ ./public/
