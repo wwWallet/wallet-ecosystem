@@ -15,10 +15,15 @@ import path from "node:path";
 import { issuerSigner } from "../issuerSigner";
 import fs from 'fs';
 import base64url from 'base64url';
-import { AuthenticationChain } from "../../authentication/AuthenticationComponent";
-import { authChain } from "../authentication/authenticationChain";
+import { AuthenticationChain, AuthenticationChainBuilder } from "../../authentication/AuthenticationComponent";
+import { GenericAuthenticationMethodSelectionComponent } from "../../authentication/authenticationComponentTemplates/GenericAuthenticationMethodSelectionComponent";
+import { GenericVIDAuthenticationComponent } from "../../authentication/authenticationComponentTemplates/GenericVIDAuthenticationComponent";
+import { CONSENT_ENTRYPOINT } from "../../authorization/constants";
+import { GenericLocalAuthenticationComponent } from "../../authentication/authenticationComponentTemplates/GenericLocalAuthenticationComponent";
+import { UserAuthenticationMethod } from "../../types/UserAuthenticationMethod.enum";
 
-parseEhicData(path.join(__dirname, "../../../../dataset/ehic-dataset.xlsx")) // test parse
+const datasetName = "ehic-dataset.xlsx";
+parseEhicData(path.join(__dirname, `../../../../dataset/${datasetName}`)) // test parse
 
 export class EHICSupportedCredentialSdJwtVCDM implements VCDMSupportedCredentialProtocol {
 
@@ -26,7 +31,22 @@ export class EHICSupportedCredentialSdJwtVCDM implements VCDMSupportedCredential
 	constructor() { }
 
 	getAuthenticationChain(): AuthenticationChain {
-		return authChain;
+		return new AuthenticationChainBuilder()
+			.addAuthenticationComponent(new GenericAuthenticationMethodSelectionComponent(this.getId() + "-auth-method", CONSENT_ENTRYPOINT, [{ code: UserAuthenticationMethod.VID_AUTH, description: "Authentication with VID" }, { code: UserAuthenticationMethod.SSO, description: "Authentication with National Services" }]))
+			.addAuthenticationComponent(new GenericVIDAuthenticationComponent(this.getId() + "-vid-authentication", CONSENT_ENTRYPOINT, {
+				"family_name": { input_descriptor_constraint_field_name: "Family Name" },
+				"given_name": { input_descriptor_constraint_field_name: "Given Name" },
+				"birth_date": { input_descriptor_constraint_field_name: "Birth Date", parser: (value: string) => new Date(value).toISOString() },
+			}, "PidMinimal", "PID"))
+			.addAuthenticationComponent(new GenericLocalAuthenticationComponent(this.getId() + "-1-local", CONSENT_ENTRYPOINT, {
+				"family_name": { datasetColumnName: "family_name" },
+				"given_name": { datasetColumnName: "given_name" },
+				"birth_date": { datasetColumnName: "birth_date", parser: (value: any) => new Date(value).toISOString() },
+			},
+				async () => parseEhicData(path.join(__dirname, "../../../../dataset/" + datasetName)) as any[],
+				[{ username: "john", password: "secret" }, { username: "emily", password: "secret" }]
+			))
+			.build();
 	}
 
 	getScope(): string {
@@ -78,7 +98,7 @@ export class EHICSupportedCredentialSdJwtVCDM implements VCDMSupportedCredential
 				new Date(ehic.birth_date).toISOString() == new Date(userSession.birth_date as string).toISOString()
 			);
 			console.log("Ehic = ", ehics)
-			const svgText = fs.readFileSync(path.join(__dirname, "../../../../public/images/template.svg"), 'utf-8');
+			const svgText = fs.readFileSync(path.join(__dirname, "../../../../public/images/template-ehic.svg"), 'utf-8');
 			const credentialViews: CredentialView[] = ehics
 				.map((ehic) => {
 					const rows: CategorizedRawCredentialViewRow[] = [
@@ -200,7 +220,7 @@ export class EHICSupportedCredentialSdJwtVCDM implements VCDMSupportedCredential
 						},
 						"svg_templates": [
 							{
-								"uri": config.url + "/images/template.svg",
+								"uri": config.url + "/images/template-ehic.svg",
 							}
 						],
 					}

@@ -15,10 +15,12 @@ import { issuerSigner } from "../issuerSigner";
 import { parsePidData } from "../datasetParser";
 import path from "node:path";
 import fs from 'fs';
-import { AuthenticationChain } from "../../authentication/AuthenticationComponent";
-import { authChain } from "../authentication/authenticationChain";
+import { AuthenticationChain, AuthenticationChainBuilder } from "../../authentication/AuthenticationComponent";
+import { CONSENT_ENTRYPOINT } from "../../authorization/constants";
+import { GenericLocalAuthenticationComponent } from "../../authentication/authenticationComponentTemplates/GenericLocalAuthenticationComponent";
 
-parsePidData(path.join(__dirname, "../../../../dataset/vid-dataset.xlsx")) // test parse
+const datasetName = "vid-dataset.xlsx";
+parsePidData(path.join(__dirname, `../../../../dataset/${datasetName}`)) // test parse
 
 export class VIDSupportedCredentialSdJwtVCDM implements VCDMSupportedCredentialProtocol {
 
@@ -26,7 +28,15 @@ export class VIDSupportedCredentialSdJwtVCDM implements VCDMSupportedCredentialP
 	constructor() { }
 
 	getAuthenticationChain(): AuthenticationChain {
-		return authChain;
+		return new AuthenticationChainBuilder()
+			.addAuthenticationComponent(new GenericLocalAuthenticationComponent(this.getId() + "-1-local", CONSENT_ENTRYPOINT, {
+				"pid_id": { datasetColumnName: "pid_id", parser: (val: any) => String(val) },
+			},
+				async () => parsePidData(path.join(__dirname, "../../../../dataset/" + datasetName)) as any[],
+				[{ username: "john", password: "secret" }, { username: "emily", password: "secret" }]
+			))
+			// .addAuthenticationComponent(new LocalAuthenticationComponent2("2-local", CONSENT_ENTRYPOINT))
+			.build();
 	}
 
 	getScope(): string {
@@ -69,7 +79,7 @@ export class VIDSupportedCredentialSdJwtVCDM implements VCDMSupportedCredentialP
 			return null;
 		}
 
-		const svgText = fs.readFileSync(path.join(__dirname, "../../../../public/images/template.svg"), 'utf-8');
+		const svgText = fs.readFileSync(path.join(__dirname, "../../../../public/images/template-pid.svg"), 'utf-8');
 		const vids = users.filter(u => String(u.pid_id) == userSession?.pid_id);
 		const credentialViews: CredentialView[] = vids
 			.map((vid) => {
@@ -187,7 +197,7 @@ export class VIDSupportedCredentialSdJwtVCDM implements VCDMSupportedCredentialP
 						},
 						"svg_templates": [
 							{
-								"uri": config.url + "/images/template.svg",
+								"uri": config.url + "/images/template-pid.svg",
 							}
 						],
 					}

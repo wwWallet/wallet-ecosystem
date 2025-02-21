@@ -15,10 +15,20 @@ import { randomUUID } from "crypto";
 import { Request } from "express";
 import fs from 'fs';
 import base64url from 'base64url';
-import { AuthenticationChain } from "../../authentication/AuthenticationComponent";
-import { authChain } from "../authentication/authenticationChain";
+import { AuthenticationChain, AuthenticationChainBuilder } from "../../authentication/AuthenticationComponent";
+import { GenericLocalAuthenticationComponent } from "../../authentication/authenticationComponentTemplates/GenericLocalAuthenticationComponent";
+import { CONSENT_ENTRYPOINT } from "../../authorization/constants";
+import { GenericAuthenticationMethodSelectionComponent } from "../../authentication/authenticationComponentTemplates/GenericAuthenticationMethodSelectionComponent";
+import { GenericVIDAuthenticationComponent } from "../../authentication/authenticationComponentTemplates/GenericVIDAuthenticationComponent";
+import { InspectPersonalInfoComponent } from "../authentication/InspectPersonalInfoComponent";
+import { UserAuthenticationMethod } from "../../types/UserAuthenticationMethod.enum";
 
-parseDiplomaData(path.join(__dirname, "../../../../dataset/diploma-dataset.xlsx"));
+
+const datasetName = "diploma-dataset.xlsx";
+
+
+parseDiplomaData(path.join(__dirname, `../../../../dataset/${datasetName}`));
+
 
 export class EdiplomasBlueprintSdJwtVCDM implements VCDMSupportedCredentialProtocol {
 
@@ -26,7 +36,20 @@ export class EdiplomasBlueprintSdJwtVCDM implements VCDMSupportedCredentialProto
 	constructor() { }
 
 	getAuthenticationChain(): AuthenticationChain {
-		return authChain;
+		return new AuthenticationChainBuilder()
+			.addAuthenticationComponent(new GenericAuthenticationMethodSelectionComponent(this.getId() + "-auth-method", CONSENT_ENTRYPOINT, [{ code: UserAuthenticationMethod.VID_AUTH, description: "Authentication with VID" }, { code: UserAuthenticationMethod.SSO, description: "Authentication with National Services" }]))
+			.addAuthenticationComponent(new GenericVIDAuthenticationComponent(this.getId() + "-vid-auth", CONSENT_ENTRYPOINT, {
+				"document_number": { input_descriptor_constraint_field_name: "Document Number", parser: (val: any) => String(val) },
+			}, "PidWithDocumentId", "PID"))
+			.addAuthenticationComponent(new GenericLocalAuthenticationComponent(this.getId() + "-1-local", CONSENT_ENTRYPOINT, {
+				"document_number": { datasetColumnName: "vid_document_number", parser: (val: any) => String(val) },
+			},
+				async () => parseDiplomaData(path.join(__dirname, "../../../../dataset/" + datasetName)) as any[],
+				[{ username: "john", password: "secret" }, { username: "emily", password: "secret" }]
+			))
+			.addAuthenticationComponent(new InspectPersonalInfoComponent(this.getId() + "-2-info", CONSENT_ENTRYPOINT))
+			.build();
+		// .addAuthenticationComponent(new LocalAuthenticationComponent2("2-local", CONSENT_ENTRYPOINT))
 	}
 
 	getId(): string {
@@ -79,7 +102,7 @@ export class EdiplomasBlueprintSdJwtVCDM implements VCDMSupportedCredentialProto
 			throw new Error("Could not generate credential response");
 		}
 
-		const svgText = fs.readFileSync(path.join(__dirname, "../../../../public/images/template.svg"), 'utf-8');
+		const svgText = fs.readFileSync(path.join(__dirname, "../../../../public/images/template-diploma.svg"), 'utf-8');
 
 		const rows: CategorizedRawCredentialViewRow[] = [
 			{ name: "Given Name", value: diplomaEntry.given_name },
@@ -189,7 +212,7 @@ export class EdiplomasBlueprintSdJwtVCDM implements VCDMSupportedCredentialProto
 						},
 						"svg_templates": [
 							{
-								"uri": config.url + "/images/template.svg",
+								"uri": config.url + "/images/template-diploma.svg",
 							}
 						],
 					}

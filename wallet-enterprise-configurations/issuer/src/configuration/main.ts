@@ -1,3 +1,4 @@
+import { credentialConfigurationRegistryServiceEmitter } from "../services/CredentialConfigurationRegistryService";
 import { credentialConfigurationRegistryService } from "../services/instances";
 import { EdiplomasBlueprintSdJwtVCDM } from "./SupportedCredentialsConfiguration/EdiplomasBlueprintSdJwtVCDM";
 import { EHICSupportedCredentialSdJwtVCDM } from "./SupportedCredentialsConfiguration/EHICSupportedCredentialSdJwtVCDM";
@@ -7,7 +8,7 @@ export async function configurationExecution() {
 	credentialConfigurationRegistryService.register(new VIDSupportedCredentialSdJwtVCDM());
 	credentialConfigurationRegistryService.register(new EdiplomasBlueprintSdJwtVCDM());
 	credentialConfigurationRegistryService.register(new EHICSupportedCredentialSdJwtVCDM());
-
+	credentialConfigurationRegistryServiceEmitter.emit('initialized');
 }
 
 
