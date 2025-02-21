@@ -44,7 +44,7 @@ export class VerifierConfigurationService implements VerifierConfigurationInterf
 									],
 									"filter": {
 										"type": "string",
-										"const": "eu.europa.ec.eudi.pid.1"
+										"const": "urn:eu.europa.ec.eudi:pid:1"
 									}
 								}
 							]
