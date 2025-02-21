@@ -32,7 +32,7 @@ export class VIDSupportedCredentialSdJwtVCDM implements VCDMSupportedCredentialP
 	}
 
 	getId(): string {
-		return "eu.europa.ec.eudi.pid.1"
+		return "urn:eu.europa.ec.eudi:pid:1"
 	}
 	getFormat(): VerifiableCredentialFormat {
 		return VerifiableCredentialFormat.VC_SD_JWT;
