@@ -156,22 +156,22 @@ function buildImages() {
 	}
 
 	if (args.length <= 2 || args.includes("vid-issuer")) {
-		execSync(`cd wallet-enterprise && docker build -t ${imageRegistry}/wallet-enterprise:base -f base.Dockerfile .`, { stdio: 'inherit' });
+		execSync(`cd wallet-enterprise && docker build -t ghcr.io/wwwallet/wallet-enterprise:base -f base.Dockerfile .`, { stdio: 'inherit' });
 		execSync(`docker build -t ${imageRegistry}/wallet-enterprise-vid-issuer:${imageTag} -f wallet-enterprise-configurations/vid-issuer/Dockerfile .`, { stdio: 'inherit' });
 	}
 
 	if (args.length <= 2 || args.includes("ehic-issuer")) {
-		execSync(`cd wallet-enterprise && docker build -t ${imageRegistry}/wallet-enterprise:base -f base.Dockerfile .`, { stdio: 'inherit' });
+		execSync(`cd wallet-enterprise && docker build -t ghcr.io/wwwallet/wallet-enterprise:base -f base.Dockerfile .`, { stdio: 'inherit' });
 		execSync(`docker build -t ${imageRegistry}/wallet-enterprise-ehic-issuer:${imageTag} -f wallet-enterprise-configurations/ehic-issuer/Dockerfile .`, { stdio: 'inherit' });
 	}
 
 	if (args.length <= 2 || args.includes("diploma-issuer")) {
-		execSync(`cd wallet-enterprise && docker build -t ${imageRegistry}/wallet-enterprise:base -f base.Dockerfile .`, { stdio: 'inherit' });
+		execSync(`cd wallet-enterprise && docker build -t ghcr.io/wwwallet/wallet-enterprise:base -f base.Dockerfile .`, { stdio: 'inherit' });
 		execSync(`docker build -t ${imageRegistry}/wallet-enterprise-diploma-issuer:${imageTag} -f wallet-enterprise-configurations/diploma-issuer/Dockerfile .`, { stdio: 'inherit' });
 	}
 
 	if (args.length <= 2 || args.includes("acme-verifier")) {
-		execSync(`cd wallet-enterprise && docker build -t ${imageRegistry}/wallet-enterprise:base -f base.Dockerfile .`, { stdio: 'inherit' });
+		execSync(`cd wallet-enterprise && docker build -t ghcr.io/wwwallet/wallet-enterprise:base -f base.Dockerfile .`, { stdio: 'inherit' });
 		execSync(`docker build -t ${imageRegistry}/wallet-enterprise-acme-verifier:${imageTag} -f wallet-enterprise-configurations/acme-verifier/Dockerfile .`, { stdio: 'inherit' });
 	}
 }
