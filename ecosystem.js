@@ -107,9 +107,7 @@ if (action === "build-images") {
 
 function init() {
 	const cleanupCredentialIssueTable = `DELETE FROM credential_issuer`;
-	const firstIssuerInsertion = `INSERT INTO credential_issuer (credentialIssuerIdentifier, clientId, visible) VALUES ('http://wallet-enterprise-vid-issuer:8003', '1233', 1)`;
-	const secondIssuerInsertion = `INSERT INTO credential_issuer (credentialIssuerIdentifier, clientId, visible) VALUES ('http://wallet-enterprise-diploma-issuer:8000', '213213213213', 1)`;
-	const thirdIssuerInsertion = `INSERT INTO credential_issuer (credentialIssuerIdentifier, clientId, visible) VALUES ('http://wallet-enterprise-ehic-issuer:8004', '1343421314efr243', 1)`;
+	const firstIssuerInsertion = `INSERT INTO credential_issuer (credentialIssuerIdentifier, clientId, visible) VALUES ('http://wallet-enterprise-issuer:8003', '1233', 1)`;
 
 	const cleanupCertificateTable = `DELETE FROM trusted_root_certificate`;
 	const firstCertificateInsertion = `INSERT INTO trusted_root_certificate (certificate) VALUES ('${issuersTrustedRootCert}')`;
@@ -119,7 +117,7 @@ function init() {
 	const firstVerifierInsertion = `INSERT INTO verifier (name, url) VALUES ('${acmeVerifierFriendlyName}', '${acmeVerifierURL}')`;
 
 	return execSync(`${dockerComposeCommand} exec -t wallet-db sh -c "
-			mariadb -u ${dbUser} -p\\"${dbPassword}\\" wallet -e \\"${cleanupCredentialIssueTable}; ${firstIssuerInsertion}; ${secondIssuerInsertion}; ${thirdIssuerInsertion}; ${cleanupCertificateTable}; ${firstCertificateInsertion}; ${cleanupVerifierTable}; ${firstVerifierInsertion} \\"
+			mariadb -u ${dbUser} -p\\"${dbPassword}\\" wallet -e \\"${cleanupCredentialIssueTable}; ${firstIssuerInsertion}; ${cleanupCertificateTable}; ${firstCertificateInsertion}; ${cleanupVerifierTable}; ${firstVerifierInsertion} \\"
 		"`, { stdio: 'inherit' });
 }
 

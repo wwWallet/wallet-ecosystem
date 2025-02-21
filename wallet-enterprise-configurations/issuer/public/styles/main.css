@@ -1,0 +1,28 @@
+:root {
+	--primary-color: #1B263B;
+	--header-bg-color: var(--primary-color);
+	--header-item-color: white;
+	--layout-bg-color: rgb(255, 255, 255);
+	--secondary-color: #778DA9;
+	--secondary-light-color: #E0E1DD;
+	--light-gray: #f5f5f5;
+	--dark-gray: #333333;
+	--error-red: rgb(209, 3, 3);
+	--link-light-blue: rgb(0, 162, 255);
+	--btn-yellow: #F9CA1A;
+	--btn-yellow-hov: #caa418;
+}
+
+/* comment/uncomment or block/none to hide them */
+.ribbon {
+	display: block;
+}
+
+.menu-area {
+	display: none;
+}
+/* -------- end -------- */
+
+/* overwrite Style */
+
+/* -------- end -------- */
