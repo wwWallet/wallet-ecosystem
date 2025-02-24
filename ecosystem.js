@@ -153,19 +153,9 @@ function buildImages() {
 		execSync(`docker build -t ${imageRegistry}/wallet-enterprise:${imageTag} wallet-enterprise`, { stdio: 'inherit' });
 	}
 
-	if (args.length <= 2 || args.includes("vid-issuer")) {
+	if (args.length <= 2 || args.includes("issuer")) {
 		execSync(`cd wallet-enterprise && docker build -t ghcr.io/wwwallet/wallet-enterprise:base -f base.Dockerfile .`, { stdio: 'inherit' });
-		execSync(`docker build -t ${imageRegistry}/wallet-enterprise-vid-issuer:${imageTag} -f wallet-enterprise-configurations/vid-issuer/Dockerfile .`, { stdio: 'inherit' });
-	}
-
-	if (args.length <= 2 || args.includes("ehic-issuer")) {
-		execSync(`cd wallet-enterprise && docker build -t ghcr.io/wwwallet/wallet-enterprise:base -f base.Dockerfile .`, { stdio: 'inherit' });
-		execSync(`docker build -t ${imageRegistry}/wallet-enterprise-ehic-issuer:${imageTag} -f wallet-enterprise-configurations/ehic-issuer/Dockerfile .`, { stdio: 'inherit' });
-	}
-
-	if (args.length <= 2 || args.includes("diploma-issuer")) {
-		execSync(`cd wallet-enterprise && docker build -t ghcr.io/wwwallet/wallet-enterprise:base -f base.Dockerfile .`, { stdio: 'inherit' });
-		execSync(`docker build -t ${imageRegistry}/wallet-enterprise-diploma-issuer:${imageTag} -f wallet-enterprise-configurations/diploma-issuer/Dockerfile .`, { stdio: 'inherit' });
+		execSync(`docker build -t ${imageRegistry}/wallet-enterprise-issuer:${imageTag} -f wallet-enterprise-configurations/issuer/Dockerfile .`, { stdio: 'inherit' });
 	}
 
 	if (args.length <= 2 || args.includes("acme-verifier")) {
