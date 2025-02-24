@@ -1,0 +1,19 @@
+name: Build Docker image
+on:
+  push:
+    branches-ignore:
+      - master
+  pull_request:
+
+jobs:
+  build-vid:
+    permissions:
+      contents: read
+      packages: read
+
+    uses: ./.github/workflows/docker-build-push.yml
+    secrets: inherit
+    with:
+      image-tag: ghcr.io/wwwallet/wallet-enterprise-issuer:latest
+      docker-push: false
+      dockerfile-path: ./wallet-enterprise-configurations/issuer/Dockerfile

@@ -107,9 +107,7 @@ if (action === "build-images") {
 
 function init() {
 	const cleanupCredentialIssueTable = `DELETE FROM credential_issuer`;
-	const firstIssuerInsertion = `INSERT INTO credential_issuer (credentialIssuerIdentifier, clientId, visible) VALUES ('http://wallet-enterprise-vid-issuer:8003', '1233', 1)`;
-	const secondIssuerInsertion = `INSERT INTO credential_issuer (credentialIssuerIdentifier, clientId, visible) VALUES ('http://wallet-enterprise-diploma-issuer:8000', '213213213213', 1)`;
-	const thirdIssuerInsertion = `INSERT INTO credential_issuer (credentialIssuerIdentifier, clientId, visible) VALUES ('http://wallet-enterprise-ehic-issuer:8004', '1343421314efr243', 1)`;
+	const firstIssuerInsertion = `INSERT INTO credential_issuer (credentialIssuerIdentifier, clientId, visible) VALUES ('http://wallet-enterprise-issuer:8003', '1233', 1)`;
 
 	const cleanupCertificateTable = `DELETE FROM trusted_root_certificate`;
 	const firstCertificateInsertion = `INSERT INTO trusted_root_certificate (certificate) VALUES ('${issuersTrustedRootCert}')`;
@@ -119,7 +117,7 @@ function init() {
 	const firstVerifierInsertion = `INSERT INTO verifier (name, url) VALUES ('${acmeVerifierFriendlyName}', '${acmeVerifierURL}')`;
 
 	return execSync(`${dockerComposeCommand} exec -t wallet-db sh -c "
-			mariadb -u ${dbUser} -p\\"${dbPassword}\\" wallet -e \\"${cleanupCredentialIssueTable}; ${firstIssuerInsertion}; ${secondIssuerInsertion}; ${thirdIssuerInsertion}; ${cleanupCertificateTable}; ${firstCertificateInsertion}; ${cleanupVerifierTable}; ${firstVerifierInsertion} \\"
+			mariadb -u ${dbUser} -p\\"${dbPassword}\\" wallet -e \\"${cleanupCredentialIssueTable}; ${firstIssuerInsertion}; ${cleanupCertificateTable}; ${firstCertificateInsertion}; ${cleanupVerifierTable}; ${firstVerifierInsertion} \\"
 		"`, { stdio: 'inherit' });
 }
 
@@ -155,19 +153,9 @@ function buildImages() {
 		execSync(`docker build -t ${imageRegistry}/wallet-enterprise:${imageTag} wallet-enterprise`, { stdio: 'inherit' });
 	}
 
-	if (args.length <= 2 || args.includes("vid-issuer")) {
+	if (args.length <= 2 || args.includes("issuer")) {
 		execSync(`cd wallet-enterprise && docker build -t ghcr.io/wwwallet/wallet-enterprise:base -f base.Dockerfile .`, { stdio: 'inherit' });
-		execSync(`docker build -t ${imageRegistry}/wallet-enterprise-vid-issuer:${imageTag} -f wallet-enterprise-configurations/vid-issuer/Dockerfile .`, { stdio: 'inherit' });
-	}
-
-	if (args.length <= 2 || args.includes("ehic-issuer")) {
-		execSync(`cd wallet-enterprise && docker build -t ghcr.io/wwwallet/wallet-enterprise:base -f base.Dockerfile .`, { stdio: 'inherit' });
-		execSync(`docker build -t ${imageRegistry}/wallet-enterprise-ehic-issuer:${imageTag} -f wallet-enterprise-configurations/ehic-issuer/Dockerfile .`, { stdio: 'inherit' });
-	}
-
-	if (args.length <= 2 || args.includes("diploma-issuer")) {
-		execSync(`cd wallet-enterprise && docker build -t ghcr.io/wwwallet/wallet-enterprise:base -f base.Dockerfile .`, { stdio: 'inherit' });
-		execSync(`docker build -t ${imageRegistry}/wallet-enterprise-diploma-issuer:${imageTag} -f wallet-enterprise-configurations/diploma-issuer/Dockerfile .`, { stdio: 'inherit' });
+		execSync(`docker build -t ${imageRegistry}/wallet-enterprise-issuer:${imageTag} -f wallet-enterprise-configurations/issuer/Dockerfile .`, { stdio: 'inherit' });
 	}
 
 	if (args.length <= 2 || args.includes("acme-verifier")) {
