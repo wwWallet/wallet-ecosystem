@@ -6,7 +6,7 @@ on:
   pull_request:
 
 jobs:
-  build-diploma:
+  build-vid:
     permissions:
       contents: read
       packages: read
@@ -14,6 +14,6 @@ jobs:
     uses: ./.github/workflows/docker-build-push.yml
     secrets: inherit
     with:
-      image-tag: ghcr.io/wwwallet/wallet-enterprise-diploma-issuer:latest
+      image-tag: ghcr.io/wwwallet/wallet-enterprise-issuer:latest
       docker-push: false
-      dockerfile-path: ./wallet-enterprise-configurations/diploma-issuer/Dockerfile
+      dockerfile-path: ./wallet-enterprise-configurations/issuer/Dockerfile
