@@ -131,9 +131,9 @@ function buildImages() {
 	// syntax: node ecosystem.js build-images <image_tag> <image name 1> <image name 2> ... <image name N>
 	// <image_tag> is required
 	// if <image name 1> <image name 2> ... <image name N> is not provided, then all images will be built
-	if (args.length < 1) {
-		console.error("<image_tag> is required");
-		console.error("Syntax: node ecosystem.js build-images <image_tag> <image name 1> <image name 2> ... <image name N>");
+	if (args.length < 2) {
+		console.error("<image_registry> or <image_tag> is missing");
+		console.error("Syntax: node ecosystem.js build-images <image_registry> <image_tag> <image name 1> <image name 2> ... <image name N>");
 		process.exit();
 	}
 
