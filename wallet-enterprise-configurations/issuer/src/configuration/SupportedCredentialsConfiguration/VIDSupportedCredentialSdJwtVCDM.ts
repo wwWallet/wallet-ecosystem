@@ -29,7 +29,7 @@ export class VIDSupportedCredentialSdJwtVCDM implements VCDMSupportedCredentialP
 
 	getAuthenticationChain(): AuthenticationChain {
 		return new AuthenticationChainBuilder()
-			.addAuthenticationComponent(new GenericLocalAuthenticationComponent(this.getId() + "-1-local", CONSENT_ENTRYPOINT, {
+			.addAuthenticationComponent(new GenericLocalAuthenticationComponent(this.getScope() + "-1-local", CONSENT_ENTRYPOINT, {
 				"pid_id": { datasetColumnName: "pid_id", parser: (val: any) => String(val) },
 			},
 				async () => parsePidData(path.join(__dirname, "../../../../dataset/" + datasetName)) as any[],

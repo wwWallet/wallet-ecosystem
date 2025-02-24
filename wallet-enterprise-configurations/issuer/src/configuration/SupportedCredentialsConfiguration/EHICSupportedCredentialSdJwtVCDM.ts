@@ -32,13 +32,13 @@ export class EHICSupportedCredentialSdJwtVCDM implements VCDMSupportedCredential
 
 	getAuthenticationChain(): AuthenticationChain {
 		return new AuthenticationChainBuilder()
-			.addAuthenticationComponent(new GenericAuthenticationMethodSelectionComponent(this.getId() + "-auth-method", CONSENT_ENTRYPOINT, [{ code: UserAuthenticationMethod.VID_AUTH, description: "Authentication with VID" }, { code: UserAuthenticationMethod.SSO, description: "Authentication with National Services" }]))
-			.addAuthenticationComponent(new GenericVIDAuthenticationComponent(this.getId() + "-vid-authentication", CONSENT_ENTRYPOINT, {
+			.addAuthenticationComponent(new GenericAuthenticationMethodSelectionComponent(this.getScope() + "-auth-method", CONSENT_ENTRYPOINT, [{ code: UserAuthenticationMethod.VID_AUTH, description: "Authentication with VID" }, { code: UserAuthenticationMethod.SSO, description: "Authentication with National Services" }]))
+			.addAuthenticationComponent(new GenericVIDAuthenticationComponent(this.getScope() + "-vid-authentication", CONSENT_ENTRYPOINT, {
 				"family_name": { input_descriptor_constraint_field_name: "Family Name" },
 				"given_name": { input_descriptor_constraint_field_name: "Given Name" },
 				"birth_date": { input_descriptor_constraint_field_name: "Birth Date", parser: (value: string) => new Date(value).toISOString() },
 			}, "PidMinimal", "PID"))
-			.addAuthenticationComponent(new GenericLocalAuthenticationComponent(this.getId() + "-1-local", CONSENT_ENTRYPOINT, {
+			.addAuthenticationComponent(new GenericLocalAuthenticationComponent(this.getScope() + "-1-local", CONSENT_ENTRYPOINT, {
 				"family_name": { datasetColumnName: "family_name" },
 				"given_name": { datasetColumnName: "given_name" },
 				"birth_date": { datasetColumnName: "birth_date", parser: (value: any) => new Date(value).toISOString() },
