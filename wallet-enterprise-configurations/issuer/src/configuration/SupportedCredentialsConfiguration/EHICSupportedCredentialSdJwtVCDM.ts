@@ -37,7 +37,7 @@ export class EHICSupportedCredentialSdJwtVCDM implements VCDMSupportedCredential
 				"family_name": { input_descriptor_constraint_field_name: "Family Name" },
 				"given_name": { input_descriptor_constraint_field_name: "Given Name" },
 				"birth_date": { input_descriptor_constraint_field_name: "Birth Date", parser: (value: string) => new Date(value).toISOString() },
-			}, "PidMinimal", "PID"))
+			}, "PidMinimal", "PID", this.getDisplay().name))
 			.addAuthenticationComponent(new GenericLocalAuthenticationComponent(this.getScope() + "-1-local", CONSENT_ENTRYPOINT, {
 				"family_name": { datasetColumnName: "family_name" },
 				"given_name": { datasetColumnName: "given_name" },
