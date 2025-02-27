@@ -74,7 +74,7 @@ export class EdiplomasBlueprintSdJwtVCDM implements VCDMSupportedCredentialProto
 			name: "Bachelor Diploma",
 			description: "This is a Bachelor Diploma verifiable credential",
 			background_image: { uri: config.url + "/images/background-image.png" },
-			background_color: "#4CC3DD",
+			background_color: "#003476",
 			text_color: "#FFFFFF",
 			locale: 'en-US',
 		}
