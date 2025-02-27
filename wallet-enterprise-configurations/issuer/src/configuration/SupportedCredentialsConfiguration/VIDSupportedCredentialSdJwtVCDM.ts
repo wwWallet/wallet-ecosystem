@@ -85,9 +85,18 @@ export class VIDSupportedCredentialSdJwtVCDM implements VCDMSupportedCredentialP
 			.map((vid) => {
 				const rows: CategorizedRawCredentialViewRow[] = [
 					{ name: "Family Name", value: vid.family_name },
+					{ name: "Family Name at Birth", value: vid.family_name_birth },
 					{ name: "Given Name", value: vid.given_name },
+					{ name: "Given Name at Birth", value: vid.given_name_birth },
 					{ name: "Document Number", value: vid.document_number },
 					{ name: "Birth Date", value: formatDateDDMMYYYY(vid.birth_date) },
+					{ name: "Age Over 18", value: vid.age_over_18 },
+					{ name: "Sex", value: vid.sex },
+					{ name: "Nationality", value: vid.nationality },
+					{ name: "Birth Place", value: vid.birth_place },
+					{ name: "Resident Address", value: vid.resident_address },
+					{ name: "Email Address", value: vid.email_address },
+					{ name: "Mobile Phone", value: vid.mobile_phone_number },
 					{ name: "Expiry Date", value: formatDateDDMMYYYY(vid.expiry_date) },
 				];
 				const rowsObject: CategorizedRawCredentialView = { rows };
@@ -136,14 +145,22 @@ export class VIDSupportedCredentialSdJwtVCDM implements VCDMSupportedCredentialP
 
 		const vid = {
 			family_name: vidEntry.family_name,
+			family_name_birth: vidEntry.family_name_birth,
 			given_name: vidEntry.given_name,
+			given_name_birth: vidEntry.given_name_birth,
 			birth_date: new Date(vidEntry.birth_date).toISOString().split('T')[0],  // full-date format, according to ARF PID Rulebook
 			issuing_authority: vidEntry.issuing_authority,
 			issuing_country: vidEntry.issuing_country,
 			document_number: String(vidEntry.document_number),
 			issuance_date: new Date().toISOString().split('T')[0],  // full-date format, according to ARF PID Rulebook
 			expiry_date: new Date(vidEntry.expiry_date).toISOString().split('T')[0],  // full-date format, according to ARF PID Rulebook
-			age_over_18: true,
+			age_over_18: vidEntry.age_over_18 === '1' ? true : false,
+			sex: vidEntry.sex,
+			nationality: vidEntry.nationality,
+			birth_place: vidEntry.birth_place,
+			resident_address: vidEntry.resident_address,
+			email_address: vidEntry.email_address,
+			mobile_phone_number: vidEntry.mobile_phone_number
 		};
 
 		const payload = {
@@ -157,7 +174,9 @@ export class VIDSupportedCredentialSdJwtVCDM implements VCDMSupportedCredentialP
 
 		const disclosureFrame = {
 			family_name: true,
+			family_name_birth: true,
 			given_name: true,
+			given_name_birth: true,
 			birth_date: true,
 			issuing_authority: true,
 			issuing_country: true,
@@ -165,6 +184,12 @@ export class VIDSupportedCredentialSdJwtVCDM implements VCDMSupportedCredentialP
 			issuance_date: true,
 			expiry_date: true,
 			age_over_18: true,
+			sex: true,
+			nationality: true,
+			birth_place: true,
+			resident_address: true,
+			email_address: true,
+			mobile_phone_number: true
 		}
 		const { jws } = await this.getCredentialSigner()
 			.sign(payload, { typ: "vc+sd-jwt", vctm: [base64url.encode(JSON.stringify(this.metadata()))] }, disclosureFrame);
