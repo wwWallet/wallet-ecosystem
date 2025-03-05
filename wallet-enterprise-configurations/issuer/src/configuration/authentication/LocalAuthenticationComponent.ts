@@ -7,6 +7,7 @@ import { AuthorizationServerState } from "../../entities/AuthorizationServerStat
 import locale from "../locale";
 import { parsePidData } from "../datasetParser";
 import path from "path";
+import titles from "../titles";
 
 
 
@@ -64,7 +65,7 @@ export class LocalAuthenticationComponent extends AuthenticationComponent {
 
 	private async renderLogin(req: Request, res: Response): Promise<any> {
 		res.render('issuer/login', {
-			title: "Login",
+			title: titles.index,
 			lang: req.lang,
 			locale: locale[req.lang]
 		})
@@ -72,7 +73,7 @@ export class LocalAuthenticationComponent extends AuthenticationComponent {
 
 	private async renderFailedLogin(req: Request, res: Response): Promise<any> {
 		res.render('issuer/login', {
-			title: "Login",
+			title: titles.index,
 			lang: req.lang,
 			locale: locale[req.lang],
 			failed: true
