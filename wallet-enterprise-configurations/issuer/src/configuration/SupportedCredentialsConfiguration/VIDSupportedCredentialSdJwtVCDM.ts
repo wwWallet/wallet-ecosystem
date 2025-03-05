@@ -62,7 +62,7 @@ export class VIDSupportedCredentialSdJwtVCDM implements VCDMSupportedCredentialP
 			name: "Verifiable ID",
 			description: "This is a Verifiable ID verifiable credential issued by the well-known VID Issuer",
 			background_image: { uri: config.url + "/images/background-image.png" },
-			background_color: "#4CC3DD",
+			background_color: "#1b263b",
 			text_color: "#FFFFFF",
 			locale: 'en-US',
 		}

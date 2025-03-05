@@ -21,7 +21,7 @@ const locale = {
 		},
 		index: {
 			header: "wwWallet Issuer",
-			phrase: "I want to receive a Verifiable ID",
+			phrase: "I want to receive a",
 			proceed: "Proceed",
 			heading: "wwWallet Issuer",
 			paragraph: "This is a portal where citizens can receive their digital Verifiable ID in their wallet. To proceed you must first have an EBSI conformant digital wallet. This Verifiable ID will contain a the Social Security Number as a personal identifier.",
