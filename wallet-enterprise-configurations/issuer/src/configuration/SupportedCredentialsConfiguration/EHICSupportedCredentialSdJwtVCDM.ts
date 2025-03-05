@@ -1,6 +1,6 @@
 import { config } from "../../../config";
 import { CategorizedRawCredentialView, CategorizedRawCredentialViewRow } from "../../openid4vci/Metadata";
-import { VerifiableCredentialFormat } from "../../types/oid4vci";
+import { VerifiableCredentialFormat } from "core/dist/types";
 import { VCDMSupportedCredentialProtocol } from "../../lib/CredentialIssuerConfig/SupportedCredentialProtocol";
 import { formatDateDDMMYYYY } from "../../lib/formatDate";
 import { generateDataUriFromSvg } from "../../lib/generateDataUriFromSvg";
@@ -61,7 +61,7 @@ export class EHICSupportedCredentialSdJwtVCDM implements VCDMSupportedCredential
 		return "urn:credential:ehic"
 	}
 	getFormat(): VerifiableCredentialFormat {
-		return VerifiableCredentialFormat.VC_SD_JWT;
+		return VerifiableCredentialFormat.VC_SDJWT;
 	}
 	getTypes(): string[] {
 		return ["VerifiableCredential", "VerifiableAttestation", "EuropeanHealthInsuranceCard", this.getId()];
@@ -194,11 +194,11 @@ export class EHICSupportedCredentialSdJwtVCDM implements VCDMSupportedCredential
 			issuer_institution_code: true,
 			issuer_country: true,
 		}
-		const { jws } = await this.getCredentialSigner()
-			.sign(payload, { typ: "vc+sd-jwt", vctm: [base64url.encode(JSON.stringify(this.metadata()))] }, disclosureFrame);
+		const { credential } = await this.getCredentialSigner()
+			.signSdJwtVc(payload, { typ: VerifiableCredentialFormat.VC_SDJWT, vctm: [base64url.encode(JSON.stringify(this.metadata()))] }, disclosureFrame);
 		const response = {
 			format: this.getFormat(),
-			credential: jws
+			credential: credential
 		};
 
 		return response;

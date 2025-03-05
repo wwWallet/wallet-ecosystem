@@ -44,6 +44,46 @@ const verifiableIdDescriptor = {
 	}
 }
 
+const mdocPidFields = [
+	{
+		"name": "Family Name",
+		"path": [
+			"$['eu.europa.ec.eudi.pid.1']['family_name']"
+		],
+		"intent_to_retain": false
+	},
+	{
+		"name": "Given Name",
+		"path": [
+			"$['eu.europa.ec.eudi.pid.1']['given_name']"
+		],
+		"intent_to_retain": false
+	},
+	{
+		"name": "Birthdate",
+		"path": [
+			"$['eu.europa.ec.eudi.pid.1']['birth_date']"
+		],
+		"intent_to_retain": false
+	}
+]
+
+const mdocPidDescriptor = {
+	"id": "eu.europa.ec.eudi.pid.1",
+	"name": "MdocPID",
+	"purpose": "Present your MDOC PID to the ACME verifier",
+	"format": {
+		"mso_mdoc": {
+			"sd-jwt_alg_values": ["ES256"],
+			"kb-jwt_alg_values": ["ES256"]
+		},
+	},
+	"constraints": {
+		"limit_disclosure": "required",
+		"fields": mdocPidFields
+	}
+}
+
 const bachelorDescriptor = {
 	"id": "Bachelor",
 	"format": { "vc+sd-jwt": { alg: [ 'ES256' ] } },
@@ -152,6 +192,15 @@ export class VerifierConfigurationService implements VerifierConfigurationInterf
 				"format": { "vc+sd-jwt": { alg: [ 'ES256' ] } },
 				"input_descriptors": [
 					verifiableIdDescriptor
+				]
+			},
+			{
+				"id": "mDocPID",
+				"title": "PID - MSO MDOC",
+				"description": "Required Fields: Given Name, Family Name & Birthdate",
+				"format": { "mso_mdoc": { alg: [ 'ES256' ] } },
+				"input_descriptors": [
+					mdocPidDescriptor
 				]
 			},
 			{

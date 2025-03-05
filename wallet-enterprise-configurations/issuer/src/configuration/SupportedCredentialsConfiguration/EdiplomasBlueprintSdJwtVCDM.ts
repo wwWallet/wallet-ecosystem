@@ -1,5 +1,5 @@
 import { config } from "../../../config";
-import { VerifiableCredentialFormat } from "../../types/oid4vci";
+import { VerifiableCredentialFormat } from "core/dist/types";
 import { CategorizedRawCredentialView, CategorizedRawCredentialViewRow } from "../../openid4vci/Metadata";
 import { VCDMSupportedCredentialProtocol } from "../../lib/CredentialIssuerConfig/SupportedCredentialProtocol";
 import { formatDateDDMMYYYY } from "../../lib/formatDate";
@@ -64,7 +64,7 @@ export class EdiplomasBlueprintSdJwtVCDM implements VCDMSupportedCredentialProto
 	}
 
 	getFormat(): VerifiableCredentialFormat {
-		return VerifiableCredentialFormat.VC_SD_JWT;
+		return VerifiableCredentialFormat.VC_SDJWT;
 	}
 	getTypes(): string[] {
 		return ["VerifiableCredential", "VerifiableAttestation", "Bachelor", this.getId()];
@@ -180,12 +180,12 @@ export class EdiplomasBlueprintSdJwtVCDM implements VCDMSupportedCredentialProto
 			graduation_date: true,
 		}
 
-		const { jws } = await this.getCredentialSigner()
-			.sign(payload, { typ: "vc+sd-jwt", vctm: [base64url.encode(JSON.stringify(this.metadata()))] }, disclosureFrame);
+		const { credential } = await this.getCredentialSigner()
+			.signSdJwtVc(payload, { typ: VerifiableCredentialFormat.VC_SDJWT, vctm: [base64url.encode(JSON.stringify(this.metadata()))] }, disclosureFrame);
 
 		const response = {
 			format: this.getFormat(),
-			credential: jws
+			credential: credential
 		};
 
 		return response;
