@@ -37,7 +37,7 @@ export class EdiplomasBlueprintSdJwtVCDM implements VCDMSupportedCredentialProto
 
 	getAuthenticationChain(): AuthenticationChain {
 		return new AuthenticationChainBuilder()
-			.addAuthenticationComponent(new GenericAuthenticationMethodSelectionComponent(this.getScope() + "-auth-method", CONSENT_ENTRYPOINT, [{ code: UserAuthenticationMethod.VID_AUTH, description: "Authentication with VID" }, { code: UserAuthenticationMethod.SSO, description: "Authentication with National Services" }]))
+			.addAuthenticationComponent(new GenericAuthenticationMethodSelectionComponent(this.getScope() + "-auth-method", CONSENT_ENTRYPOINT, [{ code: UserAuthenticationMethod.VID_AUTH, description: "Authentication with PID" }, { code: UserAuthenticationMethod.SSO, description: "Authentication with National Services" }]))
 			.addAuthenticationComponent(new GenericVIDAuthenticationComponent(this.getScope() + "-vid-auth", CONSENT_ENTRYPOINT, {
 				"document_number": { input_descriptor_constraint_field_name: "Document Number", parser: (val: any) => String(val) },
 			}, "PidWithDocumentNumber", "PID"))
