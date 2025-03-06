@@ -32,7 +32,7 @@ export class EHICSupportedCredentialSdJwtVCDM implements VCDMSupportedCredential
 
 	getAuthenticationChain(): AuthenticationChain {
 		return new AuthenticationChainBuilder()
-			.addAuthenticationComponent(new GenericAuthenticationMethodSelectionComponent(this.getScope() + "-auth-method", CONSENT_ENTRYPOINT, [{ code: UserAuthenticationMethod.VID_AUTH, description: "Authentication with VID" }, { code: UserAuthenticationMethod.SSO, description: "Authentication with National Services" }]))
+			.addAuthenticationComponent(new GenericAuthenticationMethodSelectionComponent(this.getScope() + "-auth-method", CONSENT_ENTRYPOINT, [{ code: UserAuthenticationMethod.VID_AUTH, description: "Authentication with PID" }, { code: UserAuthenticationMethod.SSO, description: "Authentication with National Services" }]))
 			.addAuthenticationComponent(new GenericVIDAuthenticationComponent(this.getScope() + "-vid-authentication", CONSENT_ENTRYPOINT, {
 				"family_name": { input_descriptor_constraint_field_name: "Family Name" },
 				"given_name": { input_descriptor_constraint_field_name: "Given Name" },
