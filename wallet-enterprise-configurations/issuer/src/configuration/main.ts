@@ -7,8 +7,8 @@ import { PIDSupportedCredentialSdJwtVCDM } from "./SupportedCredentialsConfigura
 import { PorSupportedCredentialSdJwt } from "./SupportedCredentialsConfiguration/PorSupportedCredentialSdJwt";
 
 export async function configurationExecution() {
-	credentialConfigurationRegistryService.register(new PIDSupportedCredentialMsoMdoc());
 	credentialConfigurationRegistryService.register(new PIDSupportedCredentialSdJwtVCDM());
+	credentialConfigurationRegistryService.register(new PIDSupportedCredentialMsoMdoc());
 	credentialConfigurationRegistryService.register(new EdiplomasBlueprintSdJwtVCDM());
 	credentialConfigurationRegistryService.register(new EHICSupportedCredentialSdJwtVCDM());
 	credentialConfigurationRegistryService.register(new PorSupportedCredentialSdJwt());

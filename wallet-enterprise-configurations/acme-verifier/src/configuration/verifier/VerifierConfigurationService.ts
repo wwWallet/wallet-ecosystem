@@ -4,15 +4,11 @@ import { authorizationServerMetadataConfiguration } from "../../authorizationSer
 import { config } from "../../../config";
 import { VerifierConfigurationInterface } from "../../services/interfaces";
 import "reflect-metadata";
-import { PresentationParserChain } from "../../vp_token/PresentationParserChain";
-import { PublicKeyResolverChain } from "../../vp_token/PublicKeyResolverChain";
-
-
 
 
 const verifiableIdDescriptor = {
 	"id": "VerifiableId",
-	"format": { "vc+sd-jwt": { alg: [ 'ES256' ] } },
+	"format": { "vc+sd-jwt": { alg: ['ES256'] } },
 	"constraints": {
 		"fields": [
 			{
@@ -86,7 +82,7 @@ const mdocPidDescriptor = {
 
 const bachelorDescriptor = {
 	"id": "Bachelor",
-	"format": { "vc+sd-jwt": { alg: [ 'ES256' ] } },
+	"format": { "vc+sd-jwt": { alg: ['ES256'] } },
 	"constraints": {
 		"fields": [
 			{
@@ -120,7 +116,7 @@ const bachelorDescriptor = {
 
 const europeanHealthInsuranceCardDescriptor = {
 	"id": "EuropeanHealthInsuranceCard",
-	"format": { "vc+sd-jwt": { alg: [ 'ES256' ] } },
+	"format": { "vc+sd-jwt": { alg: ['ES256'] } },
 	"constraints": {
 		"fields": [
 			{
@@ -171,15 +167,6 @@ const customVerifiableIdSdJwtPresentationDefinition = {
 
 @injectable()
 export class VerifierConfigurationService implements VerifierConfigurationInterface {
-	
-	
-	getPublicKeyResolverChain(): PublicKeyResolverChain {
-		return new PublicKeyResolverChain();
-	}
-
-	getPresentationParserChain(): PresentationParserChain {
-		return new PresentationParserChain();
-	}
 
 
 	getPresentationDefinitions(): any[] {
@@ -189,7 +176,7 @@ export class VerifierConfigurationService implements VerifierConfigurationInterf
 				"id": "VerifiableId",
 				"title": "Verifiable ID",
 				"description": "Required Fields: VC type, Given Name, Family Name & Birthdate",
-				"format": { "vc+sd-jwt": { alg: [ 'ES256' ] } },
+				"format": { "vc+sd-jwt": { alg: ['ES256'] } },
 				"input_descriptors": [
 					verifiableIdDescriptor
 				]
@@ -198,7 +185,7 @@ export class VerifierConfigurationService implements VerifierConfigurationInterf
 				"id": "mDocPID",
 				"title": "PID - MSO MDOC",
 				"description": "Required Fields: Given Name, Family Name & Birthdate",
-				"format": { "mso_mdoc": { alg: [ 'ES256' ] } },
+				"format": { "mso_mdoc": { alg: ['ES256'] } },
 				"input_descriptors": [
 					mdocPidDescriptor
 				]
@@ -207,7 +194,7 @@ export class VerifierConfigurationService implements VerifierConfigurationInterf
 				"id": "Bachelor",
 				"title": "Bachelor Diploma",
 				"description": "Required Fields: VC type, Grade, EQF Level & Diploma Title",
-				"format": { "vc+sd-jwt": { alg: [ 'ES256' ] } },
+				"format": { "vc+sd-jwt": { alg: ['ES256'] } },
 				"input_descriptors": [
 					bachelorDescriptor
 				]
@@ -216,7 +203,7 @@ export class VerifierConfigurationService implements VerifierConfigurationInterf
 				"id": "EuropeanHealthInsuranceCard",
 				"title": "European HealthInsurance Card",
 				"description": "Required Fields: VC type, SSN, Family Name, Given Name & Birth Date",
-				"format": { "vc+sd-jwt": { alg: [ 'ES256' ] } },
+				"format": { "vc+sd-jwt": { alg: ['ES256'] } },
 				"input_descriptors": [
 					europeanHealthInsuranceCardDescriptor
 				]
@@ -225,7 +212,7 @@ export class VerifierConfigurationService implements VerifierConfigurationInterf
 				"id": "VIDAndEuropeanHealthInsuranceCard",
 				"title": "VID + EHIC",
 				"description": "",
-				"format": { "vc+sd-jwt": { alg: [ 'ES256' ] } },
+				"format": { "vc+sd-jwt": { alg: ['ES256'] } },
 				"input_descriptors": [
 					verifiableIdDescriptor,
 					europeanHealthInsuranceCardDescriptor
