@@ -3,7 +3,6 @@ import { CategorizedRawCredentialView, CategorizedRawCredentialViewRow } from ".
 import { VerifiableCredentialFormat } from "core/dist/types";
 import { VCDMSupportedCredentialProtocol } from "../../lib/CredentialIssuerConfig/SupportedCredentialProtocol";
 import { formatDateDDMMYYYY } from "../../lib/formatDate";
-import { generateDataUriFromSvg } from "../../lib/generateDataUriFromSvg";
 import { AuthorizationServerState } from "../../entities/AuthorizationServerState.entity";
 import { CredentialView } from "../../authorization/types";
 import { randomUUID } from "node:crypto";
@@ -18,11 +17,12 @@ import fs from 'fs';
 import { AuthenticationChain, AuthenticationChainBuilder } from "../../authentication/AuthenticationComponent";
 import { CONSENT_ENTRYPOINT } from "../../authorization/constants";
 import { GenericLocalAuthenticationComponent } from "../../authentication/authenticationComponentTemplates/GenericLocalAuthenticationComponent";
+import { initializeCredentialEngine } from "../../lib/initializeCredentialEngine";
 
 const datasetName = "vid-dataset.xlsx";
 parsePidData(path.join(__dirname, `../../../../dataset/${datasetName}`)) // test parse
 
-export class VIDSupportedCredentialSdJwtVCDM implements VCDMSupportedCredentialProtocol {
+export class PIDSupportedCredentialSdJwtVCDM implements VCDMSupportedCredentialProtocol {
 
 
 	constructor() { }
@@ -60,7 +60,7 @@ export class VIDSupportedCredentialSdJwtVCDM implements VCDMSupportedCredentialP
 	getDisplay() {
 		return {
 			name: "PID - SDJWTVC",
-			description: "This is a Verifiable ID verifiable credential issued by the well-known VID Issuer",
+			description: "This is a Verifiable ID verifiable credential issued by the well-known PID Issuer",
 			background_image: { uri: config.url + "/images/background-image.png" },
 			background_color: "#1b263b",
 			text_color: "#FFFFFF",
@@ -81,8 +81,8 @@ export class VIDSupportedCredentialSdJwtVCDM implements VCDMSupportedCredentialP
 
 		const svgText = fs.readFileSync(path.join(__dirname, "../../../../public/images/template-pid.svg"), 'utf-8');
 		const vids = users.filter(u => String(u.pid_id) == userSession?.pid_id);
-		const credentialViews: CredentialView[] = vids
-			.map((vid) => {
+		const credentialViews: CredentialView[] = await Promise.all(vids
+			.map(async (vid) => {
 				const rows: CategorizedRawCredentialViewRow[] = [
 					{ name: "Family Name", value: vid.family_name },
 					{ name: "Family Name at Birth", value: vid.family_name_birth },
@@ -101,22 +101,24 @@ export class VIDSupportedCredentialSdJwtVCDM implements VCDMSupportedCredentialP
 				];
 				const rowsObject: CategorizedRawCredentialView = { rows };
 
-				const pathsWithValues = [
-					{ path: "family_name", value: vid.family_name },
-					{ path: "given_name", value: vid.given_name },
-					{ path: "document_number", value: vid.document_number },
-					{ path: "birth_date", value: formatDateDDMMYYYY(vid.birth_date) },
-					{ path: "expiry_date", value: formatDateDDMMYYYY(vid.expiry_date) }
-				];
-				const dataUri = generateDataUriFromSvg(svgText, pathsWithValues);
-
+				const { credentialRendering } = initializeCredentialEngine();
+				const dataUri = await credentialRendering.renderSvgTemplate({
+					json: {...vid},
+					credentialImageSvgTemplate: svgText,
+					sdJwtVcMetadataClaims: this.metadata().claims,
+				})
+				console.log("Data uri = ", dataUri);
+				if (!dataUri) {
+					throw new Error("Could not render svg");
+				}
+				
 				return {
 					credential_id: this.getId(),
 					credential_supported_object: this.exportCredentialSupportedObject(),
 					view: rowsObject,
 					credential_image: dataUri,
 				}
-			})
+			}));
 		return credentialViews[0];
 	}
 
@@ -155,6 +157,7 @@ export class VIDSupportedCredentialSdJwtVCDM implements VCDMSupportedCredentialP
 			issuance_date: new Date().toISOString().split('T')[0],  // full-date format, according to ARF PID Rulebook
 			expiry_date: new Date(vidEntry.expiry_date).toISOString().split('T')[0],  // full-date format, according to ARF PID Rulebook
 			age_over_18: vidEntry.age_over_18 === '1' ? true : false,
+			age_over_21: true,
 			sex: vidEntry.sex,
 			nationality: vidEntry.nationality,
 			birth_place: vidEntry.birth_place,
@@ -184,6 +187,7 @@ export class VIDSupportedCredentialSdJwtVCDM implements VCDMSupportedCredentialP
 			issuance_date: true,
 			expiry_date: true,
 			age_over_18: true,
+			age_over_21: true,
 			sex: true,
 			nationality: true,
 			birth_place: true,
@@ -205,7 +209,7 @@ export class VIDSupportedCredentialSdJwtVCDM implements VCDMSupportedCredentialP
 		return {
 			"vct": this.getId(),
 			"name": "Verifiable ID",
-			"description": "This is a Verifiable ID document issued by the well known VID Issuer",
+			"description": "This is a Verifiable ID document issued by the well known PID Issuer",
 			"display": [
 				{
 					"lang": "en-US",
@@ -215,7 +219,7 @@ export class VIDSupportedCredentialSdJwtVCDM implements VCDMSupportedCredentialP
 							"logo": {
 								"uri": config.url + "/images/logo.png",
 								"uri#integrity": "sha256-acda3404c2cf46da192cf245ccc6b91edce8869122fa5a6636284f1a60ffcd86",
-								"alt_text": "VID Logo"
+								"alt_text": "PID Logo"
 							},
 							"background_color": "#4cc3dd",
 							"text_color": "#FFFFFF"
@@ -235,7 +239,7 @@ export class VIDSupportedCredentialSdJwtVCDM implements VCDMSupportedCredentialP
 						{
 							"lang": "en-US",
 							"label": "Given Name",
-							"description": "The given name of the VID holder"
+							"description": "The given name of the PID holder"
 						}
 					],
 					"svg_id": "given_name"
@@ -246,7 +250,7 @@ export class VIDSupportedCredentialSdJwtVCDM implements VCDMSupportedCredentialP
 						{
 							"lang": "en-US",
 							"label": "Family Name",
-							"description": "The family name of the VID holder"
+							"description": "The family name of the PID holder"
 						}
 					],
 					"svg_id": "family_name"
@@ -257,7 +261,7 @@ export class VIDSupportedCredentialSdJwtVCDM implements VCDMSupportedCredentialP
 						{
 							"lang": "en-US",
 							"label": "Birth date",
-							"description": "The birth date of the VID holder"
+							"description": "The birth date of the PID holder"
 						}
 					],
 					"svg_id": "birth_date"
@@ -268,7 +272,7 @@ export class VIDSupportedCredentialSdJwtVCDM implements VCDMSupportedCredentialP
 						{
 							"lang": "en-US",
 							"label": "Issuing authority",
-							"description": "The issuing authority of the VID credential"
+							"description": "The issuing authority of the PID credential"
 						}
 					],
 					"svg_id": "issuing_authority"

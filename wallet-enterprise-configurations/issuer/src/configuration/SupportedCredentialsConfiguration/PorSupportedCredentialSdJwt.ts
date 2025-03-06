@@ -2,8 +2,6 @@ import { config } from "../../../config";
 import { CategorizedRawCredentialView, CategorizedRawCredentialViewRow } from "../../openid4vci/Metadata";
 import { VerifiableCredentialFormat } from "core/dist/types";
 import { VCDMSupportedCredentialProtocol } from "../../lib/CredentialIssuerConfig/SupportedCredentialProtocol";
-import { formatDateDDMMYYYY } from "../../lib/formatDate";
-import { generateDataUriFromSvg } from "../../lib/generateDataUriFromSvg";
 import { AuthorizationServerState } from "../../entities/AuthorizationServerState.entity";
 import { CredentialView } from "../../authorization/types";
 import { randomUUID } from "node:crypto";
@@ -20,6 +18,7 @@ import { CONSENT_ENTRYPOINT } from "../../authorization/constants";
 import { GenericAuthenticationMethodSelectionComponent } from "../../authentication/authenticationComponentTemplates/GenericAuthenticationMethodSelectionComponent";
 import { GenericVIDAuthenticationComponent } from "../../authentication/authenticationComponentTemplates/GenericVIDAuthenticationComponent";
 import { UserAuthenticationMethod } from "../../types/UserAuthenticationMethod.enum";
+import { initializeCredentialEngine } from "../../lib/initializeCredentialEngine";
 
 const datasetName = "por-dataset.xlsx";
 parsePorData(path.join(__dirname, `../../../../dataset/${datasetName}`)) // test parse
@@ -89,7 +88,7 @@ export class PorSupportedCredentialSdJwt implements VCDMSupportedCredentialProto
 		)[0];
 
 		console.log("Por entry = ", porEntry)
-		const credentialView: CredentialView = (() => {
+		const credentialView: CredentialView = await (async () => {
 			const rows: CategorizedRawCredentialViewRow[] = [
 				{ name: "Legal Name", value: porEntry.legal_name },
 				{ name: "Legal Person Identifier", value: porEntry.legal_person_identifier },
@@ -99,18 +98,16 @@ export class PorSupportedCredentialSdJwt implements VCDMSupportedCredentialProto
 			];
 			const rowsObject: CategorizedRawCredentialView = { rows };
 
-			const pathsWithValues = [
-				{ path: "legal_name", value: porEntry.legal_name },
-				{ path: "legal_person_identifier", value: porEntry.legal_person_identifier },
-				{ path: "full_powers", value: porEntry.full_powers },
-
-				{ path: "effective_from_date", value: formatDateDDMMYYYY(new Date(porEntry.effective_from_date).toISOString()) },
-				{ path: "effective_until_date", value: formatDateDDMMYYYY(new Date(porEntry.effective_until_date).toISOString()) },
-			] as any[];
-
-			console.log("Paths with values = ", pathsWithValues);
-
-			const dataUri = generateDataUriFromSvg(svgText, pathsWithValues);
+			const { credentialRendering } = initializeCredentialEngine();
+			const dataUri = await credentialRendering.renderSvgTemplate({
+				json: { ...porEntry },
+				credentialImageSvgTemplate: svgText,
+				sdJwtVcMetadataClaims: this.metadata().claims,
+			})
+			console.log("Data uri = ", dataUri);
+			if (!dataUri) {
+				throw new Error("Could not render svg");
+			}
 
 			return {
 				credential_id: this.getId(),

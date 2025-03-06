@@ -3,7 +3,6 @@ import { VerifiableCredentialFormat } from "core/dist/types";
 import { CategorizedRawCredentialView, CategorizedRawCredentialViewRow } from "../../openid4vci/Metadata";
 import { VCDMSupportedCredentialProtocol } from "../../lib/CredentialIssuerConfig/SupportedCredentialProtocol";
 import { formatDateDDMMYYYY } from "../../lib/formatDate";
-import { generateDataUriFromSvg } from "../../lib/generateDataUriFromSvg";
 import { AuthorizationServerState } from "../../entities/AuthorizationServerState.entity";
 import { CredentialView } from "../../authorization/types";
 import { issuerSigner } from "../issuerSigner";
@@ -22,6 +21,7 @@ import { GenericAuthenticationMethodSelectionComponent } from "../../authenticat
 import { GenericVIDAuthenticationComponent } from "../../authentication/authenticationComponentTemplates/GenericVIDAuthenticationComponent";
 import { InspectPersonalInfoComponent } from "../authentication/InspectPersonalInfoComponent";
 import { UserAuthenticationMethod } from "../../types/UserAuthenticationMethod.enum";
+import { initializeCredentialEngine } from "../../lib/initializeCredentialEngine";
 
 
 const datasetName = "diploma-dataset.xlsx";
@@ -115,15 +115,16 @@ export class EdiplomasBlueprintSdJwtVCDM implements VCDMSupportedCredentialProto
 		];
 		const rowsObject: CategorizedRawCredentialView = { rows };
 
-		const pathsWithValues = [
-			{ path: "given_name", value: diplomaEntry.given_name },
-			{ path: "family_name", value: diplomaEntry.family_name },
-			{ path: "title", value: diplomaEntry.title },
-			{ path: "graduation_date", value: formatDateDDMMYYYY(diplomaEntry.graduation_date) },
-			{ path: "expiry_date", value: formatDateDDMMYYYY(diplomaEntry.expiry_date) },
-		];
-		const dataUri = generateDataUriFromSvg(svgText, pathsWithValues);
-
+		const { credentialRendering } = initializeCredentialEngine();
+		const dataUri = await credentialRendering.renderSvgTemplate({
+			json: { ...diplomaEntry },
+			credentialImageSvgTemplate: svgText,
+			sdJwtVcMetadataClaims: this.metadata().claims,
+		});
+		console.log("Data uri = ", dataUri);
+		if (!dataUri) {
+			throw new Error("Could not render svg");
+		}
 		const credentialView = {
 			credential_id: diplomaEntry.certificateId,
 			credential_supported_object: this.exportCredentialSupportedObject(),

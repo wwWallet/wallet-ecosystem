@@ -3,7 +3,6 @@ import { CategorizedRawCredentialView, CategorizedRawCredentialViewRow } from ".
 import { VerifiableCredentialFormat } from "core/dist/types";
 import { SupportedCredentialProtocol } from "../../lib/CredentialIssuerConfig/SupportedCredentialProtocol";
 import { formatDateDDMMYYYY } from "../../lib/formatDate";
-import { generateDataUriFromSvg } from "../../lib/generateDataUriFromSvg";
 import { AuthorizationServerState } from "../../entities/AuthorizationServerState.entity";
 import { CredentialView } from "../../authorization/types";
 import { CredentialSigner } from "../../services/interfaces";
@@ -12,15 +11,15 @@ import { Request } from "express";
 import { issuerSigner } from "../issuerSigner";
 import { parsePidData } from "../datasetParser";
 import path from "node:path";
-import fs from 'fs';
 import { AuthenticationChain, AuthenticationChainBuilder } from "../../authentication/AuthenticationComponent";
 import { CONSENT_ENTRYPOINT } from "../../authorization/constants";
 import { GenericLocalAuthenticationComponent } from "../../authentication/authenticationComponentTemplates/GenericLocalAuthenticationComponent";
+import { initializeCredentialEngine } from "../../lib/initializeCredentialEngine";
 
 const datasetName = "vid-dataset.xlsx";
 parsePidData(path.join(__dirname, `../../../../dataset/${datasetName}`)) // test parse
 
-export class VIDSupportedCredentialMsoMdoc implements SupportedCredentialProtocol {
+export class PIDSupportedCredentialMsoMdoc implements SupportedCredentialProtocol {
 
 
 	constructor() { }
@@ -59,7 +58,7 @@ export class VIDSupportedCredentialMsoMdoc implements SupportedCredentialProtoco
 	getDisplay() {
 		return {
 			name: "PID - MDOC",
-			description: "This is a Verifiable ID verifiable credential issued by the well-known VID Issuer",
+			description: "This is a Verifiable ID verifiable credential issued by the well-known PID Issuer",
 			background_image: { uri: config.url + "/images/background-image.png" },
 			background_color: "#4CC3DD",
 			text_color: "#FFFFFF",
@@ -78,10 +77,9 @@ export class VIDSupportedCredentialMsoMdoc implements SupportedCredentialProtoco
 			return null;
 		}
 
-		const svgText = fs.readFileSync(path.join(__dirname, "../../../../public/images/template-pid.svg"), 'utf-8');
 		const vids = users.filter(u => String(u.pid_id) == userSession?.pid_id);
-		const credentialViews: CredentialView[] = vids
-			.map((vid) => {
+		const credentialViews: CredentialView[] = await Promise.all(vids
+			.map(async (vid) => {
 				const rows: CategorizedRawCredentialViewRow[] = [
 					{ name: "Family Name", value: vid.family_name },
 					{ name: "Given Name", value: vid.given_name },
@@ -91,22 +89,24 @@ export class VIDSupportedCredentialMsoMdoc implements SupportedCredentialProtoco
 				];
 				const rowsObject: CategorizedRawCredentialView = { rows };
 
-				const pathsWithValues = [
-					{ path: "family_name", value: vid.family_name },
-					{ path: "given_name", value: vid.given_name },
-					{ path: "document_number", value: vid.document_number },
-					{ path: "birth_date", value: formatDateDDMMYYYY(vid.birth_date) },
-					{ path: "expiry_date", value: formatDateDDMMYYYY(vid.expiry_date) }
-				];
-				const dataUri = generateDataUriFromSvg(svgText, pathsWithValues);
 
+				const e = initializeCredentialEngine();
+				const dataUri = await e.openid4vcRendering.renderCustomSvgTemplate({
+					signedClaims: { ...vid },
+					displayConfig: this.getDisplay(),
+				}).then((res) => res).catch(() => null);
+				console.log("Data uri = ", dataUri);
+				if (!dataUri) {
+					throw new Error("Could not render svg");
+				}
+				
 				return {
 					credential_id: this.getId(),
 					credential_supported_object: this.exportCredentialSupportedObject(),
 					view: rowsObject,
 					credential_image: dataUri,
 				}
-			})
+			}));
 		return credentialViews[0];
 	}
 
@@ -135,15 +135,23 @@ export class VIDSupportedCredentialMsoMdoc implements SupportedCredentialProtoco
 
 		const vid = {
 			family_name: vidEntry.family_name,
+			family_name_birth: vidEntry.family_name_birth,
 			given_name: vidEntry.given_name,
+			given_name_birth: vidEntry.given_name_birth,
 			birth_date: new Date(vidEntry.birth_date).toISOString().split('T')[0],  // full-date format, according to ARF PID Rulebook
 			issuing_authority: vidEntry.issuing_authority,
 			issuing_country: vidEntry.issuing_country,
 			document_number: String(vidEntry.document_number),
 			issuance_date: new Date().toISOString().split('T')[0],  // full-date format, according to ARF PID Rulebook
 			expiry_date: new Date(vidEntry.expiry_date).toISOString().split('T')[0],  // full-date format, according to ARF PID Rulebook
-			age_over_18: true,
+			age_over_18: vidEntry.age_over_18 === '1' ? true : false,
 			age_over_21: true,
+			sex: vidEntry.sex,
+			nationality: vidEntry.nationality,
+			birth_place: vidEntry.birth_place,
+			resident_address: vidEntry.resident_address,
+			email_address: vidEntry.email_address,
+			mobile_phone_number: vidEntry.mobile_phone_number
 
 		};
 
