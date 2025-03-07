@@ -58,7 +58,7 @@ export class PIDSupportedCredentialMsoMdoc implements SupportedCredentialProtoco
 	getDisplay() {
 		return {
 			"name": "PID - MDOC",
-			"description": "This is a PID verifiable credential issued by the well-known VID Issuer",
+			description: "This is a PID verifiable credential",
 			background_image: { uri: config.url + "/images/background-image.png" },
 			background_color: "#4CC3DD",
 			text_color: "#000000",

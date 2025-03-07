@@ -59,8 +59,8 @@ export class PorSupportedCredentialSdJwt implements VCDMSupportedCredentialProto
 
 	getDisplay() {
 		return {
-			name: "PoR",
-			description: "This is a Verifiable ID verifiable credential issued by the well-known VID Issuer",
+			name: "Power of Representation",
+			description: "This is a Power of Representation (POR) verifiable credential",
 			background_image: { uri: config.url + "/images/background-image.png" },
 			background_color: "#1b263b",
 			text_color: "#FFFFFF",
