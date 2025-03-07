@@ -4,15 +4,11 @@ import { authorizationServerMetadataConfiguration } from "../../authorizationSer
 import { config } from "../../../config";
 import { VerifierConfigurationInterface } from "../../services/interfaces";
 import "reflect-metadata";
-import { PresentationParserChain } from "../../vp_token/PresentationParserChain";
-import { PublicKeyResolverChain } from "../../vp_token/PublicKeyResolverChain";
-
-
 
 
 const verifiableIdDescriptor = {
 	"id": "VerifiableId",
-	"format": { "vc+sd-jwt": { alg: [ 'ES256' ] } },
+	"format": { "vc+sd-jwt": { alg: ['ES256'] } },
 	"constraints": {
 		"fields": [
 			{
@@ -44,9 +40,49 @@ const verifiableIdDescriptor = {
 	}
 }
 
+const mdocPidFields = [
+	{
+		"name": "Family Name",
+		"path": [
+			"$['eu.europa.ec.eudi.pid.1']['family_name']"
+		],
+		"intent_to_retain": false
+	},
+	{
+		"name": "Given Name",
+		"path": [
+			"$['eu.europa.ec.eudi.pid.1']['given_name']"
+		],
+		"intent_to_retain": false
+	},
+	{
+		"name": "Birthdate",
+		"path": [
+			"$['eu.europa.ec.eudi.pid.1']['birth_date']"
+		],
+		"intent_to_retain": false
+	}
+]
+
+const mdocPidDescriptor = {
+	"id": "eu.europa.ec.eudi.pid.1",
+	"name": "MdocPID",
+	"purpose": "Present your MDOC PID to the ACME verifier",
+	"format": {
+		"mso_mdoc": {
+			"sd-jwt_alg_values": ["ES256"],
+			"kb-jwt_alg_values": ["ES256"]
+		},
+	},
+	"constraints": {
+		"limit_disclosure": "required",
+		"fields": mdocPidFields
+	}
+}
+
 const bachelorDescriptor = {
 	"id": "Bachelor",
-	"format": { "vc+sd-jwt": { alg: [ 'ES256' ] } },
+	"format": { "vc+sd-jwt": { alg: ['ES256'] } },
 	"constraints": {
 		"fields": [
 			{
@@ -80,7 +116,7 @@ const bachelorDescriptor = {
 
 const europeanHealthInsuranceCardDescriptor = {
 	"id": "EuropeanHealthInsuranceCard",
-	"format": { "vc+sd-jwt": { alg: [ 'ES256' ] } },
+	"format": { "vc+sd-jwt": { alg: ['ES256'] } },
 	"constraints": {
 		"fields": [
 			{
@@ -131,15 +167,6 @@ const customVerifiableIdSdJwtPresentationDefinition = {
 
 @injectable()
 export class VerifierConfigurationService implements VerifierConfigurationInterface {
-	
-	
-	getPublicKeyResolverChain(): PublicKeyResolverChain {
-		return new PublicKeyResolverChain();
-	}
-
-	getPresentationParserChain(): PresentationParserChain {
-		return new PresentationParserChain();
-	}
 
 
 	getPresentationDefinitions(): any[] {
@@ -149,16 +176,25 @@ export class VerifierConfigurationService implements VerifierConfigurationInterf
 				"id": "VerifiableId",
 				"title": "Verifiable ID",
 				"description": "Required Fields: VC type, Given Name, Family Name & Birthdate",
-				"format": { "vc+sd-jwt": { alg: [ 'ES256' ] } },
+				"format": { "vc+sd-jwt": { alg: ['ES256'] } },
 				"input_descriptors": [
 					verifiableIdDescriptor
+				]
+			},
+			{
+				"id": "mDocPID",
+				"title": "PID - MSO MDOC",
+				"description": "Required Fields: Given Name, Family Name & Birthdate",
+				"format": { "mso_mdoc": { alg: ['ES256'] } },
+				"input_descriptors": [
+					mdocPidDescriptor
 				]
 			},
 			{
 				"id": "Bachelor",
 				"title": "Bachelor Diploma",
 				"description": "Required Fields: VC type, Grade, EQF Level & Diploma Title",
-				"format": { "vc+sd-jwt": { alg: [ 'ES256' ] } },
+				"format": { "vc+sd-jwt": { alg: ['ES256'] } },
 				"input_descriptors": [
 					bachelorDescriptor
 				]
@@ -167,7 +203,7 @@ export class VerifierConfigurationService implements VerifierConfigurationInterf
 				"id": "EuropeanHealthInsuranceCard",
 				"title": "European HealthInsurance Card",
 				"description": "Required Fields: VC type, SSN, Family Name, Given Name & Birth Date",
-				"format": { "vc+sd-jwt": { alg: [ 'ES256' ] } },
+				"format": { "vc+sd-jwt": { alg: ['ES256'] } },
 				"input_descriptors": [
 					europeanHealthInsuranceCardDescriptor
 				]
@@ -176,7 +212,7 @@ export class VerifierConfigurationService implements VerifierConfigurationInterf
 				"id": "VIDAndEuropeanHealthInsuranceCard",
 				"title": "VID + EHIC",
 				"description": "",
-				"format": { "vc+sd-jwt": { alg: [ 'ES256' ] } },
+				"format": { "vc+sd-jwt": { alg: ['ES256'] } },
 				"input_descriptors": [
 					verifiableIdDescriptor,
 					europeanHealthInsuranceCardDescriptor
