@@ -81,13 +81,19 @@ export class PorSupportedCredentialSdJwt implements VCDMSupportedCredentialProto
 
 		const svgText = fs.readFileSync(path.join(__dirname, "../../../../public/images/template-por.svg"), 'utf-8');
 
-		const porEntry = users.filter((por) =>
+		let porEntry = users.filter((por) =>
 			por.family_name == userSession.family_name &&
 			por.given_name == userSession.given_name &&
 			new Date(por.birth_date).toISOString() == new Date(userSession.birth_date as string).toISOString()
 		)[0];
 
 		console.log("Por entry = ", porEntry)
+		porEntry = {
+			...porEntry,
+			"effective_from_date": new Date(porEntry.effective_from_date).toISOString(),
+			"effective_until_date": porEntry.effective_until_date && new Date(porEntry.effective_until_date).toISOString(),
+		};
+
 		const credentialView: CredentialView = await (async () => {
 			const rows: CategorizedRawCredentialViewRow[] = [
 				{ name: "Legal Name", value: porEntry.legal_name },
@@ -98,13 +104,14 @@ export class PorSupportedCredentialSdJwt implements VCDMSupportedCredentialProto
 			];
 			const rowsObject: CategorizedRawCredentialView = { rows };
 
+
 			const { credentialRendering } = initializeCredentialEngine();
 			const dataUri = await credentialRendering.renderSvgTemplate({
 				json: { ...porEntry },
 				credentialImageSvgTemplate: svgText,
 				sdJwtVcMetadataClaims: this.metadata().claims,
-			})
-			console.log("Data uri = ", dataUri);
+			});
+
 			if (!dataUri) {
 				throw new Error("Could not render svg");
 			}

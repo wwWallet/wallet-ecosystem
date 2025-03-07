@@ -1,4 +1,3 @@
-import { config } from "../../../config";
 import { CategorizedRawCredentialView, CategorizedRawCredentialViewRow } from "../../openid4vci/Metadata";
 import { VerifiableCredentialFormat } from "core/dist/types";
 import { SupportedCredentialProtocol } from "../../lib/CredentialIssuerConfig/SupportedCredentialProtocol";
@@ -57,11 +56,11 @@ export class PIDSupportedCredentialMsoMdoc implements SupportedCredentialProtoco
 
 	getDisplay() {
 		return {
-			name: "PID - MDOC",
-			description: "This is a Verifiable ID verifiable credential issued by the well-known PID Issuer",
-			background_image: { uri: config.url + "/images/background-image.png" },
-			background_color: "#4CC3DD",
-			text_color: "#FFFFFF",
+			"name": "PID - MDOC",
+			"description": "This is a PID verifiable credential issued by the well-known VID Issuer",
+			// background_image: { uri: config.url + "/images/background-image.png" },
+			// background_color: "#4CC3DD",
+			// text_color: "#FFFFFF",
 			locale: 'en-US',
 		}
 	}
@@ -92,10 +91,12 @@ export class PIDSupportedCredentialMsoMdoc implements SupportedCredentialProtoco
 
 				const e = initializeCredentialEngine();
 				const dataUri = await e.openid4vcRendering.renderCustomSvgTemplate({
-					signedClaims: { ...vid },
-					displayConfig: this.getDisplay(),
+					signedClaims: { expiry_date: formatDateDDMMYYYY(vid.expiry_date) },
+					displayConfig: {
+						...this.getDisplay()
+					}
 				}).then((res) => res).catch(() => null);
-				console.log("Data uri = ", dataUri);
+
 				if (!dataUri) {
 					throw new Error("Could not render svg");
 				}
