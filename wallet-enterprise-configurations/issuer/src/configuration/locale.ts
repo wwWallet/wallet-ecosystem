@@ -28,7 +28,7 @@ const locale = {
 			demo_text: "This is a National VID implementation for demonstration puproses. It has been developed in the framework of EBSI Early Adopters Program and the Multi University Pilot, with the endorsement of the Greek Ministry of Education. The purpose of this application is to issue a Verifiable ID for authentication puproses."
 		},
 		VIDAuthenticationComponent: {
-			title: "Authenticate using VID"
+			title: "Authenticate using Digital Credentials"
 		},
 		login: {
 			title: "Login",

@@ -1,9 +1,8 @@
 import { config } from "../../../config";
-import { VerifiableCredentialFormat } from "../../types/oid4vci";
+import { VerifiableCredentialFormat } from "core/dist/types";
 import { CategorizedRawCredentialView, CategorizedRawCredentialViewRow } from "../../openid4vci/Metadata";
 import { VCDMSupportedCredentialProtocol } from "../../lib/CredentialIssuerConfig/SupportedCredentialProtocol";
 import { formatDateDDMMYYYY } from "../../lib/formatDate";
-import { generateDataUriFromSvg } from "../../lib/generateDataUriFromSvg";
 import { AuthorizationServerState } from "../../entities/AuthorizationServerState.entity";
 import { CredentialView } from "../../authorization/types";
 import { issuerSigner } from "../issuerSigner";
@@ -22,6 +21,7 @@ import { GenericAuthenticationMethodSelectionComponent } from "../../authenticat
 import { GenericVIDAuthenticationComponent } from "../../authentication/authenticationComponentTemplates/GenericVIDAuthenticationComponent";
 import { InspectPersonalInfoComponent } from "../authentication/InspectPersonalInfoComponent";
 import { UserAuthenticationMethod } from "../../types/UserAuthenticationMethod.enum";
+import { initializeCredentialEngine } from "../../lib/initializeCredentialEngine";
 
 
 const datasetName = "diploma-dataset.xlsx";
@@ -37,7 +37,7 @@ export class EdiplomasBlueprintSdJwtVCDM implements VCDMSupportedCredentialProto
 
 	getAuthenticationChain(): AuthenticationChain {
 		return new AuthenticationChainBuilder()
-			.addAuthenticationComponent(new GenericAuthenticationMethodSelectionComponent(this.getScope() + "-auth-method", CONSENT_ENTRYPOINT, [{ code: UserAuthenticationMethod.VID_AUTH, description: "Authentication with VID" }, { code: UserAuthenticationMethod.SSO, description: "Authentication with National Services" }]))
+			.addAuthenticationComponent(new GenericAuthenticationMethodSelectionComponent(this.getScope() + "-auth-method", CONSENT_ENTRYPOINT, [{ code: UserAuthenticationMethod.VID_AUTH, description: "Authentication with PID" }, { code: UserAuthenticationMethod.SSO, description: "Authentication with National Services" }]))
 			.addAuthenticationComponent(new GenericVIDAuthenticationComponent(this.getScope() + "-vid-auth", CONSENT_ENTRYPOINT, {
 				"document_number": { input_descriptor_constraint_field_name: "Document Number", parser: (val: any) => String(val) },
 			}, "PidWithDocumentNumber", "PID", this.getDisplay().name))
@@ -64,7 +64,7 @@ export class EdiplomasBlueprintSdJwtVCDM implements VCDMSupportedCredentialProto
 	}
 
 	getFormat(): VerifiableCredentialFormat {
-		return VerifiableCredentialFormat.VC_SD_JWT;
+		return VerifiableCredentialFormat.VC_SDJWT;
 	}
 	getTypes(): string[] {
 		return ["VerifiableCredential", "VerifiableAttestation", "Bachelor", this.getId()];
@@ -115,15 +115,16 @@ export class EdiplomasBlueprintSdJwtVCDM implements VCDMSupportedCredentialProto
 		];
 		const rowsObject: CategorizedRawCredentialView = { rows };
 
-		const pathsWithValues = [
-			{ path: "given_name", value: diplomaEntry.given_name },
-			{ path: "family_name", value: diplomaEntry.family_name },
-			{ path: "title", value: diplomaEntry.title },
-			{ path: "graduation_date", value: formatDateDDMMYYYY(diplomaEntry.graduation_date) },
-			{ path: "expiry_date", value: formatDateDDMMYYYY(diplomaEntry.expiry_date) },
-		];
-		const dataUri = generateDataUriFromSvg(svgText, pathsWithValues);
-
+		const { credentialRendering } = initializeCredentialEngine();
+		const dataUri = await credentialRendering.renderSvgTemplate({
+			json: { ...diplomaEntry },
+			credentialImageSvgTemplate: svgText,
+			sdJwtVcMetadataClaims: this.metadata().claims,
+		});
+		console.log("Data uri = ", dataUri);
+		if (!dataUri) {
+			throw new Error("Could not render svg");
+		}
 		const credentialView = {
 			credential_id: diplomaEntry.certificateId,
 			credential_supported_object: this.exportCredentialSupportedObject(),
@@ -180,12 +181,12 @@ export class EdiplomasBlueprintSdJwtVCDM implements VCDMSupportedCredentialProto
 			graduation_date: true,
 		}
 
-		const { jws } = await this.getCredentialSigner()
-			.sign(payload, { typ: "vc+sd-jwt", vctm: [base64url.encode(JSON.stringify(this.metadata()))] }, disclosureFrame);
+		const { credential } = await this.getCredentialSigner()
+			.signSdJwtVc(payload, { typ: VerifiableCredentialFormat.VC_SDJWT, vctm: [base64url.encode(JSON.stringify(this.metadata()))] }, disclosureFrame);
 
 		const response = {
 			format: this.getFormat(),
-			credential: jws
+			credential: credential
 		};
 
 		return response;
