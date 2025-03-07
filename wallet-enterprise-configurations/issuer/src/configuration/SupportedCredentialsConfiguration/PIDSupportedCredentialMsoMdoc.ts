@@ -14,6 +14,7 @@ import { AuthenticationChain, AuthenticationChainBuilder } from "../../authentic
 import { CONSENT_ENTRYPOINT } from "../../authorization/constants";
 import { GenericLocalAuthenticationComponent } from "../../authentication/authenticationComponentTemplates/GenericLocalAuthenticationComponent";
 import { initializeCredentialEngine } from "../../lib/initializeCredentialEngine";
+import { config } from "../../../config";
 
 const datasetName = "vid-dataset.xlsx";
 parsePidData(path.join(__dirname, `../../../../dataset/${datasetName}`)) // test parse
@@ -58,9 +59,9 @@ export class PIDSupportedCredentialMsoMdoc implements SupportedCredentialProtoco
 		return {
 			"name": "PID - MDOC",
 			"description": "This is a PID verifiable credential issued by the well-known VID Issuer",
-			// background_image: { uri: config.url + "/images/background-image.png" },
-			// background_color: "#4CC3DD",
-			// text_color: "#FFFFFF",
+			background_image: { uri: config.url + "/images/background-image.png" },
+			background_color: "#4CC3DD",
+			text_color: "#000000",
 			locale: 'en-US',
 		}
 	}
@@ -93,7 +94,9 @@ export class PIDSupportedCredentialMsoMdoc implements SupportedCredentialProtoco
 				const dataUri = await e.openid4vcRendering.renderCustomSvgTemplate({
 					signedClaims: { expiry_date: formatDateDDMMYYYY(vid.expiry_date) },
 					displayConfig: {
-						...this.getDisplay()
+						...this.getDisplay(),
+						background_image: undefined,
+						text_color: "#000000",
 					}
 				}).then((res) => res).catch(() => null);
 
