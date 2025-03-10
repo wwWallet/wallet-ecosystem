@@ -24,8 +24,9 @@ const locale = {
 			phrase: "I want to receive a",
 			proceed: "Proceed",
 			heading: "wwWallet Issuer",
-			paragraph: "This is a portal where citizens can receive their digital Verifiable ID in their wallet. To proceed you must first have an EBSI conformant digital wallet. This Verifiable ID will contain a the Social Security Number as a personal identifier.",
-			demo_text: "This is a National VID implementation for demonstration puproses. It has been developed in the framework of EBSI Early Adopters Program and the Multi University Pilot, with the endorsement of the Greek Ministry of Education. The purpose of this application is to issue a Verifiable ID for authentication puproses."
+			paragraph: "The Demo wwWallet Issuer is a proof-of-concept service designed to issue verifiable credentials (VCs) in SD-JWT or mdoc formats, supporting the wwWallet ecosystem. It provides demonstrative credentials, including Personal Identification (PID), European Health Insurance Card (EHIC), Bachelor Diploma and Power of Representation VCs, strictly for testing purposes (not valid for real-world use).",
+			demo_text: "This issuer follows OpenID4VCI (draft 14) for credential issuance, implementing the authorization_code grant with scope, client_id, state, and PKCE, and supports OpenID for Verifiable Presentations (draft 21) for secure VC verification. It enables developers and stakeholders to explore interoperability and real-world scenarios in digital identity and trust frameworks.",
+			metadata: "The issuer's metadata is available at"
 		},
 		VIDAuthenticationComponent: {
 			title: "Authenticate using Digital Credentials"
