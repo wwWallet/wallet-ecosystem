@@ -72,7 +72,7 @@ export class EdiplomasBlueprintSdJwtVCDM implements VCDMSupportedCredentialProto
 	getDisplay() {
 		return {
 			name: "Bachelor Diploma",
-			description: "This is a Bachelor Diploma verifiable credential",
+			description: "Bachelor Diploma VC in sd_jwt format",
 			background_image: { uri: config.url + "/images/background-image.png" },
 			background_color: "#003476",
 			text_color: "#FFFFFF",
