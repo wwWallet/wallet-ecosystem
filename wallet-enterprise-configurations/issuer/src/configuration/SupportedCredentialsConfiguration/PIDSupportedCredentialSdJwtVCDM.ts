@@ -60,7 +60,7 @@ export class PIDSupportedCredentialSdJwtVCDM implements VCDMSupportedCredentialP
 	getDisplay() {
 		return {
 			name: "PID - SDJWTVC",
-			description: "Person Identification Data (PID) VC in SD-JWT format",
+			description: "Person Identification Data - PID VC in SDJWT format",
 			background_image: { uri: config.url + "/images/background-image.png" },
 			background_color: "#1b263b",
 			text_color: "#FFFFFF",

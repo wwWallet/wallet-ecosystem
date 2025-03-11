@@ -57,8 +57,8 @@ export class PIDSupportedCredentialMsoMdoc implements SupportedCredentialProtoco
 
 	getDisplay() {
 		return {
-			"name": "PID - MDOC",
-			description: "Person Identification Data (PID) VC in mso_mdoc format",
+			name: "PID - MDOC",
+			description: "Person Identification Data - PID VC in MDOC format",
 			background_image: { uri: config.url + "/images/background-image.png" },
 			background_color: "#4CC3DD",
 			text_color: "#000000",
@@ -94,9 +94,10 @@ export class PIDSupportedCredentialMsoMdoc implements SupportedCredentialProtoco
 				const dataUri = await e.openid4vcRendering.renderCustomSvgTemplate({
 					signedClaims: { expiry_date: formatDateDDMMYYYY(vid.expiry_date) },
 					displayConfig: {
-						...this.getDisplay(),
-						background_image: undefined,
-						text_color: "#000000",
+						name: this.getDisplay().name,
+						description: this.getDisplay().description,
+						locale: this.getDisplay().locale,
+						text_color: this.getDisplay().text_color,
 					}
 				}).then((res) => res).catch(() => null);
 
