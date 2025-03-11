@@ -209,8 +209,8 @@ export class VerifierConfigurationService implements VerifierConfigurationInterf
 				]
 			},
 			{
-				"id": "VIDAndEuropeanHealthInsuranceCard",
-				"title": "VID + EHIC",
+				"id": "PIDAndEuropeanHealthInsuranceCard",
+				"title": "PID + EHIC",
 				"description": "",
 				"format": { "vc+sd-jwt": { alg: ['ES256'] } },
 				"input_descriptors": [
