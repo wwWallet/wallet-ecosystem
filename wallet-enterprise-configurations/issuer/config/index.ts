@@ -1,24 +1,32 @@
 
 export const config = {
-	url: "http://wallet-enterprise-acme-verifier:8005",
-	port: "8005",
+	url: "http://wallet-enterprise-issuer:8003",
+	port: "8003",
 	appSecret: "dsfkwfkwfwdfdsfSaSe2e34r4frwr42rAFdsf2lfmfsmklfwmer",
 	db: {
 		host: "wallet-db",
 		port: "3307",
 		username: "root",
 		password: "root",
-		dbname: "verifier"
+		dbname: "issuer"
 	},
-	display: [],
+	display: [
+		{
+			name: "wwWallet Issuer",
+			locale: "en-US"
+		}
+	],
 	issuanceFlow: {
 		skipConsent: false,
-		defaultCredentialConfigurationIds: [],
+		defaultCredentialConfigurationIds: ["urn:eu.europa.ec.eudi:pid:1"],
+		batchCredentialIssuance: {
+			batchSize: 1,
+		}
 	},
 	presentationFlow: {
 		response_mode: "direct_post.jwt"
 	},
-	appType: 'VERIFIER', //ISSUER,VERIFIER
+	appType: 'ISSUER', //ISSUER,VERIFIER
 	wwwalletURL: "http://localhost:3000/cb",
 	trustedRootCertificates: [
 		`-----BEGIN CERTIFICATE-----
@@ -35,9 +43,5 @@ BBR8ePhvPK+ji6cfKwa36k1rRewFojAfBgNVHSMEGDAWgBR8ePhvPK+ji6cfKwa3
 nLP+NsILFBXC+I8CIHSpT1vB/tMaJKbIizZwxyOru6N/iUkpHGzVnxU5Wgu4
 -----END CERTIFICATE-----`
 	],
-	sessionIdCookieConfiguration: {
-		maxAge: 900000, // 15-mins
-		secure: false
-	},
 	clockTolerance: 60,
 }

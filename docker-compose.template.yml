@@ -3,13 +3,13 @@ version: '3.9'
 name: wallet-ecosystem
 services:
 
-  wallet-enterprise-vid-issuer:
-    container_name: wallet-enterprise-vid-issuer
-    hostname: wallet-enterprise-vid-issuer
+  wallet-enterprise-issuer:
+    container_name: wallet-enterprise-issuer
+    hostname: wallet-enterprise-issuer
     build:
       context: $PWD/wallet-enterprise
       dockerfile: development.Dockerfile
-    image: wallet-enterprise:dev-vid
+    image: wallet-enterprise:dev-issuer
     restart: on-failure
     ports:
       - 8003:8003
@@ -18,12 +18,12 @@ services:
         condition: service_healthy
     volumes:
       - ./wallet-enterprise:/app:rw
-      - ./wallet-enterprise-configurations/vid-issuer/dataset:/app/dataset:rw
-      - ./wallet-enterprise-configurations/vid-issuer/config/index.ts:/app/config/index.ts:rw
-      - ./wallet-enterprise-configurations/vid-issuer/keys:/app/keys:rw
-      - ./wallet-enterprise-configurations/vid-issuer/src/configuration:/app/src/configuration:rw
-      - ./wallet-enterprise-configurations/vid-issuer/public/images:/app/public/images:rw
-      - ./wallet-enterprise-configurations/vid-issuer/public/styles/main.css:/app/public/styles/main.css:rw
+      - ./wallet-enterprise-configurations/issuer/dataset:/app/dataset:rw
+      - ./wallet-enterprise-configurations/issuer/config/index.ts:/app/config/index.ts:rw
+      - ./wallet-enterprise-configurations/issuer/keys:/app/keys:rw
+      - ./wallet-enterprise-configurations/issuer/src/configuration:/app/src/configuration:rw
+      - ./wallet-enterprise-configurations/issuer/public/images:/app/public/images:rw
+      - ./wallet-enterprise-configurations/issuer/public/styles/main.css:/app/public/styles/main.css:rw
       - ./.vscode/:/app/.vscode:rw
       - type: tmpfs
         target: /app/dist  # Not /dist here because of relative imports that assume dist/ and keys/, views/ etc. are sibling dirs
@@ -33,69 +33,6 @@ services:
       resources:
           limits:
             memory: 1G
-  
-  wallet-enterprise-ehic-issuer:
-    container_name: wallet-enterprise-ehic-issuer
-    hostname: wallet-enterprise-ehic-issuer
-    build:
-      context: $PWD/wallet-enterprise
-      dockerfile: development.Dockerfile
-    image: wallet-enterprise:dev-ehic
-    restart: always
-    ports:
-      - 8004:8004
-    depends_on:
-      wallet-db:
-        condition: service_healthy
-    volumes:
-      - ./wallet-enterprise:/app:rw
-      - ./wallet-enterprise-configurations/ehic-issuer/dataset:/app/dataset:rw
-      - ./wallet-enterprise-configurations/ehic-issuer/config/index.ts:/app/config/index.ts:rw
-      - ./wallet-enterprise-configurations/ehic-issuer/keys:/app/keys:rw
-      - ./wallet-enterprise-configurations/ehic-issuer/src/configuration:/app/src/configuration:rw
-      - ./wallet-enterprise-configurations/ehic-issuer/public/images:/app/public/images:rw
-      - ./wallet-enterprise-configurations/ehic-issuer/public/styles/main.css:/app/public/styles/main.css:rw
-      - ./.vscode/:/app/.vscode:rw
-      - type: tmpfs
-        target: /app/dist  # Not /dist here because of relative imports that assume dist/ and keys/, views/ etc. are sibling dirs
-        tmpfs:
-          mode: 01777
-    deploy:
-      resources:
-          limits:
-            memory: 1G
-
-  wallet-enterprise-diploma-issuer:
-    container_name: wallet-enterprise-diploma-issuer
-    hostname: wallet-enterprise-diploma-issuer
-    build:
-      context: $PWD/wallet-enterprise
-      dockerfile: development.Dockerfile
-    image: wallet-enterprise:dev-diploma
-    restart: on-failure
-    ports:
-      - 8000:8000
-    depends_on:
-      wallet-db:
-        condition: service_healthy
-    volumes:
-      - ./wallet-enterprise:/app:rw
-      - ./wallet-enterprise-configurations/diploma-issuer/dataset:/app/dataset:rw
-      - ./wallet-enterprise-configurations/diploma-issuer/config/index.ts:/app/config/index.ts:rw
-      - ./wallet-enterprise-configurations/diploma-issuer/keys:/app/keys:rw
-      - ./wallet-enterprise-configurations/diploma-issuer/src/configuration:/app/src/configuration:rw
-      - ./wallet-enterprise-configurations/diploma-issuer/public/images:/app/public/images:rw
-      - ./wallet-enterprise-configurations/diploma-issuer/public/styles/main.css:/app/public/styles/main.css:rw
-      - ./.vscode/:/app/.vscode:rw
-      - type: tmpfs
-        target: /app/dist
-        tmpfs:
-          mode: 01777
-    deploy:
-      resources:
-          limits:
-            memory: 1G
-
   wallet-enterprise-acme-verifier:
     container_name: wallet-enterprise-acme-verifier
     hostname: wallet-enterprise-acme-verifier
@@ -116,6 +53,7 @@ services:
       - ./wallet-enterprise-configurations/acme-verifier/src/configuration:/app/src/configuration:rw
       - ./wallet-enterprise-configurations/acme-verifier/public/styles/main.css:/app/public/styles/main.css:rw
       - ./wallet-enterprise-configurations/acme-verifier/public/images:/app/public/images:rw
+      - ./wallet-enterprise-configurations/acme-verifier/public/site.webmanifest:/app/public/site.webmanifest:rw
       - ./.vscode/:/app/.vscode:rw
       - type: tmpfs
         target: /app/dist
