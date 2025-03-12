@@ -208,12 +208,12 @@ export class PIDSupportedCredentialSdJwtVCDM implements VCDMSupportedCredentialP
 	public metadata(): any {
 		return {
 			"vct": this.getId(),
-			"name": "Verifiable ID",
-			"description": "This is a Verifiable ID document issued by the well known PID Issuer",
+			"name": "PID",
+			"description": "This is a PID document issued by the well known PID Issuer",
 			"display": [
 				{
 					"lang": "en-US",
-					"name": "Verifiable ID",
+					"name": "PID",
 					"rendering": {
 						"simple": {
 							"logo": {

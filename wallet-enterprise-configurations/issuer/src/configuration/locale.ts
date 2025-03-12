@@ -2,7 +2,7 @@ const locale = {
 	en: {
 		header: {
 			title: "wwWallet Issuer",
-			subtitle: "Receive your verifiable ID",
+			subtitle: "Receive your PID",
 		},
 		plainHeader: {
 			title: "National Authentication Service",
@@ -44,7 +44,7 @@ const locale = {
 		},
 		AuthenticationMethodComponent: {
 			title: "Authentication Method",
-			label: "Choose between authenticating via presenting a Verifiable ID or via a conventional 3rd-party authentication service (e.g., National Authentication Service, Google):",
+			label: "Choose between authenticating via presenting a PID or via a conventional 3rd-party authentication service (e.g., National Authentication Service, Google):",
 		},
 		personalInfo: {
 			title: "Personal Identifiable Information",

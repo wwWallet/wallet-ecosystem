@@ -7,7 +7,7 @@ import "reflect-metadata";
 
 
 const verifiableIdDescriptor = {
-	"id": "VerifiableId",
+	"id": "PID",
 	"format": { "vc+sd-jwt": { alg: ['ES256'] } },
 	"constraints": {
 		"fields": [
@@ -154,9 +154,9 @@ const europeanHealthInsuranceCardDescriptor = {
 }
 
 
-const customVerifiableIdSdJwtPresentationDefinition = {
-	"id": "CustomVerifiableId",
-	"title": "Custom Verifiable ID",
+const customPIDSdJwtPresentationDefinition = {
+	"id": "CustomPID",
+	"title": "Custom PID",
 	"description": "Selectable Fields: personalIdentifier, firstName, familyName, birthdate",
 	"_selectable": true,
 	"format": { "vc+sd-jwt": { alg: ['ES256'] } },
@@ -171,10 +171,10 @@ export class VerifierConfigurationService implements VerifierConfigurationInterf
 
 	getPresentationDefinitions(): any[] {
 		return [
-			customVerifiableIdSdJwtPresentationDefinition,
+			customPIDSdJwtPresentationDefinition,
 			{
-				"id": "VerifiableId",
-				"title": "Verifiable ID",
+				"id": "PID",
+				"title": "PID",
 				"description": "Required Fields: VC type, Given Name, Family Name & Birthdate",
 				"format": { "vc+sd-jwt": { alg: ['ES256'] } },
 				"input_descriptors": [
