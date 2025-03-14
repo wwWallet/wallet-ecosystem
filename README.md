@@ -19,9 +19,7 @@ Prerequisites:
 ```sh
 git clone git@github.com:wwwallet/wallet-ecosystem.git
 cd wallet-ecosystem/
-git submodule init      #initialize your local configuration file
-git submodule update    #fetch code from all repos
-git submodule update --remote  # to get update all submodules from the remote repos and merge
+git submodule update --init --remote --recursive
 ```
 
 ## Setup
