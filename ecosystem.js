@@ -17,6 +17,7 @@ let useOpenIdUrl = false;
 let daemonMode = false;
 let forceUpdateConfigs = false;
 let useComposeTemplate = false;
+let useWalletFrontendEnvTemplate = false;
 const walletClientOrigin = "http://localhost:3000";
 const walletClientUrl = `${walletClientOrigin}/cb`;
 
@@ -37,6 +38,7 @@ function help() {
 for (const arg of args) {
 	if (arg === '-t') {
 		useComposeTemplate = true;
+		useWalletFrontendEnvTemplate = true;
 		console.log("Refreshed docker-compose.yml using the template docker-compose.template.yml");
 	}
 
@@ -161,6 +163,17 @@ function buildImages() {
 	if (args.length <= 2 || args.includes("acme-verifier")) {
 		execSync(`cd wallet-enterprise && docker build -t ghcr.io/wwwallet/wallet-enterprise:base -f base.Dockerfile .`, { stdio: 'inherit' });
 		execSync(`docker build -t ${imageRegistry}/wallet-enterprise-acme-verifier:${imageTag} -f wallet-enterprise-configurations/acme-verifier/Dockerfile .`, { stdio: 'inherit' });
+	}
+}
+
+{ // wallet frontend configuration
+	const configPath = 'wallet-frontend/.env';
+	const templatePath = 'wallet-frontend/.env.template';
+	if (fs.existsSync(configPath) && useWalletFrontendEnvTemplate === false) {
+		console.log(`${configPath} was not changed`);
+	}
+	else if (useWalletFrontendEnvTemplate === true) {
+		fs.copyFileSync(templatePath, configPath);
 	}
 }
 
