@@ -131,7 +131,7 @@ export const issuerSigner: CredentialSigner = {
 			throw new Error("Could not import issuer publicKey");
 		}
 		const jwk = await exportJWK(publicKey)
-		return { jwk: jwk };
+		return { jwk: { kid: issuerJwkKid, ...jwk } };
 	},
 }
 
