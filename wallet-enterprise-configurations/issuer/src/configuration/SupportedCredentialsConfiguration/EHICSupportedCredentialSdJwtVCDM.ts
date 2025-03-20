@@ -68,8 +68,8 @@ export class EHICSupportedCredentialSdJwtVCDM implements VCDMSupportedCredential
 	}
 	getDisplay() {
 		return {
-			name: "EHIC",
-			description: "European Health Insurance Card VC in sd_jwt format",
+			name: "EHIC - SD-JWT VC",
+			description: "European Health Insurance Card - SD-JWT VC",
 			background_image: { uri: config.url + "/images/background-image.png" },
 			background_color: "#1b263b",
 			text_color: "#FFFFFF",
