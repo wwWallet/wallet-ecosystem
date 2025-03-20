@@ -25,8 +25,10 @@ const locale = {
 			proceed: "Proceed",
 			heading: "wwWallet Issuer",
 			paragraph: "The Demo wwWallet Issuer is a proof-of-concept service designed to issue verifiable credentials (VCs) in SD-JWT or mdoc formats, supporting the wwWallet ecosystem. It provides demonstrative credentials, including Personal Identification (PID), European Health Insurance Card (EHIC), Bachelor Diploma and Power of Representation VCs, strictly for testing purposes (not valid for real-world use).",
-			demo_text: "This issuer follows OpenID4VCI (draft 14) for credential issuance, implementing the authorization_code grant with scope, client_id, state, and PKCE, and supports OpenID for Verifiable Presentations (draft 21) for secure VC verification. It enables developers and stakeholders to explore interoperability and real-world scenarios in digital identity and trust frameworks.",
-			metadata: "The issuer's metadata is available at"
+			demoText: "This issuer follows OpenID4VCI (draft 14) for credential issuance, implementing the authorization_code grant with scope, client_id, state, and PKCE, and supports OpenID for Verifiable Presentations (draft 21) for secure VC verification. It enables developers and stakeholders to explore interoperability and real-world scenarios in digital identity and trust frameworks.",
+			metadata: "The issuer's metadata is available at",
+			sdJwtMetadata: "and the JWT VC Issuer Metadata configuration can be found at",
+			specs: "The specifications that are partially or fully implemented by wwWallet Issuer are shown below:"
 		},
 		VIDAuthenticationComponent: {
 			title: "Authenticate using Digital Credentials"
