@@ -58,7 +58,7 @@ export class PIDSupportedCredentialMsoMdoc implements SupportedCredentialProtoco
 	getDisplay() {
 		return {
 			name: "PID - MDOC",
-			description: "Person Identification Data - PID VC in MDOC format",
+			description: "Person Identification Data - MDOC",
 			background_image: { uri: config.url + "/images/background-image.png" },
 			background_color: "#4CC3DD",
 			text_color: "#000000",

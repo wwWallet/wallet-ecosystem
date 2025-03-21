@@ -59,8 +59,8 @@ export class PIDSupportedCredentialSdJwtVCDM implements VCDMSupportedCredentialP
 
 	getDisplay() {
 		return {
-			name: "PID - SDJWTVC",
-			description: "Person Identification Data - PID VC in SDJWT format",
+			name: "PID SD-JWT VC",
+			description: "Person Identification Data - SD-JWT VC",
 			background_image: { uri: config.url + "/images/background-image.png" },
 			background_color: "#1b263b",
 			text_color: "#FFFFFF",
@@ -293,7 +293,7 @@ export class PIDSupportedCredentialSdJwtVCDM implements VCDMSupportedCredentialP
 					"display": [
 						{
 							"lang": "en-US",
-							"label": "Issuance date",
+							"label": "Expiry date",
 							"description": "The date that the credential will expire"
 						}
 					],
