@@ -1,16 +1,35 @@
-import crypto from "crypto";
+import * as fs from 'fs';
+import * as crypto from 'crypto';
+import { Buffer } from 'buffer';
 
-type Algorithm = 'sha256' | 'sha384' | 'sha512';
+export type Algorithm = 'sha256' | 'sha384' | 'sha512';
 
 /**
- * Creates an SRI hash from a JS object
- * @param data - The object to hash
- * @param algorithm - Hash algorithm: 'sha256', 'sha384', or 'sha512'
- * @returns SRI string in the format: algorithm-base64Hash
+ * Creates an SRI string from either an object or a file path.
+ * @param input - A JS object or a file path string
+ * @param algorithm - Hashing algorithm to use (default: sha256)
+ * @returns SRI string like: sha256-<base64Hash>
  */
+export function createSRI(
+	input: Record<string, any> | string,
+	algorithm: Algorithm = 'sha256'
+): string {
+	let buffer: Buffer;
 
-export function createSRIFromObject(data: Record<string, any>, algorithm: Algorithm = 'sha256'): string {
-	const jsonString = JSON.stringify(data);
-	const hash = crypto.createHash(algorithm).update(jsonString).digest('base64');
+	if (typeof input === 'string') {
+		// Treat as file path
+		if (!fs.existsSync(input)) {
+			throw new Error(`File not found: ${input}`);
+		}
+		buffer = fs.readFileSync(input);
+	} else if (typeof input === 'object') {
+		// Treat as object
+		const jsonString = JSON.stringify(input);
+		buffer = Buffer.from(jsonString, 'utf-8');
+	} else {
+		throw new Error('Unsupported input type for createSRI');
+	}
+
+	const hash = crypto.createHash(algorithm).update(buffer).digest('base64');
 	return `${algorithm}-${hash}`;
 }
