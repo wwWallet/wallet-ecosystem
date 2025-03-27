@@ -22,6 +22,7 @@ import { GenericVIDAuthenticationComponent } from "../../authentication/authenti
 import { InspectPersonalInfoComponent } from "../authentication/InspectPersonalInfoComponent";
 import { UserAuthenticationMethod } from "../../types/UserAuthenticationMethod.enum";
 import { initializeCredentialEngine } from "../../lib/initializeCredentialEngine";
+import { createSRI } from "../utils/sriGenerator";
 
 const datasetName = "diploma-dataset.xlsx";
 
@@ -52,11 +53,11 @@ export class MasterBlueprintSdJwtVCDM implements VCDMSupportedCredentialProtocol
 	}
 
 	getId(): string {
-		return "http://wallet-enterprise-issuer:8003/master-credential/2.0";
+		return config.url + "/master-credential/2.0";
 	}
 
-	getId1(): string {
-		return "http://wallet-enterprise-issuer:8003/master-credential/1.0";
+	getIdV10(): string {
+		return config.url + "/master-credential/1.0";
 	}
 
 	getScope(): string {
@@ -166,6 +167,7 @@ export class MasterBlueprintSdJwtVCDM implements VCDMSupportedCredentialProtocol
 				"jwk": holderPublicKeyJwk
 			},
 			"vct": this.getId(),
+			"vct#integrity": createSRI(this.metadata()[0]),
 			"jti": `urn:credential:diploma:${randomUUID()}`,
 			"family_name": diplomaEntry.family_name,
 			"given_name": diplomaEntry.given_name,
@@ -202,7 +204,8 @@ export class MasterBlueprintSdJwtVCDM implements VCDMSupportedCredentialProtocol
 				"vct": this.getId(),
 				"name": "Master Credential",
 				"description": "This is a Master verifiable credential",
-				"extends": this.getId1(),
+				"extends": this.getIdV10(),
+				"extends#integrity": createSRI(this.metadataV10()),
 				"display": [
 					{
 						"lang": "en-US",
@@ -211,17 +214,12 @@ export class MasterBlueprintSdJwtVCDM implements VCDMSupportedCredentialProtocol
 							"simple": {
 								"logo": {
 									"uri": config.url + "/images/logo.png",
-									"uri#integrity": "sha256-c7fbfe45428aa2715f01065d812c9f6fd52f99c02e4018fb5761a7cbf4894257",
+									"uri#integrity": createSRI("./public/images/logo.png"),
 									"alt_text": "Master Logo"
 								},
 								"background_color": "#4CC3DD",
 								"text_color": "#FFFFFF"
 							},
-							"svg_templates": [
-								{
-									"uri": config.url + "/images/template-diploma.svg",
-								}
-							],
 						}
 					}
 				],
@@ -303,15 +301,27 @@ export class MasterBlueprintSdJwtVCDM implements VCDMSupportedCredentialProtocol
 					}
 				],
 			},
-			this.metadata1()
+			this.metadataV10()
 		]
 	}
 
-	public metadata1(): any {
+	public metadataV10(): any {
 		return {
-			"vct": this.getId1(),
-			"name": "Master Credential 2.0",
-			"description": "This is a Master verifiable credential",
+			"vct": this.getIdV10(),
+			"name": "Master Credential 1.0",
+			"display": [
+				{
+					"lang": "en-US",
+					"rendering": {
+						"svg_templates": [
+							{
+								"uri": config.url + "/images/template-diploma.svg",
+								"uri#integrity": createSRI("./public/images/template-diploma.svg"),
+							}
+						],
+					}
+				}
+			],
 		}
 	}
 
