@@ -262,16 +262,6 @@ export class MasterBlueprintSdJwtVCDM implements VCDMSupportedCredentialProtocol
 						"svg_id": "title"
 					},
 					{
-						"path": ["grade"],
-						"display": [
-							{
-								"lang": "en-US",
-								"label": "Grade",
-								"description": "Graduate's grade (0-10)"
-							}
-						],
-					},
-					{
 						"path": ["eqf_level"],
 						"display": [
 							{
@@ -280,17 +270,6 @@ export class MasterBlueprintSdJwtVCDM implements VCDMSupportedCredentialProtocol
 								"description": "The EQF level of the diploma according to https://europass.europa.eu/en/description-eight-eqf-levels"
 							}
 						],
-					},
-					{
-						"path": ["graduation_date"],
-						"display": [
-							{
-								"lang": "en-US",
-								"label": "Graduation Date",
-								"description": "The graduation data"
-							}
-						],
-						"svg_id": "graduation_date"
 					},
 					{
 						"path": ["expiry_date"],
