@@ -176,8 +176,8 @@ export class MasterBlueprintSdJwtVCDM implements VCDMSupportedCredentialProtocol
 			"family_name": diplomaEntry.family_name,
 			"given_name": diplomaEntry.given_name,
 			"title": diplomaEntry.title,
-			"grade": String(diplomaEntry.grade),
-			"eqf_level": String(diplomaEntry.eqf_level),
+			"grade": Number(diplomaEntry.grade),
+			"eqf_level": Number(diplomaEntry.eqf_level),
 			"graduation_date": new Date(diplomaEntry.graduation_date).toISOString(),
 			"expiry_date": new Date(diplomaEntry.expiry_date).toISOString(),
 		};
@@ -337,27 +337,24 @@ export class MasterBlueprintSdJwtVCDM implements VCDMSupportedCredentialProtocol
 
 	public schema(): any[] {
 		return [{
-			"$schema": "https://json-schema.org/draft/2020-12/schema",
-			"type": "object",
-			"properties": {
-				"cnf": "object",
-				"vct": "string",
-				"vct#integrity": "string",
-				"jti": "string",
-				"eqf_level": "number",
-				"expiry_date": "string",
-				"iat": "number",
-				"exp": "number",
-				"iss": "string",
-				"sub": "string",
-				"family_name": "string",
-				"given_name": "string",
-				"title": "string",
+			$schema: "https://json-schema.org/draft/2020-12/schema",
+			type: "object",
+			properties: {
+				cnf: { type: "object" },
+				vct: { type: "string" },
+				"vct#integrity": { type: "string" },
+				jti: { type: "string" },
+				eqf_level: { type: "number" },
+				expiry_date: { type: "string" },
+				iat: { type: "number" },
+				exp: { type: "number" },
+				iss: { type: "string" },
+				sub: { type: "string" },
+				family_name: { type: "string" },
+				given_name: { type: "string" },
+				title: { type: "string" },
 			},
-			"required": [
-				"iss",
-				"vct",
-			]
+			required: ["iss", "vct"],
 		},
 		this.schemaV10()
 		]
@@ -369,23 +366,22 @@ export class MasterBlueprintSdJwtVCDM implements VCDMSupportedCredentialProtocol
 			"id": this.getSchemaIdV10(),
 			"type": "object",
 			"properties": {
-				"cnf": "object",
-				"vct": "string",
-				"vct#integrity": "string",
-				"jti": "string",
-				"iat": "number",
-				"exp": "number",
-				"iss": "string",
-				"sub": "string",
-				"grade": "number",
-				"graduation_date": "string",
+				cnf: { type: "object" },
+				vct: { type: "string" },
+				"vct#integrity": { type: "string" },
+				jti: { type: "string" },
+				iat: { type: "number" },
+				exp: { type: "number" },
+				iss: { type: "string" },
+				sub: { type: "string" },
+				grade: { type: "number" },
+				graduation_date: { type: "string" }
 			},
 			"required": [
 				"iss",
-				"vct",
+				"vct"
 			]
-		}
-
+		};
 	}
 
 	exportCredentialSupportedObject(): any {
@@ -403,6 +399,4 @@ export class MasterBlueprintSdJwtVCDM implements VCDMSupportedCredentialProtocol
 			}
 		}
 	}
-
 }
-
