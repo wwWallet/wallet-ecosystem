@@ -60,6 +60,10 @@ export class MasterBlueprintSdJwtVCDM implements VCDMSupportedCredentialProtocol
 		return config.url + "/master-credential/1.0";
 	}
 
+	getSchemaIdV10(): string {
+		return config.url + "/master-credential-schema/1.0";
+	}
+
 	getScope(): string {
 		return "master";
 	}
@@ -188,7 +192,7 @@ export class MasterBlueprintSdJwtVCDM implements VCDMSupportedCredentialProtocol
 		}
 
 		const { credential } = await this.getCredentialSigner()
-			.signSdJwtVc(payload, { typ: VerifiableCredentialFormat.VC_SDJWT, vctm: [base64url.encode(JSON.stringify(this.metadata()))] }, disclosureFrame);
+			.signSdJwtVc(payload, { typ: VerifiableCredentialFormat.VC_SDJWT, vctm: [base64url.encode(JSON.stringify(this.metadata()[0]))] }, disclosureFrame);
 
 		const response = {
 			format: this.getFormat(),
@@ -300,6 +304,7 @@ export class MasterBlueprintSdJwtVCDM implements VCDMSupportedCredentialProtocol
 						"svg_id": "expiry_date"
 					}
 				],
+				"schema": this.schema()[0],
 			},
 			this.metadataV10()
 		]
@@ -322,7 +327,86 @@ export class MasterBlueprintSdJwtVCDM implements VCDMSupportedCredentialProtocol
 					}
 				}
 			],
+			"claims": [
+				{
+					"path": ["grade"],
+					"display": [
+						{
+							"lang": "en-US",
+							"label": "Grade",
+							"description": "Graduate's grade (0-10)"
+						}
+					],
+				},
+				{
+					"path": ["graduation_date"],
+					"display": [
+						{
+							"lang": "en-US",
+							"label": "Graduation Date",
+							"description": "The graduation data"
+						}
+					],
+					"svg_id": "graduation_date"
+				},
+			],
+			"schema_uri": this.getSchemaIdV10(),
+			"schema_uri#integrity": createSRI(this.schemaV10()),
 		}
+	}
+
+
+	public schema(): any[] {
+		return [{
+			"$schema": "https://json-schema.org/draft/2020-12/schema",
+			"type": "object",
+			"properties": {
+				"cnf": "object",
+				"vct": "string",
+				"vct#integrity": "string",
+				"jti": "string",
+				"eqf_level": "number",
+				"expiry_date": "string",
+				"iat": "number",
+				"exp": "number",
+				"iss": "string",
+				"sub": "string",
+				"family_name": "string",
+				"given_name": "string",
+				"title": "string",
+			},
+			"required": [
+				"iss",
+				"vct",
+			]
+		},
+		this.schemaV10()
+		]
+	}
+
+	public schemaV10(): any {
+		return {
+			"$schema": "https://json-schema.org/draft/2020-12/schema",
+			"id": this.getSchemaIdV10(),
+			"type": "object",
+			"properties": {
+				"cnf": "object",
+				"vct": "string",
+				"vct#integrity": "string",
+				"jti": "string",
+				"iat": "number",
+				"exp": "number",
+				"iss": "string",
+				"sub": "string",
+				"grade": "number",
+				"graduation_date": "string",
+			},
+			"required": [
+				"iss",
+				"vct",
+			]
+		}
+
 	}
 
 	exportCredentialSupportedObject(): any {
