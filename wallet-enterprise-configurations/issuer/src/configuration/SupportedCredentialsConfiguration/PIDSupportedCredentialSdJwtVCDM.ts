@@ -101,7 +101,7 @@ export class PIDSupportedCredentialSdJwtVCDM implements VCDMSupportedCredentialP
 				];
 				const rowsObject: CategorizedRawCredentialView = { rows };
 
-				const { credentialRendering } = initializeCredentialEngine();
+				const { credentialRendering } = await initializeCredentialEngine();
 				const dataUri = await credentialRendering.renderSvgTemplate({
 					json: {...vid},
 					credentialImageSvgTemplate: svgText,
