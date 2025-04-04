@@ -115,7 +115,7 @@ export class EdiplomasBlueprintSdJwtVCDM implements VCDMSupportedCredentialProto
 		];
 		const rowsObject: CategorizedRawCredentialView = { rows };
 
-		const { credentialRendering } = initializeCredentialEngine();
+		const { credentialRendering } = await initializeCredentialEngine();
 		const dataUri = await credentialRendering.renderSvgTemplate({
 			json: { ...diplomaEntry },
 			credentialImageSvgTemplate: svgText,
