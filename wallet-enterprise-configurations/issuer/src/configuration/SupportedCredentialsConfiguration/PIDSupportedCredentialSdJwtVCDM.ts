@@ -3,6 +3,7 @@ import { CategorizedRawCredentialView, CategorizedRawCredentialViewRow } from ".
 import { VerifiableCredentialFormat } from "core/dist/types";
 import { VCDMSupportedCredentialProtocol } from "../../lib/CredentialIssuerConfig/SupportedCredentialProtocol";
 import { formatDateDDMMYYYY } from "../../lib/formatDate";
+import { urlToDataUrl } from "../../lib/urlToDataUrl";
 import { AuthorizationServerState } from "../../entities/AuthorizationServerState.entity";
 import { CredentialView } from "../../authorization/types";
 import { randomUUID } from "node:crypto";
@@ -182,7 +183,7 @@ export class PIDSupportedCredentialSdJwtVCDM implements VCDMSupportedCredentialP
 			nationalities: vidEntry.nationality.split(','),
 			email: vidEntry.email_address,
 			phone_number: vidEntry.mobile_phone_number,
-			// picture: vidEntry.portrait
+			picture: vidEntry.sex == '1' ? await urlToDataUrl(config.url + "/images/male_portrait.jpg") : await urlToDataUrl(config.url + "/images/female_portrait.jpg"),
 		};
 
 		const payload = {
@@ -231,7 +232,7 @@ export class PIDSupportedCredentialSdJwtVCDM implements VCDMSupportedCredentialP
 			nationalities: true,
 			email: true,
 			phone_number: true,
-			// picture: true
+			picture: true
 		}
 		const { credential } = await this.getCredentialSigner()
 			.signSdJwtVc(payload, { typ: VerifiableCredentialFormat.VC_SDJWT, vctm: [base64url.encode(JSON.stringify(this.metadata()))] }, disclosureFrame);

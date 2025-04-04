@@ -2,6 +2,7 @@ import { CategorizedRawCredentialView, CategorizedRawCredentialViewRow } from ".
 import { VerifiableCredentialFormat } from "core/dist/types";
 import { SupportedCredentialProtocol } from "../../lib/CredentialIssuerConfig/SupportedCredentialProtocol";
 import { formatDateDDMMYYYY } from "../../lib/formatDate";
+import { urlToBstr } from "../../lib/urlToBstr";
 import { AuthorizationServerState } from "../../entities/AuthorizationServerState.entity";
 import { CredentialView } from "../../authorization/types";
 import { CredentialSigner } from "../../services/interfaces";
@@ -172,7 +173,7 @@ export class PIDSupportedCredentialMsoMdoc implements SupportedCredentialProtoco
 			resident_postal_code: vidEntry.resident_postal_code,
 			resident_street: vidEntry.resident_street,
 			resident_house_number: vidEntry.resident_house_number,
-			// portrait: vidEntry.portrait,
+			portrait: vidEntry.sex == '1' ? await urlToBstr(config.url + "/images/male_portrait.jpg") : await urlToBstr(config.url + "/images/female_portrait.jpg"),
 			email_address: vidEntry.email_address,
 			mobile_phone_number: vidEntry.mobile_phone_number
 		};
