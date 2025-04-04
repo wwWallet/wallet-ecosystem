@@ -155,13 +155,29 @@ const europeanHealthInsuranceCardDescriptor = {
 
 
 const customPIDSdJwtPresentationDefinition = {
-	"id": "CustomPID",
-	"title": "Custom PID",
+	"id": "CustomSdJwtPID",
+	"title": "Custom SD-JWT PID",
 	"description": "Selectable Fields: personalIdentifier, firstName, familyName, birthdate",
 	"_selectable": true,
 	"format": { "vc+sd-jwt": { alg: ['ES256'] } },
 	"input_descriptors": [
 		verifiableIdDescriptor
+	]
+}
+
+const customPIDMdocPresentationDefinition = {
+	"id": "CustomMdocPID",
+	"title": "Custom mDoc PID",
+	"description": "Selectable Fields: personalIdentifier, firstName, familyName, birthdate",
+	"_selectable": true,
+	"format": {
+		"mso_mdoc": {
+			"sd-jwt_alg_values": ["ES256"],
+			"kb-jwt_alg_values": ["ES256"]
+		},
+	},
+	"input_descriptors": [
+		mdocPidDescriptor
 	]
 }
 
@@ -172,9 +188,10 @@ export class VerifierConfigurationService implements VerifierConfigurationInterf
 	getPresentationDefinitions(): any[] {
 		return [
 			customPIDSdJwtPresentationDefinition,
+			customPIDMdocPresentationDefinition,
 			{
-				"id": "PID",
-				"title": "PID",
+				"id": "sdJwtPID",
+				"title": "PID - SD-JWT",
 				"description": "Required Fields: VC type, Given Name, Family Name & Birthdate",
 				"format": { "vc+sd-jwt": { alg: ['ES256'] } },
 				"input_descriptors": [
@@ -210,7 +227,7 @@ export class VerifierConfigurationService implements VerifierConfigurationInterf
 			},
 			{
 				"id": "PIDAndEuropeanHealthInsuranceCard",
-				"title": "PID + EHIC",
+				"title": "PID (SD-JWT) + EHIC",
 				"description": "",
 				"format": { "vc+sd-jwt": { alg: ['ES256'] } },
 				"input_descriptors": [
