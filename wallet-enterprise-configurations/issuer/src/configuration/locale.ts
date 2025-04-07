@@ -35,22 +35,24 @@ const locale = {
 						["Grant Type", "authorization_code [OpenID.Core]"],
 						["Client Authentcation", "PKCE [RFC 7636], no secret"],
 						["Client Type", "Public"],
-						["scope parameter", "Required"],
-						["authorization_details parameter", "Not supported"],
+						["Dynamic Credential Request", "OpenID4VP, OAuth 2.0 for First-Party Applications"],
+						["Scope", "Required"],
 						["Authorization Method", "Pushed Authorization Request [RFC 9126]"],
 						["Access Token", "DPoP Token [RFC 9449]"],
 						["Credential Endpoint Proof Type", "jwt [OpenID4VCI]"],
 						["Credential Response Holder Binding", "cnf claim [RFC 7800]"],
 						["Batch Credential Endpoint", "Supported"],
-						["Deferred Credential Endpoint", "Not supported"],
 						["Credential Format", "vc+sd-jwt, mso_mdoc"],
 					],
+					openid4vci_notes: "Currently, the Notification and Deferred Endpoints are not supported",
 					openid4vp: [
 						["Response Mode", "direct_post.jwt [OpenID4VP]"],
 						["Request Method", "request_uri signed [JAR]"],
 						["Client ID Scheme", "x509_san_dns"],
 						["Credential Format", "vc+sd-jwt, mso_mdoc"],
 					],
+					openid4vp_notes: "",
+
 				}
 			}
 		},
