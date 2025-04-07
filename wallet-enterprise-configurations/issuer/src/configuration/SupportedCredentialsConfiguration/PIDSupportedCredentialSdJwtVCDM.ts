@@ -166,11 +166,11 @@ export class PIDSupportedCredentialSdJwtVCDM implements VCDMSupportedCredentialP
 				house_number: vidEntry.resident_house_number
 			},
 			age_equal_or_over: {
-				"18": vidEntry.age_over_18 == '1' ? true : false,
-				"16": vidEntry.age_over_16 == '1' ? true : false,
-				"65": vidEntry.age_over_65 == '1' ? true : false,
+				"18": vidEntry.age_over_18 == '1' ? 'true' : 'false',
+				"16": vidEntry.age_over_16 == '1' ? 'true' : 'false',
+				"65": vidEntry.age_over_65 == '1' ? 'true' : 'false',
 			},
-			age_over_21: vidEntry.age_over_21 == '1' ? true : false,
+			age_over_21: vidEntry.age_over_21 == '1' ? 'true' : 'false',
 			age_in_years: vidEntry.age_in_years,
 			age_birth_year: vidEntry.age_birth_year,
 			birth_date: new Date(vidEntry.birth_date).toISOString().split('T')[0],  // full-date format, according to ARF PID Rulebook
