@@ -100,7 +100,7 @@ export class PIDSupportedCredentialMsoMdoc implements SupportedCredentialProtoco
 				const rowsObject: CategorizedRawCredentialView = { rows };
 
 
-				const e = initializeCredentialEngine();
+				const e = await initializeCredentialEngine();
 				const dataUri = await e.openid4vcRendering.renderCustomSvgTemplate({
 					signedClaims: { expiry_date: formatDateDDMMYYYY(vid.expiry_date) },
 					displayConfig: {
