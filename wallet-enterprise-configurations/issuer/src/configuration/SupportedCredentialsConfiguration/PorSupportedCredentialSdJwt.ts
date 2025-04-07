@@ -59,11 +59,11 @@ export class PorSupportedCredentialSdJwt implements VCDMSupportedCredentialProto
 
 	getDisplay() {
 		return {
-			name: "Power of Representation - SD-JWT VC",
-			description: "Power of Representation - SD-JWT VC",
+			name: "POR - SD-JWT VC",
+			description: "Power of Representation",
 			background_image: { uri: config.url + "/images/background-image.png" },
-			background_color: "#1b263b",
-			text_color: "#FFFFFF",
+			background_color: "#c3b25d",
+			text_color: "#363531",
 			locale: 'en-US',
 		}
 	}
