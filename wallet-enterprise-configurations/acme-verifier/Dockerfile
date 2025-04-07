@@ -8,7 +8,6 @@ RUN rm -rf /app/src/configuration/
 COPY ./wallet-enterprise-configurations/acme-verifier/src/configuration/ /app/src/configuration/
 COPY ./wallet-enterprise-configurations/acme-verifier/public/styles/main.css /app/public/styles/main.css
 COPY ./wallet-enterprise-configurations/acme-verifier/public/images /app/public/images
-COPY ./wallet-enterprise-configurations/acme-verifier/public/site.webmanifest /app/public/site.webmanifest
 
 RUN yarn cache clean && yarn install && yarn build
 

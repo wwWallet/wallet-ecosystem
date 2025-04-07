@@ -53,7 +53,6 @@ services:
       - ./wallet-enterprise-configurations/acme-verifier/src/configuration:/app/src/configuration:rw
       - ./wallet-enterprise-configurations/acme-verifier/public/styles/main.css:/app/public/styles/main.css:rw
       - ./wallet-enterprise-configurations/acme-verifier/public/images:/app/public/images:rw
-      - ./wallet-enterprise-configurations/acme-verifier/public/site.webmanifest:/app/public/site.webmanifest:rw
       - ./.vscode/:/app/.vscode:rw
       - type: tmpfs
         target: /app/dist

@@ -40,4 +40,10 @@ nLP+NsILFBXC+I8CIHSpT1vB/tMaJKbIizZwxyOru6N/iUkpHGzVnxU5Wgu4
 		secure: false
 	},
 	clockTolerance: 60,
+	siteConfig: {
+		"name": "ACME Verifier",
+		"short_name": "ACME Verifier",
+		"theme_color": "#4d7e3e",
+		"background_color": "#4d7e3e",
+	}
 }
