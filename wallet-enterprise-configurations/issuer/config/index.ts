@@ -13,6 +13,7 @@ export const config = {
 	display: [
 		{
 			name: "wwWallet Issuer",
+			logo: { uri: "http://wallet-enterprise-issuer:8003/images/logo.png" },
 			locale: "en-US"
 		}
 	],
