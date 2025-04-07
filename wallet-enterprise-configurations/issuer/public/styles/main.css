@@ -1,7 +1,7 @@
 :root {
 	/* --primary-color: #1B263B; */
-	--header-bg-color: var(--primary-color);
-	--header-item-color: white;
+	--header-bg-color: rgb(255, 255, 255);
+	--header-item-color: var(--primary-color);
 	--layout-bg-color: rgb(255, 255, 255);
 	--secondary-color: #778DA9;
 	--secondary-light-color: #E0E1DD;
