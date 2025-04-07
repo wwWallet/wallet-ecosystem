@@ -340,13 +340,6 @@ export class PIDSupportedCredentialSdJwtVCDM implements VCDMSupportedCredentialP
 				},
 				{
 					"path": ["picture"],
-					"display": [
-						{
-							"lang": "en-US",
-							"label": "Picture",
-							"description": "The picture of the PID holder"
-						}
-					],
 					"svg_id": "picture"
 				},
 			],
