@@ -44,4 +44,10 @@ nLP+NsILFBXC+I8CIHSpT1vB/tMaJKbIizZwxyOru6N/iUkpHGzVnxU5Wgu4
 -----END CERTIFICATE-----`
 	],
 	clockTolerance: 60,
+	siteConfig: {
+		"name": "wwWallet Issuer",
+		"short_name": "wwWallet Issuer",
+		"theme_color": "#353f55",
+		"background_color": "#353f55",
+	}
 }
