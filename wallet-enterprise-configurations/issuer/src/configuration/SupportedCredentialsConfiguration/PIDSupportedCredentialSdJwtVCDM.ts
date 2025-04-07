@@ -337,7 +337,18 @@ export class PIDSupportedCredentialSdJwtVCDM implements VCDMSupportedCredentialP
 						}
 					],
 					"svg_id": "expiry_date"
-				}
+				},
+				{
+					"path": ["picture"],
+					"display": [
+						{
+							"lang": "en-US",
+							"label": "Picture",
+							"description": "The picture of the PID holder"
+						}
+					],
+					"svg_id": "picture"
+				},
 			],
 		}
 
