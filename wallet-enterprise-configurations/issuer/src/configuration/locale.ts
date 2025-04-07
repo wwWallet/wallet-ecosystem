@@ -28,7 +28,33 @@ const locale = {
 			demoText: "This issuer follows OpenID4VCI (draft 14) for credential issuance, implementing the authorization_code grant with scope, client_id, state, and PKCE, and supports OpenID for Verifiable Presentations (draft 21) for secure VC verification. It enables developers and stakeholders to explore interoperability and real-world scenarios in digital identity and trust frameworks.",
 			metadata: "The issuer's metadata is available at",
 			sdJwtMetadata: "and the JWT VC Issuer Metadata configuration can be found at",
-			specs: "The specifications that are partially or fully implemented by wwWallet Issuer are shown below:"
+			specs: {
+				paragraph: "The specifications that are partially or fully implemented by wwWallet Issuer are shown below:",
+				tables: {
+					openid4vci: [
+						["Grant Type", "authorization_code [OpenID.Core]"],
+						["Client Authentcation", "PKCE [RFC 7636], no secret"],
+						["Client Type", "Public"],
+						["Dynamic Credential Request", "OpenID4VP, OAuth 2.0 for First-Party Applications"],
+						["Scope", "Required"],
+						["Authorization Method", "Pushed Authorization Request [RFC 9126]"],
+						["Access Token", "DPoP Token [RFC 9449]"],
+						["Credential Endpoint Proof Type", "jwt [OpenID4VCI]"],
+						["Credential Response Holder Binding", "cnf claim [RFC 7800]"],
+						["Batch Credential Endpoint", "Supported"],
+						["Credential Format", "vc+sd-jwt, mso_mdoc"],
+					],
+					openid4vci_notes: "Currently, the Notification and Deferred Endpoints are not supported",
+					openid4vp: [
+						["Response Mode", "direct_post.jwt [OpenID4VP]"],
+						["Request Method", "request_uri signed [JAR]"],
+						["Client ID Scheme", "x509_san_dns"],
+						["Credential Format", "vc+sd-jwt, mso_mdoc"],
+					],
+					openid4vp_notes: "",
+
+				}
+			}
 		},
 		VIDAuthenticationComponent: {
 			title: "Authenticate using Digital Credentials"
