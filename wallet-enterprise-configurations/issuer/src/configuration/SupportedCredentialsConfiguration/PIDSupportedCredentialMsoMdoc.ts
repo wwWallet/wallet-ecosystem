@@ -86,7 +86,7 @@ export class PIDSupportedCredentialMsoMdoc implements SupportedCredentialProtoco
 					{ name: "Family Name at Birth", value: vid.family_name_birth },
 					{ name: "Given Name", value: vid.given_name },
 					{ name: "Given Name at Birth", value: vid.given_name_birth },
-					{ name: "Birth Date", value: formatDateDDMMYYYY(vid.birth_date) },
+					{ name: "Birth Date", value: formatDateDDMMYYYY(vid.birthdate) },
 					{ name: "Age Over 18", value: vid.age_over_18 },
 					{ name: "Sex", value: vid.sex },
 					{ name: "Nationality", value: vid.nationality },
@@ -153,9 +153,11 @@ export class PIDSupportedCredentialMsoMdoc implements SupportedCredentialProtoco
 			family_name_birth: vidEntry.family_name_birth,
 			given_name: vidEntry.given_name,
 			given_name_birth: vidEntry.given_name_birth,
-			birth_date: new Date(vidEntry.birth_date).toISOString().split('T')[0],  // full-date format, according to ARF PID Rulebook
+			personal_administrative_number: vidEntry.personal_administrative_number,
+			birthdate: new Date(vidEntry.birth_date).toISOString().split('T')[0],  // full-date format, according to ARF PID Rulebook
 			issuing_authority: vidEntry.issuing_authority,
 			issuing_country: vidEntry.issuing_country,
+			issuing_jurisdiction: vidEntry.issuing_jurisdiction,
 			document_number: String(vidEntry.document_number),
 			issuance_date: new Date().toISOString().split('T')[0],  // full-date format, according to ARF PID Rulebook
 			expiry_date: new Date(vidEntry.expiry_date).toISOString().split('T')[0],  // full-date format, according to ARF PID Rulebook

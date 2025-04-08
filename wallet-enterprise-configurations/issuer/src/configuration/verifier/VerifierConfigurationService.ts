@@ -72,7 +72,7 @@ export class VerifierConfigurationService implements VerifierConfigurationInterf
 								{
 									"name": "Birth Date",
 									"path": [
-										"$.birth_date"
+										"$.birthdate"
 									],
 									"filter": {}
 								},
