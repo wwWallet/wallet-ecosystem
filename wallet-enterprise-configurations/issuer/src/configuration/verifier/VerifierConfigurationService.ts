@@ -36,7 +36,7 @@ export class VerifierConfigurationService implements VerifierConfigurationInterf
 									],
 									"filter": {
 										"type": "string",
-										"const": "urn:eu.europa.ec.eudi:pid:1"
+										"const": "urn:eudi:pid:1"
 									}
 								}
 							]
@@ -83,7 +83,7 @@ export class VerifierConfigurationService implements VerifierConfigurationInterf
 									],
 									"filter": {
 										"type": "string",
-										"const": "urn:eu.europa.ec.eudi:pid:1"
+										"const": "urn:eudi:pid:1"
 									}
 								}
 							]
