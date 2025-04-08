@@ -4,26 +4,29 @@ import { CredentialSigner } from "../services/interfaces";
 import fs from 'fs';
 import path from "path";
 import { HasherAlgorithm, HasherAndAlgorithm, SdJwt, SignatureAndEncryptionAlgorithm, Signer } from "@sd-jwt/core";
-import { sign, randomBytes, createHash, KeyObject } from "crypto";
+import { sign, randomBytes, KeyObject, createHash } from "crypto";
 import { importPrivateKeyPem } from '../lib/importPrivateKeyPem';
-import {  base64url, calculateJwkThumbprint, exportJWK, importX509 } from 'jose';
+import { base64url, calculateJwkThumbprint, exportJWK, importX509 } from 'jose';
 import { Document } from '@auth0/mdl';
 import { cborEncode } from "@auth0/mdl/lib/cbor";
+import { SupportedAlgs } from '@auth0/mdl/lib/mdoc/model/types';
+// @ts-ignore
+const keyAlgorithm = config?.keyAlgorithm ?? "ES256";
 
 const issuerX5C: string[] = JSON.parse(fs.readFileSync(path.join(__dirname, "../../../keys/x5c.json"), 'utf-8').toString()) as string[];
 const issuerPrivateKeyPem = fs.readFileSync(path.join(__dirname, "../../../keys/pem.key"), 'utf-8').toString();
 const issuerCertPem = fs.readFileSync(path.join(__dirname, "../../../keys/pem.crt"), 'utf-8').toString() as string;;
 // const caCertPem = fs.readFileSync(path.join(__dirname, "../../../keys/ca.crt"), 'utf-8').toString() as string;;
 
-importPrivateKeyPem(issuerPrivateKeyPem, 'ES256') // attempt to import the key
-importX509(issuerCertPem, 'ES256'); // attempt to import the public key
+importPrivateKeyPem(issuerPrivateKeyPem, keyAlgorithm) // attempt to import the key
+importX509(issuerCertPem, keyAlgorithm); // attempt to import the public key
 
 const issuerJwkKid = "8636af04-5796-4f46-a73e-d690d7d4e7f3";
 
 export const issuerSigner: CredentialSigner = {
 	signMsoMdoc: async function (doctype, namespaces, holderPublicKeyJwk) {
 
-		const key = await importPrivateKeyPem(issuerPrivateKeyPem, 'ES256');
+		const key = await importPrivateKeyPem(issuerPrivateKeyPem, keyAlgorithm);
 		if (!key) {
 			throw new Error("Could not import private key");
 		}
@@ -31,7 +34,7 @@ export const issuerSigner: CredentialSigner = {
 		for (const [ns, nsData] of namespaces) {
 			document.addIssuerNameSpace(ns, { ...nsData })
 		}
-		console.log("Cert = ", importX509(issuerCertPem, 'ES256'))
+		console.log("Cert = ", importX509(issuerCertPem, keyAlgorithm))
 
 		const issuerPrivateKeyJwk = await exportJWK(key);
 		const validFromDate = new Date();
@@ -52,7 +55,7 @@ export const issuerSigner: CredentialSigner = {
 					kid: issuerJwkKid, // only used to avoid undefined value on kid of the IssuerAuth
 				},
 				issuerCertificate: issuerCertPem,
-				alg: 'ES256',
+				alg: keyAlgorithm as SupportedAlgs,
 			});
 
 		// await signedDocument.issuerSigned.issuerAuth.verifyX509([caCertPem])
@@ -66,15 +69,40 @@ export const issuerSigner: CredentialSigner = {
 
 	},
 	signSdJwtVc: async function (payload, headers, disclosureFrame) {
-		const key = await importPrivateKeyPem(issuerPrivateKeyPem, 'ES256');
+		const key = await importPrivateKeyPem(issuerPrivateKeyPem, keyAlgorithm);
 		if (!key) {
 			throw new Error("Could not import private key");
 		}
-		const signer: Signer = (input, header) => {
-			if (header.alg !== SignatureAndEncryptionAlgorithm.ES256) {
-				throw new Error('only ES256 is supported')
+
+		const hasherAndAlgorithm = (keyAlgorithm: string): HasherAndAlgorithm => {
+
+			let hasherAlg: HasherAlgorithm | null = null;
+			switch (keyAlgorithm) {
+				case "ES256":
+					hasherAlg = HasherAlgorithm.Sha256;
+					break;
+				case "ES512":
+					hasherAlg = HasherAlgorithm.Sha512;
+					break;
+				default:
+					throw new Error("not supported algorithm");
 			}
-			return sign(null, Buffer.from(input), {
+			if (hasherAlg == null) {
+				throw new Error("not supported algorithm");
+			}
+			const hasherAndAlgorithm: HasherAndAlgorithm = {
+				hasher: (input: string) => {
+					//@ts-ignore
+					// return webcrypto.subtle.digest(hasherAlg.toUpperCase(), encoder.encode(input)).then((v) => new Uint8Array(v));
+					return createHash(hasherAlg.replace('-', '')).update(input).digest()
+				},
+				algorithm: hasherAlg
+			};
+			return hasherAndAlgorithm;
+		}
+
+		const signer: Signer = (input) => {
+			return sign(hasherAndAlgorithm(keyAlgorithm).algorithm, Buffer.from(input), {
 				dsaEncoding: 'ieee-p1363',
 				key: key as KeyObject
 			})
@@ -87,11 +115,6 @@ export const issuerSigner: CredentialSigner = {
 				.replace(/\//g, '_')
 				.replace(/=/g, '');
 		};
-
-		const hasherAndAlgorithm: HasherAndAlgorithm = {
-			hasher: (input: string) => createHash('sha256').update(input).digest(),
-			algorithm: HasherAlgorithm.Sha256
-		}
 
 
 		const issuanceDate = new Date();
@@ -110,9 +133,9 @@ export const issuerSigner: CredentialSigner = {
 
 		if (disclosureFrame != undefined) {
 			const sdJwt = new SdJwt({
-				header: { ...headers, alg: SignatureAndEncryptionAlgorithm.ES256 },
+				header: { ...headers, alg: keyAlgorithm as SignatureAndEncryptionAlgorithm },
 				payload
-			}).withHasher(hasherAndAlgorithm)
+			}).withHasher(hasherAndAlgorithm(keyAlgorithm))
 				.withSigner(signer)
 				.withSaltGenerator(saltGenerator)
 				.withDisclosureFrame(disclosureFrame);
@@ -126,12 +149,12 @@ export const issuerSigner: CredentialSigner = {
 
 	},
 	getPublicKeyJwk: async function () {
-		const publicKey = await importX509(issuerCertPem, 'ES256');
+		const publicKey = await importX509(issuerCertPem, keyAlgorithm);
 		if (!publicKey) {
 			throw new Error("Could not import issuer publicKey");
 		}
 		const jwk = await exportJWK(publicKey)
-		return { jwk: { kid: issuerJwkKid, ...jwk } };
+		return { jwk: { kid: issuerJwkKid, ...jwk, alg: keyAlgorithm, } };
 	},
 }
 
