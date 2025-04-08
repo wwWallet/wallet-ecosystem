@@ -221,11 +221,10 @@ export class PIDSupportedCredentialSdJwtVCDM implements VCDMSupportedCredentialP
 				"18": true,
 				"16": true,
 				"65": true,
+				"21": true,
 			},
-			age_over_21: true,
 			age_in_years: true,
 			age_birth_year: true,
-			birth_date: true,
 			issuing_authority: true,
 			issuing_country: true,
 			issuing_jurisdiction: true,
@@ -299,7 +298,7 @@ export class PIDSupportedCredentialSdJwtVCDM implements VCDMSupportedCredentialP
 					"svg_id": "family_name"
 				},
 				{
-					"path": ["birth_date"],
+					"path": ["birthdate"],
 					"display": [
 						{
 							"lang": "en-US",
