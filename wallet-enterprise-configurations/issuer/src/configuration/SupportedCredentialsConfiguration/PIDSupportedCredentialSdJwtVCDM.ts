@@ -151,6 +151,7 @@ export class PIDSupportedCredentialSdJwtVCDM implements VCDMSupportedCredentialP
 			birth_family_name: vidEntry.family_name_birth,
 			given_name: vidEntry.given_name,
 			birth_given_name: vidEntry.given_name_birth,
+			personal_administrative_number: vidEntry.personal_administrative_number,
 			place_of_birth: {
 				country: vidEntry.birth_country,
 				region: vidEntry.birth_region,
@@ -167,15 +168,16 @@ export class PIDSupportedCredentialSdJwtVCDM implements VCDMSupportedCredentialP
 			},
 			age_equal_or_over: {
 				"18": vidEntry.age_over_18 == '1' ? 'true' : 'false',
+				"21": vidEntry.age_over_21 == '1' ? 'true' : 'false',
 				"16": vidEntry.age_over_16 == '1' ? 'true' : 'false',
 				"65": vidEntry.age_over_65 == '1' ? 'true' : 'false',
 			},
-			age_over_21: vidEntry.age_over_21 == '1' ? 'true' : 'false',
 			age_in_years: vidEntry.age_in_years,
 			age_birth_year: vidEntry.age_birth_year,
-			birth_date: new Date(vidEntry.birth_date).toISOString().split('T')[0],  // full-date format, according to ARF PID Rulebook
+			birthdate: new Date(vidEntry.birth_date).toISOString().split('T')[0],  // full-date format, according to ARF PID Rulebook
 			issuing_authority: vidEntry.issuing_authority,
 			issuing_country: vidEntry.issuing_country,
+			issuing_jurisdiction: vidEntry.issuing_jurisdiction,
 			document_number: String(vidEntry.document_number),
 			date_of_issuance: new Date().toISOString().split('T')[0],  // full-date format, according to ARF PID Rulebook
 			date_of_expiry: new Date(vidEntry.expiry_date).toISOString().split('T')[0],  // full-date format, according to ARF PID Rulebook
@@ -200,6 +202,7 @@ export class PIDSupportedCredentialSdJwtVCDM implements VCDMSupportedCredentialP
 			birth_family_name: true,
 			given_name: true,
 			birth_given_name: true,
+			personal_administrative_number: true,
 			place_of_birth: {
 				country: true,
 				region: true,
@@ -225,6 +228,7 @@ export class PIDSupportedCredentialSdJwtVCDM implements VCDMSupportedCredentialP
 			birth_date: true,
 			issuing_authority: true,
 			issuing_country: true,
+			issuing_jurisdiction: true,
 			document_number: true,
 			date_of_issuance: true,
 			date_of_expiry: true,

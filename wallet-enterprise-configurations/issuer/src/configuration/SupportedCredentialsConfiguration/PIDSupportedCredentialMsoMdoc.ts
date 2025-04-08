@@ -153,9 +153,11 @@ export class PIDSupportedCredentialMsoMdoc implements SupportedCredentialProtoco
 			family_name_birth: vidEntry.family_name_birth,
 			given_name: vidEntry.given_name,
 			given_name_birth: vidEntry.given_name_birth,
+			personal_administrative_number: vidEntry.personal_administrative_number,
 			birth_date: new Date(vidEntry.birth_date).toISOString().split('T')[0],  // full-date format, according to ARF PID Rulebook
 			issuing_authority: vidEntry.issuing_authority,
 			issuing_country: vidEntry.issuing_country,
+			issuing_jurisdiction: vidEntry.issuing_jurisdiction,
 			document_number: String(vidEntry.document_number),
 			issuance_date: new Date().toISOString().split('T')[0],  // full-date format, according to ARF PID Rulebook
 			expiry_date: new Date(vidEntry.expiry_date).toISOString().split('T')[0],  // full-date format, according to ARF PID Rulebook

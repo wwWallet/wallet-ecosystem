@@ -42,6 +42,11 @@ const verifiableIdDescriptor = {
 				"filter": {}
 			},
 			{
+				"name": "Personal Administrative Number",
+				"path": ['$.personal_administrative_number'],
+				"filter": {}
+			},
+			{
 				"name": "Place of Birth (Country)",
 				"path": ['$.place_of_birth.country'],
 				"filter": {}
@@ -72,6 +77,11 @@ const verifiableIdDescriptor = {
 				"filter": {}
 			},
 			{
+				"name": "Age equal or over 21",
+				"path": ['$.age_equal_or_over.21'],
+				"filter": {}
+			},
+			{
 				"name": "Age equal or over 65",
 				"path": ['$.age_equal_or_over.65'],
 				"filter": {}
@@ -83,7 +93,7 @@ const verifiableIdDescriptor = {
 			},
 			{
 				"name": "Birth Date",
-				"path": ['$.birth_date'],
+				"path": ['$.birthdate'],
 				"filter": {}
 			},
 			{
@@ -104,6 +114,11 @@ const verifiableIdDescriptor = {
 			{
 				"name": "Issuing Country",
 				"path": ['$.issuing_country'],
+				"filter": {}
+			},
+			{
+				"name": "Issuing Jurisdiction",
+				"path": ['$.issuing_jurisdiction'],
 				"filter": {}
 			}
 		]
@@ -136,6 +151,13 @@ const mdocPidFields = [
 		"name": "Given Name at Birth",
 		"path": [
 			"$['eu.europa.ec.eudi.pid.1']['given_name_birth']"
+		],
+		"intent_to_retain": false
+	},
+	{
+		"name": "Personal Administrative Number",
+		"path": [
+			"$['eu.europa.ec.eudi.pid.1']['personal_administrative_number']"
 		],
 		"intent_to_retain": false
 	},
@@ -248,6 +270,13 @@ const mdocPidFields = [
 		"name": "Issuing Country",
 		"path": [
 			"$['eu.europa.ec.eudi.pid.1']['issuing_country']"
+		],
+		"intent_to_retain": false
+	},
+	{
+		"name": "Issuing Jurisdiction",
+		"path": [
+			"$['eu.europa.ec.eudi.pid.1']['issuing_jurisdiction']"
 		],
 		"intent_to_retain": false
 	},
