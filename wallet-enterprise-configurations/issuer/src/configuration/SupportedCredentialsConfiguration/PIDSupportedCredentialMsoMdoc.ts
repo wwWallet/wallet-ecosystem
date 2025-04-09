@@ -86,7 +86,7 @@ export class PIDSupportedCredentialMsoMdoc implements SupportedCredentialProtoco
 					{ name: "Family Name at Birth", value: vid.family_name_birth },
 					{ name: "Given Name", value: vid.given_name },
 					{ name: "Given Name at Birth", value: vid.given_name_birth },
-					{ name: "Birth Date", value: formatDateDDMMYYYY(vid.birthdate) },
+					{ name: "Birth Date", value: formatDateDDMMYYYY(vid.birth_date) },
 					{ name: "Age Over 18", value: vid.age_over_18 },
 					{ name: "Sex", value: vid.sex },
 					{ name: "Nationality", value: vid.nationality },
@@ -154,7 +154,7 @@ export class PIDSupportedCredentialMsoMdoc implements SupportedCredentialProtoco
 			given_name: vidEntry.given_name,
 			given_name_birth: vidEntry.given_name_birth,
 			personal_administrative_number: vidEntry.personal_administrative_number,
-			birthdate: new Date(vidEntry.birth_date).toISOString().split('T')[0],  // full-date format, according to ARF PID Rulebook
+			birth_date: new Date(vidEntry.birth_date).toISOString().split('T')[0],  // full-date format, according to ARF PID Rulebook
 			issuing_authority: vidEntry.issuing_authority,
 			issuing_country: vidEntry.issuing_country,
 			issuing_jurisdiction: vidEntry.issuing_jurisdiction,
