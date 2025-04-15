@@ -208,6 +208,7 @@ export class PIDSupportedCredentialSdJwtVCDM implements VCDMSupportedCredentialP
 				region: true,
 				locality: true
 			},
+			birthdate: true,
 			address: {
 				formatted: true,
 				country: true,
