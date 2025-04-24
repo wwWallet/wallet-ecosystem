@@ -34,14 +34,14 @@ export const issuerSigner: CredentialSigner = {
 		console.log("Cert = ", importX509(issuerCertPem, 'ES256'))
 
 		const issuerPrivateKeyJwk = await exportJWK(key);
-		const validFromDate = new Date();
-		validFromDate.setDate(validFromDate.getDay() - 10);
+		const signed = new Date();
+		const validFromDate = new Date(signed.getTime() + 1000);
 		const expirationDate = new Date();
 
 		expirationDate.setFullYear(expirationDate.getFullYear() + 1);
 		const signedDocument = await document
 			.addValidityInfo({
-				signed: new Date(),
+				signed: signed,
 				validUntil: expirationDate,
 				validFrom: validFromDate,
 			})

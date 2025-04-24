@@ -68,8 +68,8 @@ export class EHICSupportedCredentialSdJwtVCDM implements VCDMSupportedCredential
 	}
 	getDisplay() {
 		return {
-			name: "EHIC",
-			description: "European Health Insurance Card VC in sd_jwt format",
+			name: "EHIC - SD-JWT VC",
+			description: "European Health Insurance Card",
 			background_image: { uri: config.url + "/images/background-image.png" },
 			background_color: "#1b263b",
 			text_color: "#FFFFFF",
@@ -111,7 +111,7 @@ export class EHICSupportedCredentialSdJwtVCDM implements VCDMSupportedCredential
 
 					];
 					const rowsObject: CategorizedRawCredentialView = { rows };
-					const { credentialRendering } = initializeCredentialEngine();
+					const { credentialRendering } = await initializeCredentialEngine();
 					const dataUri = await credentialRendering.renderSvgTemplate({
 						json: { ...ehic },
 						credentialImageSvgTemplate: svgText,

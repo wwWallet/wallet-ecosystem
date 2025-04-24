@@ -13,6 +13,7 @@ export const config = {
 	display: [
 		{
 			name: "wwWallet Issuer",
+			logo: { uri: "http://wallet-enterprise-issuer:8003/images/logo.png" },
 			locale: "en-US"
 		}
 	],
@@ -30,18 +31,28 @@ export const config = {
 	wwwalletURL: "http://localhost:3000/cb",
 	trustedRootCertificates: [
 		`-----BEGIN CERTIFICATE-----
-MIICCTCCAa+gAwIBAgIUOgCPRPz+xuyaJVSj4+pw5DL2pcswCgYIKoZIzj0EAwIw
-UjELMAkGA1UEBhMCR1IxDzANBgNVBAgMBkdyZWVjZTEPMA0GA1UEBwwGQXRoZW5z
-MQ4wDAYDVQQKDAVHVW5ldDERMA8GA1UEAwwId3dXYWxsZXQwHhcNMjUwMjI2MTUx
-MjIwWhcNMzUwMjI0MTUxMjIwWjBSMQswCQYDVQQGEwJHUjEPMA0GA1UECAwGR3Jl
-ZWNlMQ8wDQYDVQQHDAZBdGhlbnMxDjAMBgNVBAoMBUdVbmV0MREwDwYDVQQDDAh3
-d1dhbGxldDBZMBMGByqGSM49AgEGCCqGSM49AwEHA0IABNBZtjDVXcHAETA8F1Wj
-ScHMtRtfNgYZxYb+6Q5qrOBBRpT75BvaANNoASnnXSXe8HJ4HCB9XG6UuuIhuK/X
-eUejYzBhMA8GA1UdEwEB/wQFMAMBAf8wDgYDVR0PAQH/BAQDAgEGMB0GA1UdDgQW
-BBR8ePhvPK+ji6cfKwa36k1rRewFojAfBgNVHSMEGDAWgBR8ePhvPK+ji6cfKwa3
-6k1rRewFojAKBggqhkjOPQQDAgNIADBFAiEAiVcSsLpcK6bkYkq03gzejgBQvvKv
-nLP+NsILFBXC+I8CIHSpT1vB/tMaJKbIizZwxyOru6N/iUkpHGzVnxU5Wgu4
+MIICMzCCAdqgAwIBAgIUdgESbTG9nxSXVImFdFHHAHGJ9RwwCgYIKoZIzj0EAwIw
+IDERMA8GA1UEAwwId3dXYWxsZXQxCzAJBgNVBAYTAkdSMB4XDTI1MDMwNjE1Mzcz
+M1oXDTM1MDMwNDE1MzczM1owIDERMA8GA1UEAwwId3dXYWxsZXQxCzAJBgNVBAYT
+AkdSMFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAE0Fm2MNVdwcARMDwXVaNJwcy1
+G182BhnFhv7pDmqs4EFGlPvkG9oA02gBKeddJd7wcngcIH1cbpS64iG4r9d5R6OB
+8TCB7jASBgNVHRMBAf8ECDAGAQH/AgEAMA4GA1UdDwEB/wQEAwIBBjAdBgNVHQ4E
+FgQUfHj4bzyvo4unHysGt+pNa0XsBaIwHwYDVR0jBBgwFoAUfHj4bzyvo4unHysG
+t+pNa0XsBaIwOgYDVR0fBDMwMTAvoC2gK4YpaHR0cDovL3VzZXJzLnVvYS5nci9+
+cHN0YW1hdG9wL2NhLWNybC5wZW0wIAYDVR0RBBkwF4YVaHR0cDovL3d3dy53YWxs
+ZXQub3JnMCoGA1UdEgQjMCGGFWh0dHA6Ly93d3cud2FsbGV0LmNvbYIId3dXYWxs
+ZXQwCgYIKoZIzj0EAwIDRwAwRAIgGMfgLwOXvEk0sD3nEtCuwkZRzX9vyYZ/hfg6
+VPrJszACIHBsYf7toXfUFjr6y1nAJ/oXP9l/fWBDydcQIq+Vnfem
 -----END CERTIFICATE-----`
 	],
+	trustedIssuers: [
+		"http://wallet-enterprise-issuer:8003"
+	],
 	clockTolerance: 60,
+	siteConfig: {
+		"name": "wwWallet Issuer",
+		"short_name": "wwWallet Issuer",
+		"theme_color": "#353f55",
+		"background_color": "#353f55",
+	}
 }

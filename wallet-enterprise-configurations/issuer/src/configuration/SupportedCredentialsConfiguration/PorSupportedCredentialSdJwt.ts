@@ -59,11 +59,11 @@ export class PorSupportedCredentialSdJwt implements VCDMSupportedCredentialProto
 
 	getDisplay() {
 		return {
-			name: "Power of Representation",
-			description: "Power of Representation (POR) VC in sd-jwt format",
+			name: "POR - SD-JWT VC",
+			description: "Power of Representation",
 			background_image: { uri: config.url + "/images/background-image.png" },
-			background_color: "#1b263b",
-			text_color: "#FFFFFF",
+			background_color: "#c3b25d",
+			text_color: "#363531",
 			locale: 'en-US',
 		}
 	}
@@ -105,7 +105,7 @@ export class PorSupportedCredentialSdJwt implements VCDMSupportedCredentialProto
 			const rowsObject: CategorizedRawCredentialView = { rows };
 
 
-			const { credentialRendering } = initializeCredentialEngine();
+			const { credentialRendering } = await initializeCredentialEngine();
 			const dataUri = await credentialRendering.renderSvgTemplate({
 				json: { ...porEntry },
 				credentialImageSvgTemplate: svgText,
