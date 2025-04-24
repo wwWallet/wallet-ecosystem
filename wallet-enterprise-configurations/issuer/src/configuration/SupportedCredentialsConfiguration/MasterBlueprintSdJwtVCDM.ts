@@ -22,7 +22,7 @@ import { GenericVIDAuthenticationComponent } from "../../authentication/authenti
 import { InspectPersonalInfoComponent } from "../authentication/InspectPersonalInfoComponent";
 import { UserAuthenticationMethod } from "../../types/UserAuthenticationMethod.enum";
 import { initializeCredentialEngine } from "../../lib/initializeCredentialEngine";
-import { createSRI } from "../utils/sriGenerator";
+import { createSRI } from "../../lib/sriGenerator";
 
 const datasetName = "diploma-dataset.xlsx";
 
