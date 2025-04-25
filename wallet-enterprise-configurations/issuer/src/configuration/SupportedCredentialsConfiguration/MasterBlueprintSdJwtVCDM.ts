@@ -24,7 +24,7 @@ import { UserAuthenticationMethod } from "../../types/UserAuthenticationMethod.e
 import { initializeCredentialEngine } from "../../lib/initializeCredentialEngine";
 import { createSRI } from "../../lib/sriGenerator";
 
-const datasetName = "diploma-dataset.xlsx";
+const datasetName = "master-diploma-dataset.xlsx";
 
 
 parseDiplomaData(path.join(__dirname, `../../../../dataset/${datasetName}`));
@@ -97,7 +97,7 @@ export class MasterBlueprintSdJwtVCDM implements VCDMSupportedCredentialProtocol
 		}
 
 
-		const diplomaEntries = parseDiplomaData(path.join(__dirname, "../../../../dataset/diploma-dataset.xlsx"));
+		const diplomaEntries = parseDiplomaData(path.join(__dirname, "../../../../dataset/master-diploma-dataset.xlsx"));
 		if (!diplomaEntries || diplomaEntries.length == 0) {
 			throw new Error("No diploma entries found");
 		}
@@ -148,7 +148,7 @@ export class MasterBlueprintSdJwtVCDM implements VCDMSupportedCredentialProtocol
 			throw new Error("Cannot generate credential: (document_number) is missing");
 		}
 
-		const diplomaEntries = parseDiplomaData(path.join(__dirname, "../../../../dataset/diploma-dataset.xlsx"));
+		const diplomaEntries = parseDiplomaData(path.join(__dirname, "../../../../dataset/master-diploma-dataset.xlsx"));
 		if (!diplomaEntries || diplomaEntries.length == 0) {
 			throw new Error("No diploma entries found");
 		}
