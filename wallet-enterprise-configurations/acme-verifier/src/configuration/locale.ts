@@ -8,20 +8,20 @@ const locale = {
 			services: "Services",
 			documentation: "Documentation",
 			adminLogin: "Verifier Panel",
-			information: "Information",
-			participatingInst: "Participating Institutions",
-			termsOfUse: "Terms of Use",
 			contact: "Contact",
-			web: "Web",
-			emailForOrgs: "E-mail for Institutions"
 		},
 		index: {
-			header: "ACME Verifier",
-			phrase: "I want to apply for a job",
-			proceed: "Proceed",
-			heading: "ACME Verifier",
-			paragraph: "This website is the recruitment platform of ACME corporation which is used for submiting job applications by transferring digital credentials in verifiable credential format instead of CVs. To apply for a position, candidates are required to have a digital wallet which will be used for the presentation of the required credentials by the corresponding job position.",
-			demoText: "This website is only used for demonstration purposes"
+			header: "Verifier",
+			verifyCredential: "Verify Credential",
+			heading: "Verifier",
+			oid4vpProfile: "OpenID4VP Interoperability Profile",
+			openid4vp: [
+				["Response Mode", "direct_post.jwt [OpenID4VP]"],
+				["Request Method", "request_uri signed [JAR]"],
+				["Client ID Scheme", "x509_san_dns"],
+				["Credential Format", "vc+sd-jwt, mso_mdoc"],
+			],
+			paragraph: "This website is a proof-of-concept service designed to perform verifications of Verifiable Credentials (VCs) in SD-JWT or mDoc formats, supporting the wwWallet ecosystem. It conducts only sample verifications to showcase credential checks (not valid for real-world use).",
 		},
 		login: {
 			title: "Login",
