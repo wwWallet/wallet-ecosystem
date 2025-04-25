@@ -124,7 +124,7 @@ export class MasterBlueprintSdJwtVCDM implements VCDMSupportedCredentialProtocol
 		];
 		const rowsObject: CategorizedRawCredentialView = { rows };
 
-		const { credentialRendering  } = await initializeCredentialEngine();
+		const { credentialRendering } = await initializeCredentialEngine();
 		const dataUri = await credentialRendering.renderSvgTemplate({
 			json: { ...diplomaEntry },
 			credentialImageSvgTemplate: svgText,
@@ -301,6 +301,56 @@ export class MasterBlueprintSdJwtVCDM implements VCDMSupportedCredentialProtocol
 							{
 								"uri": config.url + "/images/template-diploma.svg",
 								"uri#integrity": createSRI("./public/images/template-diploma.svg"),
+								"properties": {
+									"orientation": "landing",
+									"color_scheme": "light",
+									"contrast": "normal",
+								}
+							},
+							{
+								"uri": config.url + "/images/template-diploma-dark.svg",
+								"uri#integrity": createSRI("./public/images/template-diploma-dark.svg"),
+								"properties": {
+									"orientation": "landing",
+									"color_scheme": "dark",
+									"contrast": "normal",
+								}
+							},
+							{
+								"uri": config.url + "/images/template-diploma-dark-high.svg",
+								"uri#integrity": createSRI("./public/images/template-diploma-dark-high.svg"),
+								"properties": {
+									"orientation": "landing",
+									"color_scheme": "dark",
+									"contrast": "high",
+								}
+							},
+							{
+								"uri": config.url + "/images/template-diploma-portrait.svg",
+								"uri#integrity": createSRI("./public/images/template-diploma-portrait.svg"),
+								"properties": {
+									"orientation": "portrait",
+									"color_scheme": "light",
+									"contrast": "normal",
+								}
+							},
+							{
+								"uri": config.url + "/images/template-diploma-portrait-dark.svg",
+								"uri#integrity": createSRI("./public/images/template-diploma-portrait-dark.svg"),
+								"properties": {
+									"orientation": "portrait",
+									"color_scheme": "dark",
+									"contrast": "normal",
+								}
+							},
+							{
+								"uri": config.url + "/images/template-diploma-portrait-dark-high.svg",
+								"uri#integrity": createSRI("./public/images/template-diploma-portrait-dark-high.svg"),
+								"properties": {
+									"orientation": "portrait",
+									"color_scheme": "dark",
+									"contrast": "high",
+								}
 							}
 						],
 					}
