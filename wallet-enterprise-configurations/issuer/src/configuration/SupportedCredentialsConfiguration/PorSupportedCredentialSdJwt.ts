@@ -1,6 +1,6 @@
 import { config } from "../../../config";
 import { CategorizedRawCredentialView, CategorizedRawCredentialViewRow } from "../../openid4vci/Metadata";
-import { VerifiableCredentialFormat } from "core/dist/types";
+import { VerifiableCredentialFormat } from "wallet-common/dist/types";
 import { VCDMSupportedCredentialProtocol } from "../../lib/CredentialIssuerConfig/SupportedCredentialProtocol";
 import { AuthorizationServerState } from "../../entities/AuthorizationServerState.entity";
 import { CredentialView } from "../../authorization/types";

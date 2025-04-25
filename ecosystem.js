@@ -19,22 +19,43 @@ let useComposeTemplate = false;
 let useWalletFrontendEnvTemplate = false;
 const walletClientOrigin = "http://localhost:3000";
 const walletClientUrl = `${walletClientOrigin}/cb`;
+let buildImageTagContext = "";
+let buildImageNames = [];
+let buildImagesTag = "latest";
 
 function help() {
-	console.log("Usage: node ecosystem.js <up | down> <OPTIONS>");
-	console.log("OPTIONS:");
-	console.log("   -m                Redirection will be directed to the openid:// URL. Note: It will be applied only in the first execution of the script and every time '-c' is given");
-	console.log("   -d                Start the ecosystem in daemonized mode");
-	console.log("   -c                Force update of the configurations to the defaults for the development environment");
-	console.log("   -t                Force the usage of the docker-compose.template.yml");
-	console.log("");
-	console.log("Example:");
-	console.log("node ecosystem.js up -m -c");
-	console.log("");
-	console.log("");
+	if (action === 'up') {
+		console.log("Usage: node ecosystem.js up <OPTIONS>");
+		console.log("OPTIONS:");
+		console.log("   -m                Redirection will be directed to the openid:// URL. Note: It will be applied only in the first execution of the script and every time '-c' is given");
+		console.log("   -d                Start the ecosystem in daemonized mode");
+		console.log("   -c                Force update of the configurations to the defaults for the development environment");
+		console.log("   -t                Force the usage of the docker-compose.template.yml");
+		console.log("");
+		console.log("Example:");
+		console.log("node ecosystem.js up -m -c");
+		console.log("");
+		console.log("");
+	}
+
+	if (action === 'build-images') {
+		console.log("Usage: node ecosystem.js build-images <OPTIONS>");
+		console.log("OPTIONS:");
+		console.log("   --context                Docker image tag context (ex. 'ghcr.io/wwwallet') [OPTIONAL]");
+		console.log("   --names                  Names of images to be built in comma-separated format (ex. 'wallet-frontend,issuer,verifier') [OPTIONAL]");
+		console.log("   --tag                    Docker image tag to be used (ex. 'latest') [OPTIONAL]");
+		console.log("");
+		console.log("Example:");
+		console.log("node ecosystem.js build-images --tag latest --context ghcr.io/wwwallet --names wallet-frontend,issuer,verifier");
+		console.log("");
+		console.log("");
+	}
 }
 
-for (const arg of args) {
+for (let i = 0; i < args.length; i++) {
+	const arg = args[i];
+  const next = args[i + 1];
+
 	if (arg === '-t') {
 		useComposeTemplate = true;
 		useWalletFrontendEnvTemplate = true;
@@ -60,6 +81,19 @@ for (const arg of args) {
 		help();
 		process.exit();
 	}
+	
+	if (action === 'build-images' && arg === '--context' && next) {
+		buildImageTagContext = next + '/';
+	}
+
+	if (action === 'build-images' && arg === '--names' && next) {
+		buildImageNames = next.split(',');
+	}
+
+	if (action === 'build-images' && arg === '--tag' && next) {
+		buildImagesTag = next;
+	}
+
 }
 
 const secret = "dsfkwfkwfwdfdsfSaSe2e34r4frwr42rAFdsf2lfmfsmklfwmer";
@@ -129,39 +163,25 @@ if (action !== 'up') {
 }
 
 function buildImages() {
-	// syntax: node ecosystem.js build-images <image_tag> <image name 1> <image name 2> ... <image name N>
-	// <image_tag> is required
-	// if <image name 1> <image name 2> ... <image name N> is not provided, then all images will be built
-	if (args.length < 2) {
-		console.error("<image_registry> or <image_tag> is missing");
-		console.error("Syntax: node ecosystem.js build-images <image_registry> <image_tag> <image name 1> <image name 2> ... <image name N>");
-		process.exit();
+
+	if (buildImageNames.length == 0 || buildImageNames.includes('wallet-frontend')) {
+		execSync(`cd wallet-frontend && docker build -t ${buildImageTagContext}wallet-frontend:${buildImagesTag} .`, { stdio: 'inherit' });
 	}
 
-	const imageRegistry = args[0];
-	const imageTag = args[1];
-
-
-	if (args.length <= 2 || args.includes("wallet-frontend")) {
-		execSync(`cd wallet-frontend && docker build -t ${imageRegistry}/wallet-frontend:${imageTag} .`, { stdio: 'inherit' });
+	if (buildImageNames.length == 0 || buildImageNames.includes('wallet-backend-server')) {
+		execSync(`cd wallet-backend-server && docker build -t ${buildImageTagContext}wallet-backend-server:${buildImagesTag} .`, { stdio: 'inherit' });
 	}
 
-	if (args.length <= 2 || args.includes("wallet-backend-server")) {
-		execSync(`cd wallet-backend-server && docker build -t ${imageRegistry}/wallet-backend-server:${imageTag} .`, { stdio: 'inherit' });
+	if (buildImageNames.length == 0 || buildImageNames.includes('wallet-enterprise')) {
+		execSync(`docker build -t ${buildImageTagContext}wallet-enterprise:${buildImagesTag} wallet-enterprise`, { stdio: 'inherit' });
 	}
 
-	if (args.length <= 2 || args.includes("wallet-enterprise")) {
-		execSync(`docker build -t ${imageRegistry}/wallet-enterprise:${imageTag} wallet-enterprise`, { stdio: 'inherit' });
+	if (buildImageNames.length == 0 || buildImageNames.includes('issuer')) {
+		execSync(`docker build -t ${buildImageTagContext}wallet-enterprise-issuer:${buildImagesTag} -f docker/wallet-enterprise-issuer.Dockerfile .`, { stdio: 'inherit' });
 	}
 
-	if (args.length <= 2 || args.includes("issuer")) {
-		execSync(`cd wallet-enterprise && docker build -t ghcr.io/wwwallet/wallet-enterprise:base -f base.Dockerfile .`, { stdio: 'inherit' });
-		execSync(`docker build -t ${imageRegistry}/wallet-enterprise-issuer:${imageTag} -f wallet-enterprise-configurations/issuer/Dockerfile .`, { stdio: 'inherit' });
-	}
-
-	if (args.length <= 2 || args.includes("acme-verifier")) {
-		execSync(`cd wallet-enterprise && docker build -t ghcr.io/wwwallet/wallet-enterprise:base -f base.Dockerfile .`, { stdio: 'inherit' });
-		execSync(`docker build -t ${imageRegistry}/wallet-enterprise-acme-verifier:${imageTag} -f wallet-enterprise-configurations/acme-verifier/Dockerfile .`, { stdio: 'inherit' });
+	if (buildImageNames.length == 0 || buildImageNames.includes('verifier')) {
+		execSync(`docker build -t ${buildImageTagContext}wallet-enterprise-verifier:${buildImagesTag} -f docker/wallet-enterprise-verifier.Dockerfile .`, { stdio: 'inherit' });
 	}
 }
 
@@ -190,7 +210,7 @@ function buildImages() {
 		const servicePort = 8002;
 		const serviceUrl = `http://wallet-backend-server:${servicePort}`;
 		const dbName = 'wallet';
-	
+
 		let configContent = fs.readFileSync(configPath, 'utf-8');
 		configContent = configContent.replace(/SERVICE_URL/g, serviceUrl);
 		configContent = configContent.replace(/SERVICE_SECRET/g, secret);
@@ -201,10 +221,10 @@ function buildImages() {
 		configContent = configContent.replace(/DB_PASSWORD/g, dbPassword);
 		configContent = configContent.replace(/DB_NAME/g, dbName);
 		configContent = configContent.replace(/WALLET_CLIENT_URL/g, walletClientUrl);
-	
+
 		configContent = configContent.replace(/WEBAUTHN_RP_ID/g, "localhost");
 		configContent = configContent.replace(/WEBAUTHN_ORIGIN/g, walletClientOrigin);
-	
+
 		// Replacing the whole string so that the value of enabled is of type boolean and not string
 		if (args.includes('--no-notifications')) {
 			configContent = configContent.replace(/enabled: "NOTIFICATIONS_ENABLED"/g, 'enabled: false');
