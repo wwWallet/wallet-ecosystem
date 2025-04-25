@@ -1,9 +1,16 @@
-# Builder stage
-FROM ghcr.io/wwwallet/wallet-enterprise:base AS builder
+FROM node:22-bullseye-slim AS builder
+
+WORKDIR /dependencies
+
+# Install dependencies first so rebuild of these layers is only needed when dependencies change
+COPY lib/ ./lib/
+
+WORKDIR /dependencies/lib/wallet-common
+RUN yarn install && yarn cache clean -f && yarn build && mkdir -p /app/lib && mv /dependencies/lib/wallet-common /app/lib/wallet-common
+
 WORKDIR /app
-
-
 COPY wallet-enterprise/ .
+
 RUN rm -rf /app/src/configuration/
 COPY ./wallet-enterprise-configurations/acme-verifier/src/configuration/ /app/src/configuration/
 COPY ./wallet-enterprise-configurations/acme-verifier/public/styles/main.css /app/public/styles/main.css
@@ -15,7 +22,7 @@ RUN yarn cache clean && yarn install && yarn build
 FROM node:22-bullseye-slim AS production
 WORKDIR /app
 
-COPY --from=builder /app/lib/core/ ./lib/core/
+COPY --from=builder /app/lib/wallet-common/ ./lib/wallet-common/
 COPY --from=builder /app/package.json .
 COPY --from=builder /app/dist ./dist
 COPY --from=builder /app/public ./public

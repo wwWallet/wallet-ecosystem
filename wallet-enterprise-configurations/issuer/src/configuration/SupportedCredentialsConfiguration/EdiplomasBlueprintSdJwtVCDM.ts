@@ -1,5 +1,5 @@
 import { config } from "../../../config";
-import { VerifiableCredentialFormat } from "core/dist/types";
+import { VerifiableCredentialFormat } from "wallet-common/dist/types";
 import { CategorizedRawCredentialView, CategorizedRawCredentialViewRow } from "../../openid4vci/Metadata";
 import { VCDMSupportedCredentialProtocol } from "../../lib/CredentialIssuerConfig/SupportedCredentialProtocol";
 import { formatDateDDMMYYYY } from "../../lib/formatDate";
