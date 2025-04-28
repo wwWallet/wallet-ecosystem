@@ -14,13 +14,15 @@
 }
 
 /* comment/uncomment or block/none to hide them */
-.ribbon {
+/* .ribbon {
 	display: block;
-}
+} */
 
 .menu-area {
 	display: block;
+	font-size: 1.3em;
 }
+
 /* -------- end -------- */
 
 /* overwrite Style */

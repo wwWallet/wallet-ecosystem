@@ -11,9 +11,9 @@ const locale = {
 			contact: "Contact",
 		},
 		index: {
-			header: "Verifier",
+			header: "wwWallet Verifier",
 			verifyCredential: "Verify Credential",
-			heading: "Verifier",
+			heading: "wwWallet Verifier",
 			oid4vpProfile: "OpenID4VP Interoperability Profile",
 			openid4vp: [
 				["Response Mode", "direct_post.jwt [OpenID4VP]"],
