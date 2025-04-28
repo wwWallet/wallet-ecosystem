@@ -1,5 +1,5 @@
 import { CategorizedRawCredentialView, CategorizedRawCredentialViewRow } from "../../openid4vci/Metadata";
-import { VerifiableCredentialFormat } from "core/dist/types";
+import { VerifiableCredentialFormat } from "wallet-common/dist/types";
 import { SupportedCredentialProtocol } from "../../lib/CredentialIssuerConfig/SupportedCredentialProtocol";
 import { formatDateDDMMYYYY } from "../../lib/formatDate";
 import { urlToBstr } from "../../lib/urlToBstr";

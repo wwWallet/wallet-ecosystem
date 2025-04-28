@@ -7,8 +7,8 @@ services:
     container_name: wallet-enterprise-issuer
     hostname: wallet-enterprise-issuer
     build:
-      context: $PWD/wallet-enterprise
-      dockerfile: development.Dockerfile
+      context: $PWD
+      dockerfile: ./docker/wallet-enterprise.development.Dockerfile
     image: wallet-enterprise:dev-issuer
     restart: on-failure
     ports:
@@ -37,8 +37,8 @@ services:
     container_name: wallet-enterprise-acme-verifier
     hostname: wallet-enterprise-acme-verifier
     build:
-      context: $PWD/wallet-enterprise
-      dockerfile: development.Dockerfile
+      context: $PWD
+      dockerfile: ./docker/wallet-enterprise.development.Dockerfile
     image: wallet-enterprise:dev-verifier
     restart: on-failure
     ports:
@@ -117,8 +117,8 @@ services:
 
   wallet-frontend:
     build:
-      context: $PWD/wallet-frontend
-      dockerfile: development.Dockerfile
+      context: $PWD
+      dockerfile: ./docker/wallet-frontend.development.Dockerfile
     image: wallet-frontend:dev
     container_name: wallet-frontend
     hostname: wallet-frontend
