@@ -134,6 +134,17 @@ services:
         tmpfs:
           mode: 01777
 
+  format-checker:
+    container_name: format-checker
+    build:
+      context: .
+      dockerfile: docker/editorconfig-checker.Dockerfile
+    image: format-checker:latest
+    working_dir: /app
+    volumes:
+      - ./:/app:rw
+
+
 volumes:
   datadir:
   cache:
