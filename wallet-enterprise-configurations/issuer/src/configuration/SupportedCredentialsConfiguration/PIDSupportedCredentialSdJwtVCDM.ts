@@ -362,8 +362,11 @@ export class PIDSupportedCredentialSdJwtVCDM implements VCDMSupportedCredentialP
 			proof_types_supported: {
 				jwt: {
 					proof_signing_alg_values_supported: ["ES256"]
+				},
+				attestation: {
+					key_attestations_required: { },
 				}
-			}
+			},
 		}
 	}
 }
