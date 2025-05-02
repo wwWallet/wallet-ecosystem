@@ -58,6 +58,11 @@ const sdJwtPidFields = [
 		"filter": {}
 	},
 	{
+		"name": "Nationality",
+		"path": ['$.nationalities'],
+		"filter": {}
+	},
+	{
 		"name": "Address (Formatted)",
 		"path": ['$.address.formatted'],
 		"filter": {}
@@ -116,6 +121,11 @@ const sdJwtPidFields = [
 		"name": "Issuing Jurisdiction",
 		"path": ['$.issuing_jurisdiction'],
 		"filter": {}
+	},
+	{
+		"name": "Picture",
+		"path": ['$.picture'],
+		"filter": {}
 	}
 ]
 
@@ -143,6 +153,26 @@ const minimalSdJwtPidFields = [
 	{
 		"name": "Birth Date",
 		"path": ['$.birthdate'],
+		"filter": {}
+	},
+	{
+		"name": "Nationality",
+		"path": ['$.nationalities'],
+		"filter": {}
+	},
+	{
+		"name": "Expiry Date",
+		"path": ['$.date_of_expiry'],
+		"filter": {}
+	},
+	{
+		"name": "Issuing Authority",
+		"path": ['$.issuing_authority'],
+		"filter": {}
+	},
+	{
+		"name": "Issuing Country",
+		"path": ['$.issuing_country'],
 		"filter": {}
 	}
 ]
@@ -313,7 +343,6 @@ const mdocPidFields = [
 	},
 ]
 
-
 const bachelorDescriptor = {
 	"id": "Bachelor",
 	"format": { "vc+sd-jwt": { alg: ['ES256'] } },
@@ -360,35 +389,45 @@ const europeanHealthInsuranceCardDescriptor = {
 				],
 				"filter": {
 					"type": "string",
-					"const": "urn:credential:ehic"
+					"const": "urn:eudi:ehic:1"
 				}
 			},
 			{
 				"name": "SSN",
-				"path": ['$.ssn'],
+				"path": ['$.social_security_number'],
 				"filter": {}
 			},
 			{
-				"name": "Family Name",
-				"path": ['$.family_name'],
+				"name": "Document Number",
+				"path": ['$.document_number'],
 				"filter": {}
 			},
 			{
-				"name": "Given Name",
-				"path": ['$.given_name'],
+				"name": "Issuing Country",
+				"path": ['$.issuing_country'],
 				"filter": {}
 			},
 			{
-				"name": "Birth Date",
-				"path": ['$.birth_date'],
+				"name": "Issuing Authority (ID)",
+				"path": ['$.issuing_authority.id'],
 				"filter": {}
 			},
+			{
+				"name": "Issuing Authority (Name)",
+				"path": ['$.issuing_authority.name'],
+				"filter": {}
+			},
+			{
+				"name": "Expiry Date",
+				"path": ['$.expiry_date'],
+				"filter": {}
+			}
 		]
 	}
 }
 
-const minimalEuropeanHealthInsuranceCardDescriptor = {
-	"id": "EuropeanHealthInsuranceCard",
+const powerOfRepresentationDescriptor = {
+	"id": "POR",
 	"format": { "vc+sd-jwt": { alg: ['ES256'] } },
 	"constraints": {
 		"fields": [
@@ -399,18 +438,42 @@ const minimalEuropeanHealthInsuranceCardDescriptor = {
 				],
 				"filter": {
 					"type": "string",
-					"const": "urn:credential:ehic"
+					"const": "urn:eu.europa.ec.eudi:por:1"
 				}
 			},
 			{
-				"name": "SSN",
-				"path": ['$.ssn'],
+				"name": "Legal Person Identifier",
+				"path": ['$.legal_person_identifier'],
+				"filter": {}
+			},
+			{
+				"name": "Legal Name",
+				"path": ['$.legal_name'],
+				"filter": {}
+			},
+			{
+				"name": "Full Powers",
+				"path": ['$.full_powers'],
+				"filter": {}
+			},
+			{
+				"name": "eService",
+				"path": ['$.eService'],
+				"filter": {}
+			},
+			{
+				"name": "Effective From",
+				"path": ['$.effective_from_date'],
+				"filter": {}
+			},
+			{
+				"name": "Effective Until",
+				"path": ['$.effective_until_date'],
 				"filter": {}
 			}
 		]
 	}
 }
-
 
 @injectable()
 export class VerifierConfigurationService implements VerifierConfigurationInterface {
@@ -442,7 +505,7 @@ export class VerifierConfigurationService implements VerifierConfigurationInterf
 			{
 				"id": "Bachelor",
 				"title": "Bachelor Diploma",
-				"description": "Available Fields: VC type, Grade, EQF Level & Diploma Title",
+				"description": "Available Fields: Grade, EQF Level & Diploma Title",
 				"format": { "vc+sd-jwt": { alg: ['ES256'] } },
 				_selectable: true,
 				"input_descriptors": [
@@ -452,7 +515,7 @@ export class VerifierConfigurationService implements VerifierConfigurationInterf
 			{
 				"id": "EuropeanHealthInsuranceCard",
 				"title": "European Health Insurance Card",
-				"description": "Available Fields: VC type, SSN, Family Name, Given Name & Birth Date",
+				"description": "Available Fields: SSN, Issuing Authority (Country, ID, Name), Document Number, Expiry Date",
 				"format": { "vc+sd-jwt": { alg: ['ES256'] } },
 				_selectable: true,
 				"input_descriptors": [
@@ -462,11 +525,31 @@ export class VerifierConfigurationService implements VerifierConfigurationInterf
 			{
 				"id": "MinimalPIDAndEuropeanHealthInsuranceCard",
 				"title": "PID (SD-JWT) + EHIC",
-				"description": "PID fields: VC type, Given Name, Family Name, Birth Date. EHIC Fields: SSN",
+				"description": "PID fields: Given Name, Family Name, Birth Date, Nationality, Exp. Date, Issuing Authority, Issuing Country. EHIC Fields: SSN, Issuing Authority (Country, ID, Name), Document Number, Expiry Date",
 				"format": { "vc+sd-jwt": { alg: ['ES256'] } },
 				"input_descriptors": [
 					minimalVerifiableIdSdJwtDescriptor,
-					minimalEuropeanHealthInsuranceCardDescriptor
+					europeanHealthInsuranceCardDescriptor
+				]
+			},
+			{
+				"id": "PowerOfRepresentation",
+				"title": "Power of Representation",
+				"description": "Available Fields: Legal Person Identifier, Legal Name, Full Powers, eService, Effective From, Effective Until",
+				"format": { "vc+sd-jwt": { alg: ['ES256'] } },
+				_selectable: true,
+				"input_descriptors": [
+					powerOfRepresentationDescriptor
+				]
+			},
+			{
+				"id": "MinimalPIDAndPowerOfRepresentation",
+				"title": "PID (SD-JWT) + POR",
+				"description": "PID fields: Given Name, Family Name, Birth Date, Nationality, Exp. Date, Issuing Authority, Issuing Country. POR Fields: Legal Person Identifier, Legal Name, Full Powers, eService, Effective From, Effective Until",
+				"format": { "vc+sd-jwt": { alg: ['ES256'] } },
+				"input_descriptors": [
+					minimalVerifiableIdSdJwtDescriptor,
+					powerOfRepresentationDescriptor
 				]
 			}
 		]
