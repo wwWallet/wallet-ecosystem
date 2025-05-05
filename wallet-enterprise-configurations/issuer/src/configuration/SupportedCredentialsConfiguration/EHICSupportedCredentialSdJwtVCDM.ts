@@ -2,7 +2,6 @@ import { config } from "../../../config";
 import { CategorizedRawCredentialView, CategorizedRawCredentialViewRow } from "../../openid4vci/Metadata";
 import { VerifiableCredentialFormat } from "wallet-common/dist/types";
 import { VCDMSupportedCredentialProtocol } from "../../lib/CredentialIssuerConfig/SupportedCredentialProtocol";
-import { formatDateDDMMYYYY } from "../../lib/formatDate";
 import { AuthorizationServerState } from "../../entities/AuthorizationServerState.entity";
 import { CredentialView } from "../../authorization/types";
 import { randomUUID } from "node:crypto";
@@ -58,7 +57,7 @@ export class EHICSupportedCredentialSdJwtVCDM implements VCDMSupportedCredential
 	}
 
 	getId(): string {
-		return "urn:credential:ehic"
+		return "urn:eudi:ehic:1"
 	}
 	getFormat(): VerifiableCredentialFormat {
 		return VerifiableCredentialFormat.VC_SDJWT;
@@ -102,12 +101,11 @@ export class EHICSupportedCredentialSdJwtVCDM implements VCDMSupportedCredential
 			const credentialViews: CredentialView[] = await Promise.all(ehics
 				.map(async (ehic) => {
 					const rows: CategorizedRawCredentialViewRow[] = [
-						{ name: "Family Name", value: ehic.family_name },
-						{ name: "Given Name", value: ehic.given_name },
-						{ name: "SSN", value: String(ehic.ssn) },
-						{ name: "Birth Date", value: formatDateDDMMYYYY(ehic.birth_date) },
-						{ name: "Issuer Country", value: ehic.issuer_country },
-						{ name: "Issuer Instutution Code", value: ehic.issuer_institution_code },
+						{ name: "Social Security Number", value: String(ehic.ssn) },
+						{ name: "Document Number", value: String(ehic.document_number) },
+						{ name: "Issuing Country", value: ehic.issuer_country },
+						{ name: "Issuing Authority (ID)", value: ehic.issuer_institution_code },
+						{ name: "Issuing Authority (Name)", value: ehic.issuer_institution_name },
 
 					];
 					const rowsObject: CategorizedRawCredentialView = { rows };
@@ -167,13 +165,16 @@ export class EHICSupportedCredentialSdJwtVCDM implements VCDMSupportedCredential
 
 
 		const ehic = {
-			family_name: ehicEntry.family_name,
-			given_name: ehicEntry.given_name,
-			ssn: String(ehicEntry.ssn),
+			social_security_number: String(ehicEntry.ssn),
 			birth_date: new Date(ehicEntry.birth_date).toISOString(),
-			issuer_institution_code: String(ehicEntry.issuer_institution_code),
-			issuer_country: String(ehicEntry.issuer_country),
+			issuance_date: new Date().toISOString().split('T')[0],  // full-date format, according to ARF PID Rulebook
+			issuing_country: String(ehicEntry.issuer_country),
+			issuing_authority: {
+				id: String(ehicEntry.issuer_institution_code),
+				name: String(ehicEntry.issuer_institution_name)
+			},
 			expiry_date: new Date(ehicEntry.expiry_date).toISOString(),
+			document_number: String(ehicEntry.document_number)
 		};
 
 		const payload = {
@@ -181,18 +182,18 @@ export class EHICSupportedCredentialSdJwtVCDM implements VCDMSupportedCredential
 				"jwk": holderPublicKeyJwk
 			},
 			"vct": this.getId(),
-			"jti": `urn:ehic:${randomUUID()}`,
-			...ehic,
-			ssn: String(ehic.ssn),
+			"jti": `urn:eudi:ehic:1:${randomUUID()}`,
+			...ehic
 		};
 
 		const disclosureFrame = {
-			family_name: true,
-			given_name: true,
-			birth_date: true,
-			ssn: true,
-			issuer_institution_code: true,
-			issuer_country: true,
+			social_security_number: true,
+			issuing_country: true,
+			issuing_authority: {
+				id: true,
+				name: true
+			},
+			document_number: true
 		}
 		const { credential } = await this.getCredentialSigner()
 			.signSdJwtVc(payload, { typ: VerifiableCredentialFormat.VC_SDJWT, vctm: [base64url.encode(JSON.stringify(this.metadata()))] }, disclosureFrame);
@@ -228,40 +229,7 @@ export class EHICSupportedCredentialSdJwtVCDM implements VCDMSupportedCredential
 			],
 			"claims": [
 				{
-					"path": ["given_name"],
-					"display": [
-						{
-							"lang": "en-US",
-							"label": "Given Name",
-							"description": "The given name of the EHIC holder"
-						}
-					],
-					"svg_id": "given_name"
-				},
-				{
-					"path": ["family_name"],
-					"display": [
-						{
-							"lang": "en-US",
-							"label": "Family Name",
-							"description": "The family name of the EHIC holder"
-						}
-					],
-					"svg_id": "family_name"
-				},
-				{
-					"path": ["birth_date"],
-					"display": [
-						{
-							"lang": "en-US",
-							"label": "Birth Date",
-							"description": "The birth date of the EHIC holder"
-						}
-					],
-					"svg_id": "birth_date"
-				},
-				{
-					"path": ["ssn"],
+					"path": ["social_security_number"],
 					"display": [
 						{
 							"lang": "en-US",
@@ -272,7 +240,7 @@ export class EHICSupportedCredentialSdJwtVCDM implements VCDMSupportedCredential
 					"svg_id": "ssn"
 				},
 				{
-					"path": ["issuer_country"],
+					"path": ["issuing_country"],
 					"display": [
 						{
 							"lang": "en-US",
@@ -283,7 +251,7 @@ export class EHICSupportedCredentialSdJwtVCDM implements VCDMSupportedCredential
 					"svg_id": "issuer_country"
 				},
 				{
-					"path": ["issuer_institution_code"],
+					"path": ["issuing_authority", "id"],
 					"display": [
 						{
 							"lang": "en-US",

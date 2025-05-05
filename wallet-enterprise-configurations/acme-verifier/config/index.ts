@@ -46,8 +46,8 @@ L3rT4w==
 	},
 	clockTolerance: 60,
 	siteConfig: {
-		"name": "ACME Verifier",
-		"short_name": "ACME Verifier",
+		"name": "wwWallet Verifier",
+		"short_name": "wwWallet Verifier",
 		"theme_color": "#4d7e3e",
 		"background_color": "#4d7e3e",
 	}
