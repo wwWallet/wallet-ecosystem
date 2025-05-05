@@ -2,6 +2,8 @@ FROM node:22-bullseye-slim AS builder
 
 WORKDIR /dependencies
 
+RUN apt-get update && apt-get install -y git
+
 # Install dependencies first so rebuild of these layers is only needed when dependencies change
 COPY lib/ ./lib/
 
