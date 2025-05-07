@@ -245,6 +245,10 @@ function buildImages() {
 		console.log("wallet-backend-server wallet-provider keys were not overwritten");
 	}
 	else {
+		const dir = 'wallet-backend-server/keys';
+		if (!fs.existsSync(dir)) {
+			fs.mkdirSync(dir, { recursive: true });
+		}		
 		const key = `-----BEGIN PRIVATE KEY-----
 MIGHAgEAMBMGByqGSM49AgEGCCqGSM49AwEHBG0wawIBAQQgtfEWwPl5+13fqLPw
 j/22afeqn/BgARhgjbtoRKcUFLyhRANCAARVYrxredzOKhD9OkE9tAUpRojCHcyy
