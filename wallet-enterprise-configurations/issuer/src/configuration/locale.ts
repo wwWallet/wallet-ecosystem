@@ -54,8 +54,7 @@ const locale = {
 					openid4vp_notes: "",
 
 				}
-			},
-			headerSdjwtVcTypeMetadata: "JWT VC Type Metadata"
+			}
 		},
 		VIDAuthenticationComponent: {
 			title: "Authenticate using Digital Credentials"
