@@ -523,16 +523,6 @@ export class VerifierConfigurationService implements VerifierConfigurationInterf
 				]
 			},
 			{
-				"id": "MinimalPIDAndEuropeanHealthInsuranceCard",
-				"title": "PID (SD-JWT) + EHIC",
-				"description": "PID fields: Given Name, Family Name, Birth Date, Nationality, Exp. Date, Issuing Authority, Issuing Country. EHIC Fields: SSN, Issuing Authority (Country, ID, Name), Document Number, Expiry Date",
-				"format": { "vc+sd-jwt": { alg: ['ES256'] } },
-				"input_descriptors": [
-					minimalVerifiableIdSdJwtDescriptor,
-					europeanHealthInsuranceCardDescriptor
-				]
-			},
-			{
 				"id": "PowerOfRepresentation",
 				"title": "Power of Representation",
 				"description": "Available Fields: Legal Person Identifier, Legal Name, Full Powers, eService, Effective From, Effective Until",
@@ -543,6 +533,16 @@ export class VerifierConfigurationService implements VerifierConfigurationInterf
 				]
 			},
 			{
+				"id": "MinimalPIDAndEuropeanHealthInsuranceCard",
+				"title": "PID (SD-JWT) + EHIC",
+				"description": "PID fields: Given Name, Family Name, Birth Date, Nationality, Exp. Date, Issuing Authority, Issuing Country. EHIC Fields: SSN, Issuing Authority (Country, ID, Name), Document Number, Expiry Date",
+				"format": { "vc+sd-jwt": { alg: ['ES256'] } },
+				"input_descriptors": [
+					minimalVerifiableIdSdJwtDescriptor,
+					europeanHealthInsuranceCardDescriptor
+				]
+			},
+			{
 				"id": "MinimalPIDAndPowerOfRepresentation",
 				"title": "PID (SD-JWT) + POR",
 				"description": "PID fields: Given Name, Family Name, Birth Date, Nationality, Exp. Date, Issuing Authority, Issuing Country. POR Fields: Legal Person Identifier, Legal Name, Full Powers, eService, Effective From, Effective Until",
@@ -550,6 +550,16 @@ export class VerifierConfigurationService implements VerifierConfigurationInterf
 				"input_descriptors": [
 					minimalVerifiableIdSdJwtDescriptor,
 					powerOfRepresentationDescriptor
+				]
+			},
+			{
+				"id": "MinimalPIDAndBachelorDiploma",
+				"title": "PID (SD-JWT) + Diploma",
+				"description": "PID fields: Given Name, Family Name, Birth Date, Nationality, Exp. Date, Issuing Authority, Issuing Country. Diploma Fields: Grade, EQF Level, Diploma Title",
+				"format": { "vc+sd-jwt": { alg: ['ES256'] } },
+				"input_descriptors": [
+					minimalVerifiableIdSdJwtDescriptor,
+					bachelorDescriptor
 				]
 			}
 		]
