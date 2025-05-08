@@ -28,45 +28,46 @@ git submodule update --init --remote --recursive
 
 2. Configure `/etc/hosts`
 
-Add the following lines in the /etc/hosts file:
+   Add the following lines in the /etc/hosts file:
 
-```sh
-127.0.0.1 wallet-frontend
-127.0.0.1 wallet-backend-server
-127.0.0.1 wallet-enterprise-issuer
-127.0.0.1 wallet-enterprise-acme-verifier
-
-```
+   ```sh
+   127.0.0.1 wallet-frontend
+   127.0.0.1 wallet-backend-server
+   127.0.0.1 wallet-enterprise-issuer
+   127.0.0.1 wallet-enterprise-acme-verifier
+   ```
 
 3. Start the ecosystem
 
-```sh
-node ecosystem.js up -t
-```
-The argument `-t` forces the usage of the `docker-compose.template.yml`
+   ```sh
+   node ecosystem.js up -t
+   ```
 
-For demonstrative purposes, we set up a small ecosystem with:
-  - 1 Wallet Provider
-  - 1 Credential Issuer
-  - 1 Verifier
+   The argument `-t` forces the usage of the `docker-compose.template.yml`
 
-The configuration of the issuing legal entities takes place with the following:
+   For demonstrative purposes, we set up a small ecosystem with:
 
-```sh
-node ecosystem.js init
-```
+   - 1 Wallet Provider
+   - 1 Credential Issuer
+   - 1 Verifier
 
-For more options, see:
+   The configuration of the issuing legal entities takes place with the following:
 
-```sh
-node ecosystem.js up --help
-```
+   ```sh
+   node ecosystem.js init
+   ```
 
-To shut down the ecosystem run the following command:
+   For more options, see:
 
-```sh
-node ecosystem.js down
-```
+   ```sh
+   node ecosystem.js up --help
+   ```
+
+   To shut down the ecosystem run the following command:
+
+   ```sh
+   node ecosystem.js down
+   ```
 
 ## Supported Flows
 
@@ -78,6 +79,7 @@ node ecosystem.js down
 - Return to the wallet with the received credential
 
 ### Verifier-initiated Presentation Flow
+
 - Start from the verifier's platform: http://wallet-enterprise-acme-verifier:8005/
 - Select a VC or a combination of VCs to present
 - Scan the QR to present your VC(s)
@@ -85,7 +87,6 @@ node ecosystem.js down
 ## Documentation
 
 Visit https://wwwallet.github.io/wallet-docs/
-
 
 ## Contribution Guidelines
 
