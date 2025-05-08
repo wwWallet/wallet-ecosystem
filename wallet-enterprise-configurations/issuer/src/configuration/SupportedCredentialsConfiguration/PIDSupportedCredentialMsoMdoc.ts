@@ -161,8 +161,8 @@ export class PIDSupportedCredentialMsoMdoc implements SupportedCredentialProtoco
 			document_number: String(vidEntry.document_number),
 			issuance_date: new Date().toISOString().split('T')[0],  // full-date format, according to ARF PID Rulebook
 			expiry_date: new Date(vidEntry.expiry_date).toISOString().split('T')[0],  // full-date format, according to ARF PID Rulebook
-			age_over_18: vidEntry.age_over_18 == '1' ? "true" : "false",
-			age_over_21: vidEntry.age_over_21 == '1' ? "true" : "false",
+			age_over_18: String(vidEntry.age_over_18) == '1' ? true : false,
+			age_over_21: String(vidEntry.age_over_21) == '1' ? true : false,
 			age_in_years: vidEntry.age_in_years,
 			age_birth_year: vidEntry.age_birth_year,
 			sex: vidEntry.sex,

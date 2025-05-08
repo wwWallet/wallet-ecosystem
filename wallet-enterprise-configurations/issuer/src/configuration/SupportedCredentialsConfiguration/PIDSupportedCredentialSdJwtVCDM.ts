@@ -167,10 +167,10 @@ export class PIDSupportedCredentialSdJwtVCDM implements VCDMSupportedCredentialP
 				house_number: vidEntry.resident_house_number
 			},
 			age_equal_or_over: {
-				"18": vidEntry.age_over_18 == '1' ? 'true' : 'false',
-				"21": vidEntry.age_over_21 == '1' ? 'true' : 'false',
-				"16": vidEntry.age_over_16 == '1' ? 'true' : 'false',
-				"65": vidEntry.age_over_65 == '1' ? 'true' : 'false',
+				"18": String(vidEntry.age_over_18) == '1' ? true : false,
+				"21": String(vidEntry.age_over_21) == '1' ? true : false,
+				"16": String(vidEntry.age_over_16) == '1' ? true : false,
+				"65": String(vidEntry.age_over_65) == '1' ? true : false,
 			},
 			age_in_years: vidEntry.age_in_years,
 			age_birth_year: vidEntry.age_birth_year,
