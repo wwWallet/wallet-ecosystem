@@ -129,6 +129,77 @@ const sdJwtPidFields = [
 	}
 ]
 
+const sdJwtPidFields_1_5 = [
+	{
+		"name": "VC type",
+		"path": [
+			"$.vct"
+		],
+		"filter": {
+			"type": "string",
+			"const": "urn:eu.europa.ec.eudi:pid:1"
+		}
+	},
+	{
+		"name": "Given Name",
+		"path": ['$.given_name'],
+		"filter": {}
+	},
+	{
+		"name": "Family Name",
+		"path": ['$.family_name'],
+		"filter": {}
+	},
+	{
+		"name": "Nationality",
+		"path": ['$.nationality'],
+		"filter": {}
+	},
+	{
+		"name": "Birth Place",
+		"path": ['$.birth_place'],
+		"filter": {}
+	},
+	{
+		"name": "Birth Date",
+		"path": ['$.birth_date'],
+		"filter": {}
+	},
+	{
+		"name": "Age over 18",
+		"path": ['$.age_over_18'],
+		"filter": {}
+	},
+	{
+		"name": "Issuing Authority",
+		"path": ['$.issuing_authority'],
+		"filter": {}
+	},
+	{
+		"name": "Issuing Country",
+		"path": ['$.issuing_country'],
+		"filter": {}
+	},
+	{
+		"name": "Issuance Date",
+		"path": ['$.issuance_date'],
+		"filter": {}
+	},
+	{
+		"name": "Expiry Date",
+		"path": ['$.expiry_date'],
+		"filter": {}
+	}
+]
+
+const sdJwtPidDescriptor_1_5 = {
+	"id": "CustomVerifiableIdDescriptor_1_5",
+	"format": { "vc+sd-jwt": { alg: ['ES256'] } },
+	"constraints": {
+		"fields": sdJwtPidFields_1_5
+	}
+}
+
 const minimalSdJwtPidFields = [
 	{
 		"name": "VC type",
@@ -500,6 +571,16 @@ export class VerifierConfigurationService implements VerifierConfigurationInterf
 							]
 						}
 					}
+				]
+			},
+			{
+				"id": "CustomVerifiableIdARF1_5",
+				"title": "PID ARF v1.5",
+				"description": "Available Fields: Given Name, Family Name, Nationality, Birth Place, Birth Date, Age over 18, Issuing Authority, Issuing Country, Issuance Date, Expiry Date ",
+				"format": { "vc+sd-jwt": { alg: ['ES256'] } },
+				_selectable: true,
+				"input_descriptors": [
+					sdJwtPidDescriptor_1_5
 				]
 			},
 			{
