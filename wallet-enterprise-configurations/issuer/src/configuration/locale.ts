@@ -54,7 +54,14 @@ const locale = {
 					openid4vp_notes: "",
 
 				}
-			}
+			},
+			typeMetatadaExamplesHeader: "JWT VC Type Metadata Examples",
+			typeMetatadaExamples: [
+				["Pid (ARF 1.5)", "pid/person-identification-data-arf-15-vctm-example-01.json"],
+				["Pid (ARF 1.8)", "pid/person-identification-data-arf-18-vctm-example-01.json"],
+				["EHIC", "ehic/european-health-insurance-card-vctm-dc4eu-01.json"],
+				["PDA1", "pda1/portable-document-a1-vctm-dc4eu-01.json"],
+			],
 		},
 		VIDAuthenticationComponent: {
 			title: "Authenticate using Digital Credentials"
