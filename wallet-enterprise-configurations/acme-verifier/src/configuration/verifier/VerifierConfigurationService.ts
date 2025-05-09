@@ -554,7 +554,7 @@ export class VerifierConfigurationService implements VerifierConfigurationInterf
 		return [
 			{
 				"id": "CustomVerifiableId",
-				"title": "PID",
+				"title": "PID ARF v1.8",
 				"description": "Select the format and the fields you want to request.",
 				_selectable: true,
 				"input_descriptors": [
@@ -615,7 +615,7 @@ export class VerifierConfigurationService implements VerifierConfigurationInterf
 			},
 			{
 				"id": "MinimalPIDAndEuropeanHealthInsuranceCard",
-				"title": "PID (SD-JWT) + EHIC",
+				"title": "PID (ARF v1.8) + EHIC",
 				"description": "PID fields: Given Name, Family Name, Birth Date, Nationality, Exp. Date, Issuing Authority, Issuing Country. EHIC Fields: SSN, Issuing Authority (Country, ID, Name), Document Number, Expiry Date",
 				"format": { "vc+sd-jwt": { alg: ['ES256'] } },
 				"input_descriptors": [
@@ -625,7 +625,7 @@ export class VerifierConfigurationService implements VerifierConfigurationInterf
 			},
 			{
 				"id": "MinimalPIDAndPowerOfRepresentation",
-				"title": "PID (SD-JWT) + POR",
+				"title": "PID (ARF v1.8) + POR",
 				"description": "PID fields: Given Name, Family Name, Birth Date, Nationality, Exp. Date, Issuing Authority, Issuing Country. POR Fields: Legal Person Identifier, Legal Name, Full Powers, eService, Effective From, Effective Until",
 				"format": { "vc+sd-jwt": { alg: ['ES256'] } },
 				"input_descriptors": [
@@ -635,7 +635,7 @@ export class VerifierConfigurationService implements VerifierConfigurationInterf
 			},
 			{
 				"id": "MinimalPIDAndBachelorDiploma",
-				"title": "PID (SD-JWT) + Diploma",
+				"title": "PID (ARF v1.8) + Diploma",
 				"description": "PID fields: Given Name, Family Name, Birth Date, Nationality, Exp. Date, Issuing Authority, Issuing Country. Diploma Fields: Grade, EQF Level, Diploma Title",
 				"format": { "vc+sd-jwt": { alg: ['ES256'] } },
 				"input_descriptors": [
