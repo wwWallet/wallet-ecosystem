@@ -54,7 +54,7 @@ const locale = {
 					openid4vp_notes: "",
 				},
 				iacas: {
-					paragraph: "The Root CA certificate which was used to sign the issuer's certificate is exposed in the following url"
+					paragraph: "The Root CA certificate which was used to sign the issuer's certificate is available in the following url"
 				}
 			},
 			typeMetatadaExamplesHeader: "JWT VC Type Metadata Examples",
