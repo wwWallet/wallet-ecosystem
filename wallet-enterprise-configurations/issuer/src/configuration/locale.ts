@@ -52,7 +52,9 @@ const locale = {
 						["Credential Format", "vc+sd-jwt, mso_mdoc"],
 					],
 					openid4vp_notes: "",
-
+				},
+				iacas: {
+					paragraph: "The Root CA certificate which was used to sign the issuer's certificate is available in the following url"
 				}
 			},
 			typeMetatadaExamplesHeader: "JWT VC Type Metadata Examples",
@@ -61,6 +63,7 @@ const locale = {
 				["Pid (ARF 1.8)", "pid/person-identification-data-arf-18-vctm-example-01.json"],
 				["EHIC", "ehic/european-health-insurance-card-vctm-dc4eu-01.json"],
 				["PDA1", "pda1/portable-document-a1-vctm-dc4eu-01.json"],
+				["POR", "por/power-of-representation-vctm-potential-01.json"],
 			],
 		},
 		VIDAuthenticationComponent: {
