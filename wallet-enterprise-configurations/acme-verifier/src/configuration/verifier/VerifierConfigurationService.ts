@@ -614,16 +614,6 @@ export class VerifierConfigurationService implements VerifierConfigurationInterf
 				]
 			},
 			{
-				"id": "PowerOfRepresentation",
-				"title": "Power of Representation",
-				"description": "Available Fields: Legal Entity Identifier, Legal Entity Name, Full Representation Powers, Designated eService, Effective From, Effective Until",
-				"format": { "vc+sd-jwt": { alg: ['ES256'] } },
-				_selectable: true,
-				"input_descriptors": [
-					powerOfRepresentationDescriptor
-				]
-			},
-			{
 				"id": "MinimalPIDAndEuropeanHealthInsuranceCard",
 				"title": "PID (ARF v1.8) + EHIC",
 				"description": "PID fields: Given Name, Family Name, Birth Date, Nationality, Exp. Date, Issuing Authority, Issuing Country. EHIC Fields: SSN, Issuing Authority (Country, ID, Name), Document Number, Expiry Date",
