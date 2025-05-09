@@ -98,7 +98,7 @@ export class PorSupportedCredentialSdJwt implements VCDMSupportedCredentialProto
 			const rows: CategorizedRawCredentialViewRow[] = [
 				{ name: "Legal Entity Name", value: porEntry.legal_name },
 				{ name: "Legal Entity Identifier", value: porEntry.legal_person_identifier },
-				{ name: "Full Representation Powers", value: porEntry.full_powers },
+				{ name: "Full Represent. Powers", value: porEntry.full_powers },
 				{ name: "Effective From", value: porEntry.effective_from_date },
 				{ name: "Effective Until", value: porEntry.effective_until_date },
 			];
