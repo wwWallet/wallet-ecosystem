@@ -189,6 +189,11 @@ const sdJwtPidFields_1_5 = [
 		"name": "Expiry Date",
 		"path": ['$.expiry_date'],
 		"filter": {}
+	},
+	{
+		"name": "Picture",
+		"path": ['$.picture'],
+		"filter": {}
 	}
 ]
 

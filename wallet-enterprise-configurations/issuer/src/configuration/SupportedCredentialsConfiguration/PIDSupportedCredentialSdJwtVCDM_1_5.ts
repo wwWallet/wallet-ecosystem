@@ -3,6 +3,7 @@ import { CategorizedRawCredentialView, CategorizedRawCredentialViewRow } from ".
 import { VerifiableCredentialFormat } from "wallet-common/dist/types";
 import { VCDMSupportedCredentialProtocol } from "../../lib/CredentialIssuerConfig/SupportedCredentialProtocol";
 import { formatDateDDMMYYYY } from "../../lib/formatDate";
+import { urlToDataUrl } from "../../lib/urlToDataUrl";
 import { AuthorizationServerState } from "../../entities/AuthorizationServerState.entity";
 import { CredentialView } from "../../authorization/types";
 import { randomUUID } from "node:crypto";
@@ -152,6 +153,7 @@ export class PIDSupportedCredentialSdJwtVCDM_1_5 implements VCDMSupportedCredent
 
 			birth_place: vidEntry.birth_place,
 			nationality: vidEntry.nationality,
+			picture: vidEntry.sex == '1' ? await urlToDataUrl(config.url + "/images/male_portrait.jpg") : await urlToDataUrl(config.url + "/images/female_portrait.jpg"),
 		};
 
 		const payload = {
@@ -174,6 +176,7 @@ export class PIDSupportedCredentialSdJwtVCDM_1_5 implements VCDMSupportedCredent
 			expiry_date: true,
 			nationality: true,
 			birth_place: true,
+			picture: true
 		}
 		const { credential } = await this.getCredentialSigner()
 			.signSdJwtVc(payload, { typ: VerifiableCredentialFormat.VC_SDJWT, vctm: [base64url.encode(JSON.stringify(this.metadata()))] }, disclosureFrame);
