@@ -61,6 +61,7 @@ const locale = {
 				["Pid (ARF 1.8)", "pid/person-identification-data-arf-18-vctm-example-01.json"],
 				["EHIC", "ehic/european-health-insurance-card-vctm-dc4eu-01.json"],
 				["PDA1", "pda1/portable-document-a1-vctm-dc4eu-01.json"],
+				["POR", "por/power-of-representation-vctm-potential-01.json"],
 			],
 		},
 		VIDAuthenticationComponent: {
