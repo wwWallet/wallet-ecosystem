@@ -52,7 +52,9 @@ const locale = {
 						["Credential Format", "vc+sd-jwt, mso_mdoc"],
 					],
 					openid4vp_notes: "",
-
+				},
+				iacas: {
+					paragraph: "The Root CA certificate which was used to sign the issuer's certificate is available in the following url"
 				}
 			},
 			typeMetatadaExamplesHeader: "JWT VC Type Metadata Examples",
