@@ -513,22 +513,22 @@ const powerOfRepresentationDescriptor = {
 				}
 			},
 			{
-				"name": "Legal Person Identifier",
+				"name": "Legal Entity ID",
 				"path": ['$.legal_person_identifier'],
 				"filter": {}
 			},
 			{
-				"name": "Legal Name",
+				"name": "Legal Entity Name",
 				"path": ['$.legal_name'],
 				"filter": {}
 			},
 			{
-				"name": "Full Powers",
+				"name": "Full Representation Powers",
 				"path": ['$.full_powers'],
 				"filter": {}
 			},
 			{
-				"name": "eService",
+				"name": "Designated eService",
 				"path": ['$.eService'],
 				"filter": {}
 			},
@@ -606,7 +606,7 @@ export class VerifierConfigurationService implements VerifierConfigurationInterf
 			{
 				"id": "PowerOfRepresentation",
 				"title": "Power of Representation",
-				"description": "Available Fields: Legal Person Identifier, Legal Name, Full Powers, eService, Effective From, Effective Until",
+				"description": "Available Fields: Legal Entity Identifier, Legal Entity Name, Full Representation Powers, Designated eService, Effective From, Effective Until",
 				"format": { "vc+sd-jwt": { alg: ['ES256'] } },
 				_selectable: true,
 				"input_descriptors": [
@@ -626,7 +626,7 @@ export class VerifierConfigurationService implements VerifierConfigurationInterf
 			{
 				"id": "MinimalPIDAndPowerOfRepresentation",
 				"title": "PID (ARF v1.8) + POR",
-				"description": "PID fields: Given Name, Family Name, Birth Date, Nationality, Exp. Date, Issuing Authority, Issuing Country. POR Fields: Legal Person Identifier, Legal Name, Full Powers, eService, Effective From, Effective Until",
+				"description": "PID fields: Given Name, Family Name, Birth Date, Nationality, Exp. Date, Issuing Authority, Issuing Country. POR Fields: Available Fields: Legal Entity Identifier, Legal Entity Name, Full Representation Powers, Designated eService, Effective From, Effective Until",
 				"format": { "vc+sd-jwt": { alg: ['ES256'] } },
 				"input_descriptors": [
 					minimalVerifiableIdSdJwtDescriptor,
