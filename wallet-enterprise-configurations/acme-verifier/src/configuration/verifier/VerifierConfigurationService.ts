@@ -151,6 +151,11 @@ const sdJwtPidFields_1_5 = [
 		"filter": {}
 	},
 	{
+		"name": "Personal Administrative Number",
+		"path": ['$.personal_administrative_number'],
+		"filter": {}
+	},
+	{
 		"name": "Nationality",
 		"path": ['$.nationality'],
 		"filter": {}
@@ -198,7 +203,7 @@ const sdJwtPidFields_1_5 = [
 ]
 
 const sdJwtPidDescriptor_1_5 = {
-	"id": "CustomVerifiableIdDescriptor_1_5",
+	"id": "CustomVerifiableId1_5",
 	"format": { "vc+sd-jwt": { alg: ['ES256'] } },
 	"constraints": {
 		"fields": sdJwtPidFields_1_5
@@ -581,7 +586,7 @@ export class VerifierConfigurationService implements VerifierConfigurationInterf
 			{
 				"id": "CustomVerifiableIdARF1_5",
 				"title": "PID ARF v1.5",
-				"description": "Available Fields: Given Name, Family Name, Nationality, Birth Place, Birth Date, Age over 18, Issuing Authority, Issuing Country, Issuance Date, Expiry Date ",
+				"description": "Available Fields: Given Name, Family Name, Nationality, Birth Place, Birth Date, Age over 18, Issuing Authority, Issuing Country, Picture, Personal Adminstr. Number, Issuance Date, Expiry Date",
 				"format": { "vc+sd-jwt": { alg: ['ES256'] } },
 				_selectable: true,
 				"input_descriptors": [

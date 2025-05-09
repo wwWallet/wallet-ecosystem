@@ -87,6 +87,7 @@ export class PIDSupportedCredentialSdJwtVCDM_1_5 implements VCDMSupportedCredent
 				const rows: CategorizedRawCredentialViewRow[] = [
 					{ name: "Family Name", value: vid.family_name },
 					{ name: "Given Name", value: vid.given_name },
+					{ name: "Personal Administr. Number", value: vid.personal_administrative_number },
 					{ name: "Birth Date", value: formatDateDDMMYYYY(vid.birth_date) },
 					{ name: "Age Over 18", value: vid.age_over_18 },
 					{ name: "Expiry Date", value: formatDateDDMMYYYY(vid.expiry_date) },
@@ -142,6 +143,7 @@ export class PIDSupportedCredentialSdJwtVCDM_1_5 implements VCDMSupportedCredent
 		const vid = {
 			family_name: vidEntry.family_name,
 			given_name: vidEntry.given_name,
+			personal_administrative_number: vidEntry.personal_administrative_number,
 
 			age_over_18: String(vidEntry.age_over_18) == '1' ? true : false,
 
@@ -168,6 +170,7 @@ export class PIDSupportedCredentialSdJwtVCDM_1_5 implements VCDMSupportedCredent
 		const disclosureFrame = {
 			family_name: true,
 			given_name: true,
+			personal_administrative_number: true,
 			age_over_18: true,
 			birth_date: true,
 			issuing_authority: true,
