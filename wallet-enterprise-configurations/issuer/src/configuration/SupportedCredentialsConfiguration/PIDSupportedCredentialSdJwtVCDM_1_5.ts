@@ -3,6 +3,7 @@ import { CategorizedRawCredentialView, CategorizedRawCredentialViewRow } from ".
 import { VerifiableCredentialFormat } from "wallet-common/dist/types";
 import { VCDMSupportedCredentialProtocol } from "../../lib/CredentialIssuerConfig/SupportedCredentialProtocol";
 import { formatDateDDMMYYYY } from "../../lib/formatDate";
+import { urlToDataUrl } from "../../lib/urlToDataUrl";
 import { AuthorizationServerState } from "../../entities/AuthorizationServerState.entity";
 import { CredentialView } from "../../authorization/types";
 import { randomUUID } from "node:crypto";
@@ -40,7 +41,7 @@ export class PIDSupportedCredentialSdJwtVCDM_1_5 implements VCDMSupportedCredent
 	}
 
 	getScope(): string {
-		return "pid:sd_jwt_vc:arf_1_4";
+		return "pid:sd_jwt_vc:arf_1_5";
 	}
 
 	getCredentialSigner(): CredentialSigner {
@@ -86,6 +87,7 @@ export class PIDSupportedCredentialSdJwtVCDM_1_5 implements VCDMSupportedCredent
 				const rows: CategorizedRawCredentialViewRow[] = [
 					{ name: "Family Name", value: vid.family_name },
 					{ name: "Given Name", value: vid.given_name },
+					{ name: "Personal Administr. Number", value: vid.personal_administrative_number },
 					{ name: "Birth Date", value: formatDateDDMMYYYY(vid.birth_date) },
 					{ name: "Age Over 18", value: vid.age_over_18 },
 					{ name: "Expiry Date", value: formatDateDDMMYYYY(vid.expiry_date) },
@@ -141,6 +143,7 @@ export class PIDSupportedCredentialSdJwtVCDM_1_5 implements VCDMSupportedCredent
 		const vid = {
 			family_name: vidEntry.family_name,
 			given_name: vidEntry.given_name,
+			personal_administrative_number: vidEntry.personal_administrative_number,
 
 			age_over_18: String(vidEntry.age_over_18) == '1' ? true : false,
 
@@ -151,7 +154,8 @@ export class PIDSupportedCredentialSdJwtVCDM_1_5 implements VCDMSupportedCredent
 			expiry_date: new Date(vidEntry.expiry_date).toISOString().split('T')[0],  // full-date format, according to ARF PID Rulebook
 
 			birth_place: vidEntry.birth_place,
-			nationality: vidEntry.nationality,
+			nationality: vidEntry.nationality.split(','),
+			picture: vidEntry.sex == '1' ? await urlToDataUrl(config.url + "/images/male_portrait.jpg") : await urlToDataUrl(config.url + "/images/female_portrait.jpg"),
 		};
 
 		const payload = {
@@ -166,6 +170,7 @@ export class PIDSupportedCredentialSdJwtVCDM_1_5 implements VCDMSupportedCredent
 		const disclosureFrame = {
 			family_name: true,
 			given_name: true,
+			personal_administrative_number: true,
 			age_over_18: true,
 			birth_date: true,
 			issuing_authority: true,
@@ -174,6 +179,7 @@ export class PIDSupportedCredentialSdJwtVCDM_1_5 implements VCDMSupportedCredent
 			expiry_date: true,
 			nationality: true,
 			birth_place: true,
+			picture: true
 		}
 		const { credential } = await this.getCredentialSigner()
 			.signSdJwtVc(payload, { typ: VerifiableCredentialFormat.VC_SDJWT, vctm: [base64url.encode(JSON.stringify(this.metadata()))] }, disclosureFrame);

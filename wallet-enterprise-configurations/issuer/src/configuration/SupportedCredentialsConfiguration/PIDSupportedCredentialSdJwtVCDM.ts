@@ -162,11 +162,12 @@ export class PIDSupportedCredentialSdJwtVCDM implements VCDMSupportedCredentialP
 				country: vidEntry.resident_country,
 				region: vidEntry.resident_region,
 				locality: vidEntry.resident_city,
-				postal_code: vidEntry.resident_postal_code,
+				postal_code: String(vidEntry.resident_postal_code),
 				street_address: vidEntry.resident_street,
 				house_number: vidEntry.resident_house_number
 			},
 			age_equal_or_over: {
+				"14": String(vidEntry.age_over_14) == '1' ? true : false,
 				"18": String(vidEntry.age_over_18) == '1' ? true : false,
 				"21": String(vidEntry.age_over_21) == '1' ? true : false,
 				"16": String(vidEntry.age_over_16) == '1' ? true : false,
@@ -219,6 +220,7 @@ export class PIDSupportedCredentialSdJwtVCDM implements VCDMSupportedCredentialP
 				house_number: true
 			},
 			age_equal_or_over: {
+				"14": true,
 				"18": true,
 				"16": true,
 				"65": true,
