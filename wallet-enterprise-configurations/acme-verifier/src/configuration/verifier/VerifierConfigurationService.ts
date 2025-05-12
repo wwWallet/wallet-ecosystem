@@ -151,8 +151,68 @@ const sdJwtPidFields_1_5 = [
 		"filter": {}
 	},
 	{
+		"name": "Given Name at Birth",
+		"path": ['$.birth_given_name'],
+		"filter": {}
+	},
+	{
 		"name": "Family Name",
 		"path": ['$.family_name'],
+		"filter": {}
+	},
+	{
+		"name": "Family Name at Birth",
+		"path": ['$.birth_family_name'],
+		"filter": {}
+	},
+	{
+		"name": "Sex",
+		"path": ['$.sex'],
+		"filter": {}
+	},
+	{
+		"name": "Email address",
+		"path": ['$.email_address'],
+		"filter": {}
+	},
+	{
+		"name": "Phone Number",
+		"path": ['$.mobile_phone_number'],
+		"filter": {}
+	},
+	{
+		"name": "Resident Address",
+		"path": ['$.resident_address'],
+		"filter": {}
+	},
+	{
+		"name": "Resident Street Address",
+		"path": ['$.resident_street_address'],
+		"filter": {}
+	},
+	{
+		"name": "Resident House Number",
+		"path": ['$.resident_house_number'],
+		"filter": {}
+	},
+	{
+		"name": "Resident Postal Code",
+		"path": ['$.resident_postal_code'],
+		"filter": {}
+	},
+	{
+		"name": "Resident City",
+		"path": ['$.resident_city'],
+		"filter": {}
+	},
+	{
+		"name": "Resident State",
+		"path": ['$.resident_state'],
+		"filter": {}
+	},
+	{
+		"name": "Resident Country",
+		"path": ['$.resident_country'],
 		"filter": {}
 	},
 	{
@@ -176,8 +236,43 @@ const sdJwtPidFields_1_5 = [
 		"filter": {}
 	},
 	{
+		"name": "Age over 14",
+		"path": ['$.age_over_14'],
+		"filter": {}
+	},
+	{
+		"name": "Age over 16",
+		"path": ['$.age_over_16'],
+		"filter": {}
+	},
+	{
 		"name": "Age over 18",
 		"path": ['$.age_over_18'],
+		"filter": {}
+	},
+	{
+		"name": "Age over 21",
+		"path": ['$.age_over_21'],
+		"filter": {}
+	},
+	{
+		"name": "Age over 65",
+		"path": ['$.age_over_65'],
+		"filter": {}
+	},
+	{
+		"name": "Age in Years",
+		"path": ['$.age_in_years'],
+		"filter": {}
+	},
+	{
+		"name": "Birth Year",
+		"path": ['$.age_birth_year'],
+		"filter": {}
+	},
+	{
+		"name": "Document Number",
+		"path": ['$.document_number'],
 		"filter": {}
 	},
 	{
@@ -188,6 +283,11 @@ const sdJwtPidFields_1_5 = [
 	{
 		"name": "Issuing Country",
 		"path": ['$.issuing_country'],
+		"filter": {}
+	},
+	{
+		"name": "Issuing Jurisdiction",
+		"path": ['$.issuing_jurisdiction'],
 		"filter": {}
 	},
 	{
@@ -591,7 +691,7 @@ export class VerifierConfigurationService implements VerifierConfigurationInterf
 			{
 				"id": "CustomVerifiableIdARF1_5",
 				"title": "PID ARF v1.5",
-				"description": "Available Fields: Given Name, Family Name, Nationality, Birth Place, Birth Date, Age over 18, Issuing Authority, Issuing Country, Picture, Personal Adminstr. Number, Issuance Date, Expiry Date",
+				"description": "Select the fields you want to request.",
 				"format": { "vc+sd-jwt": { alg: ['ES256'] } },
 				_selectable: true,
 				"input_descriptors": [
