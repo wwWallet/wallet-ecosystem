@@ -68,6 +68,11 @@ const sdJwtPidFields = [
 		"filter": {}
 	},
 	{
+		"name": "Age equal or over 14",
+		"path": ['$.age_equal_or_over.14'],
+		"filter": {}
+	},
+	{
 		"name": "Age equal or over 16",
 		"path": ['$.age_equal_or_over.16'],
 		"filter": {}

@@ -41,7 +41,7 @@ export class PIDSupportedCredentialSdJwtVCDM_1_5 implements VCDMSupportedCredent
 	}
 
 	getScope(): string {
-		return "pid:sd_jwt_vc:arf_1_4";
+		return "pid:sd_jwt_vc:arf_1_5";
 	}
 
 	getCredentialSigner(): CredentialSigner {
@@ -154,7 +154,7 @@ export class PIDSupportedCredentialSdJwtVCDM_1_5 implements VCDMSupportedCredent
 			expiry_date: new Date(vidEntry.expiry_date).toISOString().split('T')[0],  // full-date format, according to ARF PID Rulebook
 
 			birth_place: vidEntry.birth_place,
-			nationality: vidEntry.nationality,
+			nationality: vidEntry.nationality.split(','),
 			picture: vidEntry.sex == '1' ? await urlToDataUrl(config.url + "/images/male_portrait.jpg") : await urlToDataUrl(config.url + "/images/female_portrait.jpg"),
 		};
 
