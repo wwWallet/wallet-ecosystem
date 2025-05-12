@@ -102,7 +102,7 @@ export class PIDSupportedCredentialSdJwtVCDM_1_5 implements VCDMSupportedCredent
 					credentialImageSvgTemplate: svgText,
 					sdJwtVcMetadataClaims: this.metadata().claims,
 				})
-				console.log("Data uri = ", dataUri);
+
 				if (!dataUri) {
 					throw new Error("Could not render svg");
 				}
