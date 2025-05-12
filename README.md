@@ -45,29 +45,29 @@ git submodule update --init --remote --recursive
 
    The argument `-t` forces the usage of the `docker-compose.template.yml`
 
-   For demonstrative purposes, we set up a small ecosystem with:
+For demonstrative purposes, we set up a small ecosystem with:
 
-   - 1 Wallet Provider
-   - 1 Credential Issuer
-   - 1 Verifier
+- 1 Wallet Provider
+- 1 Credential Issuer
+- 1 Verifier
 
-   The configuration of the issuing legal entities takes place with the following:
+The configuration of the issuing legal entities takes place with the following:
 
-   ```sh
-   node ecosystem.js init
-   ```
+```sh
+node ecosystem.js init
+```
 
-   For more options, see:
+For more options, see:
 
-   ```sh
-   node ecosystem.js up --help
-   ```
+```sh
+node ecosystem.js up --help
+```
 
-   To shut down the ecosystem run the following command:
+To shut down the ecosystem run the following command:
 
-   ```sh
-   node ecosystem.js down
-   ```
+```sh
+node ecosystem.js down
+```
 
 ## Supported Flows
 
