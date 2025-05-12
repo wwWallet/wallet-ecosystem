@@ -86,13 +86,21 @@ export class PIDSupportedCredentialSdJwtVCDM_1_5 implements VCDMSupportedCredent
 			.map(async (vid) => {
 				const rows: CategorizedRawCredentialViewRow[] = [
 					{ name: "Family Name", value: vid.family_name },
+					{ name: "Family Name at Birth", value: vid.family_name_birth },
 					{ name: "Given Name", value: vid.given_name },
+					{ name: "Given Name at Birth", value: vid.given_name_birth },
 					{ name: "Personal Administr. Number", value: vid.personal_administrative_number },
 					{ name: "Birth Date", value: formatDateDDMMYYYY(vid.birth_date) },
+					{ name: "Document Number", value: vid.document_number },
+					{ name: "Sex", value: vid.sex },
+					{ name: "Resident Address", value: vid.resident_address },
+					{ name: "Email Address", value: vid.email_address },
+					{ name: "Mobile Phone", value: vid.mobile_phone_number },
 					{ name: "Age Over 18", value: vid.age_over_18 },
 					{ name: "Expiry Date", value: formatDateDDMMYYYY(vid.expiry_date) },
 					{ name: "Birth Place", value: vid.birth_place },
 					{ name: "Nationality", value: vid.nationality },
+					{ name: "Expiry Date", value: formatDateDDMMYYYY(vid.expiry_date) },
 				];
 				const rowsObject: CategorizedRawCredentialView = { rows };
 
@@ -143,16 +151,33 @@ export class PIDSupportedCredentialSdJwtVCDM_1_5 implements VCDMSupportedCredent
 		const vid = {
 			family_name: vidEntry.family_name,
 			given_name: vidEntry.given_name,
+			birth_family_name: vidEntry.family_name_birth,
+			birth_given_name: vidEntry.given_name_birth,
+			sex: vidEntry.sex,
+			email_address: vidEntry.email_address,
+			mobile_phone_number: vidEntry.mobile_phone_number,
+			resident_address: vidEntry.resident_address,
+			resident_street_address: vidEntry.resident_street,
+			resident_house_number: vidEntry.resident_house_number,
+			resident_postal_code: String(vidEntry.resident_postal_code),
+			resident_city: vidEntry.resident_city,
+			resident_state: vidEntry.resident_region,
+			resident_country: vidEntry.resident_country,
 			personal_administrative_number: vidEntry.personal_administrative_number,
-
+			age_over_14: String(vidEntry.age_over_14) == '1' ? true : false,
 			age_over_18: String(vidEntry.age_over_18) == '1' ? true : false,
-
+			age_over_16: String(vidEntry.age_over_16) == '1' ? true : false,
+			age_over_21: String(vidEntry.age_over_21) == '1' ? true : false,
+			age_over_65: String(vidEntry.age_over_65) == '1' ? true : false,
+			age_in_years: vidEntry.age_in_years,
+			age_birth_year: vidEntry.age_birth_year,
+			document_number: String(vidEntry.document_number),
 			birth_date: new Date(vidEntry.birth_date).toISOString().split('T')[0],  // full-date format, according to ARF PID Rulebook
 			issuing_authority: vidEntry.issuing_authority,
 			issuing_country: vidEntry.issuing_country,
+			issuing_jurisdiction: vidEntry.issuing_jurisdiction,
 			issuance_date: new Date().toISOString().split('T')[0],  // full-date format, according to ARF PID Rulebook
 			expiry_date: new Date(vidEntry.expiry_date).toISOString().split('T')[0],  // full-date format, according to ARF PID Rulebook
-
 			birth_place: vidEntry.birth_place,
 			nationality: vidEntry.nationality.split(','),
 			picture: vidEntry.sex == '1' ? await urlToDataUrl(config.url + "/images/male_portrait.jpg") : await urlToDataUrl(config.url + "/images/female_portrait.jpg"),
@@ -170,15 +195,35 @@ export class PIDSupportedCredentialSdJwtVCDM_1_5 implements VCDMSupportedCredent
 		const disclosureFrame = {
 			family_name: true,
 			given_name: true,
+			birth_family_name: true,
+			birth_given_name: true,
+			sex: true,
+			email_address: true,
+			mobile_phone_number: true,
+			resident_address: true,
+			resident_street_address: true,
+			resident_house_number: true,
+			resident_postal_code: true,
+			resident_city: true,
+			resident_state: true,
+			resident_country: true,
 			personal_administrative_number: true,
+			age_over_14: true,
 			age_over_18: true,
-			birth_date: true,
+			age_over_16: true,
+			age_over_21: true,
+			age_over_65: true,
+			age_in_years: true,
+			age_birth_year: true,
+			document_number: true,
+			birth_date: true, 
 			issuing_authority: true,
 			issuing_country: true,
+			issuing_jurisdiction: true,
 			issuance_date: true,
 			expiry_date: true,
-			nationality: true,
 			birth_place: true,
+			nationality: true,
 			picture: true
 		}
 		const { credential } = await this.getCredentialSigner()
