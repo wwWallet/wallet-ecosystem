@@ -97,16 +97,16 @@ export class PIDSupportedCredentialSdJwtVCDM_1_5 implements VCDMSupportedCredent
 					{ name: "Email Address", value: vid.email_address },
 					{ name: "Mobile Phone", value: vid.mobile_phone_number },
 					{ name: "Age Over 18", value: vid.age_over_18 },
-					{ name: "Expiry Date", value: formatDateDDMMYYYY(vid.expiry_date) },
 					{ name: "Birth Place", value: vid.birth_place },
 					{ name: "Nationality", value: vid.nationality },
-					{ name: "Expiry Date", value: formatDateDDMMYYYY(vid.expiry_date) },
 				];
 				const rowsObject: CategorizedRawCredentialView = { rows };
 
 				const { credentialRendering } = await initializeCredentialEngine();
 				const dataUri = await credentialRendering.renderSvgTemplate({
-					json: { ...vid },
+					json: { ...vid,
+						expiry_date:undefined,
+					 },
 					credentialImageSvgTemplate: svgText,
 					sdJwtVcMetadataClaims: this.metadata().claims,
 				})
@@ -269,7 +269,7 @@ export class PIDSupportedCredentialSdJwtVCDM_1_5 implements VCDMSupportedCredent
 					"display": [
 						{
 							"lang": "en-US",
-							"label": "Given Name",
+							"label": "First name",
 							"description": "The given name of the PID holder"
 						}
 					],
@@ -280,7 +280,7 @@ export class PIDSupportedCredentialSdJwtVCDM_1_5 implements VCDMSupportedCredent
 					"display": [
 						{
 							"lang": "en-US",
-							"label": "Family Name",
+							"label": "Last name",
 							"description": "The family name of the PID holder"
 						}
 					],
@@ -291,8 +291,8 @@ export class PIDSupportedCredentialSdJwtVCDM_1_5 implements VCDMSupportedCredent
 					"display": [
 						{
 							"lang": "en-US",
-							"label": "Birth date",
-							"description": "The birth date of the PID holder"
+							"label": "Date of birth",
+							"description": "Full birth date (day, month, year)."
 						}
 					],
 					"svg_id": "birth_date"
@@ -303,7 +303,7 @@ export class PIDSupportedCredentialSdJwtVCDM_1_5 implements VCDMSupportedCredent
 						{
 							"lang": "en-US",
 							"label": "Issuing authority",
-							"description": "The issuing authority of the PID credential"
+							"description": "Name of the issuing body or Member State (two-letter code)."
 						}
 					],
 					"svg_id": "issuing_authority"
@@ -313,8 +313,8 @@ export class PIDSupportedCredentialSdJwtVCDM_1_5 implements VCDMSupportedCredent
 					"display": [
 						{
 							"lang": "en-US",
-							"label": "Issuance date",
-							"description": "The date that the credential was issued"
+							"label": "Issue date",
+							"description": "Start date of the document’s validity."
 						}
 					],
 					"svg_id": "issuance_date"
