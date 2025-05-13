@@ -120,7 +120,8 @@ export class PIDSupportedCredentialSdJwtVCDM_1_5 implements VCDMSupportedCredent
 				const { credentialRendering } = await initializeCredentialEngine();
 				const dataUri = await credentialRendering.renderSvgTemplate({
 					json: { ...vid,
-						expiry_date:undefined,
+						expiry_date: undefined,
+						issuance_date: undefined
 					 },
 					credentialImageSvgTemplate: svgText,
 					sdJwtVcMetadataClaims: this.metadata().claims,

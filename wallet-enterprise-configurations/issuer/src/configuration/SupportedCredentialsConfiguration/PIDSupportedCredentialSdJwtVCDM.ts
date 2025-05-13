@@ -117,7 +117,8 @@ export class PIDSupportedCredentialSdJwtVCDM implements VCDMSupportedCredentialP
 				const dataUri = await credentialRendering.renderSvgTemplate({
 					json: {...vid,
 						birthdate:vid.birth_date,
-						date_of_expiry:undefined,
+						date_of_expiry: undefined,
+						date_of_issuance: undefined
 					},
 					credentialImageSvgTemplate: svgText,
 					sdJwtVcMetadataClaims: this.metadata().claims,
