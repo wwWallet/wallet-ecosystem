@@ -32,10 +32,10 @@ export class PorSupportedCredentialSdJwt implements VCDMSupportedCredentialProto
 		return new AuthenticationChainBuilder()
 			.addAuthenticationComponent(new GenericAuthenticationMethodSelectionComponent(this.getScope() + "-auth-method", CONSENT_ENTRYPOINT, [{ code: UserAuthenticationMethod.VID_AUTH, description: "Authentication with PID" }]))
 			.addAuthenticationComponent(new GenericVIDAuthenticationComponent(this.getScope() + "-vid-authentication", CONSENT_ENTRYPOINT, {
-				"family_name": { input_descriptor_constraint_field_name: "Family Name" },
-				"given_name": { input_descriptor_constraint_field_name: "Given Name" },
-				"birth_date": { input_descriptor_constraint_field_name: "Birth Date", parser: (value: string) => new Date(value).toISOString() },
-			}, "PidMinimal", "PID", this.getDisplay().name))
+				"family_name": { input_descriptor_constraint_field_name: "Last Name" },
+				"given_name": { input_descriptor_constraint_field_name: "First Name" },
+				"birth_date": { input_descriptor_constraint_field_name: "Date of Birth", parser: (value: string) => new Date(value).toISOString() },
+			}, "PidMinimal", "PID", this.getScope()))
 			.build();
 	}
 
@@ -90,17 +90,15 @@ export class PorSupportedCredentialSdJwt implements VCDMSupportedCredentialProto
 		console.log("Por entry = ", porEntry)
 		porEntry = {
 			...porEntry,
-			"effective_from_date": new Date(porEntry.effective_from_date).toISOString(),
-			"effective_until_date": porEntry.effective_until_date && new Date(porEntry.effective_until_date).toISOString(),
+			"effective_from_date": new Date(porEntry.effective_from).toISOString(),
+			"effective_until_date": porEntry.effective_until && new Date(porEntry.effective_until).toISOString(),
 		};
 
 		const credentialView: CredentialView = await (async () => {
 			const rows: CategorizedRawCredentialViewRow[] = [
 				{ name: "Legal Entity Name", value: porEntry.legal_name },
-				{ name: "Legal Entity Identifier", value: porEntry.legal_person_identifier },
-				{ name: "Full Represent. Powers", value: porEntry.full_powers },
-				{ name: "Effective From", value: porEntry.effective_from_date },
-				{ name: "Effective Until", value: porEntry.effective_until_date },
+				{ name: "Legal Entity ID", value: porEntry.legal_person_identifier },
+				{ name: "Full Represent. Powers", value: porEntry.full_powers }
 			];
 			const rowsObject: CategorizedRawCredentialView = { rows };
 
@@ -162,9 +160,11 @@ export class PorSupportedCredentialSdJwt implements VCDMSupportedCredentialProto
 			"legal_name": String(porEntry.legal_name),
 			"full_powers": String(porEntry.full_powers),
 
-			"effective_from_date": new Date(porEntry.effective_from_date).toISOString(),
-			"effective_until_date": porEntry.effective_until_date && new Date(porEntry.effective_until_date).toISOString(),
+			"effective_from_date": new Date(porEntry.effective_from).toISOString(),
+			"effective_until_date": porEntry.effective_until && new Date(porEntry.effective_until).toISOString(),
 			"eService": porEntry.eService == "" ? null : porEntry.eService,
+			"issuing_authority": porEntry.issuing_authority,
+			"issuing_country": porEntry.issuing_country
 		};
 
 
@@ -175,6 +175,8 @@ export class PorSupportedCredentialSdJwt implements VCDMSupportedCredentialProto
 			effective_until_date: true,
 			effective_from_date: true,
 			eService: true,
+			issuing_authority: true,
+			issuing_country: true
 		};
 
 		const { credential } = await this.getCredentialSigner()
