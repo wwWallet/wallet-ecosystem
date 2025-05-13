@@ -110,14 +110,14 @@ export class PIDSupportedCredentialSdJwtVCDM implements VCDMSupportedCredentialP
 					{ name: "Issuing Country", value: vid.issuing_country },
 					{ name: "Issuing Region", value: vid.issuing_jurisdiction },
 					{ name: "Document Number", value: vid.document_number },
-					{ name: "Expiry Date", value: formatDateDDMMYYYY(vid.expiry_date) },
 				];
 				const rowsObject: CategorizedRawCredentialView = { rows };
 
 				const { credentialRendering } = await initializeCredentialEngine();
 				const dataUri = await credentialRendering.renderSvgTemplate({
 					json: {...vid,
-						birthdate:vid.birth_date
+						birthdate:vid.birth_date,
+						date_of_expiry:undefined,
 					},
 					credentialImageSvgTemplate: svgText,
 					sdJwtVcMetadataClaims: this.metadata().claims,
