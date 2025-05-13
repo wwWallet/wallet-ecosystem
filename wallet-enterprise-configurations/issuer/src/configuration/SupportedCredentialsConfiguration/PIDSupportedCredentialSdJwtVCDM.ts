@@ -85,19 +85,31 @@ export class PIDSupportedCredentialSdJwtVCDM implements VCDMSupportedCredentialP
 		const credentialViews: CredentialView[] = await Promise.all(vids
 			.map(async (vid) => {
 				const rows: CategorizedRawCredentialViewRow[] = [
-					{ name: "Family Name", value: vid.family_name },
-					{ name: "Family Name at Birth", value: vid.family_name_birth },
-					{ name: "Given Name", value: vid.given_name },
-					{ name: "Given Name at Birth", value: vid.given_name_birth },
-					{ name: "Document Number", value: vid.document_number },
-					{ name: "Birth Date", value: formatDateDDMMYYYY(vid.birth_date) },
-					{ name: "Age Over 18", value: vid.age_over_18 },
+					{ name: "Last Name", value: vid.family_name },
+					{ name: "Birth Last Name", value: vid.family_name_birth },
+					{ name: "First Name", value: vid.given_name },
+					{ name: "Birth First Name", value: vid.given_name_birth },
+					{ name: "Date of Birth", value: formatDateDDMMYYYY(vid.birth_date) },
+					{ name: "Country of Birth", value: vid.birth_country },
+					{ name: "Region of Birth", value: vid.birth_region },
+					{ name: "City of Birth", value: vid.birth_city },
+					{ name: "Nationality", value: vid.nationality },
+					{ name: "Personal ID", value: vid.personal_administrative_number },
 					{ name: "Sex", value: vid.sex },
-					{ name: "Nationality", value: vid.nationality},
-					{ name: "Birth Place", value: vid.birth_country },
-					{ name: "Resident Address", value: vid.resident_address },
-					{ name: "Email Address", value: vid.email_address },
-					{ name: "Mobile Phone", value: vid.mobile_phone_number },
+					{ name: "Email", value: vid.email_address },
+					{ name: "Mobile", value: vid.mobile_phone_number },
+					{ name: "Full Address", value: vid.resident_address },
+					{ name: "Age equal or over 14", value: vid.age_over_14 },
+					{ name: "Age equal or over 16", value: vid.age_over_16 },
+					{ name: "Age equal or over 18", value: vid.age_over_18 },
+					{ name: "Age equal or over 21", value: vid.age_over_21 },
+					{ name: "Age equal or over 65", value: vid.age_over_65 },
+					{ name: "Age", value: vid.age_in_years },
+					{ name: "Birth Year", value: vid.age_birth_year },
+					{ name: "Issuing Authority", value: vid.issuing_authority },
+					{ name: "Issuing Country", value: vid.issuing_country },
+					{ name: "Issuing Region", value: vid.issuing_jurisdiction },
+					{ name: "Document Number", value: vid.document_number },
 					{ name: "Expiry Date", value: formatDateDDMMYYYY(vid.expiry_date) },
 				];
 				const rowsObject: CategorizedRawCredentialView = { rows };
@@ -283,8 +295,8 @@ export class PIDSupportedCredentialSdJwtVCDM implements VCDMSupportedCredentialP
 					"display": [
 						{
 							"lang": "en-US",
-							"label": "Given Name",
-							"description": "The given name of the PID holder"
+							"label": "First name",
+							"description": "Current first name(s), including middle name(s) if applicable."
 						}
 					],
 					"svg_id": "given_name"
@@ -294,19 +306,19 @@ export class PIDSupportedCredentialSdJwtVCDM implements VCDMSupportedCredentialP
 					"display": [
 						{
 							"lang": "en-US",
-							"label": "Family Name",
-							"description": "The family name of the PID holder"
+							"label": "Last name",
+							"description": "Current last name(s) or surname(s)."
 						}
 					],
 					"svg_id": "family_name"
 				},
 				{
-					"path": ["birthdate"],
+					"path": ["birth_date"],
 					"display": [
 						{
 							"lang": "en-US",
-							"label": "Birth date",
-							"description": "The birth date of the PID holder"
+							"label": "Date of birth",
+							"description": "Full birth date (day, month, year)."
 						}
 					],
 					"svg_id": "birth_date"
@@ -317,7 +329,7 @@ export class PIDSupportedCredentialSdJwtVCDM implements VCDMSupportedCredentialP
 						{
 							"lang": "en-US",
 							"label": "Issuing authority",
-							"description": "The issuing authority of the PID credential"
+							"description": "Name of the issuing body or Member State (two-letter code)."
 						}
 					],
 					"svg_id": "issuing_authority"
@@ -327,8 +339,8 @@ export class PIDSupportedCredentialSdJwtVCDM implements VCDMSupportedCredentialP
 					"display": [
 						{
 							"lang": "en-US",
-							"label": "Issuance date",
-							"description": "The date that the credential was issued"
+							"label": "Issue date",
+							"description": "Start date of the document’s validity."
 						}
 					],
 					"svg_id": "issuance_date"
@@ -339,7 +351,7 @@ export class PIDSupportedCredentialSdJwtVCDM implements VCDMSupportedCredentialP
 						{
 							"lang": "en-US",
 							"label": "Expiry date",
-							"description": "The date that the credential will expire"
+							"description": "End date of the document’s validity."
 						}
 					],
 					"svg_id": "expiry_date"
