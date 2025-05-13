@@ -111,7 +111,9 @@ export class EHICSupportedCredentialSdJwtVCDM implements VCDMSupportedCredential
 					const rowsObject: CategorizedRawCredentialView = { rows };
 					const { credentialRendering } = await initializeCredentialEngine();
 					const dataUri = await credentialRendering.renderSvgTemplate({
-						json: { ...ehic,
+						json: {
+							...ehic,
+							date_of_expiry: undefined,
 							issuing_authority: {
 								id: String(ehic.issuing_authority_id),
 								name: String(ehic.issuing_authority_name)
