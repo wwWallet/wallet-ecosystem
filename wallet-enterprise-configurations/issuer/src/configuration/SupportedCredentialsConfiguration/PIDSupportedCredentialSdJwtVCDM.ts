@@ -116,7 +116,9 @@ export class PIDSupportedCredentialSdJwtVCDM implements VCDMSupportedCredentialP
 
 				const { credentialRendering } = await initializeCredentialEngine();
 				const dataUri = await credentialRendering.renderSvgTemplate({
-					json: {...vid},
+					json: {...vid,
+						birthdate:vid.birth_date
+					},
 					credentialImageSvgTemplate: svgText,
 					sdJwtVcMetadataClaims: this.metadata().claims,
 				})
@@ -313,7 +315,7 @@ export class PIDSupportedCredentialSdJwtVCDM implements VCDMSupportedCredentialP
 					"svg_id": "family_name"
 				},
 				{
-					"path": ["birth_date"],
+					"path": ["birthdate"],
 					"display": [
 						{
 							"lang": "en-US",
