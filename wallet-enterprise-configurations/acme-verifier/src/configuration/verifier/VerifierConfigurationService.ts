@@ -69,7 +69,7 @@ const sdJwtPidFields = [
 	},
 	{
 		"name": "Sex",
-		"path": ['$.sec'],
+		"path": ['$.sex'],
 		"filter": {}
 	},
 	{
