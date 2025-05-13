@@ -382,17 +382,17 @@ const minimalSdJwtPidFields = [
 		}
 	},
 	{
-		"name": "Given Name",
+		"name": "First Name",
 		"path": ['$.given_name'],
 		"filter": {}
 	},
 	{
-		"name": "Family Name",
+		"name": "Last Name",
 		"path": ['$.family_name'],
 		"filter": {}
 	},
 	{
-		"name": "Birth Date",
+		"name": "Date of birth",
 		"path": ['$.birthdate'],
 		"filter": {}
 	},
