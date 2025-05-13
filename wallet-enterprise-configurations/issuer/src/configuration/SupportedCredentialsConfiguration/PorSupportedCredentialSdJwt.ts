@@ -35,7 +35,7 @@ export class PorSupportedCredentialSdJwt implements VCDMSupportedCredentialProto
 				"family_name": { input_descriptor_constraint_field_name: "Last Name" },
 				"given_name": { input_descriptor_constraint_field_name: "First Name" },
 				"birth_date": { input_descriptor_constraint_field_name: "Date of Birth", parser: (value: string) => new Date(value).toISOString() },
-			}, "PidMinimal", "PID", this.getScope()))
+			}, "PidMinimal", "PID", this.getDisplay().name))
 			.build();
 	}
 
