@@ -18,10 +18,10 @@
 	<text x="50" y="320" font-family="Arial, Helvetica, sans-serif" font-size="27" fill="#2f2f2f" font-weight="normal">{{full_powers}}</text>
 
 	<text x="50" y="370" font-family="Arial, Helvetica, sans-serif" font-size="22" fill="#2f2f2f" font-weight="light">Effective from</text>
-	<text x="50" y="400" font-family="Arial, Helvetica, sans-serif" font-size="27" fill="#2f2f2f" font-weight="normal">{{effective_from_date}}</text>
+	<text x="50" y="400" font-family="Arial, Helvetica, sans-serif" font-size="27" fill="#2f2f2f" font-weight="normal">{{effective_from}}</text>
 
 	<text x="400" y="370" font-family="Arial, Helvetica, sans-serif" font-size="22" fill="#2f2f2f" font-weight="light">Effective until</text>
-	<text x="400" y="400" font-family="Arial, Helvetica, sans-serif" font-size="27" fill="#2f2f2f" font-weight="normal">{{effective_until_date}}</text>
+	<text x="400" y="400" font-family="Arial, Helvetica, sans-serif" font-size="27" fill="#2f2f2f" font-weight="normal">{{effective_until}}</text>
 
 
 </svg>

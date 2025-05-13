@@ -90,8 +90,8 @@ export class PorSupportedCredentialSdJwt implements VCDMSupportedCredentialProto
 		console.log("Por entry = ", porEntry)
 		porEntry = {
 			...porEntry,
-			"effective_from_date": new Date(porEntry.effective_from_date).toISOString(),
-			"effective_until_date": porEntry.effective_until_date && new Date(porEntry.effective_until_date).toISOString(),
+			"effective_from": new Date(porEntry.effective_from).toISOString(),
+			"effective_until": porEntry.effective_until && new Date(porEntry.effective_until).toISOString(),
 		};
 
 		const credentialView: CredentialView = await (async () => {
@@ -99,8 +99,8 @@ export class PorSupportedCredentialSdJwt implements VCDMSupportedCredentialProto
 				{ name: "Legal Entity Name", value: porEntry.legal_name },
 				{ name: "Legal Entity Identifier", value: porEntry.legal_person_identifier },
 				{ name: "Full Represent. Powers", value: porEntry.full_powers },
-				{ name: "Effective From", value: porEntry.effective_from_date },
-				{ name: "Effective Until", value: porEntry.effective_until_date },
+				{ name: "Effective From", value: porEntry.effective_from },
+				{ name: "Effective Until", value: porEntry.effective_until },
 			];
 			const rowsObject: CategorizedRawCredentialView = { rows };
 
@@ -162,8 +162,8 @@ export class PorSupportedCredentialSdJwt implements VCDMSupportedCredentialProto
 			"legal_name": String(porEntry.legal_name),
 			"full_powers": String(porEntry.full_powers),
 
-			"effective_from_date": new Date(porEntry.effective_from_date).toISOString(),
-			"effective_until_date": porEntry.effective_until_date && new Date(porEntry.effective_until_date).toISOString(),
+			"effective_from": new Date(porEntry.effective_from).toISOString(),
+			"effective_until": porEntry.effective_until && new Date(porEntry.effective_until).toISOString(),
 			"eService": porEntry.eService == "" ? null : porEntry.eService,
 		};
 
@@ -172,8 +172,8 @@ export class PorSupportedCredentialSdJwt implements VCDMSupportedCredentialProto
 			legal_person_identifier: true,
 			legal_name: true,
 			full_powers: true,
-			effective_until_date: true,
-			effective_from_date: true,
+			effective_until: true,
+			effective_from: true,
 			eService: true,
 		};
 
@@ -249,7 +249,7 @@ export class PorSupportedCredentialSdJwt implements VCDMSupportedCredentialProto
 					"svg_id": "full_powers"
 				},
 				{
-					"path": ["effective_from_date"],
+					"path": ["effective_from"],
 					"display": [
 						{
 							"lang": "en-US",
@@ -257,10 +257,10 @@ export class PorSupportedCredentialSdJwt implements VCDMSupportedCredentialProto
 							"description": "Start date of valid representation (inclusive)."
 						}
 					],
-					"svg_id": "effective_from_date"
+					"svg_id": "effective_from"
 				},
 				{
-					"path": ["effective_until_date"],
+					"path": ["effective_until"],
 					"display": [
 						{
 							"lang": "en-US",
@@ -268,7 +268,7 @@ export class PorSupportedCredentialSdJwt implements VCDMSupportedCredentialProto
 							"description": "End date of valid representation (inclusive)."
 						}
 					],
-					"svg_id": "effective_until_date"
+					"svg_id": "effective_until"
 				},
 			],
 		}
