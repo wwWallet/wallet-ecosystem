@@ -90,8 +90,8 @@ export class PorSupportedCredentialSdJwt implements VCDMSupportedCredentialProto
 		console.log("Por entry = ", porEntry)
 		porEntry = {
 			...porEntry,
-			"effective_from_date": new Date(porEntry.effective_from).toISOString(),
-			"effective_until_date": porEntry.effective_until && new Date(porEntry.effective_until).toISOString(),
+			"effective_from_date": undefined,
+			"effective_until_date": undefined,
 		};
 
 		const credentialView: CredentialView = await (async () => {
