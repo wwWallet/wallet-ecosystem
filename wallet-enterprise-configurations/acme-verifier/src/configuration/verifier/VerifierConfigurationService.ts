@@ -634,8 +634,8 @@ const europeanHealthInsuranceCardDescriptor = {
 				}
 			},
 			{
-				"name": "SSN",
-				"path": ['$.social_security_number'],
+				"name": "Personal ID",
+				"path": ['$.personal_administrative_number'],
 				"filter": {}
 			},
 			{
@@ -649,18 +649,23 @@ const europeanHealthInsuranceCardDescriptor = {
 				"filter": {}
 			},
 			{
-				"name": "Issuing Authority (ID)",
+				"name": "Issuing Authority ID",
 				"path": ['$.issuing_authority.id'],
 				"filter": {}
 			},
 			{
-				"name": "Issuing Authority (Name)",
+				"name": "Issuing Authority Name",
 				"path": ['$.issuing_authority.name'],
 				"filter": {}
 			},
 			{
 				"name": "Expiry Date",
-				"path": ['$.expiry_date'],
+				"path": ['$.date_of_expiry'],
+				"filter": {}
+			},
+			{
+				"name": "Issue Date",
+				"path": ['$.date_of_issuance'],
 				"filter": {}
 			}
 		]

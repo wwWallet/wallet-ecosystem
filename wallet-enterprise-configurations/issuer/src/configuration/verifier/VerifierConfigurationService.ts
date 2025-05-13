@@ -56,21 +56,21 @@ export class VerifierConfigurationService implements VerifierConfigurationInterf
 						"constraints": {
 							"fields": [
 								{
-									"name": "Family Name",
+									"name": "Last Name",
 									"path": [
 										"$.family_name"
 									],
 									"filter": {}
 								},
 								{
-									"name": "Given Name",
+									"name": "First Name",
 									"path": [
 										"$.given_name"
 									],
 									"filter": {}
 								},
 								{
-									"name": "Birth Date",
+									"name": "Date of Birth",
 									"path": [
 										"$.birthdate"
 									],

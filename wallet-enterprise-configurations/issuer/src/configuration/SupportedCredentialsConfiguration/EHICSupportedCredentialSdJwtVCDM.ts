@@ -33,9 +33,9 @@ export class EHICSupportedCredentialSdJwtVCDM implements VCDMSupportedCredential
 		return new AuthenticationChainBuilder()
 			.addAuthenticationComponent(new GenericAuthenticationMethodSelectionComponent(this.getScope() + "-auth-method", CONSENT_ENTRYPOINT, [{ code: UserAuthenticationMethod.VID_AUTH, description: "Authentication with PID" }, { code: UserAuthenticationMethod.SSO, description: "Authentication with National Services" }]))
 			.addAuthenticationComponent(new GenericVIDAuthenticationComponent(this.getScope() + "-vid-authentication", CONSENT_ENTRYPOINT, {
-				"family_name": { input_descriptor_constraint_field_name: "Family Name" },
-				"given_name": { input_descriptor_constraint_field_name: "Given Name" },
-				"birth_date": { input_descriptor_constraint_field_name: "Birth Date", parser: (value: string) => new Date(value).toISOString() },
+				"family_name": { input_descriptor_constraint_field_name: "Last Name" },
+				"given_name": { input_descriptor_constraint_field_name: "First Name" },
+				"birth_date": { input_descriptor_constraint_field_name: "Date of Birth", parser: (value: string) => new Date(value).toISOString() },
 			}, "PidMinimal", "PID", this.getDisplay().name))
 			.addAuthenticationComponent(new GenericLocalAuthenticationComponent(this.getScope() + "-1-local", CONSENT_ENTRYPOINT, {
 				"family_name": { datasetColumnName: "family_name" },
@@ -172,7 +172,7 @@ export class EHICSupportedCredentialSdJwtVCDM implements VCDMSupportedCredential
 		const ehic = {
 			personal_administrative_number: String(ehicEntry.personal_administrative_number),
 			birth_date: new Date(ehicEntry.birth_date).toISOString(),
-			issuance_date: new Date().toISOString().split('T')[0],  // full-date format, according to ARF PID Rulebook
+			date_of_issuance: new Date().toISOString().split('T')[0],  // full-date format, according to ARF PID Rulebook
 			issuing_country: String(ehicEntry.issuer_country),
 			issuing_authority: {
 				id: String(ehicEntry.issuing_authority_id),
@@ -198,7 +198,9 @@ export class EHICSupportedCredentialSdJwtVCDM implements VCDMSupportedCredential
 				id: true,
 				name: true
 			},
-			document_number: true
+			document_number: true,
+			date_of_issuance: true,
+			date_of_expiry: true
 		}
 		const { credential } = await this.getCredentialSigner()
 			.signSdJwtVc(payload, { typ: VerifiableCredentialFormat.VC_SDJWT, vctm: [base64url.encode(JSON.stringify(this.metadata()))] }, disclosureFrame);
@@ -239,7 +241,7 @@ export class EHICSupportedCredentialSdJwtVCDM implements VCDMSupportedCredential
 						{
 							"lang": "en-US",
 							"label": "Personal ID",
-							"description": "The Personal ID of the EHIC holder"
+							"description": "Unique personal identifier used by social security services."
 						}
 					],
 					"svg_id": "personal_administrative_number"
@@ -261,7 +263,7 @@ export class EHICSupportedCredentialSdJwtVCDM implements VCDMSupportedCredential
 						{
 							"lang": "en-US",
 							"label": "Issuing authority id",
-							"description": "The Issuing authority id of the EHIC holder"
+							"description": "EHIC issuing authority unique identifier in EESSI."
 						}
 					],
 					"svg_id": "issuing_authority_id"
@@ -272,7 +274,7 @@ export class EHICSupportedCredentialSdJwtVCDM implements VCDMSupportedCredential
 						{
 							"lang": "en-US",
 							"label": "Issuing authority name",
-							"description": "The Issuing authority name of the EHIC holder"
+							"description": "EHIC issuing authority name in EESSI."
 						}
 					],
 					"svg_id": "issuing_authority_name"
@@ -286,7 +288,7 @@ export class EHICSupportedCredentialSdJwtVCDM implements VCDMSupportedCredential
 						{
 							"lang": "en-US",
 							"label": "Document number",
-							"description": "The Document number name of the EHIC holder"
+							"description": "EHIC unique document identifier."
 						}
 					]
 				},
@@ -296,7 +298,7 @@ export class EHICSupportedCredentialSdJwtVCDM implements VCDMSupportedCredential
 						{
 							"lang": "en-US",
 							"label": "Expiry date",
-							"description": "The date and time expired this credential"
+							"description": "EHIC expiration date."
 						}
 					],
 					"svg_id": "date_of_expiry"
