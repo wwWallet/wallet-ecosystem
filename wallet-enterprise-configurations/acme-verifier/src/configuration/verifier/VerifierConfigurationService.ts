@@ -6,122 +6,424 @@ import { VerifierConfigurationInterface } from "../../services/interfaces";
 import "reflect-metadata";
 
 
-const verifiableIdDescriptor = {
-	"id": "PID",
+const sdJwtPidFields = [
+	{
+		"name": "VC type",
+		"path": [
+			"$.vct"
+		],
+		"filter": {
+			"type": "string",
+			"const": "urn:eudi:pid:1"
+		}
+	},
+	{
+		"name": "First Name",
+		"path": ['$.given_name'],
+		"filter": {}
+	},
+	{
+		"name": "Birth First Name",
+		"path": ['$.birth_given_name'],
+		"filter": {}
+	},
+	{
+		"name": "Last Name",
+		"path": ['$.family_name'],
+		"filter": {}
+	},
+	{
+		"name": "Birth Last Name",
+		"path": ['$.birth_family_name'],
+		"filter": {}
+	},
+	{
+		"name": "Date of Birth",
+		"path": ['$.birthdate'],
+		"filter": {}
+	},
+	{
+		"name": "Country of Birth",
+		"path": ['$.place_of_birth.country'],
+		"filter": {}
+	},
+	{
+		"name": "Region of Birth",
+		"path": ['$.place_of_birth.region'],
+		"filter": {}
+	},
+	{
+		"name": "City of Birth",
+		"path": ['$.place_of_birth.locality'],
+		"filter": {}
+	},
+	{
+		"name": "Nationality",
+		"path": ['$.nationalities'],
+		"filter": {}
+	},
+	{
+		"name": "Personal ID",
+		"path": ['$.personal_administrative_number'],
+		"filter": {}
+	},
+	{
+		"name": "Sex",
+		"path": ['$.sex'],
+		"filter": {}
+	},
+	{
+		"name": "Full address",
+		"path": ['$.address.formatted'],
+		"filter": {}
+	},
+	{
+		"name": "Residence street",
+		"path": ['$.address.street_address'],
+		"filter": {}
+	},
+	{
+		"name": "Residence number",
+		"path": ['$.address.house_number'],
+		"filter": {}
+	},
+	{
+		"name": "Postal or ZIP code of residence",
+		"path": ['$.address.postal_code'],
+		"filter": {}
+	},
+	{
+		"name": "City of residence",
+		"path": ['$.address.locality'],
+		"filter": {}
+	},
+	{
+		"name": "State of residence",
+		"path": ['$.address.region'],
+		"filter": {}
+	},
+	{
+		"name": "Country of residence",
+		"path": ['$.address.country'],
+		"filter": {}
+	},
+	{
+		"name": "Age equal or over 14",
+		"path": ['$.age_equal_or_over.14'],
+		"filter": {}
+	},
+	{
+		"name": "Age equal or over 16",
+		"path": ['$.age_equal_or_over.16'],
+		"filter": {}
+	},
+	{
+		"name": "Age equal or over 18",
+		"path": ['$.age_equal_or_over.18'],
+		"filter": {}
+	},
+	{
+		"name": "Age equal or over 21",
+		"path": ['$.age_equal_or_over.21'],
+		"filter": {}
+	},
+	{
+		"name": "Age equal or over 65",
+		"path": ['$.age_equal_or_over.65'],
+		"filter": {}
+	},
+	{
+		"name": "Age",
+		"path": ['$.age_in_years'],
+		"filter": {}
+	},
+	{
+		"name": "Birth Year",
+		"path": ['$.age_birth_year'],
+		"filter": {}
+	},
+	{
+		"name": "Email",
+		"path": ['$.email'],
+		"filter": {}
+	},
+	{
+		"name": "Mobile",
+		"path": ['$.phone_number'],
+		"filter": {}
+	},
+	{
+		"name": "Issuing Authority",
+		"path": ['$.issuing_authority'],
+		"filter": {}
+	},
+	{
+		"name": "Issuing Country",
+		"path": ['$.issuing_country'],
+		"filter": {}
+	},
+	{
+		"name": "Issuing region",
+		"path": ['$.issuing_jurisdiction'],
+		"filter": {}
+	},
+	{
+		"name": "Expiry Date",
+		"path": ['$.date_of_expiry'],
+		"filter": {}
+	},
+	{
+		"name": "Issue date",
+		"path": ['$.date_of_issuance'],
+		"filter": {}
+	},
+	{
+		"name": "Document Number",
+		"path": ['$.document_number'],
+		"filter": {}
+	},
+	{
+		"name": "Picture",
+		"path": ['$.picture'],
+		"filter": {}
+	}
+]
+
+const sdJwtPidFields_1_5 = [
+	{
+		"name": "VC type",
+		"path": [
+			"$.vct"
+		],
+		"filter": {
+			"type": "string",
+			"const": "urn:eu.europa.ec.eudi:pid:1"
+		}
+	},
+	{
+		"name": "First Name",
+		"path": ['$.given_name'],
+		"filter": {}
+	},
+	{
+		"name": "Birth First Name",
+		"path": ['$.birth_given_name'],
+		"filter": {}
+	},
+	{
+		"name": "Last Name",
+		"path": ['$.family_name'],
+		"filter": {}
+	},
+	{
+		"name": "Birth Last Name",
+		"path": ['$.birth_family_name'],
+		"filter": {}
+	},
+	{
+		"name": "Sex",
+		"path": ['$.sex'],
+		"filter": {}
+	},
+	{
+		"name": "Email",
+		"path": ['$.email_address'],
+		"filter": {}
+	},
+	{
+		"name": "Mobile",
+		"path": ['$.mobile_phone_number'],
+		"filter": {}
+	},
+	{
+		"name": "Full address",
+		"path": ['$.resident_address'],
+		"filter": {}
+	},
+	{
+		"name": "Resident Street",
+		"path": ['$.resident_street_address'],
+		"filter": {}
+	},
+	{
+		"name": "Resident Number",
+		"path": ['$.resident_house_number'],
+		"filter": {}
+	},
+	{
+		"name": "Resident ZIP",
+		"path": ['$.resident_postal_code'],
+		"filter": {}
+	},
+	{
+		"name": "City of Residence",
+		"path": ['$.resident_city'],
+		"filter": {}
+	},
+	{
+		"name": "State of Residence",
+		"path": ['$.resident_state'],
+		"filter": {}
+	},
+	{
+		"name": "Country of Residence",
+		"path": ['$.resident_country'],
+		"filter": {}
+	},
+	{
+		"name": "Personal ID",
+		"path": ['$.personal_administrative_number'],
+		"filter": {}
+	},
+	{
+		"name": "Nationality",
+		"path": ['$.nationality'],
+		"filter": {}
+	},
+	{
+		"name": "Place of Birth",
+		"path": ['$.birth_place'],
+		"filter": {}
+	},
+	{
+		"name": "Date of Βirth",
+		"path": ['$.birth_date'],
+		"filter": {}
+	},
+	{
+		"name": "Age over 14",
+		"path": ['$.age_over_14'],
+		"filter": {}
+	},
+	{
+		"name": "Age over 16",
+		"path": ['$.age_over_16'],
+		"filter": {}
+	},
+	{
+		"name": "Age over 18",
+		"path": ['$.age_over_18'],
+		"filter": {}
+	},
+	{
+		"name": "Age over 21",
+		"path": ['$.age_over_21'],
+		"filter": {}
+	},
+	{
+		"name": "Age over 65",
+		"path": ['$.age_over_65'],
+		"filter": {}
+	},
+	{
+		"name": "Age",
+		"path": ['$.age_in_years'],
+		"filter": {}
+	},
+	{
+		"name": "Birth Year",
+		"path": ['$.age_birth_year'],
+		"filter": {}
+	},
+	{
+		"name": "Document Number",
+		"path": ['$.document_number'],
+		"filter": {}
+	},
+	{
+		"name": "Issuing Authority",
+		"path": ['$.issuing_authority'],
+		"filter": {}
+	},
+	{
+		"name": "Issuing Country",
+		"path": ['$.issuing_country'],
+		"filter": {}
+	},
+	{
+		"name": "Issuing Region",
+		"path": ['$.issuing_jurisdiction'],
+		"filter": {}
+	},
+	{
+		"name": "Issue Date",
+		"path": ['$.issuance_date'],
+		"filter": {}
+	},
+	{
+		"name": "Expiry Date",
+		"path": ['$.expiry_date'],
+		"filter": {}
+	},
+	{
+		"name": "Picture",
+		"path": ['$.picture'],
+		"filter": {}
+	}
+]
+
+const sdJwtPidDescriptor_1_5 = {
+	"id": "CustomVerifiableId1_5",
 	"format": { "vc+sd-jwt": { alg: ['ES256'] } },
 	"constraints": {
-		"fields": [
-			{
-				"name": "VC type",
-				"path": [
-					"$.vct"
-				],
-				"filter": {
-					"type": "string",
-					"const": "urn:eudi:pid:1"
-				}
-			},
-			{
-				"name": "Given Name",
-				"path": ['$.given_name'],
-				"filter": {}
-			},
-			{
-				"name": "Given Name at Birth",
-				"path": ['$.birth_given_name'],
-				"filter": {}
-			},
-			{
-				"name": "Family Name",
-				"path": ['$.family_name'],
-				"filter": {}
-			},
-			{
-				"name": "Family Name at Birth",
-				"path": ['$.birth_family_name'],
-				"filter": {}
-			},
-			{
-				"name": "Personal Administrative Number",
-				"path": ['$.personal_administrative_number'],
-				"filter": {}
-			},
-			{
-				"name": "Place of Birth (Country)",
-				"path": ['$.place_of_birth.country'],
-				"filter": {}
-			},
-			{
-				"name": "Place of Birth (Region)",
-				"path": ['$.place_of_birth.region'],
-				"filter": {}
-			},
-			{
-				"name": "Place of Birth (Locality)",
-				"path": ['$.place_of_birth.locality'],
-				"filter": {}
-			},
-			{
-				"name": "Address (Formatted)",
-				"path": ['$.address.formatted'],
-				"filter": {}
-			},
-			{
-				"name": "Age equal or over 16",
-				"path": ['$.age_equal_or_over.16'],
-				"filter": {}
-			},
-			{
-				"name": "Age equal or over 18",
-				"path": ['$.age_equal_or_over.18'],
-				"filter": {}
-			},
-			{
-				"name": "Age equal or over 21",
-				"path": ['$.age_equal_or_over.21'],
-				"filter": {}
-			},
-			{
-				"name": "Age equal or over 65",
-				"path": ['$.age_equal_or_over.65'],
-				"filter": {}
-			},
-			{
-				"name": "Age in Years",
-				"path": ['$.age_in_years'],
-				"filter": {}
-			},
-			{
-				"name": "Birth Date",
-				"path": ['$.birthdate'],
-				"filter": {}
-			},
-			{
-				"name": "Email address",
-				"path": ['$.email'],
-				"filter": {}
-			},
-			{
-				"name": "Phone Number",
-				"path": ['$.phone_number'],
-				"filter": {}
-			},
-			{
-				"name": "Issuing Authority",
-				"path": ['$.issuing_authority'],
-				"filter": {}
-			},
-			{
-				"name": "Issuing Country",
-				"path": ['$.issuing_country'],
-				"filter": {}
-			},
-			{
-				"name": "Issuing Jurisdiction",
-				"path": ['$.issuing_jurisdiction'],
-				"filter": {}
-			}
-		]
+		"fields": sdJwtPidFields_1_5
+	}
+}
+
+const minimalSdJwtPidFields = [
+	{
+		"name": "VC type",
+		"path": [
+			"$.vct"
+		],
+		"filter": {
+			"type": "string",
+			"const": "urn:eudi:pid:1"
+		}
+	},
+	{
+		"name": "First Name",
+		"path": ['$.given_name'],
+		"filter": {}
+	},
+	{
+		"name": "Last Name",
+		"path": ['$.family_name'],
+		"filter": {}
+	},
+	{
+		"name": "Date of birth",
+		"path": ['$.birthdate'],
+		"filter": {}
+	},
+	{
+		"name": "Nationality",
+		"path": ['$.nationalities'],
+		"filter": {}
+	},
+	{
+		"name": "Expiry Date",
+		"path": ['$.date_of_expiry'],
+		"filter": {}
+	},
+	{
+		"name": "Issuing Authority",
+		"path": ['$.issuing_authority'],
+		"filter": {}
+	},
+	{
+		"name": "Issuing Country",
+		"path": ['$.issuing_country'],
+		"filter": {}
+	}
+]
+
+
+const minimalVerifiableIdSdJwtDescriptor = {
+	"id": "minimalSdJwtPID",
+	"format": { "vc+sd-jwt": { alg: ['ES256'] } },
+	"constraints": {
+		"fields": minimalSdJwtPidFields
 	}
 }
 
@@ -282,22 +584,6 @@ const mdocPidFields = [
 	},
 ]
 
-const mdocPidDescriptor = {
-	"id": "eu.europa.ec.eudi.pid.1",
-	"name": "MdocPID",
-	"purpose": "Present your MDOC PID to the ACME verifier",
-	"format": {
-		"mso_mdoc": {
-			"sd-jwt_alg_values": ["ES256"],
-			"kb-jwt_alg_values": ["ES256"]
-		},
-	},
-	"constraints": {
-		"limit_disclosure": "required",
-		"fields": mdocPidFields
-	}
-}
-
 const bachelorDescriptor = {
 	"id": "Bachelor",
 	"format": { "vc+sd-jwt": { alg: ['ES256'] } },
@@ -344,59 +630,95 @@ const europeanHealthInsuranceCardDescriptor = {
 				],
 				"filter": {
 					"type": "string",
-					"const": "urn:credential:ehic"
+					"const": "urn:eudi:ehic:1"
 				}
 			},
 			{
-				"name": "SSN",
-				"path": ['$.ssn'],
+				"name": "Personal ID",
+				"path": ['$.personal_administrative_number'],
 				"filter": {}
 			},
 			{
-				"name": "Family Name",
-				"path": ['$.family_name'],
+				"name": "Document Number",
+				"path": ['$.document_number'],
 				"filter": {}
 			},
 			{
-				"name": "Given Name",
-				"path": ['$.given_name'],
+				"name": "Issuing Country",
+				"path": ['$.issuing_country'],
 				"filter": {}
 			},
 			{
-				"name": "Birth Date",
-				"path": ['$.birth_date'],
+				"name": "Issuing Authority ID",
+				"path": ['$.issuing_authority.id'],
 				"filter": {}
 			},
+			{
+				"name": "Issuing Authority Name",
+				"path": ['$.issuing_authority.name'],
+				"filter": {}
+			},
+			{
+				"name": "Expiry Date",
+				"path": ['$.date_of_expiry'],
+				"filter": {}
+			},
+			{
+				"name": "Issue Date",
+				"path": ['$.date_of_issuance'],
+				"filter": {}
+			}
 		]
 	}
 }
 
-
-const customPIDSdJwtPresentationDefinition = {
-	"id": "CustomSdJwtPID",
-	"title": "Custom SD-JWT PID",
-	"description": "Selectable Fields: Given Name, Given Name at Birth, Family Name, Family Name at Birth, Place of Birth (Country), Place of Birth (Region), Place of Birth (Locality), Address (Formatted), Age equal or over 16, Age equal or over 18, Age equal or over 65, Birthdate, Age in Years, Birth Date, Issuing Authority, Issuing Country",
-	"_selectable": true,
+const powerOfRepresentationDescriptor = {
+	"id": "POR",
 	"format": { "vc+sd-jwt": { alg: ['ES256'] } },
-	"input_descriptors": [
-		verifiableIdDescriptor
-	]
-}
-
-const customPIDMdocPresentationDefinition = {
-	"id": "CustomMdocPID",
-	"title": "Custom mDoc PID",
-	"description": "Selectable Fields: Family Name, Family Name at Birth, Given Name, Given Name at Birth, Birthdate, Age over 18, Age over 21, Age in years, Birth Place, Resident Address, Resident Country, Resident State, Resident City, Resident Postal Code, Resident Street, Resident House Number, Email Address, Mobile Phone number, Issuing Authority, Issuing Country",
-	"_selectable": true,
-	"format": {
-		"mso_mdoc": {
-			"sd-jwt_alg_values": ["ES256"],
-			"kb-jwt_alg_values": ["ES256"]
-		},
-	},
-	"input_descriptors": [
-		mdocPidDescriptor
-	]
+	"constraints": {
+		"fields": [
+			{
+				"name": "VC type",
+				"path": [
+					"$.vct"
+				],
+				"filter": {
+					"type": "string",
+					"const": "urn:eu.europa.ec.eudi:por:1"
+				}
+			},
+			{
+				"name": "Legal Entity ID",
+				"path": ['$.legal_person_identifier'],
+				"filter": {}
+			},
+			{
+				"name": "Legal Entity Name",
+				"path": ['$.legal_name'],
+				"filter": {}
+			},
+			{
+				"name": "Full Representation Powers",
+				"path": ['$.full_powers'],
+				"filter": {}
+			},
+			{
+				"name": "Designated eService",
+				"path": ['$.eService'],
+				"filter": {}
+			},
+			{
+				"name": "Effective From",
+				"path": ['$.effective_from_date'],
+				"filter": {}
+			},
+			{
+				"name": "Effective Until",
+				"path": ['$.effective_until_date'],
+				"filter": {}
+			}
+		]
+	}
 }
 
 @injectable()
@@ -405,54 +727,96 @@ export class VerifierConfigurationService implements VerifierConfigurationInterf
 
 	getPresentationDefinitions(): any[] {
 		return [
-			customPIDSdJwtPresentationDefinition,
-			customPIDMdocPresentationDefinition,
 			{
-				"id": "sdJwtPID",
-				"title": "PID - SD-JWT",
-				"description": "Required Fields: VC type, Given Name, Given Name at Birth, Family Name, Family Name at Birth, Place of Birth (Country), Place of Birth (Region), Place of Birth (Locality), Address (Formatted), Age equal or over 16, Age equal or over 18, Age equal or over 65, Age in Years, Birth Date, Issuing Authority, Issuing Country",
-				"format": { "vc+sd-jwt": { alg: ['ES256'] } },
+				"id": "CustomVerifiableId",
+				"title": "PID ARF v1.8",
+				"description": "Select the format and the fields you want to request.",
+				_selectable: true,
 				"input_descriptors": [
-					verifiableIdDescriptor
+					{
+						"id": undefined,
+						"name": "Custom PID",
+						"purpose": "Present your custom PID",
+						"format": undefined,
+						"constraints": {
+							"limit_disclosure": "required",
+							"fields": [
+								...sdJwtPidFields,
+								...mdocPidFields
+							]
+						}
+					}
 				]
 			},
 			{
-				"id": "mDocPID",
-				"title": "PID - MSO MDOC",
-				"description": "Required Fields: Family Name, Family Name at Birth, Given Name, Given Name at Birth, Birthdate, Age over 18, Age over 21, Age in years, Birth Place, Resident Address, Resident Country, Resident State, Resident City, Resident Postal Code, Resident Street, Resident House Number, Email Address, Mobile Phone number, Issuing Authority, Issuing Country",
-				"format": { "mso_mdoc": { alg: ['ES256'] } },
+				"id": "CustomVerifiableIdARF1_5",
+				"title": "PID ARF v1.5",
+				"description": "Select the fields you want to request.",
+				"format": { "vc+sd-jwt": { alg: ['ES256'] } },
+				_selectable: true,
 				"input_descriptors": [
-					mdocPidDescriptor
+					sdJwtPidDescriptor_1_5
 				]
 			},
 			{
 				"id": "Bachelor",
 				"title": "Bachelor Diploma",
-				"description": "Required Fields: VC type, Grade, EQF Level & Diploma Title",
+				"description": "Available Fields: Grade, EQF Level & Diploma Title",
 				"format": { "vc+sd-jwt": { alg: ['ES256'] } },
+				_selectable: true,
 				"input_descriptors": [
 					bachelorDescriptor
 				]
 			},
 			{
 				"id": "EuropeanHealthInsuranceCard",
-				"title": "European HealthInsurance Card",
-				"description": "Required Fields: VC type, SSN, Family Name, Given Name & Birth Date",
+				"title": "European Health Insurance Card",
+				"description": "Available Fields: SSN, Issuing Authority (Country, ID, Name), Document Number, Expiry Date",
 				"format": { "vc+sd-jwt": { alg: ['ES256'] } },
+				_selectable: true,
 				"input_descriptors": [
 					europeanHealthInsuranceCardDescriptor
 				]
 			},
 			{
-				"id": "PIDAndEuropeanHealthInsuranceCard",
-				"title": "PID (SD-JWT) + EHIC",
-				"description": "",
+				"id": "MinimalPIDAndEuropeanHealthInsuranceCard",
+				"title": "PID (ARF v1.8) + EHIC",
+				"description": "PID fields: Given Name, Family Name, Birth Date, Nationality, Exp. Date, Issuing Authority, Issuing Country. EHIC Fields: SSN, Issuing Authority (Country, ID, Name), Document Number, Expiry Date",
 				"format": { "vc+sd-jwt": { alg: ['ES256'] } },
 				"input_descriptors": [
-					verifiableIdDescriptor,
+					minimalVerifiableIdSdJwtDescriptor,
 					europeanHealthInsuranceCardDescriptor
 				]
-			}
+			},
+			{
+				"id": "MinimalPIDAndPowerOfRepresentation",
+				"title": "PID (ARF v1.8) + POR",
+				"description": "PID fields: Given Name, Family Name, Birth Date, Nationality, Exp. Date, Issuing Authority, Issuing Country. POR Fields: Available Fields: Legal Entity Identifier, Legal Entity Name, Full Representation Powers, Designated eService, Effective From, Effective Until",
+				"format": { "vc+sd-jwt": { alg: ['ES256'] } },
+				"input_descriptors": [
+					minimalVerifiableIdSdJwtDescriptor,
+					powerOfRepresentationDescriptor
+				]
+			},
+			{
+				"id": "MinimalPIDAndBachelorDiploma",
+				"title": "PID (ARF v1.8) + Diploma",
+				"description": "PID fields: Given Name, Family Name, Birth Date, Nationality, Exp. Date, Issuing Authority, Issuing Country. Diploma Fields: Grade, EQF Level, Diploma Title",
+				"format": { "vc+sd-jwt": { alg: ['ES256'] } },
+				"input_descriptors": [
+					minimalVerifiableIdSdJwtDescriptor,
+					bachelorDescriptor
+				]
+			},
+			// { // example with Transaction Data
+			// 	"id": "MinimalPIDwithTransactionData",
+			// 	"title": "MinimalPID with Example Transaction Data",
+			// 	"description": "PID fields: Given Name, Family Name, Birth Date, Nationality, Exp. Date, Issuing Authority, Issuing Country. Transaction Data Type: 'urn:wwwallet:example_transaction_data_type'",
+			// 	"format": { "vc+sd-jwt": { alg: ['ES256'] } },
+			// 	"input_descriptors": [
+			// 		{ ...minimalVerifiableIdSdJwtDescriptor, _transaction_data_type: "urn:wwwallet:example_transaction_data_type" },
+			// 	]
+			// }
 		]
 	}
 

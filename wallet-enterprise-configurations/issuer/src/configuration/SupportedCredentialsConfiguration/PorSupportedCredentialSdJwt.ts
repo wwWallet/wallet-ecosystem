@@ -32,10 +32,10 @@ export class PorSupportedCredentialSdJwt implements VCDMSupportedCredentialProto
 		return new AuthenticationChainBuilder()
 			.addAuthenticationComponent(new GenericAuthenticationMethodSelectionComponent(this.getScope() + "-auth-method", CONSENT_ENTRYPOINT, [{ code: UserAuthenticationMethod.VID_AUTH, description: "Authentication with PID" }]))
 			.addAuthenticationComponent(new GenericVIDAuthenticationComponent(this.getScope() + "-vid-authentication", CONSENT_ENTRYPOINT, {
-				"family_name": { input_descriptor_constraint_field_name: "Family Name" },
-				"given_name": { input_descriptor_constraint_field_name: "Given Name" },
-				"birth_date": { input_descriptor_constraint_field_name: "Birth Date", parser: (value: string) => new Date(value).toISOString() },
-			}, "PidMinimal", "PID", this.getScope()))
+				"family_name": { input_descriptor_constraint_field_name: "Last Name" },
+				"given_name": { input_descriptor_constraint_field_name: "First Name" },
+				"birth_date": { input_descriptor_constraint_field_name: "Date of Birth", parser: (value: string) => new Date(value).toISOString() },
+			}, "PidMinimal", "PID", this.getDisplay().name))
 			.build();
 	}
 
@@ -59,8 +59,8 @@ export class PorSupportedCredentialSdJwt implements VCDMSupportedCredentialProto
 
 	getDisplay() {
 		return {
-			name: "POR - SD-JWT VC",
-			description: "Power of Representation",
+			name: "Power of Representation - SD-JWT VC",
+			description: "Power of Representation - SD-JWT VC",
 			background_image: { uri: config.url + "/images/background-image.png" },
 			background_color: "#c3b25d",
 			text_color: "#363531",
@@ -90,17 +90,15 @@ export class PorSupportedCredentialSdJwt implements VCDMSupportedCredentialProto
 		console.log("Por entry = ", porEntry)
 		porEntry = {
 			...porEntry,
-			"effective_from_date": new Date(porEntry.effective_from_date).toISOString(),
-			"effective_until_date": porEntry.effective_until_date && new Date(porEntry.effective_until_date).toISOString(),
+			"effective_from_date": undefined,
+			"effective_until_date": undefined,
 		};
 
 		const credentialView: CredentialView = await (async () => {
 			const rows: CategorizedRawCredentialViewRow[] = [
-				{ name: "Legal Name", value: porEntry.legal_name },
-				{ name: "Legal Person Identifier", value: porEntry.legal_person_identifier },
-				{ name: "Full Powers", value: porEntry.full_powers },
-				{ name: "Effective From", value: porEntry.effective_from_date },
-				{ name: "Effective Until", value: porEntry.effective_until_date },
+				{ name: "Legal Entity Name", value: porEntry.legal_name },
+				{ name: "Legal Entity ID", value: porEntry.legal_person_identifier },
+				{ name: "Full Represent. Powers", value: porEntry.full_powers }
 			];
 			const rowsObject: CategorizedRawCredentialView = { rows };
 
@@ -162,9 +160,11 @@ export class PorSupportedCredentialSdJwt implements VCDMSupportedCredentialProto
 			"legal_name": String(porEntry.legal_name),
 			"full_powers": String(porEntry.full_powers),
 
-			"effective_from_date": new Date(porEntry.effective_from_date).toISOString(),
-			"effective_until_date": porEntry.effective_until_date && new Date(porEntry.effective_until_date).toISOString(),
+			"effective_from_date": new Date(porEntry.effective_from).toISOString(),
+			"effective_until_date": porEntry.effective_until && new Date(porEntry.effective_until).toISOString(),
 			"eService": porEntry.eService == "" ? null : porEntry.eService,
+			"issuing_authority": porEntry.issuing_authority,
+			"issuing_country": porEntry.issuing_country
 		};
 
 
@@ -175,6 +175,8 @@ export class PorSupportedCredentialSdJwt implements VCDMSupportedCredentialProto
 			effective_until_date: true,
 			effective_from_date: true,
 			eService: true,
+			issuing_authority: true,
+			issuing_country: true
 		};
 
 		const { credential } = await this.getCredentialSigner()
@@ -191,7 +193,7 @@ export class PorSupportedCredentialSdJwt implements VCDMSupportedCredentialProto
 		return {
 			"vct": this.getId(),
 			"name": "Power of Representation",
-			"description": "Power of Representation VC in sd_jwt format",
+			"description": "Power of Representation (POR) SD-JWT VC",
 			"display": [
 				{
 					"lang": "en-US",
@@ -220,8 +222,8 @@ export class PorSupportedCredentialSdJwt implements VCDMSupportedCredentialProto
 					"display": [
 						{
 							"lang": "en-US",
-							"label": "Legal Name",
-							"description": "The Legal name of the Power of Representation credential"
+							"label": "Legal Entity Name",
+							"description": "Name of the legal entity being represented."
 						}
 					],
 					"svg_id": "legal_name"
@@ -231,8 +233,8 @@ export class PorSupportedCredentialSdJwt implements VCDMSupportedCredentialProto
 					"display": [
 						{
 							"lang": "en-US",
-							"label": "legal_person_identifier",
-							"description": "The Legal legal person identifier of the Power of Representation credential"
+							"label": "Legal Entity ID",
+							"description": "Unique identifier of the legal entity being represented."
 						}
 					],
 					"svg_id": "legal_person_identifier"
@@ -242,8 +244,8 @@ export class PorSupportedCredentialSdJwt implements VCDMSupportedCredentialProto
 					"display": [
 						{
 							"lang": "en-US",
-							"label": "full Powers",
-							"description": "The full Powers of the Power of Representation credential"
+							"label": "Full Representation Powers",
+							"description": "Indicates whether the representative is fully authorized to act on behalf of the legal entity."
 						}
 					],
 					"svg_id": "full_powers"
@@ -253,8 +255,8 @@ export class PorSupportedCredentialSdJwt implements VCDMSupportedCredentialProto
 					"display": [
 						{
 							"lang": "en-US",
-							"label": "Effective from date",
-							"description": "The effective from date"
+							"label": "Effective From",
+							"description": "Start date of valid representation (inclusive)."
 						}
 					],
 					"svg_id": "effective_from_date"
@@ -264,8 +266,8 @@ export class PorSupportedCredentialSdJwt implements VCDMSupportedCredentialProto
 					"display": [
 						{
 							"lang": "en-US",
-							"label": "Effective until date",
-							"description": "The effective until date"
+							"label": "Effective Until",
+							"description": "End date of valid representation (inclusive)."
 						}
 					],
 					"svg_id": "effective_until_date"

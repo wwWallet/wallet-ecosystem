@@ -8,19 +8,19 @@
 
 	<text x="50" y="70" font-family="Arial, Helvetica, sans-serif" font-size="30" fill="#2f2f2f" font-weight="bold">Power of Represention</text>
 
-	<text x="50" y="130" font-family="Arial, Helvetica, sans-serif" font-size="22" fill="#2f2f2f" font-weight="normal">Name</text>
+	<text x="50" y="130" font-family="Arial, Helvetica, sans-serif" font-size="22" fill="#2f2f2f" font-weight="normal">Legal Entity Name</text>
 	<text x="50" y="160" font-family="Arial, Helvetica, sans-serif" font-size="27" fill="#2f2f2f" font-weight="normal">{{legal_name}}</text>
 
-	<text x="50" y="210" font-family="Arial, Helvetica, sans-serif" font-size="22" fill="#2f2f2f" font-weight="light">Person Identifier</text>
+	<text x="50" y="210" font-family="Arial, Helvetica, sans-serif" font-size="22" fill="#2f2f2f" font-weight="light">Legal entity ID</text>
 	<text x="50" y="240" font-family="Arial, Helvetica, sans-serif" font-size="27" fill="#2f2f2f" font-weight="normal">{{legal_person_identifier}}</text>
 
-	<text x="50" y="290" font-family="Arial, Helvetica, sans-serif" font-size="22" fill="#2f2f2f" font-weight="light">Full Powers</text>
+	<text x="50" y="290" font-family="Arial, Helvetica, sans-serif" font-size="22" fill="#2f2f2f" font-weight="light">Full Representation Powers</text>
 	<text x="50" y="320" font-family="Arial, Helvetica, sans-serif" font-size="27" fill="#2f2f2f" font-weight="normal">{{full_powers}}</text>
 
-	<text x="50" y="370" font-family="Arial, Helvetica, sans-serif" font-size="22" fill="#2f2f2f" font-weight="light">Effective from Date</text>
+	<text x="50" y="370" font-family="Arial, Helvetica, sans-serif" font-size="22" fill="#2f2f2f" font-weight="light">Effective from</text>
 	<text x="50" y="400" font-family="Arial, Helvetica, sans-serif" font-size="27" fill="#2f2f2f" font-weight="normal">{{effective_from_date}}</text>
 
-	<text x="400" y="370" font-family="Arial, Helvetica, sans-serif" font-size="22" fill="#2f2f2f" font-weight="light">Effective until Date</text>
+	<text x="400" y="370" font-family="Arial, Helvetica, sans-serif" font-size="22" fill="#2f2f2f" font-weight="light">Effective until</text>
 	<text x="400" y="400" font-family="Arial, Helvetica, sans-serif" font-size="27" fill="#2f2f2f" font-weight="normal">{{effective_until_date}}</text>
 
 

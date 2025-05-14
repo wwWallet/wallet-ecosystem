@@ -121,7 +121,7 @@ export class EdiplomasBlueprintSdJwtVCDM implements VCDMSupportedCredentialProto
 			credentialImageSvgTemplate: svgText,
 			sdJwtVcMetadataClaims: this.metadata().claims,
 		});
-		console.log("Data uri = ", dataUri);
+
 		if (!dataUri) {
 			throw new Error("Could not render svg");
 		}

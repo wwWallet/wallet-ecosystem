@@ -2,7 +2,6 @@ import { config } from "../../../config";
 import { CategorizedRawCredentialView, CategorizedRawCredentialViewRow } from "../../openid4vci/Metadata";
 import { VerifiableCredentialFormat } from "wallet-common/dist/types";
 import { VCDMSupportedCredentialProtocol } from "../../lib/CredentialIssuerConfig/SupportedCredentialProtocol";
-import { formatDateDDMMYYYY } from "../../lib/formatDate";
 import { AuthorizationServerState } from "../../entities/AuthorizationServerState.entity";
 import { CredentialView } from "../../authorization/types";
 import { randomUUID } from "node:crypto";
@@ -34,9 +33,9 @@ export class EHICSupportedCredentialSdJwtVCDM implements VCDMSupportedCredential
 		return new AuthenticationChainBuilder()
 			.addAuthenticationComponent(new GenericAuthenticationMethodSelectionComponent(this.getScope() + "-auth-method", CONSENT_ENTRYPOINT, [{ code: UserAuthenticationMethod.VID_AUTH, description: "Authentication with PID" }, { code: UserAuthenticationMethod.SSO, description: "Authentication with National Services" }]))
 			.addAuthenticationComponent(new GenericVIDAuthenticationComponent(this.getScope() + "-vid-authentication", CONSENT_ENTRYPOINT, {
-				"family_name": { input_descriptor_constraint_field_name: "Family Name" },
-				"given_name": { input_descriptor_constraint_field_name: "Given Name" },
-				"birth_date": { input_descriptor_constraint_field_name: "Birth Date", parser: (value: string) => new Date(value).toISOString() },
+				"family_name": { input_descriptor_constraint_field_name: "Last Name" },
+				"given_name": { input_descriptor_constraint_field_name: "First Name" },
+				"birth_date": { input_descriptor_constraint_field_name: "Date of Birth", parser: (value: string) => new Date(value).toISOString() },
 			}, "PidMinimal", "PID", this.getDisplay().name))
 			.addAuthenticationComponent(new GenericLocalAuthenticationComponent(this.getScope() + "-1-local", CONSENT_ENTRYPOINT, {
 				"family_name": { datasetColumnName: "family_name" },
@@ -58,7 +57,7 @@ export class EHICSupportedCredentialSdJwtVCDM implements VCDMSupportedCredential
 	}
 
 	getId(): string {
-		return "urn:credential:ehic"
+		return "urn:eudi:ehic:1"
 	}
 	getFormat(): VerifiableCredentialFormat {
 		return VerifiableCredentialFormat.VC_SDJWT;
@@ -102,22 +101,28 @@ export class EHICSupportedCredentialSdJwtVCDM implements VCDMSupportedCredential
 			const credentialViews: CredentialView[] = await Promise.all(ehics
 				.map(async (ehic) => {
 					const rows: CategorizedRawCredentialViewRow[] = [
-						{ name: "Family Name", value: ehic.family_name },
-						{ name: "Given Name", value: ehic.given_name },
-						{ name: "SSN", value: String(ehic.ssn) },
-						{ name: "Birth Date", value: formatDateDDMMYYYY(ehic.birth_date) },
-						{ name: "Issuer Country", value: ehic.issuer_country },
-						{ name: "Issuer Instutution Code", value: ehic.issuer_institution_code },
+						{ name: "Personal ID", value: String(ehic.personal_administrative_number) },
+						{ name: "Document Number", value: String(ehic.document_number) },
+						{ name: "Issuing Country", value: ehic.issuer_country },
+						{ name: "Issuing Authority ID", value: ehic.issuing_authority_id },
+						{ name: "Issuing Authority Name", value: ehic.issuing_authority_name },
 
 					];
 					const rowsObject: CategorizedRawCredentialView = { rows };
 					const { credentialRendering } = await initializeCredentialEngine();
 					const dataUri = await credentialRendering.renderSvgTemplate({
-						json: { ...ehic },
+						json: {
+							...ehic,
+							date_of_expiry: undefined,
+							issuing_authority: {
+								id: String(ehic.issuing_authority_id),
+								name: String(ehic.issuing_authority_name)
+							},
+						 },
 						credentialImageSvgTemplate: svgText,
 						sdJwtVcMetadataClaims: this.metadata().claims,
 					});
-					console.log("Data uri = ", dataUri);
+
 					if (!dataUri) {
 						throw new Error("Could not render svg");
 					}
@@ -167,13 +172,16 @@ export class EHICSupportedCredentialSdJwtVCDM implements VCDMSupportedCredential
 
 
 		const ehic = {
-			family_name: ehicEntry.family_name,
-			given_name: ehicEntry.given_name,
-			ssn: String(ehicEntry.ssn),
+			personal_administrative_number: String(ehicEntry.personal_administrative_number),
 			birth_date: new Date(ehicEntry.birth_date).toISOString(),
-			issuer_institution_code: String(ehicEntry.issuer_institution_code),
-			issuer_country: String(ehicEntry.issuer_country),
-			expiry_date: new Date(ehicEntry.expiry_date).toISOString(),
+			date_of_issuance: new Date().toISOString().split('T')[0],  // full-date format, according to ARF PID Rulebook
+			issuing_country: String(ehicEntry.issuer_country),
+			issuing_authority: {
+				id: String(ehicEntry.issuing_authority_id),
+				name: String(ehicEntry.issuing_authority_name)
+			},
+			date_of_expiry: new Date(ehicEntry.date_of_expiry).toISOString(),
+			document_number: String(ehicEntry.document_number)
 		};
 
 		const payload = {
@@ -181,18 +189,20 @@ export class EHICSupportedCredentialSdJwtVCDM implements VCDMSupportedCredential
 				"jwk": holderPublicKeyJwk
 			},
 			"vct": this.getId(),
-			"jti": `urn:ehic:${randomUUID()}`,
-			...ehic,
-			ssn: String(ehic.ssn),
+			"jti": `urn:eudi:ehic:1:${randomUUID()}`,
+			...ehic
 		};
 
 		const disclosureFrame = {
-			family_name: true,
-			given_name: true,
-			birth_date: true,
-			ssn: true,
-			issuer_institution_code: true,
-			issuer_country: true,
+			personal_administrative_number: true,
+			issuing_country: true,
+			issuing_authority: {
+				id: true,
+				name: true
+			},
+			document_number: true,
+			date_of_issuance: true,
+			date_of_expiry: true
 		}
 		const { credential } = await this.getCredentialSigner()
 			.signSdJwtVc(payload, { typ: VerifiableCredentialFormat.VC_SDJWT, vctm: [base64url.encode(JSON.stringify(this.metadata()))] }, disclosureFrame);
@@ -228,51 +238,18 @@ export class EHICSupportedCredentialSdJwtVCDM implements VCDMSupportedCredential
 			],
 			"claims": [
 				{
-					"path": ["given_name"],
+					"path": ["personal_administrative_number"],
 					"display": [
 						{
 							"lang": "en-US",
-							"label": "Given Name",
-							"description": "The given name of the EHIC holder"
+							"label": "Personal ID",
+							"description": "Unique personal identifier used by social security services."
 						}
 					],
-					"svg_id": "given_name"
+					"svg_id": "personal_administrative_number"
 				},
 				{
-					"path": ["family_name"],
-					"display": [
-						{
-							"lang": "en-US",
-							"label": "Family Name",
-							"description": "The family name of the EHIC holder"
-						}
-					],
-					"svg_id": "family_name"
-				},
-				{
-					"path": ["birth_date"],
-					"display": [
-						{
-							"lang": "en-US",
-							"label": "Birth Date",
-							"description": "The birth date of the EHIC holder"
-						}
-					],
-					"svg_id": "birth_date"
-				},
-				{
-					"path": ["ssn"],
-					"display": [
-						{
-							"lang": "en-US",
-							"label": "Social Security Number",
-							"description": "The social security number of the EHIC holder"
-						}
-					],
-					"svg_id": "ssn"
-				},
-				{
-					"path": ["issuer_country"],
+					"path": ["issuing_country"],
 					"display": [
 						{
 							"lang": "en-US",
@@ -283,26 +260,50 @@ export class EHICSupportedCredentialSdJwtVCDM implements VCDMSupportedCredential
 					"svg_id": "issuer_country"
 				},
 				{
-					"path": ["issuer_institution_code"],
+					"path": ["issuing_authority", "id"],
 					"display": [
 						{
 							"lang": "en-US",
-							"label": "Issuer Institution Code",
-							"description": "The issuer institution code of the EHIC holder"
+							"label": "Issuing authority id",
+							"description": "EHIC issuing authority unique identifier in EESSI."
 						}
 					],
-					"svg_id": "issuer_institution_code"
+					"svg_id": "issuing_authority_id"
 				},
 				{
-					"path": ["expiry_date"],
+					"path": ["issuing_authority", "name"],
 					"display": [
 						{
 							"lang": "en-US",
-							"label": "Expiry Date",
-							"description": "The date and time expired this credential"
+							"label": "Issuing authority name",
+							"description": "EHIC issuing authority name in EESSI."
 						}
 					],
-					"svg_id": "expiry_date"
+					"svg_id": "issuing_authority_name"
+				},
+				{
+					"path": [
+						"document_number"
+					],
+					"svg_id": "document_number",
+					"display": [
+						{
+							"lang": "en-US",
+							"label": "Document number",
+							"description": "EHIC unique document identifier."
+						}
+					]
+				},
+				{
+					"path": ["date_of_expiry"],
+					"display": [
+						{
+							"lang": "en-US",
+							"label": "Expiry date",
+							"description": "EHIC expiration date."
+						}
+					],
+					"svg_id": "date_of_expiry"
 				}
 			],
 		}

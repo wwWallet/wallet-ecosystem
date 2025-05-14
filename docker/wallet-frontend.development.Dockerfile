@@ -2,6 +2,8 @@ FROM node:22-bullseye-slim AS dependencies
 
 WORKDIR /dependencies
 
+RUN apt-get update && apt-get install -y git
+
 # Install dependencies first so rebuild of these layers is only needed when dependencies change
 COPY lib/ ./lib/
 
@@ -11,7 +13,7 @@ RUN yarn install && yarn cache clean -f && yarn build
 WORKDIR /dependencies
 COPY ./wallet-frontend/package.json ./wallet-frontend/yarn.lock .
 RUN  yarn install && yarn cache clean -f
-
+RUN yarn add https://github.com/wwwallet/mdl.git#deploy
 
 FROM node:22-bullseye-slim AS development
 

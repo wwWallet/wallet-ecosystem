@@ -1,0 +1,4 @@
+.gitmodules
+lib/wallet-common/.git
+.git
+**/.git
