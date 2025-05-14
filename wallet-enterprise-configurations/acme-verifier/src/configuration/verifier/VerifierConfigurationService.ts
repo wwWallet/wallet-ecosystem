@@ -807,7 +807,16 @@ export class VerifierConfigurationService implements VerifierConfigurationInterf
 					minimalVerifiableIdSdJwtDescriptor,
 					bachelorDescriptor
 				]
-			}
+			},
+			// { // example with Transaction Data
+			// 	"id": "MinimalPIDwithTransactionData",
+			// 	"title": "MinimalPID with Example Transaction Data",
+			// 	"description": "PID fields: Given Name, Family Name, Birth Date, Nationality, Exp. Date, Issuing Authority, Issuing Country. Transaction Data Type: 'urn:wwwallet:example_transaction_data_type'",
+			// 	"format": { "vc+sd-jwt": { alg: ['ES256'] } },
+			// 	"input_descriptors": [
+			// 		{ ...minimalVerifiableIdSdJwtDescriptor, _transaction_data_type: "urn:wwwallet:example_transaction_data_type" },
+			// 	]
+			// }
 		]
 	}
 
