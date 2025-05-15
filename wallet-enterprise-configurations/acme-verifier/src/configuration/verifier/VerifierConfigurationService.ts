@@ -128,11 +128,6 @@ const sdJwtPidFields = [
 		"filter": {}
 	},
 	{
-		"name": "Age equal or over 65",
-		"path": ['$.age_equal_or_over.65'],
-		"filter": {}
-	},
-	{
 		"name": "Age",
 		"path": ['$.age_in_years'],
 		"filter": {}
@@ -308,11 +303,6 @@ const sdJwtPidFields_1_5 = [
 	{
 		"name": "Age over 21",
 		"path": ['$.age_over_21'],
-		"filter": {}
-	},
-	{
-		"name": "Age over 65",
-		"path": ['$.age_over_65'],
 		"filter": {}
 	},
 	{
