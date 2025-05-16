@@ -381,6 +381,7 @@ export class PIDSupportedCredentialSdJwtVCDM implements VCDMSupportedCredentialP
 					proof_signing_alg_values_supported: ["ES256"]
 				},
 				attestation: {
+					proof_signing_alg_values_supported: ["ES256"],
 					key_attestations_required: { },
 				}
 			},
