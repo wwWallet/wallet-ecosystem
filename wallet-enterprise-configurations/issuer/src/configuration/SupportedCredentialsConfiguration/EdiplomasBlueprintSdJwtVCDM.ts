@@ -168,8 +168,8 @@ export class EdiplomasBlueprintSdJwtVCDM implements VCDMSupportedCredentialProto
 			"title": diplomaEntry.title,
 			"grade": String(diplomaEntry.grade),
 			"eqf_level": String(diplomaEntry.eqf_level),
-			"graduation_date": new Date(diplomaEntry.graduation_date).toISOString(),
-			"expiry_date": new Date(diplomaEntry.expiry_date).toISOString(),
+			"graduation_date": new Date(diplomaEntry.graduation_date).toISOString().split('T')[0],
+			"expiry_date": new Date(diplomaEntry.expiry_date).toISOString().split('T')[0],
 		};
 
 		const disclosureFrame = {
