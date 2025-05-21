@@ -202,7 +202,7 @@ const sdJwtPidFields_1_5 = [
 	},
 	{
 		"name": "Birth First Name",
-		"path": ['$.birth_given_name'],
+		"path": ['$.given_name_birth'],
 		"filter": {}
 	},
 	{
@@ -212,7 +212,7 @@ const sdJwtPidFields_1_5 = [
 	},
 	{
 		"name": "Birth Last Name",
-		"path": ['$.birth_family_name'],
+		"path": ['$.family_name_birth'],
 		"filter": {}
 	},
 	{
@@ -346,8 +346,8 @@ const sdJwtPidFields_1_5 = [
 		"filter": {}
 	},
 	{
-		"name": "Picture",
-		"path": ['$.picture'],
+		"name": "Portrait",
+		"path": ['$.portrait'],
 		"filter": {}
 	}
 ]
