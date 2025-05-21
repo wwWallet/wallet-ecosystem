@@ -117,7 +117,10 @@ export class EdiplomasBlueprintSdJwtVCDM implements VCDMSupportedCredentialProto
 
 		const { credentialRendering } = await initializeCredentialEngine();
 		const dataUri = await credentialRendering.renderSvgTemplate({
-			json: { ...diplomaEntry },
+			json: {
+				...diplomaEntry,
+				expiry_date: undefined,
+			},
 			credentialImageSvgTemplate: svgText,
 			sdJwtVcMetadataClaims: this.metadata().claims,
 		});
