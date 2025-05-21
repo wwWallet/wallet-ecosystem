@@ -173,7 +173,6 @@ export class EHICSupportedCredentialSdJwtVCDM implements VCDMSupportedCredential
 
 		const ehic = {
 			personal_administrative_number: String(ehicEntry.personal_administrative_number),
-			birth_date: new Date(ehicEntry.birth_date).toISOString(),
 			date_of_issuance: new Date().toISOString().split('T')[0],  // full-date format, according to ARF PID Rulebook
 			issuing_country: String(ehicEntry.issuer_country),
 			issuing_authority: {
