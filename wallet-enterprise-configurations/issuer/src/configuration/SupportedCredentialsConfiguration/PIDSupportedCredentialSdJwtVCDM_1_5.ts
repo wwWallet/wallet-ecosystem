@@ -167,8 +167,8 @@ export class PIDSupportedCredentialSdJwtVCDM_1_5 implements VCDMSupportedCredent
 		const vid = {
 			family_name: vidEntry.family_name,
 			given_name: vidEntry.given_name,
-			birth_family_name: vidEntry.family_name_birth,
-			birth_given_name: vidEntry.given_name_birth,
+			family_name_birth: vidEntry.family_name_birth,
+			given_name_birth: vidEntry.given_name_birth,
 			sex: vidEntry.sex,
 			email_address: vidEntry.email_address,
 			mobile_phone_number: vidEntry.mobile_phone_number,
@@ -196,7 +196,7 @@ export class PIDSupportedCredentialSdJwtVCDM_1_5 implements VCDMSupportedCredent
 			expiry_date: new Date(vidEntry.expiry_date).toISOString().split('T')[0],  // full-date format, according to ARF PID Rulebook
 			birth_place: vidEntry.birth_place,
 			nationality: vidEntry.nationality.split(','),
-			picture: vidEntry.sex == '1' ? await urlToDataUrl(config.url + "/images/male_portrait.jpg") : await urlToDataUrl(config.url + "/images/female_portrait.jpg"),
+			portrait: vidEntry.sex == '1' ? await urlToDataUrl(config.url + "/images/male_portrait.jpg") : await urlToDataUrl(config.url + "/images/female_portrait.jpg"),
 		};
 
 		const payload = {
@@ -211,8 +211,8 @@ export class PIDSupportedCredentialSdJwtVCDM_1_5 implements VCDMSupportedCredent
 		const disclosureFrame = {
 			family_name: true,
 			given_name: true,
-			birth_family_name: true,
-			birth_given_name: true,
+			family_name_birth: true,
+			given_name_birth: true,
 			sex: true,
 			email_address: true,
 			mobile_phone_number: true,
@@ -240,7 +240,7 @@ export class PIDSupportedCredentialSdJwtVCDM_1_5 implements VCDMSupportedCredent
 			expiry_date: true,
 			birth_place: true,
 			nationality: true,
-			picture: true
+			portrait: true
 		}
 		const { credential } = await this.getCredentialSigner()
 			.signSdJwtVc(payload, { typ: VerifiableCredentialFormat.VC_SDJWT, vctm: [base64url.encode(JSON.stringify(this.metadata()))] }, disclosureFrame);
@@ -347,7 +347,7 @@ export class PIDSupportedCredentialSdJwtVCDM_1_5 implements VCDMSupportedCredent
 					"svg_id": "expiry_date"
 				},
 				{
-					"path": ["picture"],
+					"path": ["portrait"],
 					"svg_id": "picture"
 				},
 			],
