@@ -180,7 +180,7 @@ export class EHICSupportedCredentialSdJwtVCDM implements VCDMSupportedCredential
 				id: String(ehicEntry.issuing_authority_id),
 				name: String(ehicEntry.issuing_authority_name)
 			},
-			date_of_expiry: new Date(ehicEntry.date_of_expiry).toISOString(),
+			date_of_expiry: new Date(ehicEntry.date_of_expiry).toISOString().split('T')[0],
 			document_number: String(ehicEntry.document_number)
 		};
 
