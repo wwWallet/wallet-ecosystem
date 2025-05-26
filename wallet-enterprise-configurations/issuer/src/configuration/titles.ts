@@ -1,7 +1,8 @@
 // titles.ts
+import { config } from "../../config";
 
 const titles = {
-  index: "wwWallet Issuer",
+  index: config?.siteConfig?.name || "wwWallet Issuer",
   // Add other titles for different routes or pages here if needed
 };
 
