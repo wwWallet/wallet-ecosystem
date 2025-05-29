@@ -150,7 +150,7 @@ export class PIDSupportedCredentialSdJwtVCDM implements VCDMSupportedCredentialP
 			throw new Error("Failed to get users from dataset");
 		}
 
-		if (request.body?.vct != this.getId() || !userSession.scope || !userSession.scope.split(' ').includes(this.getScope())) {
+		if (request.body?.credential_configuration_id != this.getId() || !userSession.scope || !userSession.scope.split(' ').includes(this.getScope())) {
 			console.log("Not the correct credential");
 			throw new Error("Not the correct credential");
 		}
