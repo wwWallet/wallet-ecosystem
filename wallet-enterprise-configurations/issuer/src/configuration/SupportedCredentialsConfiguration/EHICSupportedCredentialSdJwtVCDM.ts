@@ -106,6 +106,8 @@ export class EHICSupportedCredentialSdJwtVCDM implements VCDMSupportedCredential
 						{ name: "Issuing Country", value: ehic.issuer_country },
 						{ name: "Issuing Authority ID", value: ehic.issuing_authority_id },
 						{ name: "Issuing Authority Name", value: ehic.issuing_authority_name },
+						{ name: "Competent Institution ID", value: ehic.authentic_source_id },
+						{ name: "Competent Institution Name", value: ehic.authentic_source_name },
 
 					];
 					const rowsObject: CategorizedRawCredentialView = { rows };
@@ -114,11 +116,11 @@ export class EHICSupportedCredentialSdJwtVCDM implements VCDMSupportedCredential
 						json: {
 							...ehic,
 							date_of_expiry: undefined,
-							issuing_authority: {
-								id: String(ehic.issuing_authority_id),
-								name: String(ehic.issuing_authority_name)
+							authentic_source: {
+								id: String(ehic.authentic_source_id),
+								name: String(ehic.authentic_source_name)
 							},
-						 },
+						},
 						credentialImageSvgTemplate: svgText,
 						sdJwtVcMetadataClaims: this.metadata().claims,
 					});
@@ -179,6 +181,10 @@ export class EHICSupportedCredentialSdJwtVCDM implements VCDMSupportedCredential
 				id: String(ehicEntry.issuing_authority_id),
 				name: String(ehicEntry.issuing_authority_name)
 			},
+			authentic_source: {
+				id: String(ehicEntry.authentic_source_id),
+				name: String(ehicEntry.authentic_source_name)
+			},
 			date_of_expiry: new Date(ehicEntry.date_of_expiry).toISOString().split('T')[0],
 			document_number: String(ehicEntry.document_number)
 		};
@@ -196,6 +202,10 @@ export class EHICSupportedCredentialSdJwtVCDM implements VCDMSupportedCredential
 			personal_administrative_number: true,
 			issuing_country: true,
 			issuing_authority: {
+				id: true,
+				name: true
+			},
+			authentic_source: {
 				id: true,
 				name: true
 			},
@@ -237,48 +247,135 @@ export class EHICSupportedCredentialSdJwtVCDM implements VCDMSupportedCredential
 			],
 			"claims": [
 				{
-					"path": ["personal_administrative_number"],
+					"path": [
+						"personal_administrative_number"
+					],
+					"svg_id": "personal_administrative_number",
 					"display": [
 						{
 							"lang": "en-US",
-							"label": "Personal ID",
+							"label": "Social Security PIN",
 							"description": "Unique personal identifier used by social security services."
 						}
-					],
-					"svg_id": "personal_administrative_number"
+					]
 				},
 				{
-					"path": ["issuing_country"],
+					"path": [
+						"issuing_country"
+					],
+					"svg_id": "issuer_country",
 					"display": [
 						{
 							"lang": "en-US",
 							"label": "Issuer Country",
 							"description": "The issuer country of the EHIC holder"
 						}
-					],
-					"svg_id": "issuer_country"
+					]
 				},
 				{
-					"path": ["issuing_authority", "id"],
+					"path": [
+						"issuing_authority",
+						"id"
+					],
 					"display": [
 						{
 							"lang": "en-US",
 							"label": "Issuing authority id",
 							"description": "EHIC issuing authority unique identifier in EESSI."
 						}
-					],
-					"svg_id": "issuing_authority_id"
+					]
 				},
 				{
-					"path": ["issuing_authority", "name"],
+					"path": [
+						"issuing_authority",
+						"name"
+					],
 					"display": [
 						{
 							"lang": "en-US",
 							"label": "Issuing authority name",
 							"description": "EHIC issuing authority name in EESSI."
 						}
+					]
+				},
+				{
+					"path": [
+						"date_of_expiry"
 					],
-					"svg_id": "issuing_authority_name"
+					"svg_id": "date_of_expiry",
+					"display": [
+						{
+							"lang": "en-US",
+							"label": "Expiry date",
+							"description": "EHIC expiration date."
+						}
+					]
+				},
+				{
+					"path": [
+						"date_of_issuance"
+					],
+					"display": [
+						{
+							"lang": "en-US",
+							"label": "Issue date",
+							"description": "EHIC validity start date."
+						}
+					]
+				},
+				{
+					"path": [
+						"authentic_source",
+						"id"
+					],
+					"sd": "never",
+					"svg_id": "authentic_source_id",
+					"display": [
+						{
+							"lang": "en-US",
+							"label": "Competent institution id",
+							"description": "Identifier of the competent insitution as registered in the EESSI Institution Repository."
+						}
+					]
+				},
+				{
+					"path": [
+						"authentic_source",
+						"name"
+					],
+					"sd": "never",
+					"svg_id": "authentic_source_name",
+					"display": [
+						{
+							"lang": "en-US",
+							"label": "Competent institution name",
+							"description": "Name of the competent insitution as registered in the EESSI Institution Repository."
+						}
+					]
+				},
+				{
+					"path": [
+						"ending_date"
+					],
+					"display": [
+						{
+							"lang": "en-US",
+							"label": "Ending date",
+							"description": "End date of the insurance coverage."
+						}
+					]
+				},
+				{
+					"path": [
+						"starting_date"
+					],
+					"display": [
+						{
+							"lang": "en-US",
+							"label": "Starting date",
+							"description": "Start date of the insurance coverage."
+						}
+					]
 				},
 				{
 					"path": [
@@ -292,17 +389,6 @@ export class EHICSupportedCredentialSdJwtVCDM implements VCDMSupportedCredential
 							"description": "EHIC unique document identifier."
 						}
 					]
-				},
-				{
-					"path": ["date_of_expiry"],
-					"display": [
-						{
-							"lang": "en-US",
-							"label": "Expiry date",
-							"description": "EHIC expiration date."
-						}
-					],
-					"svg_id": "date_of_expiry"
 				}
 			],
 		}
