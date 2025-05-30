@@ -32,6 +32,7 @@ const locale = {
 				paragraph: "The specifications that are partially or fully implemented by wwWallet Issuer are shown below:",
 				tables: {
 					openid4vci: [
+						["OIDVCI Specification", "Draft 15"],
 						["Grant Type", "authorization_code [OpenID.Core]"],
 						["Client Authentcation", "PKCE [RFC 7636], no secret"],
 						["Client Type", "Public"],
