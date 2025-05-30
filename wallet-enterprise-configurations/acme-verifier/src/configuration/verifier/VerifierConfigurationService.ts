@@ -128,11 +128,6 @@ const sdJwtPidFields = [
 		"filter": {}
 	},
 	{
-		"name": "Age equal or over 65",
-		"path": ['$.age_equal_or_over.65'],
-		"filter": {}
-	},
-	{
 		"name": "Age",
 		"path": ['$.age_in_years'],
 		"filter": {}
@@ -207,7 +202,7 @@ const sdJwtPidFields_1_5 = [
 	},
 	{
 		"name": "Birth First Name",
-		"path": ['$.birth_given_name'],
+		"path": ['$.given_name_birth'],
 		"filter": {}
 	},
 	{
@@ -217,7 +212,7 @@ const sdJwtPidFields_1_5 = [
 	},
 	{
 		"name": "Birth Last Name",
-		"path": ['$.birth_family_name'],
+		"path": ['$.family_name_birth'],
 		"filter": {}
 	},
 	{
@@ -311,11 +306,6 @@ const sdJwtPidFields_1_5 = [
 		"filter": {}
 	},
 	{
-		"name": "Age over 65",
-		"path": ['$.age_over_65'],
-		"filter": {}
-	},
-	{
 		"name": "Age",
 		"path": ['$.age_in_years'],
 		"filter": {}
@@ -356,15 +346,15 @@ const sdJwtPidFields_1_5 = [
 		"filter": {}
 	},
 	{
-		"name": "Picture",
-		"path": ['$.picture'],
+		"name": "Portrait",
+		"path": ['$.portrait'],
 		"filter": {}
 	}
 ]
 
 const sdJwtPidDescriptor_1_5 = {
 	"id": "CustomVerifiableId1_5",
-	"format": { "vc+sd-jwt": { alg: ['ES256'] } },
+	"format": { "dc+sd-jwt": { alg: ['ES256'] } },
 	"constraints": {
 		"fields": sdJwtPidFields_1_5
 	}
@@ -421,7 +411,7 @@ const minimalSdJwtPidFields = [
 
 const minimalVerifiableIdSdJwtDescriptor = {
 	"id": "minimalSdJwtPID",
-	"format": { "vc+sd-jwt": { alg: ['ES256'] } },
+	"format": { "dc+sd-jwt": { alg: ['ES256'] } },
 	"constraints": {
 		"fields": minimalSdJwtPidFields
 	}
@@ -586,7 +576,7 @@ const mdocPidFields = [
 
 const bachelorDescriptor = {
 	"id": "Bachelor",
-	"format": { "vc+sd-jwt": { alg: ['ES256'] } },
+	"format": { "dc+sd-jwt": { alg: ['ES256'] } },
 	"constraints": {
 		"fields": [
 			{
@@ -620,7 +610,7 @@ const bachelorDescriptor = {
 
 const europeanHealthInsuranceCardDescriptor = {
 	"id": "EuropeanHealthInsuranceCard",
-	"format": { "vc+sd-jwt": { alg: ['ES256'] } },
+	"format": { "dc+sd-jwt": { alg: ['ES256'] } },
 	"constraints": {
 		"fields": [
 			{
@@ -659,6 +649,26 @@ const europeanHealthInsuranceCardDescriptor = {
 				"filter": {}
 			},
 			{
+				"name": "Competent Institution ID",
+				"path": ['$.authentic_source.id'],
+				"filter": {}
+			},
+			{
+				"name": "Competent Institution Name",
+				"path": ['$.authentic_source.name'],
+				"filter": {}
+			},
+			{
+				"name": "Starting Date",
+				"path": ['$.starting_date'],
+				"filter": {}
+			},
+			{
+				"name": "Ending Date",
+				"path": ['$.ending_date'],
+				"filter": {}
+			},
+			{
 				"name": "Expiry Date",
 				"path": ['$.date_of_expiry'],
 				"filter": {}
@@ -674,7 +684,7 @@ const europeanHealthInsuranceCardDescriptor = {
 
 const powerOfRepresentationDescriptor = {
 	"id": "POR",
-	"format": { "vc+sd-jwt": { alg: ['ES256'] } },
+	"format": { "dc+sd-jwt": { alg: ['ES256'] } },
 	"constraints": {
 		"fields": [
 			{
@@ -730,7 +740,7 @@ export class VerifierConfigurationService implements VerifierConfigurationInterf
 			{
 				"id": "CustomVerifiableId",
 				"title": "PID ARF v1.8",
-				"description": "Select the format and the fields you want to request.",
+				"description": "Select the format and the fields you want to request",
 				_selectable: true,
 				"input_descriptors": [
 					{
@@ -751,8 +761,8 @@ export class VerifierConfigurationService implements VerifierConfigurationInterf
 			{
 				"id": "CustomVerifiableIdARF1_5",
 				"title": "PID ARF v1.5",
-				"description": "Select the fields you want to request.",
-				"format": { "vc+sd-jwt": { alg: ['ES256'] } },
+				"description": "Select the fields you want to request",
+				"format": { "dc+sd-jwt": { alg: ['ES256'] } },
 				_selectable: true,
 				"input_descriptors": [
 					sdJwtPidDescriptor_1_5
@@ -761,8 +771,8 @@ export class VerifierConfigurationService implements VerifierConfigurationInterf
 			{
 				"id": "Bachelor",
 				"title": "Bachelor Diploma",
-				"description": "Available Fields: Grade, EQF Level & Diploma Title",
-				"format": { "vc+sd-jwt": { alg: ['ES256'] } },
+				"description": "Select the fields you want to request",
+				"format": { "dc+sd-jwt": { alg: ['ES256'] } },
 				_selectable: true,
 				"input_descriptors": [
 					bachelorDescriptor
@@ -771,8 +781,8 @@ export class VerifierConfigurationService implements VerifierConfigurationInterf
 			{
 				"id": "EuropeanHealthInsuranceCard",
 				"title": "European Health Insurance Card",
-				"description": "Available Fields: SSN, Issuing Authority (Country, ID, Name), Document Number, Expiry Date",
-				"format": { "vc+sd-jwt": { alg: ['ES256'] } },
+				"description": "Select the fields you want to request",
+				"format": { "dc+sd-jwt": { alg: ['ES256'] } },
 				_selectable: true,
 				"input_descriptors": [
 					europeanHealthInsuranceCardDescriptor
@@ -781,8 +791,8 @@ export class VerifierConfigurationService implements VerifierConfigurationInterf
 			{
 				"id": "MinimalPIDAndEuropeanHealthInsuranceCard",
 				"title": "PID (ARF v1.8) + EHIC",
-				"description": "PID fields: Given Name, Family Name, Birth Date, Nationality, Exp. Date, Issuing Authority, Issuing Country. EHIC Fields: SSN, Issuing Authority (Country, ID, Name), Document Number, Expiry Date",
-				"format": { "vc+sd-jwt": { alg: ['ES256'] } },
+				"description": "Request a PID (ARF v1.8) along with an EHIC",
+				"format": { "dc+sd-jwt": { alg: ['ES256'] } },
 				"input_descriptors": [
 					minimalVerifiableIdSdJwtDescriptor,
 					europeanHealthInsuranceCardDescriptor
@@ -791,8 +801,8 @@ export class VerifierConfigurationService implements VerifierConfigurationInterf
 			{
 				"id": "MinimalPIDAndPowerOfRepresentation",
 				"title": "PID (ARF v1.8) + POR",
-				"description": "PID fields: Given Name, Family Name, Birth Date, Nationality, Exp. Date, Issuing Authority, Issuing Country. POR Fields: Available Fields: Legal Entity Identifier, Legal Entity Name, Full Representation Powers, Designated eService, Effective From, Effective Until",
-				"format": { "vc+sd-jwt": { alg: ['ES256'] } },
+				"description": "Request a PID (ARF v1.8) along with a POR",
+				"format": { "dc+sd-jwt": { alg: ['ES256'] } },
 				"input_descriptors": [
 					minimalVerifiableIdSdJwtDescriptor,
 					powerOfRepresentationDescriptor
@@ -801,8 +811,8 @@ export class VerifierConfigurationService implements VerifierConfigurationInterf
 			{
 				"id": "MinimalPIDAndBachelorDiploma",
 				"title": "PID (ARF v1.8) + Diploma",
-				"description": "PID fields: Given Name, Family Name, Birth Date, Nationality, Exp. Date, Issuing Authority, Issuing Country. Diploma Fields: Grade, EQF Level, Diploma Title",
-				"format": { "vc+sd-jwt": { alg: ['ES256'] } },
+				"description": "Request a PID (ARF v1.8) along with a Bachelor Diploma",
+				"format": { "dc+sd-jwt": { alg: ['ES256'] } },
 				"input_descriptors": [
 					minimalVerifiableIdSdJwtDescriptor,
 					bachelorDescriptor
@@ -812,7 +822,7 @@ export class VerifierConfigurationService implements VerifierConfigurationInterf
 			// 	"id": "MinimalPIDwithTransactionData",
 			// 	"title": "MinimalPID with Example Transaction Data",
 			// 	"description": "PID fields: Given Name, Family Name, Birth Date, Nationality, Exp. Date, Issuing Authority, Issuing Country. Transaction Data Type: 'urn:wwwallet:example_transaction_data_type'",
-			// 	"format": { "vc+sd-jwt": { alg: ['ES256'] } },
+			// 	"format": { "dc+sd-jwt": { alg: ['ES256'] } },
 			// 	"input_descriptors": [
 			// 		{ ...minimalVerifiableIdSdJwtDescriptor, _transaction_data_type: "urn:wwwallet:example_transaction_data_type" },
 			// 	]

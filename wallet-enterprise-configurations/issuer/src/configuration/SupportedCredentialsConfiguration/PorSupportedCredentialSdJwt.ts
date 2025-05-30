@@ -51,7 +51,7 @@ export class PorSupportedCredentialSdJwt implements VCDMSupportedCredentialProto
 		return "urn:eu.europa.ec.eudi:por:1";
 	}
 	getFormat(): VerifiableCredentialFormat {
-		return VerifiableCredentialFormat.VC_SDJWT;
+		return VerifiableCredentialFormat.DC_SDJWT;
 	}
 	getTypes(): string[] {
 		return ["VerifiableCredential", "VerifiableAttestation", "POR", this.getId()];
@@ -138,7 +138,7 @@ export class PorSupportedCredentialSdJwt implements VCDMSupportedCredentialProto
 			throw new Error("Failed to get users from dataset");
 		}
 
-		if (request.body?.vct != this.getId() || !userSession.scope || !userSession.scope.split(' ').includes(this.getScope())) {
+		if (request.body?.credential_configuration_id != this.getId() || !userSession.scope || !userSession.scope.split(' ').includes(this.getScope())) {
 			console.log("Not the correct credential");
 			throw new Error("Not the correct credential");
 		}
@@ -180,7 +180,7 @@ export class PorSupportedCredentialSdJwt implements VCDMSupportedCredentialProto
 		};
 
 		const { credential } = await this.getCredentialSigner()
-			.signSdJwtVc(payload, { typ: VerifiableCredentialFormat.VC_SDJWT, vctm: [base64url.encode(JSON.stringify(this.metadata()))] }, disclosureFrame);
+			.signSdJwtVc(payload, { typ: VerifiableCredentialFormat.DC_SDJWT, vctm: [base64url.encode(JSON.stringify(this.metadata()))] }, disclosureFrame);
 		const response = {
 			format: this.getFormat(),
 			credential: credential
