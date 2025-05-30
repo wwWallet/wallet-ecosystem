@@ -23,9 +23,58 @@ export class VerifierConfigurationService implements VerifierConfigurationInterf
 						"constraints": {
 							"fields": [
 								{
-									"name": "Document Number",
+									"name": "Last Name",
 									"path": [
-										"$.document_number"
+										"$.family_name"
+									],
+									"filter": {}
+								},
+								{
+									"name": "First Name",
+									"path": [
+										"$.given_name"
+									],
+									"filter": {}
+								},
+								{
+									"name": "Date of Birth",
+									"path": [
+										"$.birth_date"
+									],
+									"filter": {}
+								},
+								{
+									"name": "Birth place",
+									"path": [
+										"$.birth_place"
+									],
+									"filter": {}
+								},
+								{
+									"name": "Nationality",
+									"path": [
+										"$.nationality"
+									],
+									"filter": {}
+								},
+								{
+									"name": "Expiry date",
+									"path": [
+										"$.expiry_date"
+									],
+									"filter": {}
+								},
+								{
+									"name": "Issuing authority",
+									"path": [
+										"$.issuing_authority"
+									],
+									"filter": {}
+								},
+								{
+									"name": "Issuing country",
+									"path": [
+										"$.issuing_country"
 									],
 									"filter": {}
 								},
@@ -36,9 +85,16 @@ export class VerifierConfigurationService implements VerifierConfigurationInterf
 									],
 									"filter": {
 										"type": "string",
-										"const": "urn:eudi:pid:1"
+										"const": "urn:eu.europa.ec.eudi:pid:1"
 									}
 								}
+								{
+									"name": "Document Number",
+									"path": [
+										"$.document_number"
+									],
+									"filter": {}
+								},
 							]
 						}
 					}
@@ -72,7 +128,42 @@ export class VerifierConfigurationService implements VerifierConfigurationInterf
 								{
 									"name": "Date of Birth",
 									"path": [
-										"$.birthdate"
+										"$.birth_date"
+									],
+									"filter": {}
+								},
+								{
+									"name": "Birth place",
+									"path": [
+										"$.birth_place"
+									],
+									"filter": {}
+								},
+								{
+									"name": "Nationality",
+									"path": [
+										"$.nationality"
+									],
+									"filter": {}
+								},
+								{
+									"name": "Expiry date",
+									"path": [
+										"$.expiry_date"
+									],
+									"filter": {}
+								},
+								{
+									"name": "Issuing authority",
+									"path": [
+										"$.issuing_authority"
+									],
+									"filter": {}
+								},
+								{
+									"name": "Issuing country",
+									"path": [
+										"$.issuing_country"
 									],
 									"filter": {}
 								},
@@ -83,7 +174,7 @@ export class VerifierConfigurationService implements VerifierConfigurationInterf
 									],
 									"filter": {
 										"type": "string",
-										"const": "urn:eudi:pid:1"
+										"const": "urn:eu.europa.ec.eudi:pid:1"
 									}
 								}
 							]
