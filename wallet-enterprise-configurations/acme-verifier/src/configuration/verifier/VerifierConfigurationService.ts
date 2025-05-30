@@ -649,13 +649,13 @@ const europeanHealthInsuranceCardDescriptor = {
 				"filter": {}
 			},
 			{
-				"name": "Status Confirmation",
-				"path": ['$.status_confirmation'],
+				"name": "Competent Institution ID",
+				"path": ['$.authentic_source.id'],
 				"filter": {}
 			},
 			{
-				"name": "Competent Institution ID",
-				"path": ['$.authentic_source.id'],
+				"name": "Competent Institution Name",
+				"path": ['$.authentic_source.name'],
 				"filter": {}
 			},
 			{
@@ -666,11 +666,6 @@ const europeanHealthInsuranceCardDescriptor = {
 			{
 				"name": "Ending Date",
 				"path": ['$.ending_date'],
-				"filter": {}
-			},
-			{
-				"name": "Competent Institution Name",
-				"path": ['$.authentic_source.name'],
 				"filter": {}
 			},
 			{
