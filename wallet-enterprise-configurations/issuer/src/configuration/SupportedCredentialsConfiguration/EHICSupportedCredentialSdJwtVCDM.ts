@@ -20,6 +20,7 @@ import { CONSENT_ENTRYPOINT } from "../../authorization/constants";
 import { GenericLocalAuthenticationComponent } from "../../authentication/authenticationComponentTemplates/GenericLocalAuthenticationComponent";
 import { UserAuthenticationMethod } from "../../types/UserAuthenticationMethod.enum";
 import { initializeCredentialEngine } from "../../lib/initializeCredentialEngine";
+import { formatDateDDMMYYYY } from "../../lib/formatDate";
 
 const datasetName = "ehic-dataset.xlsx";
 parseEhicData(path.join(__dirname, `../../../../dataset/${datasetName}`)) // test parse
@@ -108,6 +109,8 @@ export class EHICSupportedCredentialSdJwtVCDM implements VCDMSupportedCredential
 						{ name: "Issuing Authority Name", value: ehic.issuing_authority_name },
 						{ name: "Competent Institution ID", value: ehic.authentic_source_id },
 						{ name: "Competent Institution Name", value: ehic.authentic_source_name },
+						{ name: "Starting date", value: formatDateDDMMYYYY(ehic.starting_date) },
+						{ name: "Ending date", value: formatDateDDMMYYYY(ehic.ending_date) },
 
 					];
 					const rowsObject: CategorizedRawCredentialView = { rows };
@@ -186,7 +189,10 @@ export class EHICSupportedCredentialSdJwtVCDM implements VCDMSupportedCredential
 				name: String(ehicEntry.authentic_source_name)
 			},
 			date_of_expiry: new Date(ehicEntry.date_of_expiry).toISOString().split('T')[0],
-			document_number: String(ehicEntry.document_number)
+			document_number: String(ehicEntry.document_number),
+			starting_date: new Date(ehicEntry.starting_date).toISOString(),
+			ending_date: new Date(ehicEntry.ending_date).toISOString()
+
 		};
 
 		const payload = {
@@ -211,7 +217,9 @@ export class EHICSupportedCredentialSdJwtVCDM implements VCDMSupportedCredential
 			},
 			document_number: true,
 			date_of_issuance: true,
-			date_of_expiry: true
+			date_of_expiry: true,
+			starting_date: true,
+			ending_date: true
 		}
 		const { credential } = await this.getCredentialSigner()
 			.signSdJwtVc(payload, { typ: VerifiableCredentialFormat.DC_SDJWT, vctm: [base64url.encode(JSON.stringify(this.metadata()))] }, disclosureFrame);
