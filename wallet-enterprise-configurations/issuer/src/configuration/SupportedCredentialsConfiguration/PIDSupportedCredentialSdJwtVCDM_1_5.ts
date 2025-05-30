@@ -52,7 +52,7 @@ export class PIDSupportedCredentialSdJwtVCDM_1_5 implements VCDMSupportedCredent
 		return "urn:eu.europa.ec.eudi:pid:1";
 	}
 	getFormat(): VerifiableCredentialFormat {
-		return VerifiableCredentialFormat.VC_SDJWT;
+		return VerifiableCredentialFormat.DC_SDJWT;
 	}
 	getTypes(): string[] {
 		return ["VerifiableCredential", "VerifiableAttestation", "PID", this.getId()];
@@ -153,7 +153,7 @@ export class PIDSupportedCredentialSdJwtVCDM_1_5 implements VCDMSupportedCredent
 			throw new Error("Failed to get users from dataset");
 		}
 
-		if (request.body?.vct != this.getId() || !userSession.scope || !userSession.scope.split(' ').includes(this.getScope())) {
+		if (request.body?.credential_configuration_id != this.getId() || !userSession.scope || !userSession.scope.split(' ').includes(this.getScope())) {
 			console.log("Not the correct credential");
 			throw new Error("Not the correct credential");
 		}
@@ -243,7 +243,7 @@ export class PIDSupportedCredentialSdJwtVCDM_1_5 implements VCDMSupportedCredent
 			portrait: true
 		}
 		const { credential } = await this.getCredentialSigner()
-			.signSdJwtVc(payload, { typ: VerifiableCredentialFormat.VC_SDJWT, vctm: [base64url.encode(JSON.stringify(this.metadata()))] }, disclosureFrame);
+			.signSdJwtVc(payload, { typ: VerifiableCredentialFormat.DC_SDJWT, vctm: [base64url.encode(JSON.stringify(this.metadata()))] }, disclosureFrame);
 		const response = {
 			format: this.getFormat(),
 			credential: credential

@@ -14,12 +14,12 @@ export class VerifierConfigurationService implements VerifierConfigurationInterf
 		return [
 			{
 				"id": "PidWithDocumentNumber",
-				"format": { "vc+sd-jwt": { alg: [ 'ES256' ] } },
+				"format": { "dc+sd-jwt": { alg: [ 'ES256' ] } },
 				"input_descriptors": [
 					{
 						"id": "PID",
 						"purpose": "You need to present your PID to prove your identity",
-						"format": { "vc+sd-jwt": { alg: [ 'ES256' ] } },
+						"format": { "dc+sd-jwt": { alg: [ 'ES256' ] } },
 						"constraints": {
 							"fields": [
 								{
@@ -47,12 +47,12 @@ export class VerifierConfigurationService implements VerifierConfigurationInterf
 
 			{
 				"id": "PidMinimal",
-				"format": { "vc+sd-jwt": { alg: [ 'ES256' ] } },
+				"format": { "dc+sd-jwt": { alg: [ 'ES256' ] } },
 				"input_descriptors": [
 					{
 						"id": "PID",
 						"purpose": "You need to present your PID to prove your identity",
-						"format": { "vc+sd-jwt": { alg: [ 'ES256' ] } },
+						"format": { "dc+sd-jwt": { alg: [ 'ES256' ] } },
 						"constraints": {
 							"fields": [
 								{

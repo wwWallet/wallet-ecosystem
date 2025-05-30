@@ -19,7 +19,7 @@ const locale = {
 				["Response Mode", "direct_post.jwt [OpenID4VP]"],
 				["Request Method", "request_uri signed [JAR]"],
 				["Client ID Scheme", "x509_san_dns"],
-				["Credential Format", "vc+sd-jwt, mso_mdoc"],
+				["Credential Format", "dc+sd-jwt, mso_mdoc"],
 			],
 			paragraph: "This website is a proof-of-concept service designed to perform verifications of Verifiable Credentials (VCs) in SD-JWT or mDoc formats, supporting the wwWallet ecosystem. It conducts only sample verifications to showcase credential checks (not valid for real-world use).",
 		},
