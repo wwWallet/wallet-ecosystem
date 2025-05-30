@@ -160,8 +160,8 @@ export class PorSupportedCredentialSdJwt implements VCDMSupportedCredentialProto
 			"legal_name": String(porEntry.legal_name),
 			"full_powers": String(porEntry.full_powers),
 
-			"effective_from_date": new Date(porEntry.effective_from).toISOString().split('T')[0],
-			"effective_until_date": porEntry.effective_until && new Date(porEntry.effective_until).toISOString().split('T')[0],
+			"effective_from_date": new Date(porEntry.effective_from).toISOString(),
+			"effective_until_date": porEntry.effective_until && new Date(porEntry.effective_until).toISOString(),
 			"eService": porEntry.eService == "" ? null : porEntry.eService,
 			"issuing_authority": porEntry.issuing_authority,
 			"issuing_country": porEntry.issuing_country
