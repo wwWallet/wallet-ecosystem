@@ -47,6 +47,7 @@ const locale = {
 					],
 					openid4vci_notes: "Currently, the Notification and Deferred Endpoints are not supported",
 					openid4vp: [
+						["OIDVP Specification", "Draft 24"],
 						["Response Mode", "direct_post.jwt [OpenID4VP]"],
 						["Request Method", "request_uri signed [JAR]"],
 						["Client ID Scheme", "x509_san_dns"],
