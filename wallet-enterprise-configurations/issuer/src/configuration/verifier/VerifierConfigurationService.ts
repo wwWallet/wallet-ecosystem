@@ -87,7 +87,7 @@ export class VerifierConfigurationService implements VerifierConfigurationInterf
 										"type": "string",
 										"const": "urn:eu.europa.ec.eudi:pid:1"
 									}
-								}
+								},
 								{
 									"name": "Document Number",
 									"path": [
