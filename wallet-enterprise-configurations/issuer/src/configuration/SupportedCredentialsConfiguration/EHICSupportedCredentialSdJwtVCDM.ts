@@ -102,13 +102,13 @@ export class EHICSupportedCredentialSdJwtVCDM implements VCDMSupportedCredential
 			const credentialViews: CredentialView[] = await Promise.all(ehics
 				.map(async (ehic) => {
 					const rows: CategorizedRawCredentialViewRow[] = [
-						{ name: "Personal ID", value: String(ehic.personal_administrative_number) },
-						{ name: "Document Number", value: String(ehic.document_number) },
-						{ name: "Issuing Country", value: ehic.issuer_country },
-						{ name: "Issuing Authority ID", value: ehic.issuing_authority_id },
-						{ name: "Issuing Authority Name", value: ehic.issuing_authority_name },
-						{ name: "Competent Institution ID", value: ehic.authentic_source_id },
-						{ name: "Competent Institution Name", value: ehic.authentic_source_name },
+						{ name: "Social Security PIN", value: String(ehic.personal_administrative_number) },
+						{ name: "Document number", value: String(ehic.document_number) },
+						{ name: "Issuing country", value: ehic.issuer_country },
+						{ name: "Issuing authority id", value: ehic.issuing_authority_id },
+						{ name: "Issuing authority name", value: ehic.issuing_authority_name },
+						{ name: "Competent institution id", value: ehic.authentic_source_id },
+						{ name: "Competent institution name", value: ehic.authentic_source_name },
 						{ name: "Starting date", value: formatDateDDMMYYYY(ehic.starting_date) },
 						{ name: "Ending date", value: formatDateDDMMYYYY(ehic.ending_date) },
 
@@ -275,7 +275,7 @@ export class EHICSupportedCredentialSdJwtVCDM implements VCDMSupportedCredential
 					"display": [
 						{
 							"lang": "en-US",
-							"label": "Issuer Country",
+							"label": "Issuing country",
 							"description": "The issuer country of the EHIC holder"
 						}
 					]

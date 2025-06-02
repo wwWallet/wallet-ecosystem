@@ -18,42 +18,42 @@ const sdJwtPidFields = [
 		}
 	},
 	{
-		"name": "First Name",
+		"name": "First name",
 		"path": ['$.given_name'],
 		"filter": {}
 	},
 	{
-		"name": "Birth First Name",
+		"name": "Birth first name",
 		"path": ['$.birth_given_name'],
 		"filter": {}
 	},
 	{
-		"name": "Last Name",
+		"name": "Last name",
 		"path": ['$.family_name'],
 		"filter": {}
 	},
 	{
-		"name": "Birth Last Name",
+		"name": "Birth last name",
 		"path": ['$.birth_family_name'],
 		"filter": {}
 	},
 	{
-		"name": "Date of Birth",
+		"name": "Date of birth",
 		"path": ['$.birthdate'],
 		"filter": {}
 	},
 	{
-		"name": "Country of Birth",
+		"name": "Country of birth",
 		"path": ['$.place_of_birth.country'],
 		"filter": {}
 	},
 	{
-		"name": "Region of Birth",
+		"name": "Region of birth",
 		"path": ['$.place_of_birth.region'],
 		"filter": {}
 	},
 	{
-		"name": "City of Birth",
+		"name": "City of birth",
 		"path": ['$.place_of_birth.locality'],
 		"filter": {}
 	},
@@ -73,7 +73,7 @@ const sdJwtPidFields = [
 		"filter": {}
 	},
 	{
-		"name": "Full address",
+		"name": "Residence address",
 		"path": ['$.address.formatted'],
 		"filter": {}
 	},
@@ -88,7 +88,7 @@ const sdJwtPidFields = [
 		"filter": {}
 	},
 	{
-		"name": "Postal or ZIP code of residence",
+		"name": "Residence ZIP",
 		"path": ['$.address.postal_code'],
 		"filter": {}
 	},
@@ -133,7 +133,7 @@ const sdJwtPidFields = [
 		"filter": {}
 	},
 	{
-		"name": "Birth Year",
+		"name": "Birth year",
 		"path": ['$.age_birth_year'],
 		"filter": {}
 	},
@@ -148,12 +148,12 @@ const sdJwtPidFields = [
 		"filter": {}
 	},
 	{
-		"name": "Issuing Authority",
+		"name": "Issuing authority",
 		"path": ['$.issuing_authority'],
 		"filter": {}
 	},
 	{
-		"name": "Issuing Country",
+		"name": "Issuing country",
 		"path": ['$.issuing_country'],
 		"filter": {}
 	},
@@ -163,7 +163,7 @@ const sdJwtPidFields = [
 		"filter": {}
 	},
 	{
-		"name": "Expiry Date",
+		"name": "Expiry date",
 		"path": ['$.date_of_expiry'],
 		"filter": {}
 	},
@@ -173,7 +173,7 @@ const sdJwtPidFields = [
 		"filter": {}
 	},
 	{
-		"name": "Document Number",
+		"name": "Document number",
 		"path": ['$.document_number'],
 		"filter": {}
 	},
@@ -196,22 +196,22 @@ const sdJwtPidFields_1_5 = [
 		}
 	},
 	{
-		"name": "First Name",
+		"name": "First name",
 		"path": ['$.given_name'],
 		"filter": {}
 	},
 	{
-		"name": "Birth First Name",
+		"name": "Birth first name",
 		"path": ['$.given_name_birth'],
 		"filter": {}
 	},
 	{
-		"name": "Last Name",
+		"name": "Last name",
 		"path": ['$.family_name'],
 		"filter": {}
 	},
 	{
-		"name": "Birth Last Name",
+		"name": "Birth last name",
 		"path": ['$.family_name_birth'],
 		"filter": {}
 	},
@@ -236,12 +236,12 @@ const sdJwtPidFields_1_5 = [
 		"filter": {}
 	},
 	{
-		"name": "Resident Street",
+		"name": "Resident street",
 		"path": ['$.resident_street_address'],
 		"filter": {}
 	},
 	{
-		"name": "Resident Number",
+		"name": "Resident number",
 		"path": ['$.resident_house_number'],
 		"filter": {}
 	},
@@ -251,17 +251,17 @@ const sdJwtPidFields_1_5 = [
 		"filter": {}
 	},
 	{
-		"name": "City of Residence",
+		"name": "City of residence",
 		"path": ['$.resident_city'],
 		"filter": {}
 	},
 	{
-		"name": "State of Residence",
+		"name": "State of residence",
 		"path": ['$.resident_state'],
 		"filter": {}
 	},
 	{
-		"name": "Country of Residence",
+		"name": "Country of residence",
 		"path": ['$.resident_country'],
 		"filter": {}
 	},
@@ -276,7 +276,7 @@ const sdJwtPidFields_1_5 = [
 		"filter": {}
 	},
 	{
-		"name": "Place of Birth",
+		"name": "Place of birth",
 		"path": ['$.birth_place'],
 		"filter": {}
 	},
@@ -311,37 +311,37 @@ const sdJwtPidFields_1_5 = [
 		"filter": {}
 	},
 	{
-		"name": "Birth Year",
+		"name": "Birth year",
 		"path": ['$.age_birth_year'],
 		"filter": {}
 	},
 	{
-		"name": "Document Number",
+		"name": "Document number",
 		"path": ['$.document_number'],
 		"filter": {}
 	},
 	{
-		"name": "Issuing Authority",
+		"name": "Issuing authority",
 		"path": ['$.issuing_authority'],
 		"filter": {}
 	},
 	{
-		"name": "Issuing Country",
+		"name": "Issuing country",
 		"path": ['$.issuing_country'],
 		"filter": {}
 	},
 	{
-		"name": "Issuing Region",
+		"name": "Issuing region",
 		"path": ['$.issuing_jurisdiction'],
 		"filter": {}
 	},
 	{
-		"name": "Issue Date",
+		"name": "Issue date",
 		"path": ['$.issuance_date'],
 		"filter": {}
 	},
 	{
-		"name": "Expiry Date",
+		"name": "Expiry date",
 		"path": ['$.expiry_date'],
 		"filter": {}
 	},
@@ -372,12 +372,12 @@ const minimalSdJwtPidFields = [
 		}
 	},
 	{
-		"name": "First Name",
+		"name": "First name",
 		"path": ['$.given_name'],
 		"filter": {}
 	},
 	{
-		"name": "Last Name",
+		"name": "Last name",
 		"path": ['$.family_name'],
 		"filter": {}
 	},
@@ -392,17 +392,17 @@ const minimalSdJwtPidFields = [
 		"filter": {}
 	},
 	{
-		"name": "Expiry Date",
+		"name": "Expiry date",
 		"path": ['$.date_of_expiry'],
 		"filter": {}
 	},
 	{
-		"name": "Issuing Authority",
+		"name": "Issuing authority",
 		"path": ['$.issuing_authority'],
 		"filter": {}
 	},
 	{
-		"name": "Issuing Country",
+		"name": "Issuing country",
 		"path": ['$.issuing_country'],
 		"filter": {}
 	}
@@ -624,57 +624,57 @@ const europeanHealthInsuranceCardDescriptor = {
 				}
 			},
 			{
-				"name": "Personal ID",
+				"name": "Social Security PIN",
 				"path": ['$.personal_administrative_number'],
 				"filter": {}
 			},
 			{
-				"name": "Document Number",
+				"name": "Document number",
 				"path": ['$.document_number'],
 				"filter": {}
 			},
 			{
-				"name": "Issuing Country",
+				"name": "Issuing country",
 				"path": ['$.issuing_country'],
 				"filter": {}
 			},
 			{
-				"name": "Issuing Authority ID",
+				"name": "Issuing authority id",
 				"path": ['$.issuing_authority.id'],
 				"filter": {}
 			},
 			{
-				"name": "Issuing Authority Name",
+				"name": "Issuing authority name",
 				"path": ['$.issuing_authority.name'],
 				"filter": {}
 			},
 			{
-				"name": "Competent Institution ID",
+				"name": "Competent institution id",
 				"path": ['$.authentic_source.id'],
 				"filter": {}
 			},
 			{
-				"name": "Competent Institution Name",
+				"name": "Competent institution name",
 				"path": ['$.authentic_source.name'],
 				"filter": {}
 			},
 			{
-				"name": "Starting Date",
+				"name": "Starting date",
 				"path": ['$.starting_date'],
 				"filter": {}
 			},
 			{
-				"name": "Ending Date",
+				"name": "Ending date",
 				"path": ['$.ending_date'],
 				"filter": {}
 			},
 			{
-				"name": "Expiry Date",
+				"name": "Expiry date",
 				"path": ['$.date_of_expiry'],
 				"filter": {}
 			},
 			{
-				"name": "Issue Date",
+				"name": "Issue date",
 				"path": ['$.date_of_issuance'],
 				"filter": {}
 			}
@@ -698,12 +698,12 @@ const powerOfRepresentationDescriptor = {
 				}
 			},
 			{
-				"name": "Legal Entity ID",
+				"name": "Legal entity ID",
 				"path": ['$.legal_person_identifier'],
 				"filter": {}
 			},
 			{
-				"name": "Legal Entity Name",
+				"name": "Legal entity name",
 				"path": ['$.legal_name'],
 				"filter": {}
 			},
@@ -718,12 +718,12 @@ const powerOfRepresentationDescriptor = {
 				"filter": {}
 			},
 			{
-				"name": "Effective From",
+				"name": "Effective from",
 				"path": ['$.effective_from_date'],
 				"filter": {}
 			},
 			{
-				"name": "Effective Until",
+				"name": "Effective until",
 				"path": ['$.effective_until_date'],
 				"filter": {}
 			}
