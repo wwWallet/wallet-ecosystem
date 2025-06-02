@@ -96,8 +96,8 @@ export class PorSupportedCredentialSdJwt implements VCDMSupportedCredentialProto
 
 		const credentialView: CredentialView = await (async () => {
 			const rows: CategorizedRawCredentialViewRow[] = [
-				{ name: "Legal Entity Name", value: porEntry.legal_name },
-				{ name: "Legal Entity ID", value: porEntry.legal_person_identifier },
+				{ name: "Legal entity name", value: porEntry.legal_name },
+				{ name: "Legal entity ID", value: porEntry.legal_person_identifier },
 				{ name: "Full Represent. Powers", value: porEntry.full_powers }
 			];
 			const rowsObject: CategorizedRawCredentialView = { rows };
@@ -222,7 +222,7 @@ export class PorSupportedCredentialSdJwt implements VCDMSupportedCredentialProto
 					"display": [
 						{
 							"lang": "en-US",
-							"label": "Legal Entity Name",
+							"label": "Legal entity name",
 							"description": "Name of the legal entity being represented."
 						}
 					],
@@ -233,7 +233,7 @@ export class PorSupportedCredentialSdJwt implements VCDMSupportedCredentialProto
 					"display": [
 						{
 							"lang": "en-US",
-							"label": "Legal Entity ID",
+							"label": "Legal entity ID",
 							"description": "Unique identifier of the legal entity being represented."
 						}
 					],
@@ -255,7 +255,7 @@ export class PorSupportedCredentialSdJwt implements VCDMSupportedCredentialProto
 					"display": [
 						{
 							"lang": "en-US",
-							"label": "Effective From",
+							"label": "Effective from",
 							"description": "Start date of valid representation (inclusive)."
 						}
 					],
@@ -266,7 +266,7 @@ export class PorSupportedCredentialSdJwt implements VCDMSupportedCredentialProto
 					"display": [
 						{
 							"lang": "en-US",
-							"label": "Effective Until",
+							"label": "Effective until",
 							"description": "End date of valid representation (inclusive)."
 						}
 					],
