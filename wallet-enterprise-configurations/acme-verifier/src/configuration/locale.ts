@@ -16,7 +16,7 @@ const locale = {
 			heading: "wwWallet Verifier",
 			oid4vpProfile: "OpenID4VP Interoperability Profile",
 			openid4vp: [
-				["OID4VP Specification", "Draft 24"],
+				["OIDVP Specification", "Draft 24"],
 				["Response Mode", "direct_post.jwt [OpenID4VP]"],
 				["Request Method", "request_uri signed [JAR]"],
 				["Client ID Scheme", "x509_san_dns"],
