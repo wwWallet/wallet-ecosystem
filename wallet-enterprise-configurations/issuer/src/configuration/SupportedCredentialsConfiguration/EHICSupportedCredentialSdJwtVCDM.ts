@@ -190,8 +190,8 @@ export class EHICSupportedCredentialSdJwtVCDM implements VCDMSupportedCredential
 			},
 			date_of_expiry: new Date(ehicEntry.date_of_expiry).toISOString().split('T')[0],
 			document_number: String(ehicEntry.document_number),
-			starting_date: new Date(ehicEntry.starting_date).toISOString(),
-			ending_date: new Date(ehicEntry.ending_date).toISOString()
+			starting_date: new Date(ehicEntry.starting_date).toISOString().split('T')[0],
+			ending_date: new Date(ehicEntry.ending_date).toISOString().split('T')[0]
 
 		};
 
