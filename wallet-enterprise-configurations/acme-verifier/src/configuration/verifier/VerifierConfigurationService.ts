@@ -237,7 +237,7 @@ const sdJwtPidFields_1_5 = [
 	},
 	{
 		"name": "Resident street",
-		"path": ['$.resident_street_address'],
+		"path": ['$.resident_street'],
 		"filter": {}
 	},
 	{
