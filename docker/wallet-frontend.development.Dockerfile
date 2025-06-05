@@ -27,7 +27,7 @@ CMD [ "yarn", "start-docker" ]
 COPY ./wallet-frontend/ .
 
 # :hammer_and_wrench: Fix: Ensure Vite has permissions to write inside `/app`
-RUN mkdir -p /app/node_modules/.vite && chmod -R 777 /app/node_modules
+RUN mkdir -p /app/node_modules/.vite && chown -R node /app/node_modules
 
-# Set user last so everything is readonly by default
+# Set user last so everything else is readonly by default
 USER node
