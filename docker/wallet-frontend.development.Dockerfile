@@ -17,8 +17,7 @@ RUN yarn add https://github.com/wwwallet/mdl.git#deploy
 
 FROM node:22-bullseye-slim AS development
 
-ENV NODE_PATH=/node_modules
-COPY --from=dependencies /dependencies/node_modules /node_modules
+COPY --from=dependencies /dependencies/node_modules /app/node_modules
 
 WORKDIR /app
 ENV NODE_ENV=development
