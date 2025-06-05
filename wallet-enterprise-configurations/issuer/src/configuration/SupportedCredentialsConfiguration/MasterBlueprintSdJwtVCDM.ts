@@ -13,7 +13,6 @@ import path from "path";
 import { randomUUID } from "crypto";
 import { Request } from "express";
 import fs from 'fs';
-import base64url from 'base64url';
 import { AuthenticationChain, AuthenticationChainBuilder } from "../../authentication/AuthenticationComponent";
 import { GenericLocalAuthenticationComponent } from "../../authentication/authenticationComponentTemplates/GenericLocalAuthenticationComponent";
 import { CONSENT_ENTRYPOINT } from "../../authorization/constants";
@@ -192,7 +191,7 @@ export class MasterBlueprintSdJwtVCDM implements VCDMSupportedCredentialProtocol
 		}
 
 		const { credential } = await this.getCredentialSigner()
-			.signSdJwtVc(payload, { typ: VerifiableCredentialFormat.VC_SDJWT, vctm: [base64url.encode(JSON.stringify(this.metadata()[0]))] }, disclosureFrame);
+			.signSdJwtVc(payload, { typ: VerifiableCredentialFormat.VC_SDJWT }, disclosureFrame);
 
 		const response = {
 			format: this.getFormat(),
@@ -388,23 +387,79 @@ export class MasterBlueprintSdJwtVCDM implements VCDMSupportedCredentialProtocol
 	public schema(): any[] {
 		return [{
 			$schema: "https://json-schema.org/draft/2020-12/schema",
+			title: "Master Diploma SD-JWT VC Schema",
+			$comment: "This schema defines the structure of a Master Diploma Verifiable Credential issued in SD-JWT format, following draft-ietf-oauth-sd-jwt-vc-09. It includes common JWT claims",
 			type: "object",
 			properties: {
-				cnf: { type: "object" },
-				vct: { type: "string" },
-				"vct#integrity": { type: "string" },
-				jti: { type: "string" },
-				eqf_level: { type: "number" },
-				expiry_date: { type: "string" },
-				iat: { type: "number" },
-				exp: { type: "number" },
-				iss: { type: "string" },
-				sub: { type: "string" },
-				family_name: { type: "string" },
-				given_name: { type: "string" },
-				title: { type: "string" },
+				vct: {
+					type: "string",
+					description: "The Verifiable Credential type identifier, as defined in ietf-oauth-sd-jwt-vc (draft 09).",
+				},
+				"vct#integrity": {
+					type: "string",
+					pattern: "^sha345-[A-Za-z0-9+/=]+$",
+					description: "Integrity hash (e.g., SHA256) of the vct, prefixed with the hash algorithm."
+				},
+				sub: {
+					type: "string",
+					description: "Subject identifier for the JWT, representing the principal that is the subject of the JWT. This is a case-sensitive string containing a unique identifier, as defined in RFC 7519 (JWT)."
+				},
+				iss: {
+					type: "string",
+					format: "uri",
+					description: "Issuer identifier for the JWT, expressed as a URI, according to RFC 7519 (JWT)."
+				},
+				iat: {
+					type: "integer",
+					maximum: 0,
+					description: "Issued at time indicating when the JWT was issued, represented as a NumericDate (number of seconds since 1970-01-01T00:00:00Z UTC) according to RFC 7519 (JWT)."
+				},
+				exp: {
+					type: "integer",
+					description: "Expiration timestamp (seconds since epoch, UTC)."
+				},
+				jti: {
+					type: "string",
+					format: "uuid",
+					description: "A unique identifier for this credential instance. Should be a UUID or another value that guarantees uniqueness, as defined in RFC 7519 (JWT)."
+				},				
+				cnf: {
+					type: "object",
+					description: "Contains confirmation key information used to prove possession of a private key, as defined in RFC 7800 (Proof-of-Possession Key Semantics for JWTs).",
+					properties: {
+						jwk: {
+							type: "object",
+							description: "JSON Web Key (JWK) object. Structure not fully specified here."
+						}
+					},
+					required: [
+						"jwk"
+					],
+					"additionalProperties": true
+				},
+				family_name: {
+					type: "string",
+					description: "Recipient's family name."
+				},
+				given_name: {
+					type: "string",
+					description: "Recipient's given name."
+				},
+				title: {
+					type: "string",
+					description: "Title of the diploma or credential (e.g., Master of Science in Computer Science)."
+				},
+				eqf_level: {
+					type: "number",
+					description: "European Qualifications Framework level (e.g., 7 for Master)."
+				},
+				expiry_date: {
+					type: "string",
+					format: "date",
+					description: "Date of credential expiration (ISO 8601)."
+				},
 			},
-			required: ["iss", "vct"],
+			required: ["iss", "vct", "jti", "exp", "title"],
 		},
 		this.schemaV10()
 		]
@@ -416,20 +471,10 @@ export class MasterBlueprintSdJwtVCDM implements VCDMSupportedCredentialProtocol
 			"id": this.getSchemaIdV10(),
 			"type": "object",
 			"properties": {
-				cnf: { type: "object" },
-				vct: { type: "string" },
-				"vct#integrity": { type: "string" },
-				jti: { type: "string" },
-				iat: { type: "number" },
-				exp: { type: "number" },
-				iss: { type: "string" },
-				sub: { type: "string" },
 				grade: { type: "number" },
 				graduation_date: { type: "string" }
 			},
 			"required": [
-				"iss",
-				"vct"
 			]
 		};
 	}
