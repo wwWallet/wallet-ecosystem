@@ -41,7 +41,7 @@ export class PIDSupportedCredentialSdJwtVCDM implements VCDMSupportedCredentialP
 	}
 
 	getScope(): string {
-		return "pid:sd_jwt_vc";
+		return "pid:sd_jwt_dc";
 	}
 
 	getCredentialSigner(): CredentialSigner {
