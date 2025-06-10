@@ -59,7 +59,7 @@ export class PorSupportedCredentialSdJwt implements VCDMSupportedCredentialProto
 
 	getDisplay() {
 		return {
-			name: "Power of Representation - SD-JWT VC",
+			name: `Power of Representation (${this.getFormat()})`,
 			description: "Power of Representation - SD-JWT VC",
 			background_image: { uri: config.url + "/images/background-image.png" },
 			background_color: "#c3b25d",
@@ -154,7 +154,7 @@ export class PorSupportedCredentialSdJwt implements VCDMSupportedCredentialProto
 			"cnf": {
 				"jwk": holderPublicKeyJwk
 			},
-			"vct": this.getId(),
+			"vct": this.metadata().vct,
 			"jti": `urn:por:${randomUUID()}`,
 			"legal_person_identifier": String(porEntry.legal_person_identifier),
 			"legal_name": String(porEntry.legal_name),
@@ -191,7 +191,7 @@ export class PorSupportedCredentialSdJwt implements VCDMSupportedCredentialProto
 
 	public metadata(): any {
 		return {
-			"vct": this.getId(),
+			"vct": "urn:eu.europa.ec.eudi:por:1",
 			"name": "Power of Representation",
 			"description": "Power of Representation (POR) SD-JWT VC",
 			"display": [
@@ -280,7 +280,7 @@ export class PorSupportedCredentialSdJwt implements VCDMSupportedCredentialProto
 	exportCredentialSupportedObject(): any {
 		return {
 			scope: this.getScope(),
-			vct: this.getId(),
+			vct: this.metadata().vct,
 			display: [this.getDisplay()],
 			format: this.getFormat(),
 			cryptographic_binding_methods_supported: ["ES256"],

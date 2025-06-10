@@ -68,7 +68,7 @@ export class EHICSupportedCredentialSdJwtVCDM implements VCDMSupportedCredential
 	}
 	getDisplay() {
 		return {
-			name: "EHIC - SD-JWT VC",
+			name: `EHIC (${this.getFormat()})`,
 			description: "European Health Insurance Card",
 			background_image: { uri: config.url + "/images/background-image.png" },
 			background_color: "#1b263b",
@@ -199,7 +199,7 @@ export class EHICSupportedCredentialSdJwtVCDM implements VCDMSupportedCredential
 			"cnf": {
 				"jwk": holderPublicKeyJwk
 			},
-			"vct": this.getId(),
+			"vct": this.metadata().vct,
 			"jti": `urn:eudi:ehic:1:${randomUUID()}`,
 			...ehic
 		};
@@ -233,7 +233,7 @@ export class EHICSupportedCredentialSdJwtVCDM implements VCDMSupportedCredential
 
 	public metadata(): any {
 		return {
-			"vct": this.getId(),
+			"vct": "urn:eudi:ehic:1",
 			"name": "EHIC",
 			"description": "This is a European Health Insurance Card verifiable credential",
 			"display": [
@@ -406,7 +406,7 @@ export class EHICSupportedCredentialSdJwtVCDM implements VCDMSupportedCredential
 	exportCredentialSupportedObject(): any {
 		return {
 			scope: this.getScope(),
-			vct: this.getId(),
+			vct: this.metadata().vct,
 			format: this.getFormat(),
 			display: [this.getDisplay()],
 			cryptographic_binding_methods_supported: ["ES256"],

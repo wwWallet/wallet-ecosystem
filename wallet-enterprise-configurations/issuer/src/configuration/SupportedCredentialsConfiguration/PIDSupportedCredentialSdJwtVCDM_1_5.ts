@@ -60,7 +60,7 @@ export class PIDSupportedCredentialSdJwtVCDM_1_5 implements VCDMSupportedCredent
 
 	getDisplay() {
 		return {
-			name: "ARF 1.5 PID SD-JWT VC",
+			name: `PID ARF 1.5 (${this.getFormat()})`,
 			description: "Person Identification Data",
 			background_image: { uri: config.url + "/images/background-image.png" },
 			background_color: "#1b263b",
@@ -203,7 +203,7 @@ export class PIDSupportedCredentialSdJwtVCDM_1_5 implements VCDMSupportedCredent
 			"cnf": {
 				"jwk": holderPublicKeyJwk
 			},
-			"vct": this.getId(),
+			"vct": this.metadata().vct,
 			"jti": `urn:vid:${randomUUID()}`,
 			...vid,
 		};
@@ -254,7 +254,7 @@ export class PIDSupportedCredentialSdJwtVCDM_1_5 implements VCDMSupportedCredent
 
 	public metadata(): any {
 		return {
-			"vct": this.getId(),
+			"vct": "urn:eu.europa.ec.eudi:pid:1",
 			"name": "PID",
 			"description": "This is a PID document issued by the well known PID Issuer conforming to ARF 1.5 PID rulebook",
 			"display": [
@@ -358,7 +358,7 @@ export class PIDSupportedCredentialSdJwtVCDM_1_5 implements VCDMSupportedCredent
 	exportCredentialSupportedObject(): any {
 		return {
 			scope: this.getScope(),
-			vct: this.getId(),
+			vct: this.metadata().vct,
 			display: [this.getDisplay()],
 			format: this.getFormat(),
 			cryptographic_binding_methods_supported: ["ES256"],
