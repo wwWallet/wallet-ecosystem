@@ -23,7 +23,7 @@ import { initializeCredentialEngine } from "../../lib/initializeCredentialEngine
 const datasetName = "vid-dataset.xlsx";
 parsePidData(path.join(__dirname, `../../../../dataset/${datasetName}`)) // test parse
 
-export class PIDSupportedCredentialSdJwtVCDM_1_5 implements VCDMSupportedCredentialProtocol {
+export class PIDSupportedCredentialSdJwtVCDM_1_5_VC implements VCDMSupportedCredentialProtocol {
 
 
 	constructor() { }
@@ -41,7 +41,7 @@ export class PIDSupportedCredentialSdJwtVCDM_1_5 implements VCDMSupportedCredent
 	}
 
 	getScope(): string {
-		return "pid:sd_jwt_dc:arf_1_5";
+		return "pid:sd_jwt_vc:arf_1_5";
 	}
 
 	getCredentialSigner(): CredentialSigner {
@@ -49,10 +49,10 @@ export class PIDSupportedCredentialSdJwtVCDM_1_5 implements VCDMSupportedCredent
 	}
 
 	getId(): string {
-		return "urn:eu.europa.ec.eudi:pid:1:dc";
+		return "urn:eu.europa.ec.eudi:pid:1:vc";
 	}
 	getFormat(): VerifiableCredentialFormat {
-		return VerifiableCredentialFormat.DC_SDJWT;
+		return VerifiableCredentialFormat.VC_SDJWT;
 	}
 	getTypes(): string[] {
 		return ["VerifiableCredential", "VerifiableAttestation", "PID", this.getId()];
@@ -243,7 +243,7 @@ export class PIDSupportedCredentialSdJwtVCDM_1_5 implements VCDMSupportedCredent
 			portrait: true
 		}
 		const { credential } = await this.getCredentialSigner()
-			.signSdJwtVc(payload, { typ: VerifiableCredentialFormat.DC_SDJWT, vctm: [base64url.encode(JSON.stringify(this.metadata()))] }, disclosureFrame);
+			.signSdJwtVc(payload, { typ: VerifiableCredentialFormat.VC_SDJWT, vctm: [base64url.encode(JSON.stringify(this.metadata()))] }, disclosureFrame);
 		const response = {
 			format: this.getFormat(),
 			credential: credential
