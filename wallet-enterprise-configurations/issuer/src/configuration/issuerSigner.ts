@@ -4,8 +4,9 @@ import { CredentialSigner } from "../services/interfaces";
 import fs from 'fs';
 import path from "path";
 import { Jwt, SDJwt } from "@sd-jwt/core";
+import { Disclosure } from "@sd-jwt/utils";
 import type { Signer } from "@sd-jwt/types";
-import { sign, KeyObject } from "crypto";
+import { sign, randomBytes, KeyObject } from "crypto";
 import { importPrivateKeyPem } from '../lib/importPrivateKeyPem';
 import {  base64url, calculateJwkThumbprint, exportJWK, importX509 } from 'jose';
 import { Document } from '@auth0/mdl';
@@ -79,6 +80,14 @@ export const issuerSigner: CredentialSigner = {
 			return Buffer.from(result).toString('base64url')
 		}
 
+		const saltGenerator = () => {
+			const buffer = randomBytes(16);
+			return buffer.toString('base64')
+			.replace(/\+/g, '-')
+			.replace(/\//g, '_')
+			.replace(/=/g, '');
+		};
+
 		const issuanceDate = new Date();
 		payload.iat = Math.floor(issuanceDate.getTime() / 1000);
 
@@ -96,12 +105,21 @@ export const issuerSigner: CredentialSigner = {
 		if (disclosureFrame != undefined) {
 			const jwt = new Jwt({
 				header: { ...headers, alg: 'ES256' },
-				payload
-			})
-
+				payload: {
+					cnf: payload.cnf,
+					vct: payload.vct,
+					jti: payload.jti
+				}
+			});
 			await jwt.sign(signer);
 
-			const sdJwt = new SDJwt({ jwt, disclosures: disclosureFrame });
+			const disclosures = Object.keys(disclosureFrame)
+				.filter(key => disclosureFrame[key])
+				.map(key => {
+					return new Disclosure([saltGenerator(), key, payload[key]])
+				});
+
+			const sdJwt = new SDJwt({ jwt, disclosures });
 			const credential = await sdJwt.encodeSDJwt();
 			return { credential };
 		}
