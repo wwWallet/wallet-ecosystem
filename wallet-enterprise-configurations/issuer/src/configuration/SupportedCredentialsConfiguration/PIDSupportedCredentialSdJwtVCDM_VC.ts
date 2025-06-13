@@ -23,7 +23,7 @@ import { initializeCredentialEngine } from "../../lib/initializeCredentialEngine
 const datasetName = "vid-dataset.xlsx";
 parsePidData(path.join(__dirname, `../../../../dataset/${datasetName}`)) // test parse
 
-export class PIDSupportedCredentialSdJwtVCDM_1_5 implements VCDMSupportedCredentialProtocol {
+export class PIDSupportedCredentialSdJwtVCDM_VC implements VCDMSupportedCredentialProtocol {
 
 
 	constructor() { }
@@ -41,7 +41,7 @@ export class PIDSupportedCredentialSdJwtVCDM_1_5 implements VCDMSupportedCredent
 	}
 
 	getScope(): string {
-		return "pid:sd_jwt_dc:arf_1_5";
+		return "pid:sd_jwt_vc";
 	}
 
 	getCredentialSigner(): CredentialSigner {
@@ -49,10 +49,10 @@ export class PIDSupportedCredentialSdJwtVCDM_1_5 implements VCDMSupportedCredent
 	}
 
 	getId(): string {
-		return "urn:eu.europa.ec.eudi:pid:1:dc";
+		return "urn:eudi:pid:1:vc";
 	}
 	getFormat(): VerifiableCredentialFormat {
-		return VerifiableCredentialFormat.DC_SDJWT;
+		return VerifiableCredentialFormat.VC_SDJWT;
 	}
 	getTypes(): string[] {
 		return ["VerifiableCredential", "VerifiableAttestation", "PID", this.getId()];
@@ -60,7 +60,7 @@ export class PIDSupportedCredentialSdJwtVCDM_1_5 implements VCDMSupportedCredent
 
 	getDisplay() {
 		return {
-			name: `PID ARF 1.5 (${this.getFormat()})`,
+			name: `PID ARF 1.8 (${this.getFormat()})`,
 			description: "Person Identification Data",
 			background_image: { uri: config.url + "/images/background-image.png" },
 			background_color: "#1b263b",
@@ -89,40 +89,37 @@ export class PIDSupportedCredentialSdJwtVCDM_1_5 implements VCDMSupportedCredent
 					{ name: "Birth last name", value: vid.family_name_birth },
 					{ name: "First name", value: vid.given_name },
 					{ name: "Birth first name", value: vid.given_name_birth },
-					{ name: "Personal ID", value: vid.personal_administrative_number },
 					{ name: "Date of birth", value: formatDateDDMMYYYY(vid.birth_date) },
+					{ name: "Country of birth", value: vid.birth_country },
+					{ name: "Region of birth", value: vid.birth_region },
+					{ name: "City of birth", value: vid.birth_city },
+					{ name: "Nationality", value: vid.nationality },
+					{ name: "Personal ID", value: vid.personal_administrative_number },
 					{ name: "Sex", value: vid.sex },
-					{ name: "Full address", value: vid.resident_address },
-					{ name: "Residence street", value: vid.resident_street },
-					{ name: "Residence number", value: vid.resident_house_number },
-					{ name: "Residence ZIP", value: vid.resident_postal_code },
-					{ name: "City of residence", value: vid.resident_city },
-					{ name: "State of residence", value: vid.resident_region },
-					{ name: "Country of residence", value: vid.resident_country },
 					{ name: "Email", value: vid.email_address },
 					{ name: "Mobile", value: vid.mobile_phone_number },
-					{ name: "Age over 14", value: vid.age_over_14 },
-					{ name: "Age over 16", value: vid.age_over_16 },
-					{ name: "Age over 18", value: vid.age_over_18 },
-					{ name: "Age over 21", value: vid.age_over_21 },
-					{ name: "Age over 65", value: vid.age_over_65 },
+					{ name: "Residence address", value: vid.resident_address },
+					{ name: "Age equal or over 14", value: vid.age_over_14 },
+					{ name: "Age equal or over 16", value: vid.age_over_16 },
+					{ name: "Age equal or over 18", value: vid.age_over_18 },
+					{ name: "Age equal or over 21", value: vid.age_over_21 },
+					{ name: "Age equal or over 65", value: vid.age_over_65 },
 					{ name: "Age", value: vid.age_in_years },
 					{ name: "Birth year", value: vid.age_birth_year },
-					{ name: "Place of birth", value: vid.birth_place },
-					{ name: "Nationality", value: vid.nationality },
 					{ name: "Issuing authority", value: vid.issuing_authority },
-					{ name: "Issuing Country", value: vid.issuing_country },
-					{ name: "Issuing Region", value: vid.issuing_jurisdiction },
-					{ name: "Document Number", value: vid.document_number }
+					{ name: "Issuing country", value: vid.issuing_country },
+					{ name: "Issuing region", value: vid.issuing_jurisdiction },
+					{ name: "Document number", value: vid.document_number },
 				];
 				const rowsObject: CategorizedRawCredentialView = { rows };
 
 				const { credentialRendering } = await initializeCredentialEngine();
 				const dataUri = await credentialRendering.renderSvgTemplate({
-					json: { ...vid,
-						expiry_date: undefined,
-						issuance_date: undefined
-					 },
+					json: {...vid,
+						birthdate:vid.birth_date,
+						date_of_expiry: undefined,
+						date_of_issuance: undefined
+					},
 					credentialImageSvgTemplate: svgText,
 					sdJwtVcMetadataClaims: this.metadata().claims,
 				})
@@ -130,7 +127,7 @@ export class PIDSupportedCredentialSdJwtVCDM_1_5 implements VCDMSupportedCredent
 				if (!dataUri) {
 					throw new Error("Could not render svg");
 				}
-
+				
 				return {
 					credential_id: this.getId(),
 					credential_supported_object: this.exportCredentialSupportedObject(),
@@ -166,37 +163,45 @@ export class PIDSupportedCredentialSdJwtVCDM_1_5 implements VCDMSupportedCredent
 
 		const vid = {
 			family_name: vidEntry.family_name,
+			birth_family_name: vidEntry.family_name_birth,
 			given_name: vidEntry.given_name,
-			family_name_birth: vidEntry.family_name_birth,
-			given_name_birth: vidEntry.given_name_birth,
-			sex: vidEntry.sex,
-			email_address: vidEntry.email_address,
-			mobile_phone_number: vidEntry.mobile_phone_number,
-			resident_address: vidEntry.resident_address,
-			resident_street: vidEntry.resident_street,
-			resident_house_number: vidEntry.resident_house_number,
-			resident_postal_code: String(vidEntry.resident_postal_code),
-			resident_city: vidEntry.resident_city,
-			resident_state: vidEntry.resident_region,
-			resident_country: vidEntry.resident_country,
+			birth_given_name: vidEntry.given_name_birth,
 			personal_administrative_number: vidEntry.personal_administrative_number,
-			age_over_14: String(vidEntry.age_over_14) == '1' ? true : false,
-			age_over_18: String(vidEntry.age_over_18) == '1' ? true : false,
-			age_over_16: String(vidEntry.age_over_16) == '1' ? true : false,
-			age_over_21: String(vidEntry.age_over_21) == '1' ? true : false,
-			age_over_65: String(vidEntry.age_over_65) == '1' ? true : false,
+			place_of_birth: {
+				country: vidEntry.birth_country,
+				region: vidEntry.birth_region,
+				locality: vidEntry.birth_city
+			},
+			address: {
+				formatted: vidEntry.resident_address,
+				country: vidEntry.resident_country,
+				region: vidEntry.resident_region,
+				locality: vidEntry.resident_city,
+				postal_code: String(vidEntry.resident_postal_code),
+				street_address: vidEntry.resident_street,
+				house_number: vidEntry.resident_house_number
+			},
+			age_equal_or_over: {
+				"14": String(vidEntry.age_over_14) == '1' ? true : false,
+				"18": String(vidEntry.age_over_18) == '1' ? true : false,
+				"21": String(vidEntry.age_over_21) == '1' ? true : false,
+				"16": String(vidEntry.age_over_16) == '1' ? true : false,
+				"65": String(vidEntry.age_over_65) == '1' ? true : false,
+			},
 			age_in_years: vidEntry.age_in_years,
 			age_birth_year: vidEntry.age_birth_year,
-			document_number: String(vidEntry.document_number),
-			birth_date: new Date(vidEntry.birth_date).toISOString().split('T')[0],  // full-date format, according to ARF PID Rulebook
+			birthdate: new Date(vidEntry.birth_date).toISOString().split('T')[0],  // full-date format, according to ARF PID Rulebook
 			issuing_authority: vidEntry.issuing_authority,
 			issuing_country: vidEntry.issuing_country,
 			issuing_jurisdiction: vidEntry.issuing_jurisdiction,
-			issuance_date: new Date().toISOString().split('T')[0],  // full-date format, according to ARF PID Rulebook
-			expiry_date: new Date(vidEntry.expiry_date).toISOString().split('T')[0],  // full-date format, according to ARF PID Rulebook
-			birth_place: vidEntry.birth_place,
-			nationality: vidEntry.nationality.split(','),
-			portrait: vidEntry.sex == '1' ? await urlToDataUrl(config.url + "/images/male_portrait.jpg") : await urlToDataUrl(config.url + "/images/female_portrait.jpg"),
+			document_number: String(vidEntry.document_number),
+			date_of_issuance: new Date().toISOString().split('T')[0],  // full-date format, according to ARF PID Rulebook
+			date_of_expiry: new Date(vidEntry.expiry_date).toISOString().split('T')[0],  // full-date format, according to ARF PID Rulebook
+			sex: vidEntry.sex,
+			nationalities: vidEntry.nationality.split(','),
+			email: vidEntry.email_address,
+			phone_number: vidEntry.mobile_phone_number,
+			picture: vidEntry.sex == '1' ? await urlToDataUrl(config.url + "/images/male_portrait.jpg") : await urlToDataUrl(config.url + "/images/female_portrait.jpg"),
 		};
 
 		const payload = {
@@ -210,40 +215,48 @@ export class PIDSupportedCredentialSdJwtVCDM_1_5 implements VCDMSupportedCredent
 
 		const disclosureFrame = {
 			family_name: true,
+			birth_family_name: true,
 			given_name: true,
-			family_name_birth: true,
-			given_name_birth: true,
-			sex: true,
-			email_address: true,
-			mobile_phone_number: true,
-			resident_address: true,
-			resident_street: true,
-			resident_house_number: true,
-			resident_postal_code: true,
-			resident_city: true,
-			resident_state: true,
-			resident_country: true,
+			birth_given_name: true,
 			personal_administrative_number: true,
-			age_over_14: true,
-			age_over_18: true,
-			age_over_16: true,
-			age_over_21: true,
-			age_over_65: true,
+			place_of_birth: {
+				country: true,
+				region: true,
+				locality: true
+			},
+			birthdate: true,
+			address: {
+				formatted: true,
+				country: true,
+				region: true,
+				locality: true,
+				postal_code: true,
+				street_address: true,
+				house_number: true
+			},
+			age_equal_or_over: {
+				"14": true,
+				"18": true,
+				"16": true,
+				"65": true,
+				"21": true,
+			},
 			age_in_years: true,
 			age_birth_year: true,
-			document_number: true,
-			birth_date: true, 
 			issuing_authority: true,
 			issuing_country: true,
 			issuing_jurisdiction: true,
-			issuance_date: true,
-			expiry_date: true,
-			birth_place: true,
-			nationality: true,
-			portrait: true
+			document_number: true,
+			date_of_issuance: true,
+			date_of_expiry: true,
+			sex: true,
+			nationalities: true,
+			email: true,
+			phone_number: true,
+			picture: true
 		}
 		const { credential } = await this.getCredentialSigner()
-			.signSdJwtVc(payload, { typ: VerifiableCredentialFormat.DC_SDJWT, vctm: [base64url.encode(JSON.stringify(this.metadata()))] }, disclosureFrame);
+			.signSdJwtVc(payload, { typ: VerifiableCredentialFormat.VC_SDJWT, vctm: [base64url.encode(JSON.stringify(this.metadata()))] }, disclosureFrame);
 		const response = {
 			format: this.getFormat(),
 			credential: credential
@@ -254,9 +267,9 @@ export class PIDSupportedCredentialSdJwtVCDM_1_5 implements VCDMSupportedCredent
 
 	public metadata(): any {
 		return {
-			"vct": "urn:eu.europa.ec.eudi:pid:1",
+			"vct": "urn:eudi:pid:1",
 			"name": "PID",
-			"description": "This is a PID document issued by the well known PID Issuer conforming to ARF 1.5 PID rulebook",
+			"description": "This is a PID document issued by the well known PID Issuer",
 			"display": [
 				{
 					"lang": "en-US",
@@ -286,7 +299,7 @@ export class PIDSupportedCredentialSdJwtVCDM_1_5 implements VCDMSupportedCredent
 						{
 							"lang": "en-US",
 							"label": "First name",
-							"description": "The given name of the PID holder"
+							"description": "Current first name(s), including middle name(s) if applicable."
 						}
 					],
 					"svg_id": "given_name"
@@ -297,13 +310,13 @@ export class PIDSupportedCredentialSdJwtVCDM_1_5 implements VCDMSupportedCredent
 						{
 							"lang": "en-US",
 							"label": "Last name",
-							"description": "The family name of the PID holder"
+							"description": "Current last name(s) or surname(s)."
 						}
 					],
 					"svg_id": "family_name"
 				},
 				{
-					"path": ["birth_date"],
+					"path": ["birthdate"],
 					"display": [
 						{
 							"lang": "en-US",
@@ -325,7 +338,7 @@ export class PIDSupportedCredentialSdJwtVCDM_1_5 implements VCDMSupportedCredent
 					"svg_id": "issuing_authority"
 				},
 				{
-					"path": ["issuance_date"],
+					"path": ["date_of_issuance"],
 					"display": [
 						{
 							"lang": "en-US",
@@ -336,18 +349,18 @@ export class PIDSupportedCredentialSdJwtVCDM_1_5 implements VCDMSupportedCredent
 					"svg_id": "issuance_date"
 				},
 				{
-					"path": ["expiry_date"],
+					"path": ["date_of_expiry"],
 					"display": [
 						{
 							"lang": "en-US",
 							"label": "Expiry date",
-							"description": "The date that the credential will expire"
+							"description": "End date of the document’s validity."
 						}
 					],
 					"svg_id": "expiry_date"
 				},
 				{
-					"path": ["portrait"],
+					"path": ["picture"],
 					"svg_id": "picture"
 				},
 			],
@@ -366,8 +379,12 @@ export class PIDSupportedCredentialSdJwtVCDM_1_5 implements VCDMSupportedCredent
 			proof_types_supported: {
 				jwt: {
 					proof_signing_alg_values_supported: ["ES256"]
+				},
+				attestation: {
+					proof_signing_alg_values_supported: ["ES256"],
+					key_attestations_required: { },
 				}
-			}
+			},
 		}
 	}
 }

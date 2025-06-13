@@ -71,7 +71,7 @@ export class EdiplomasBlueprintSdJwtVCDM implements VCDMSupportedCredentialProto
 	}
 	getDisplay() {
 		return {
-			name: "Bachelor Diploma - SD-JWT VC",
+			name: `Bachelor Diploma (${this.getFormat()})`,
 			background_image: { uri: config.url + "/images/background-image.png" },
 			logo: { uri: config.url + "/images/diploma-logo.png" },
 			background_color: "#b1d3ff",
@@ -164,7 +164,7 @@ export class EdiplomasBlueprintSdJwtVCDM implements VCDMSupportedCredentialProto
 			"cnf": {
 				"jwk": holderPublicKeyJwk
 			},
-			"vct": this.getId(),
+			"vct": this.metadata().vct,
 			"jti": `urn:credential:diploma:${randomUUID()}`,
 			"family_name": diplomaEntry.family_name,
 			"given_name": diplomaEntry.given_name,
@@ -197,7 +197,7 @@ export class EdiplomasBlueprintSdJwtVCDM implements VCDMSupportedCredentialProto
 
 	public metadata(): any {
 		return {
-			"vct": this.getId(),
+			"vct": 'urn:credential:diploma',
 			"name": "Diploma Credential",
 			"description": "This is a Bachelor Diploma verifiable credential",
 			"display": [
@@ -305,7 +305,7 @@ export class EdiplomasBlueprintSdJwtVCDM implements VCDMSupportedCredentialProto
 	exportCredentialSupportedObject(): any {
 		return {
 			scope: this.getScope(),
-			vct: this.getId(),
+			vct: this.metadata().vct,
 			format: this.getFormat(),
 			display: [this.getDisplay()],
 			cryptographic_binding_methods_supported: ["ES256"],

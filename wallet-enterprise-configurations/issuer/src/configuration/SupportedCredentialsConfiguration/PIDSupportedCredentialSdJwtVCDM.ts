@@ -41,7 +41,7 @@ export class PIDSupportedCredentialSdJwtVCDM implements VCDMSupportedCredentialP
 	}
 
 	getScope(): string {
-		return "pid:sd_jwt_vc";
+		return "pid:sd_jwt_dc";
 	}
 
 	getCredentialSigner(): CredentialSigner {
@@ -49,7 +49,7 @@ export class PIDSupportedCredentialSdJwtVCDM implements VCDMSupportedCredentialP
 	}
 
 	getId(): string {
-		return "urn:eudi:pid:1";
+		return "urn:eudi:pid:1:dc";
 	}
 	getFormat(): VerifiableCredentialFormat {
 		return VerifiableCredentialFormat.DC_SDJWT;
@@ -60,7 +60,7 @@ export class PIDSupportedCredentialSdJwtVCDM implements VCDMSupportedCredentialP
 
 	getDisplay() {
 		return {
-			name: "PID SD-JWT VC",
+			name: `PID ARF 1.8 (${this.getFormat()})`,
 			description: "Person Identification Data",
 			background_image: { uri: config.url + "/images/background-image.png" },
 			background_color: "#1b263b",
@@ -208,7 +208,7 @@ export class PIDSupportedCredentialSdJwtVCDM implements VCDMSupportedCredentialP
 			"cnf": {
 				"jwk": holderPublicKeyJwk
 			},
-			"vct": this.getId(),
+			"vct": this.metadata().vct,
 			"jti": `urn:vid:${randomUUID()}`,
 			...vid,
 		};
@@ -267,7 +267,7 @@ export class PIDSupportedCredentialSdJwtVCDM implements VCDMSupportedCredentialP
 
 	public metadata(): any {
 		return {
-			"vct": this.getId(),
+			"vct": "urn:eudi:pid:1",
 			"name": "PID",
 			"description": "This is a PID document issued by the well known PID Issuer",
 			"display": [
@@ -371,7 +371,7 @@ export class PIDSupportedCredentialSdJwtVCDM implements VCDMSupportedCredentialP
 	exportCredentialSupportedObject(): any {
 		return {
 			scope: this.getScope(),
-			vct: this.getId(),
+			vct: this.metadata().vct,
 			display: [this.getDisplay()],
 			format: this.getFormat(),
 			cryptographic_binding_methods_supported: ["ES256"],
