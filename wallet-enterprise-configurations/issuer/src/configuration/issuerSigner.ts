@@ -3,8 +3,9 @@ import { config } from "../../config";
 import { CredentialSigner } from "../services/interfaces";
 import fs from 'fs';
 import path from "path";
-import { HasherAlgorithm, HasherAndAlgorithm, SdJwt, SignatureAndEncryptionAlgorithm, Signer } from "@sd-jwt/core";
-import { sign, randomBytes, createHash, KeyObject } from "crypto";
+import { Jwt, SDJwt } from "@sd-jwt/core";
+import type { Signer } from "@sd-jwt/types";
+import { sign, KeyObject } from "crypto";
 import { importPrivateKeyPem } from '../lib/importPrivateKeyPem';
 import {  base64url, calculateJwkThumbprint, exportJWK, importX509 } from 'jose';
 import { Document } from '@auth0/mdl';
@@ -70,29 +71,13 @@ export const issuerSigner: CredentialSigner = {
 		if (!key) {
 			throw new Error("Could not import private key");
 		}
-		const signer: Signer = (input, header) => {
-			if (header.alg !== SignatureAndEncryptionAlgorithm.ES256) {
-				throw new Error('only ES256 is supported')
-			}
-			return sign(null, Buffer.from(input), {
+		const signer: Signer = (input) => {
+			const result = sign(null, Buffer.from(input), {
 				dsaEncoding: 'ieee-p1363',
 				key: key as KeyObject
 			})
+			return Buffer.from(result).toString('base64url')
 		}
-
-		const saltGenerator = () => {
-			const buffer = randomBytes(16);
-			return buffer.toString('base64')
-				.replace(/\+/g, '-')
-				.replace(/\//g, '_')
-				.replace(/=/g, '');
-		};
-
-		const hasherAndAlgorithm: HasherAndAlgorithm = {
-			hasher: (input: string) => createHash('sha256').update(input).digest(),
-			algorithm: HasherAlgorithm.Sha256
-		}
-
 
 		const issuanceDate = new Date();
 		payload.iat = Math.floor(issuanceDate.getTime() / 1000);
@@ -109,14 +94,15 @@ export const issuerSigner: CredentialSigner = {
 		headers.x5c = issuerX5C;
 
 		if (disclosureFrame != undefined) {
-			const sdJwt = new SdJwt({
-				header: { ...headers, alg: SignatureAndEncryptionAlgorithm.ES256 },
+			const jwt = new Jwt({
+				header: { ...headers, alg: 'ES256' },
 				payload
-			}).withHasher(hasherAndAlgorithm)
-				.withSigner(signer)
-				.withSaltGenerator(saltGenerator)
-				.withDisclosureFrame(disclosureFrame);
-			const credential = await sdJwt.toCompact();
+			})
+
+			await jwt.sign(signer);
+
+			const sdJwt = new SDJwt({ jwt, disclosures: disclosureFrame });
+			const credential = await sdJwt.encodeSDJwt();
 			return { credential };
 		}
 		else {
