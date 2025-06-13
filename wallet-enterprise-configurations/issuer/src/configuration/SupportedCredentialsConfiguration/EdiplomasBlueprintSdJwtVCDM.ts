@@ -22,7 +22,7 @@ import { GenericVIDAuthenticationComponent } from "../../authentication/authenti
 import { InspectPersonalInfoComponent } from "../authentication/InspectPersonalInfoComponent";
 import { UserAuthenticationMethod } from "../../types/UserAuthenticationMethod.enum";
 import { initializeCredentialEngine } from "../../lib/initializeCredentialEngine";
-
+import { createSRI } from "../../lib/sriGenerator";
 
 const datasetName = "diploma-dataset.xlsx";
 
@@ -165,6 +165,7 @@ export class EdiplomasBlueprintSdJwtVCDM implements VCDMSupportedCredentialProto
 				"jwk": holderPublicKeyJwk
 			},
 			"vct": this.metadata().vct,
+			"vct#integrity": createSRI(this.metadata()),
 			"jti": `urn:credential:diploma:${randomUUID()}`,
 			"family_name": diplomaEntry.family_name,
 			"given_name": diplomaEntry.given_name,

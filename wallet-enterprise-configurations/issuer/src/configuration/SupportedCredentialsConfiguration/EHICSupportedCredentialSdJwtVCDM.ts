@@ -21,6 +21,7 @@ import { GenericLocalAuthenticationComponent } from "../../authentication/authen
 import { UserAuthenticationMethod } from "../../types/UserAuthenticationMethod.enum";
 import { initializeCredentialEngine } from "../../lib/initializeCredentialEngine";
 import { formatDateDDMMYYYY } from "../../lib/formatDate";
+import { createSRI } from "../../lib/sriGenerator";
 
 const datasetName = "ehic-dataset.xlsx";
 parseEhicData(path.join(__dirname, `../../../../dataset/${datasetName}`)) // test parse
@@ -200,6 +201,7 @@ export class EHICSupportedCredentialSdJwtVCDM implements VCDMSupportedCredential
 				"jwk": holderPublicKeyJwk
 			},
 			"vct": this.metadata().vct,
+			"vct#integrity": createSRI(this.metadata()),
 			"jti": `urn:eudi:ehic:1:${randomUUID()}`,
 			...ehic
 		};

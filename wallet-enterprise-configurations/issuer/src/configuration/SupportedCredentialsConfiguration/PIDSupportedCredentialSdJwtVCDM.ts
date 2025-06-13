@@ -19,6 +19,7 @@ import { AuthenticationChain, AuthenticationChainBuilder } from "../../authentic
 import { CONSENT_ENTRYPOINT } from "../../authorization/constants";
 import { GenericLocalAuthenticationComponent } from "../../authentication/authenticationComponentTemplates/GenericLocalAuthenticationComponent";
 import { initializeCredentialEngine } from "../../lib/initializeCredentialEngine";
+import { createSRI } from "../../lib/sriGenerator";
 
 const datasetName = "vid-dataset.xlsx";
 parsePidData(path.join(__dirname, `../../../../dataset/${datasetName}`)) // test parse
@@ -209,6 +210,7 @@ export class PIDSupportedCredentialSdJwtVCDM implements VCDMSupportedCredentialP
 				"jwk": holderPublicKeyJwk
 			},
 			"vct": this.metadata().vct,
+			"vct#integrity": createSRI(this.metadata()),
 			"jti": `urn:vid:${randomUUID()}`,
 			...vid,
 		};

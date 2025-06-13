@@ -19,6 +19,7 @@ import { GenericAuthenticationMethodSelectionComponent } from "../../authenticat
 import { GenericVIDAuthenticationComponent } from "../../authentication/authenticationComponentTemplates/GenericVIDAuthenticationComponent";
 import { UserAuthenticationMethod } from "../../types/UserAuthenticationMethod.enum";
 import { initializeCredentialEngine } from "../../lib/initializeCredentialEngine";
+import { createSRI } from "../../lib/sriGenerator";
 
 const datasetName = "por-dataset.xlsx";
 parsePorData(path.join(__dirname, `../../../../dataset/${datasetName}`)) // test parse
@@ -155,6 +156,7 @@ export class PorSupportedCredentialSdJwt implements VCDMSupportedCredentialProto
 				"jwk": holderPublicKeyJwk
 			},
 			"vct": this.metadata().vct,
+			"vct#integrity": createSRI(this.metadata()),
 			"jti": `urn:por:${randomUUID()}`,
 			"legal_person_identifier": String(porEntry.legal_person_identifier),
 			"legal_name": String(porEntry.legal_name),
