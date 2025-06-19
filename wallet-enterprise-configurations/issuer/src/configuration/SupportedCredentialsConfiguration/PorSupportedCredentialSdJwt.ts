@@ -19,6 +19,7 @@ import { GenericAuthenticationMethodSelectionComponent } from "../../authenticat
 import { GenericVIDAuthenticationComponent } from "../../authentication/authenticationComponentTemplates/GenericVIDAuthenticationComponent";
 import { UserAuthenticationMethod } from "../../types/UserAuthenticationMethod.enum";
 import { initializeCredentialEngine } from "../../lib/initializeCredentialEngine";
+import { createSRI } from "../../lib/sriGenerator";
 
 const datasetName = "por-dataset.xlsx";
 parsePorData(path.join(__dirname, `../../../../dataset/${datasetName}`)) // test parse
@@ -51,7 +52,7 @@ export class PorSupportedCredentialSdJwt implements VCDMSupportedCredentialProto
 		return "urn:eu.europa.ec.eudi:por:1";
 	}
 	getFormat(): VerifiableCredentialFormat {
-		return VerifiableCredentialFormat.VC_SDJWT;
+		return VerifiableCredentialFormat.DC_SDJWT;
 	}
 	getTypes(): string[] {
 		return ["VerifiableCredential", "VerifiableAttestation", "POR", this.getId()];
@@ -59,7 +60,7 @@ export class PorSupportedCredentialSdJwt implements VCDMSupportedCredentialProto
 
 	getDisplay() {
 		return {
-			name: "Power of Representation - SD-JWT VC",
+			name: `Power of Representation (${this.getFormat()})`,
 			description: "Power of Representation - SD-JWT VC",
 			background_image: { uri: config.url + "/images/background-image.png" },
 			background_color: "#c3b25d",
@@ -96,8 +97,8 @@ export class PorSupportedCredentialSdJwt implements VCDMSupportedCredentialProto
 
 		const credentialView: CredentialView = await (async () => {
 			const rows: CategorizedRawCredentialViewRow[] = [
-				{ name: "Legal Entity Name", value: porEntry.legal_name },
-				{ name: "Legal Entity ID", value: porEntry.legal_person_identifier },
+				{ name: "Legal entity name", value: porEntry.legal_name },
+				{ name: "Legal entity ID", value: porEntry.legal_person_identifier },
 				{ name: "Full Represent. Powers", value: porEntry.full_powers }
 			];
 			const rowsObject: CategorizedRawCredentialView = { rows };
@@ -138,7 +139,7 @@ export class PorSupportedCredentialSdJwt implements VCDMSupportedCredentialProto
 			throw new Error("Failed to get users from dataset");
 		}
 
-		if (request.body?.vct != this.getId() || !userSession.scope || !userSession.scope.split(' ').includes(this.getScope())) {
+		if (request.body?.credential_configuration_id != this.getId() || !userSession.scope || !userSession.scope.split(' ').includes(this.getScope())) {
 			console.log("Not the correct credential");
 			throw new Error("Not the correct credential");
 		}
@@ -154,14 +155,15 @@ export class PorSupportedCredentialSdJwt implements VCDMSupportedCredentialProto
 			"cnf": {
 				"jwk": holderPublicKeyJwk
 			},
-			"vct": this.getId(),
+			"vct": this.metadata().vct,
+			"vct#integrity": createSRI(this.metadata()),
 			"jti": `urn:por:${randomUUID()}`,
 			"legal_person_identifier": String(porEntry.legal_person_identifier),
 			"legal_name": String(porEntry.legal_name),
 			"full_powers": String(porEntry.full_powers),
 
-			"effective_from_date": new Date(porEntry.effective_from).toISOString().split('T')[0],
-			"effective_until_date": porEntry.effective_until && new Date(porEntry.effective_until).toISOString().split('T')[0],
+			"effective_from_date": new Date(porEntry.effective_from).toISOString(),
+			"effective_until_date": porEntry.effective_until && new Date(porEntry.effective_until).toISOString(),
 			"eService": porEntry.eService == "" ? null : porEntry.eService,
 			"issuing_authority": porEntry.issuing_authority,
 			"issuing_country": porEntry.issuing_country
@@ -180,7 +182,7 @@ export class PorSupportedCredentialSdJwt implements VCDMSupportedCredentialProto
 		};
 
 		const { credential } = await this.getCredentialSigner()
-			.signSdJwtVc(payload, { typ: VerifiableCredentialFormat.VC_SDJWT, vctm: [base64url.encode(JSON.stringify(this.metadata()))] }, disclosureFrame);
+			.signSdJwtVc(payload, { typ: VerifiableCredentialFormat.DC_SDJWT, vctm: [base64url.encode(JSON.stringify(this.metadata()))] }, disclosureFrame);
 		const response = {
 			format: this.getFormat(),
 			credential: credential
@@ -191,7 +193,7 @@ export class PorSupportedCredentialSdJwt implements VCDMSupportedCredentialProto
 
 	public metadata(): any {
 		return {
-			"vct": this.getId(),
+			"vct": "urn:eu.europa.ec.eudi:por:1",
 			"name": "Power of Representation",
 			"description": "Power of Representation (POR) SD-JWT VC",
 			"display": [
@@ -222,7 +224,7 @@ export class PorSupportedCredentialSdJwt implements VCDMSupportedCredentialProto
 					"display": [
 						{
 							"lang": "en-US",
-							"label": "Legal Entity Name",
+							"label": "Legal entity name",
 							"description": "Name of the legal entity being represented."
 						}
 					],
@@ -233,7 +235,7 @@ export class PorSupportedCredentialSdJwt implements VCDMSupportedCredentialProto
 					"display": [
 						{
 							"lang": "en-US",
-							"label": "Legal Entity ID",
+							"label": "Legal entity ID",
 							"description": "Unique identifier of the legal entity being represented."
 						}
 					],
@@ -255,7 +257,7 @@ export class PorSupportedCredentialSdJwt implements VCDMSupportedCredentialProto
 					"display": [
 						{
 							"lang": "en-US",
-							"label": "Effective From",
+							"label": "Effective from",
 							"description": "Start date of valid representation (inclusive)."
 						}
 					],
@@ -266,7 +268,7 @@ export class PorSupportedCredentialSdJwt implements VCDMSupportedCredentialProto
 					"display": [
 						{
 							"lang": "en-US",
-							"label": "Effective Until",
+							"label": "Effective until",
 							"description": "End date of valid representation (inclusive)."
 						}
 					],
@@ -280,7 +282,7 @@ export class PorSupportedCredentialSdJwt implements VCDMSupportedCredentialProto
 	exportCredentialSupportedObject(): any {
 		return {
 			scope: this.getScope(),
-			vct: this.getId(),
+			vct: this.metadata().vct,
 			display: [this.getDisplay()],
 			format: this.getFormat(),
 			cryptographic_binding_methods_supported: ["ES256"],

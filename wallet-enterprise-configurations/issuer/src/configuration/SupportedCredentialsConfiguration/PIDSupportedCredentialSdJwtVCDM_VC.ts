@@ -24,7 +24,7 @@ import { createSRI } from "../../lib/sriGenerator";
 const datasetName = "vid-dataset.xlsx";
 parsePidData(path.join(__dirname, `../../../../dataset/${datasetName}`)) // test parse
 
-export class PIDSupportedCredentialSdJwtVCDM implements VCDMSupportedCredentialProtocol {
+export class PIDSupportedCredentialSdJwtVCDM_VC implements VCDMSupportedCredentialProtocol {
 
 
 	constructor() { }
@@ -42,7 +42,7 @@ export class PIDSupportedCredentialSdJwtVCDM implements VCDMSupportedCredentialP
 	}
 
 	getScope(): string {
-		return "pid:sd_jwt_dc";
+		return "pid:sd_jwt_vc";
 	}
 
 	getCredentialSigner(): CredentialSigner {
@@ -50,10 +50,10 @@ export class PIDSupportedCredentialSdJwtVCDM implements VCDMSupportedCredentialP
 	}
 
 	getId(): string {
-		return "urn:eudi:pid:1:dc";
+		return "urn:eudi:pid:1:vc";
 	}
 	getFormat(): VerifiableCredentialFormat {
-		return VerifiableCredentialFormat.DC_SDJWT;
+		return VerifiableCredentialFormat.VC_SDJWT;
 	}
 	getTypes(): string[] {
 		return ["VerifiableCredential", "VerifiableAttestation", "PID", this.getId()];
@@ -258,7 +258,7 @@ export class PIDSupportedCredentialSdJwtVCDM implements VCDMSupportedCredentialP
 			picture: true
 		}
 		const { credential } = await this.getCredentialSigner()
-			.signSdJwtVc(payload, { typ: VerifiableCredentialFormat.DC_SDJWT, vctm: [base64url.encode(JSON.stringify(this.metadata()))] }, disclosureFrame);
+			.signSdJwtVc(payload, { typ: VerifiableCredentialFormat.VC_SDJWT, vctm: [base64url.encode(JSON.stringify(this.metadata()))] }, disclosureFrame);
 		const response = {
 			format: this.getFormat(),
 			credential: credential

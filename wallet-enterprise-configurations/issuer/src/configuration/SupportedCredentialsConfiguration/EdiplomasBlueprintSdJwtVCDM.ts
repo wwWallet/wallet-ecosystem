@@ -22,7 +22,7 @@ import { GenericVIDAuthenticationComponent } from "../../authentication/authenti
 import { InspectPersonalInfoComponent } from "../authentication/InspectPersonalInfoComponent";
 import { UserAuthenticationMethod } from "../../types/UserAuthenticationMethod.enum";
 import { initializeCredentialEngine } from "../../lib/initializeCredentialEngine";
-
+import { createSRI } from "../../lib/sriGenerator";
 
 const datasetName = "diploma-dataset.xlsx";
 
@@ -64,14 +64,14 @@ export class EdiplomasBlueprintSdJwtVCDM implements VCDMSupportedCredentialProto
 	}
 
 	getFormat(): VerifiableCredentialFormat {
-		return VerifiableCredentialFormat.VC_SDJWT;
+		return VerifiableCredentialFormat.DC_SDJWT;
 	}
 	getTypes(): string[] {
 		return ["VerifiableCredential", "VerifiableAttestation", "Bachelor", this.getId()];
 	}
 	getDisplay() {
 		return {
-			name: "Bachelor Diploma - SD-JWT VC",
+			name: `Bachelor Diploma (${this.getFormat()})`,
 			background_image: { uri: config.url + "/images/background-image.png" },
 			logo: { uri: config.url + "/images/diploma-logo.png" },
 			background_color: "#b1d3ff",
@@ -155,7 +155,7 @@ export class EdiplomasBlueprintSdJwtVCDM implements VCDMSupportedCredentialProto
 			throw new Error("Could not generate credential response");
 		}
 
-		if (request.body?.vct != this.getId() || !userSession.scope || !userSession.scope.split(' ').includes(this.getScope())) {
+		if (request.body?.credential_configuration_id != this.getId() || !userSession.scope || !userSession.scope.split(' ').includes(this.getScope())) {
 			console.log("Not the correct credential");
 			throw new Error("Not the correct credential");
 		}
@@ -164,7 +164,8 @@ export class EdiplomasBlueprintSdJwtVCDM implements VCDMSupportedCredentialProto
 			"cnf": {
 				"jwk": holderPublicKeyJwk
 			},
-			"vct": this.getId(),
+			"vct": this.metadata().vct,
+			"vct#integrity": createSRI(this.metadata()),
 			"jti": `urn:credential:diploma:${randomUUID()}`,
 			"family_name": diplomaEntry.family_name,
 			"given_name": diplomaEntry.given_name,
@@ -185,7 +186,7 @@ export class EdiplomasBlueprintSdJwtVCDM implements VCDMSupportedCredentialProto
 		}
 
 		const { credential } = await this.getCredentialSigner()
-			.signSdJwtVc(payload, { typ: VerifiableCredentialFormat.VC_SDJWT, vctm: [base64url.encode(JSON.stringify(this.metadata()))] }, disclosureFrame);
+			.signSdJwtVc(payload, { typ: VerifiableCredentialFormat.DC_SDJWT, vctm: [base64url.encode(JSON.stringify(this.metadata()))] }, disclosureFrame);
 
 		const response = {
 			format: this.getFormat(),
@@ -197,7 +198,7 @@ export class EdiplomasBlueprintSdJwtVCDM implements VCDMSupportedCredentialProto
 
 	public metadata(): any {
 		return {
-			"vct": this.getId(),
+			"vct": 'urn:credential:diploma',
 			"name": "Diploma Credential",
 			"description": "This is a Bachelor Diploma verifiable credential",
 			"display": [
@@ -305,7 +306,7 @@ export class EdiplomasBlueprintSdJwtVCDM implements VCDMSupportedCredentialProto
 	exportCredentialSupportedObject(): any {
 		return {
 			scope: this.getScope(),
-			vct: this.getId(),
+			vct: this.metadata().vct,
 			format: this.getFormat(),
 			display: [this.getDisplay()],
 			cryptographic_binding_methods_supported: ["ES256"],

@@ -58,7 +58,7 @@ export class PIDSupportedCredentialMsoMdoc implements SupportedCredentialProtoco
 
 	getDisplay() {
 		return {
-			name: "PID - MDOC",
+			name: `PID mDoc`,
 			description: "Person Identification Data",
 			background_image: { uri: config.url + "/images/background-image.png" },
 			background_color: "#4CC3DD",
@@ -137,7 +137,7 @@ export class PIDSupportedCredentialMsoMdoc implements SupportedCredentialProtoco
 			throw new Error("Failed to get users from dataset");
 		}
 
-		if (request.body?.doctype != this.getId() || !userSession.scope || !userSession.scope.split(' ').includes(this.getScope())) {
+		if (request.body?.credential_configuration_id != this.getId() || !userSession.scope || !userSession.scope.split(' ').includes(this.getScope())) {
 			console.log("Not the correct credential");
 			throw new Error("Not the correct credential");
 		}

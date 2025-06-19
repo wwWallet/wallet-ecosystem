@@ -32,6 +32,7 @@ const locale = {
 				paragraph: "The specifications that are partially or fully implemented by wwWallet Issuer are shown below:",
 				tables: {
 					openid4vci: [
+						["OIDVCI Specification", "Draft 15"],
 						["Grant Type", "authorization_code [OpenID.Core]"],
 						["Client Authentcation", "PKCE [RFC 7636], no secret"],
 						["Client Type", "Public"],
@@ -42,14 +43,15 @@ const locale = {
 						["Credential Endpoint Proof Type", "jwt [OpenID4VCI]"],
 						["Credential Response Holder Binding", "cnf claim [RFC 7800]"],
 						["Batch Credential Endpoint", "Supported"],
-						["Credential Format", "vc+sd-jwt, mso_mdoc"],
+						["Credential Format", "dc+sd-jwt, mso_mdoc"],
 					],
 					openid4vci_notes: "Currently, the Notification and Deferred Endpoints are not supported",
 					openid4vp: [
+						["OIDVP Specification", "Draft 24"],
 						["Response Mode", "direct_post.jwt [OpenID4VP]"],
 						["Request Method", "request_uri signed [JAR]"],
 						["Client ID Scheme", "x509_san_dns"],
-						["Credential Format", "vc+sd-jwt, mso_mdoc"],
+						["Credential Format", "dc+sd-jwt, mso_mdoc"],
 					],
 					openid4vp_notes: "",
 				},

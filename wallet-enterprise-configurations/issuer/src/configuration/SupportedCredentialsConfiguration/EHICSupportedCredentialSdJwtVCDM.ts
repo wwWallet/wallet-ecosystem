@@ -20,6 +20,8 @@ import { CONSENT_ENTRYPOINT } from "../../authorization/constants";
 import { GenericLocalAuthenticationComponent } from "../../authentication/authenticationComponentTemplates/GenericLocalAuthenticationComponent";
 import { UserAuthenticationMethod } from "../../types/UserAuthenticationMethod.enum";
 import { initializeCredentialEngine } from "../../lib/initializeCredentialEngine";
+import { formatDateDDMMYYYY } from "../../lib/formatDate";
+import { createSRI } from "../../lib/sriGenerator";
 
 const datasetName = "ehic-dataset.xlsx";
 parseEhicData(path.join(__dirname, `../../../../dataset/${datasetName}`)) // test parse
@@ -60,14 +62,14 @@ export class EHICSupportedCredentialSdJwtVCDM implements VCDMSupportedCredential
 		return "urn:eudi:ehic:1"
 	}
 	getFormat(): VerifiableCredentialFormat {
-		return VerifiableCredentialFormat.VC_SDJWT;
+		return VerifiableCredentialFormat.DC_SDJWT;
 	}
 	getTypes(): string[] {
 		return ["VerifiableCredential", "VerifiableAttestation", "EuropeanHealthInsuranceCard", this.getId()];
 	}
 	getDisplay() {
 		return {
-			name: "EHIC - SD-JWT VC",
+			name: `EHIC (${this.getFormat()})`,
 			description: "European Health Insurance Card",
 			background_image: { uri: config.url + "/images/background-image.png" },
 			background_color: "#1b263b",
@@ -101,11 +103,15 @@ export class EHICSupportedCredentialSdJwtVCDM implements VCDMSupportedCredential
 			const credentialViews: CredentialView[] = await Promise.all(ehics
 				.map(async (ehic) => {
 					const rows: CategorizedRawCredentialViewRow[] = [
-						{ name: "Personal ID", value: String(ehic.personal_administrative_number) },
-						{ name: "Document Number", value: String(ehic.document_number) },
-						{ name: "Issuing Country", value: ehic.issuer_country },
-						{ name: "Issuing Authority ID", value: ehic.issuing_authority_id },
-						{ name: "Issuing Authority Name", value: ehic.issuing_authority_name },
+						{ name: "Social Security PIN", value: String(ehic.personal_administrative_number) },
+						{ name: "Document number", value: String(ehic.document_number) },
+						{ name: "Issuing country", value: ehic.issuer_country },
+						{ name: "Issuing authority id", value: ehic.issuing_authority_id },
+						{ name: "Issuing authority name", value: ehic.issuing_authority_name },
+						{ name: "Competent institution id", value: ehic.authentic_source_id },
+						{ name: "Competent institution name", value: ehic.authentic_source_name },
+						{ name: "Starting date", value: formatDateDDMMYYYY(ehic.starting_date) },
+						{ name: "Ending date", value: formatDateDDMMYYYY(ehic.ending_date) },
 
 					];
 					const rowsObject: CategorizedRawCredentialView = { rows };
@@ -114,11 +120,11 @@ export class EHICSupportedCredentialSdJwtVCDM implements VCDMSupportedCredential
 						json: {
 							...ehic,
 							date_of_expiry: undefined,
-							issuing_authority: {
-								id: String(ehic.issuing_authority_id),
-								name: String(ehic.issuing_authority_name)
+							authentic_source: {
+								id: String(ehic.authentic_source_id),
+								name: String(ehic.authentic_source_name)
 							},
-						 },
+						},
 						credentialImageSvgTemplate: svgText,
 						sdJwtVcMetadataClaims: this.metadata().claims,
 					});
@@ -154,7 +160,7 @@ export class EHICSupportedCredentialSdJwtVCDM implements VCDMSupportedCredential
 			throw new Error("Failed to get users from dataset");
 		}
 
-		if (request.body?.vct != this.getId() || !userSession.scope || !userSession.scope.split(' ').includes(this.getScope())) {
+		if (request.body?.credential_configuration_id != this.getId() || !userSession.scope || !userSession.scope.split(' ').includes(this.getScope())) {
 			console.log("Not the correct credential");
 			throw new Error("Not the correct credential");
 		}
@@ -179,15 +185,23 @@ export class EHICSupportedCredentialSdJwtVCDM implements VCDMSupportedCredential
 				id: String(ehicEntry.issuing_authority_id),
 				name: String(ehicEntry.issuing_authority_name)
 			},
+			authentic_source: {
+				id: String(ehicEntry.authentic_source_id),
+				name: String(ehicEntry.authentic_source_name)
+			},
 			date_of_expiry: new Date(ehicEntry.date_of_expiry).toISOString().split('T')[0],
-			document_number: String(ehicEntry.document_number)
+			document_number: String(ehicEntry.document_number),
+			starting_date: new Date(ehicEntry.starting_date).toISOString().split('T')[0],
+			ending_date: new Date(ehicEntry.ending_date).toISOString().split('T')[0]
+
 		};
 
 		const payload = {
 			"cnf": {
 				"jwk": holderPublicKeyJwk
 			},
-			"vct": this.getId(),
+			"vct": this.metadata().vct,
+			"vct#integrity": createSRI(this.metadata()),
 			"jti": `urn:eudi:ehic:1:${randomUUID()}`,
 			...ehic
 		};
@@ -199,12 +213,18 @@ export class EHICSupportedCredentialSdJwtVCDM implements VCDMSupportedCredential
 				id: true,
 				name: true
 			},
+			authentic_source: {
+				id: true,
+				name: true
+			},
 			document_number: true,
 			date_of_issuance: true,
-			date_of_expiry: true
+			date_of_expiry: true,
+			starting_date: true,
+			ending_date: true
 		}
 		const { credential } = await this.getCredentialSigner()
-			.signSdJwtVc(payload, { typ: VerifiableCredentialFormat.VC_SDJWT, vctm: [base64url.encode(JSON.stringify(this.metadata()))] }, disclosureFrame);
+			.signSdJwtVc(payload, { typ: VerifiableCredentialFormat.DC_SDJWT, vctm: [base64url.encode(JSON.stringify(this.metadata()))] }, disclosureFrame);
 		const response = {
 			format: this.getFormat(),
 			credential: credential
@@ -215,7 +235,7 @@ export class EHICSupportedCredentialSdJwtVCDM implements VCDMSupportedCredential
 
 	public metadata(): any {
 		return {
-			"vct": this.getId(),
+			"vct": "urn:eudi:ehic:1",
 			"name": "EHIC",
 			"description": "This is a European Health Insurance Card verifiable credential",
 			"display": [
@@ -237,48 +257,135 @@ export class EHICSupportedCredentialSdJwtVCDM implements VCDMSupportedCredential
 			],
 			"claims": [
 				{
-					"path": ["personal_administrative_number"],
+					"path": [
+						"personal_administrative_number"
+					],
+					"svg_id": "personal_administrative_number",
 					"display": [
 						{
 							"lang": "en-US",
-							"label": "Personal ID",
+							"label": "Social Security PIN",
 							"description": "Unique personal identifier used by social security services."
 						}
-					],
-					"svg_id": "personal_administrative_number"
+					]
 				},
 				{
-					"path": ["issuing_country"],
+					"path": [
+						"issuing_country"
+					],
+					"svg_id": "issuer_country",
 					"display": [
 						{
 							"lang": "en-US",
-							"label": "Issuer Country",
+							"label": "Issuing country",
 							"description": "The issuer country of the EHIC holder"
 						}
-					],
-					"svg_id": "issuer_country"
+					]
 				},
 				{
-					"path": ["issuing_authority", "id"],
+					"path": [
+						"issuing_authority",
+						"id"
+					],
 					"display": [
 						{
 							"lang": "en-US",
 							"label": "Issuing authority id",
 							"description": "EHIC issuing authority unique identifier in EESSI."
 						}
-					],
-					"svg_id": "issuing_authority_id"
+					]
 				},
 				{
-					"path": ["issuing_authority", "name"],
+					"path": [
+						"issuing_authority",
+						"name"
+					],
 					"display": [
 						{
 							"lang": "en-US",
 							"label": "Issuing authority name",
 							"description": "EHIC issuing authority name in EESSI."
 						}
+					]
+				},
+				{
+					"path": [
+						"date_of_expiry"
 					],
-					"svg_id": "issuing_authority_name"
+					"svg_id": "date_of_expiry",
+					"display": [
+						{
+							"lang": "en-US",
+							"label": "Expiry date",
+							"description": "EHIC expiration date."
+						}
+					]
+				},
+				{
+					"path": [
+						"date_of_issuance"
+					],
+					"display": [
+						{
+							"lang": "en-US",
+							"label": "Issue date",
+							"description": "EHIC validity start date."
+						}
+					]
+				},
+				{
+					"path": [
+						"authentic_source",
+						"id"
+					],
+					"sd": "never",
+					"svg_id": "authentic_source_id",
+					"display": [
+						{
+							"lang": "en-US",
+							"label": "Competent institution id",
+							"description": "Identifier of the competent insitution as registered in the EESSI Institution Repository."
+						}
+					]
+				},
+				{
+					"path": [
+						"authentic_source",
+						"name"
+					],
+					"sd": "never",
+					"svg_id": "authentic_source_name",
+					"display": [
+						{
+							"lang": "en-US",
+							"label": "Competent institution name",
+							"description": "Name of the competent insitution as registered in the EESSI Institution Repository."
+						}
+					]
+				},
+				{
+					"path": [
+						"ending_date"
+					],
+					"display": [
+						{
+							"lang": "en-US",
+							"label": "Ending date",
+							"description": "End date of the insurance coverage."
+						}
+					]
+				},
+				{
+					"path": [
+						"starting_date"
+					],
+					"display": [
+						{
+							"lang": "en-US",
+							"label": "Starting date",
+							"description": "Start date of the insurance coverage."
+						}
+					]
 				},
 				{
 					"path": [
@@ -292,17 +399,6 @@ export class EHICSupportedCredentialSdJwtVCDM implements VCDMSupportedCredential
 							"description": "EHIC unique document identifier."
 						}
 					]
-				},
-				{
-					"path": ["date_of_expiry"],
-					"display": [
-						{
-							"lang": "en-US",
-							"label": "Expiry date",
-							"description": "EHIC expiration date."
-						}
-					],
-					"svg_id": "date_of_expiry"
 				}
 			],
 		}
@@ -312,7 +408,7 @@ export class EHICSupportedCredentialSdJwtVCDM implements VCDMSupportedCredential
 	exportCredentialSupportedObject(): any {
 		return {
 			scope: this.getScope(),
-			vct: this.getId(),
+			vct: this.metadata().vct,
 			format: this.getFormat(),
 			display: [this.getDisplay()],
 			cryptographic_binding_methods_supported: ["ES256"],

@@ -18,42 +18,42 @@ const sdJwtPidFields = [
 		}
 	},
 	{
-		"name": "First Name",
+		"name": "First name",
 		"path": ['$.given_name'],
 		"filter": {}
 	},
 	{
-		"name": "Birth First Name",
+		"name": "Birth first name",
 		"path": ['$.birth_given_name'],
 		"filter": {}
 	},
 	{
-		"name": "Last Name",
+		"name": "Last name",
 		"path": ['$.family_name'],
 		"filter": {}
 	},
 	{
-		"name": "Birth Last Name",
+		"name": "Birth last name",
 		"path": ['$.birth_family_name'],
 		"filter": {}
 	},
 	{
-		"name": "Date of Birth",
+		"name": "Date of birth",
 		"path": ['$.birthdate'],
 		"filter": {}
 	},
 	{
-		"name": "Country of Birth",
+		"name": "Country of birth",
 		"path": ['$.place_of_birth.country'],
 		"filter": {}
 	},
 	{
-		"name": "Region of Birth",
+		"name": "Region of birth",
 		"path": ['$.place_of_birth.region'],
 		"filter": {}
 	},
 	{
-		"name": "City of Birth",
+		"name": "City of birth",
 		"path": ['$.place_of_birth.locality'],
 		"filter": {}
 	},
@@ -73,7 +73,7 @@ const sdJwtPidFields = [
 		"filter": {}
 	},
 	{
-		"name": "Full address",
+		"name": "Residence address",
 		"path": ['$.address.formatted'],
 		"filter": {}
 	},
@@ -88,7 +88,7 @@ const sdJwtPidFields = [
 		"filter": {}
 	},
 	{
-		"name": "Postal or ZIP code of residence",
+		"name": "Residence ZIP",
 		"path": ['$.address.postal_code'],
 		"filter": {}
 	},
@@ -109,22 +109,27 @@ const sdJwtPidFields = [
 	},
 	{
 		"name": "Age equal or over 14",
-		"path": ['$.age_equal_or_over.14'],
+		"path": ["$.age_equal_or_over['14']"],
 		"filter": {}
 	},
 	{
 		"name": "Age equal or over 16",
-		"path": ['$.age_equal_or_over.16'],
+		"path": ["$.age_equal_or_over['16']"],
 		"filter": {}
 	},
 	{
 		"name": "Age equal or over 18",
-		"path": ['$.age_equal_or_over.18'],
+		"path": ["$.age_equal_or_over['18']"],
 		"filter": {}
 	},
 	{
 		"name": "Age equal or over 21",
-		"path": ['$.age_equal_or_over.21'],
+		"path": ["$.age_equal_or_over['21']"],
+		"filter": {}
+	},
+	{
+		"name": "Age equal or over 65",
+		"path": ["$.age_equal_or_over['65']"],
 		"filter": {}
 	},
 	{
@@ -133,7 +138,7 @@ const sdJwtPidFields = [
 		"filter": {}
 	},
 	{
-		"name": "Birth Year",
+		"name": "Birth year",
 		"path": ['$.age_birth_year'],
 		"filter": {}
 	},
@@ -148,12 +153,12 @@ const sdJwtPidFields = [
 		"filter": {}
 	},
 	{
-		"name": "Issuing Authority",
+		"name": "Issuing authority",
 		"path": ['$.issuing_authority'],
 		"filter": {}
 	},
 	{
-		"name": "Issuing Country",
+		"name": "Issuing country",
 		"path": ['$.issuing_country'],
 		"filter": {}
 	},
@@ -163,7 +168,7 @@ const sdJwtPidFields = [
 		"filter": {}
 	},
 	{
-		"name": "Expiry Date",
+		"name": "Expiry date",
 		"path": ['$.date_of_expiry'],
 		"filter": {}
 	},
@@ -173,7 +178,7 @@ const sdJwtPidFields = [
 		"filter": {}
 	},
 	{
-		"name": "Document Number",
+		"name": "Document number",
 		"path": ['$.document_number'],
 		"filter": {}
 	},
@@ -196,22 +201,22 @@ const sdJwtPidFields_1_5 = [
 		}
 	},
 	{
-		"name": "First Name",
+		"name": "First name",
 		"path": ['$.given_name'],
 		"filter": {}
 	},
 	{
-		"name": "Birth First Name",
+		"name": "Birth first name",
 		"path": ['$.given_name_birth'],
 		"filter": {}
 	},
 	{
-		"name": "Last Name",
+		"name": "Last name",
 		"path": ['$.family_name'],
 		"filter": {}
 	},
 	{
-		"name": "Birth Last Name",
+		"name": "Birth last name",
 		"path": ['$.family_name_birth'],
 		"filter": {}
 	},
@@ -236,12 +241,12 @@ const sdJwtPidFields_1_5 = [
 		"filter": {}
 	},
 	{
-		"name": "Resident Street",
-		"path": ['$.resident_street_address'],
+		"name": "Resident street",
+		"path": ['$.resident_street'],
 		"filter": {}
 	},
 	{
-		"name": "Resident Number",
+		"name": "Resident number",
 		"path": ['$.resident_house_number'],
 		"filter": {}
 	},
@@ -251,17 +256,17 @@ const sdJwtPidFields_1_5 = [
 		"filter": {}
 	},
 	{
-		"name": "City of Residence",
+		"name": "City of residence",
 		"path": ['$.resident_city'],
 		"filter": {}
 	},
 	{
-		"name": "State of Residence",
+		"name": "State of residence",
 		"path": ['$.resident_state'],
 		"filter": {}
 	},
 	{
-		"name": "Country of Residence",
+		"name": "Country of residence",
 		"path": ['$.resident_country'],
 		"filter": {}
 	},
@@ -276,7 +281,7 @@ const sdJwtPidFields_1_5 = [
 		"filter": {}
 	},
 	{
-		"name": "Place of Birth",
+		"name": "Place of birth",
 		"path": ['$.birth_place'],
 		"filter": {}
 	},
@@ -311,37 +316,37 @@ const sdJwtPidFields_1_5 = [
 		"filter": {}
 	},
 	{
-		"name": "Birth Year",
+		"name": "Birth year",
 		"path": ['$.age_birth_year'],
 		"filter": {}
 	},
 	{
-		"name": "Document Number",
+		"name": "Document number",
 		"path": ['$.document_number'],
 		"filter": {}
 	},
 	{
-		"name": "Issuing Authority",
+		"name": "Issuing authority",
 		"path": ['$.issuing_authority'],
 		"filter": {}
 	},
 	{
-		"name": "Issuing Country",
+		"name": "Issuing country",
 		"path": ['$.issuing_country'],
 		"filter": {}
 	},
 	{
-		"name": "Issuing Region",
+		"name": "Issuing region",
 		"path": ['$.issuing_jurisdiction'],
 		"filter": {}
 	},
 	{
-		"name": "Issue Date",
+		"name": "Issue date",
 		"path": ['$.issuance_date'],
 		"filter": {}
 	},
 	{
-		"name": "Expiry Date",
+		"name": "Expiry date",
 		"path": ['$.expiry_date'],
 		"filter": {}
 	},
@@ -354,7 +359,7 @@ const sdJwtPidFields_1_5 = [
 
 const sdJwtPidDescriptor_1_5 = {
 	"id": "CustomVerifiableId1_5",
-	"format": { "vc+sd-jwt": { alg: ['ES256'] } },
+	"format": { "dc+sd-jwt": { alg: ['ES256'] } },
 	"constraints": {
 		"fields": sdJwtPidFields_1_5
 	}
@@ -372,12 +377,12 @@ const minimalSdJwtPidFields = [
 		}
 	},
 	{
-		"name": "First Name",
+		"name": "First name",
 		"path": ['$.given_name'],
 		"filter": {}
 	},
 	{
-		"name": "Last Name",
+		"name": "Last name",
 		"path": ['$.family_name'],
 		"filter": {}
 	},
@@ -392,17 +397,17 @@ const minimalSdJwtPidFields = [
 		"filter": {}
 	},
 	{
-		"name": "Expiry Date",
+		"name": "Expiry date",
 		"path": ['$.date_of_expiry'],
 		"filter": {}
 	},
 	{
-		"name": "Issuing Authority",
+		"name": "Issuing authority",
 		"path": ['$.issuing_authority'],
 		"filter": {}
 	},
 	{
-		"name": "Issuing Country",
+		"name": "Issuing country",
 		"path": ['$.issuing_country'],
 		"filter": {}
 	}
@@ -411,7 +416,7 @@ const minimalSdJwtPidFields = [
 
 const minimalVerifiableIdSdJwtDescriptor = {
 	"id": "minimalSdJwtPID",
-	"format": { "vc+sd-jwt": { alg: ['ES256'] } },
+	"format": { "dc+sd-jwt": { alg: ['ES256'] } },
 	"constraints": {
 		"fields": minimalSdJwtPidFields
 	}
@@ -576,7 +581,7 @@ const mdocPidFields = [
 
 const bachelorDescriptor = {
 	"id": "Bachelor",
-	"format": { "vc+sd-jwt": { alg: ['ES256'] } },
+	"format": { "dc+sd-jwt": { alg: ['ES256'] } },
 	"constraints": {
 		"fields": [
 			{
@@ -610,7 +615,7 @@ const bachelorDescriptor = {
 
 const europeanHealthInsuranceCardDescriptor = {
 	"id": "EuropeanHealthInsuranceCard",
-	"format": { "vc+sd-jwt": { alg: ['ES256'] } },
+	"format": { "dc+sd-jwt": { alg: ['ES256'] } },
 	"constraints": {
 		"fields": [
 			{
@@ -624,37 +629,57 @@ const europeanHealthInsuranceCardDescriptor = {
 				}
 			},
 			{
-				"name": "Personal ID",
+				"name": "Social Security PIN",
 				"path": ['$.personal_administrative_number'],
 				"filter": {}
 			},
 			{
-				"name": "Document Number",
+				"name": "Document number",
 				"path": ['$.document_number'],
 				"filter": {}
 			},
 			{
-				"name": "Issuing Country",
+				"name": "Issuing country",
 				"path": ['$.issuing_country'],
 				"filter": {}
 			},
 			{
-				"name": "Issuing Authority ID",
+				"name": "Issuing authority id",
 				"path": ['$.issuing_authority.id'],
 				"filter": {}
 			},
 			{
-				"name": "Issuing Authority Name",
+				"name": "Issuing authority name",
 				"path": ['$.issuing_authority.name'],
 				"filter": {}
 			},
 			{
-				"name": "Expiry Date",
+				"name": "Competent institution id",
+				"path": ['$.authentic_source.id'],
+				"filter": {}
+			},
+			{
+				"name": "Competent institution name",
+				"path": ['$.authentic_source.name'],
+				"filter": {}
+			},
+			{
+				"name": "Starting date",
+				"path": ['$.starting_date'],
+				"filter": {}
+			},
+			{
+				"name": "Ending date",
+				"path": ['$.ending_date'],
+				"filter": {}
+			},
+			{
+				"name": "Expiry date",
 				"path": ['$.date_of_expiry'],
 				"filter": {}
 			},
 			{
-				"name": "Issue Date",
+				"name": "Issue date",
 				"path": ['$.date_of_issuance'],
 				"filter": {}
 			}
@@ -664,7 +689,7 @@ const europeanHealthInsuranceCardDescriptor = {
 
 const powerOfRepresentationDescriptor = {
 	"id": "POR",
-	"format": { "vc+sd-jwt": { alg: ['ES256'] } },
+	"format": { "dc+sd-jwt": { alg: ['ES256'] } },
 	"constraints": {
 		"fields": [
 			{
@@ -678,12 +703,12 @@ const powerOfRepresentationDescriptor = {
 				}
 			},
 			{
-				"name": "Legal Entity ID",
+				"name": "Legal entity ID",
 				"path": ['$.legal_person_identifier'],
 				"filter": {}
 			},
 			{
-				"name": "Legal Entity Name",
+				"name": "Legal entity name",
 				"path": ['$.legal_name'],
 				"filter": {}
 			},
@@ -698,12 +723,12 @@ const powerOfRepresentationDescriptor = {
 				"filter": {}
 			},
 			{
-				"name": "Effective From",
+				"name": "Effective from",
 				"path": ['$.effective_from_date'],
 				"filter": {}
 			},
 			{
-				"name": "Effective Until",
+				"name": "Effective until",
 				"path": ['$.effective_until_date'],
 				"filter": {}
 			}
@@ -742,7 +767,7 @@ export class VerifierConfigurationService implements VerifierConfigurationInterf
 				"id": "CustomVerifiableIdARF1_5",
 				"title": "PID ARF v1.5",
 				"description": "Select the fields you want to request",
-				"format": { "vc+sd-jwt": { alg: ['ES256'] } },
+				"format": { "dc+sd-jwt": { alg: ['ES256'] } },
 				_selectable: true,
 				"input_descriptors": [
 					sdJwtPidDescriptor_1_5
@@ -752,7 +777,7 @@ export class VerifierConfigurationService implements VerifierConfigurationInterf
 				"id": "Bachelor",
 				"title": "Bachelor Diploma",
 				"description": "Select the fields you want to request",
-				"format": { "vc+sd-jwt": { alg: ['ES256'] } },
+				"format": { "dc+sd-jwt": { alg: ['ES256'] } },
 				_selectable: true,
 				"input_descriptors": [
 					bachelorDescriptor
@@ -762,7 +787,7 @@ export class VerifierConfigurationService implements VerifierConfigurationInterf
 				"id": "EuropeanHealthInsuranceCard",
 				"title": "European Health Insurance Card",
 				"description": "Select the fields you want to request",
-				"format": { "vc+sd-jwt": { alg: ['ES256'] } },
+				"format": { "dc+sd-jwt": { alg: ['ES256'] } },
 				_selectable: true,
 				"input_descriptors": [
 					europeanHealthInsuranceCardDescriptor
@@ -772,7 +797,7 @@ export class VerifierConfigurationService implements VerifierConfigurationInterf
 				"id": "MinimalPIDAndEuropeanHealthInsuranceCard",
 				"title": "PID (ARF v1.8) + EHIC",
 				"description": "Request a PID (ARF v1.8) along with an EHIC",
-				"format": { "vc+sd-jwt": { alg: ['ES256'] } },
+				"format": { "dc+sd-jwt": { alg: ['ES256'] } },
 				"input_descriptors": [
 					minimalVerifiableIdSdJwtDescriptor,
 					europeanHealthInsuranceCardDescriptor
@@ -782,7 +807,7 @@ export class VerifierConfigurationService implements VerifierConfigurationInterf
 				"id": "MinimalPIDAndPowerOfRepresentation",
 				"title": "PID (ARF v1.8) + POR",
 				"description": "Request a PID (ARF v1.8) along with a POR",
-				"format": { "vc+sd-jwt": { alg: ['ES256'] } },
+				"format": { "dc+sd-jwt": { alg: ['ES256'] } },
 				"input_descriptors": [
 					minimalVerifiableIdSdJwtDescriptor,
 					powerOfRepresentationDescriptor
@@ -792,7 +817,7 @@ export class VerifierConfigurationService implements VerifierConfigurationInterf
 				"id": "MinimalPIDAndBachelorDiploma",
 				"title": "PID (ARF v1.8) + Diploma",
 				"description": "Request a PID (ARF v1.8) along with a Bachelor Diploma",
-				"format": { "vc+sd-jwt": { alg: ['ES256'] } },
+				"format": { "dc+sd-jwt": { alg: ['ES256'] } },
 				"input_descriptors": [
 					minimalVerifiableIdSdJwtDescriptor,
 					bachelorDescriptor
@@ -802,7 +827,7 @@ export class VerifierConfigurationService implements VerifierConfigurationInterf
 			// 	"id": "MinimalPIDwithTransactionData",
 			// 	"title": "MinimalPID with Example Transaction Data",
 			// 	"description": "PID fields: Given Name, Family Name, Birth Date, Nationality, Exp. Date, Issuing Authority, Issuing Country. Transaction Data Type: 'urn:wwwallet:example_transaction_data_type'",
-			// 	"format": { "vc+sd-jwt": { alg: ['ES256'] } },
+			// 	"format": { "dc+sd-jwt": { alg: ['ES256'] } },
 			// 	"input_descriptors": [
 			// 		{ ...minimalVerifiableIdSdJwtDescriptor, _transaction_data_type: "urn:wwwallet:example_transaction_data_type" },
 			// 	]

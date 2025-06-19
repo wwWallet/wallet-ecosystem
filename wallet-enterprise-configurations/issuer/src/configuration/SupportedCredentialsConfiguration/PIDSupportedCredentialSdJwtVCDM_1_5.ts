@@ -19,6 +19,7 @@ import { AuthenticationChain, AuthenticationChainBuilder } from "../../authentic
 import { CONSENT_ENTRYPOINT } from "../../authorization/constants";
 import { GenericLocalAuthenticationComponent } from "../../authentication/authenticationComponentTemplates/GenericLocalAuthenticationComponent";
 import { initializeCredentialEngine } from "../../lib/initializeCredentialEngine";
+import { createSRI } from "../../lib/sriGenerator";
 
 const datasetName = "vid-dataset.xlsx";
 parsePidData(path.join(__dirname, `../../../../dataset/${datasetName}`)) // test parse
@@ -41,7 +42,7 @@ export class PIDSupportedCredentialSdJwtVCDM_1_5 implements VCDMSupportedCredent
 	}
 
 	getScope(): string {
-		return "pid:sd_jwt_vc:arf_1_5";
+		return "pid:sd_jwt_dc:arf_1_5";
 	}
 
 	getCredentialSigner(): CredentialSigner {
@@ -49,10 +50,10 @@ export class PIDSupportedCredentialSdJwtVCDM_1_5 implements VCDMSupportedCredent
 	}
 
 	getId(): string {
-		return "urn:eu.europa.ec.eudi:pid:1";
+		return "urn:eu.europa.ec.eudi:pid:1:dc";
 	}
 	getFormat(): VerifiableCredentialFormat {
-		return VerifiableCredentialFormat.VC_SDJWT;
+		return VerifiableCredentialFormat.DC_SDJWT;
 	}
 	getTypes(): string[] {
 		return ["VerifiableCredential", "VerifiableAttestation", "PID", this.getId()];
@@ -60,7 +61,7 @@ export class PIDSupportedCredentialSdJwtVCDM_1_5 implements VCDMSupportedCredent
 
 	getDisplay() {
 		return {
-			name: "ARF 1.5 PID SD-JWT VC",
+			name: `PID ARF 1.5 (${this.getFormat()})`,
 			description: "Person Identification Data",
 			background_image: { uri: config.url + "/images/background-image.png" },
 			background_color: "#1b263b",
@@ -85,10 +86,10 @@ export class PIDSupportedCredentialSdJwtVCDM_1_5 implements VCDMSupportedCredent
 		const credentialViews: CredentialView[] = await Promise.all(vids
 			.map(async (vid) => {
 				const rows: CategorizedRawCredentialViewRow[] = [
-					{ name: "Last Name", value: vid.family_name },
-					{ name: "Birth Last Name", value: vid.family_name_birth },
-					{ name: "First Name", value: vid.given_name },
-					{ name: "Birth First Name", value: vid.given_name_birth },
+					{ name: "Last name", value: vid.family_name },
+					{ name: "Birth last name", value: vid.family_name_birth },
+					{ name: "First name", value: vid.given_name },
+					{ name: "Birth first name", value: vid.given_name_birth },
 					{ name: "Personal ID", value: vid.personal_administrative_number },
 					{ name: "Date of birth", value: formatDateDDMMYYYY(vid.birth_date) },
 					{ name: "Sex", value: vid.sex },
@@ -101,16 +102,16 @@ export class PIDSupportedCredentialSdJwtVCDM_1_5 implements VCDMSupportedCredent
 					{ name: "Country of residence", value: vid.resident_country },
 					{ name: "Email", value: vid.email_address },
 					{ name: "Mobile", value: vid.mobile_phone_number },
-					{ name: "Age Over 14", value: vid.age_over_14 },
-					{ name: "Age Over 16", value: vid.age_over_16 },
-					{ name: "Age Over 18", value: vid.age_over_18 },
-					{ name: "Age Over 21", value: vid.age_over_21 },
-					{ name: "Age Over 65", value: vid.age_over_65 },
+					{ name: "Age over 14", value: vid.age_over_14 },
+					{ name: "Age over 16", value: vid.age_over_16 },
+					{ name: "Age over 18", value: vid.age_over_18 },
+					{ name: "Age over 21", value: vid.age_over_21 },
+					{ name: "Age over 65", value: vid.age_over_65 },
 					{ name: "Age", value: vid.age_in_years },
-					{ name: "Birth Year", value: vid.age_birth_year },
-					{ name: "Place of Βirth", value: vid.birth_place },
+					{ name: "Birth year", value: vid.age_birth_year },
+					{ name: "Place of birth", value: vid.birth_place },
 					{ name: "Nationality", value: vid.nationality },
-					{ name: "Issuing Authority", value: vid.issuing_authority },
+					{ name: "Issuing authority", value: vid.issuing_authority },
 					{ name: "Issuing Country", value: vid.issuing_country },
 					{ name: "Issuing Region", value: vid.issuing_jurisdiction },
 					{ name: "Document Number", value: vid.document_number }
@@ -153,7 +154,7 @@ export class PIDSupportedCredentialSdJwtVCDM_1_5 implements VCDMSupportedCredent
 			throw new Error("Failed to get users from dataset");
 		}
 
-		if (request.body?.vct != this.getId() || !userSession.scope || !userSession.scope.split(' ').includes(this.getScope())) {
+		if (request.body?.credential_configuration_id != this.getId() || !userSession.scope || !userSession.scope.split(' ').includes(this.getScope())) {
 			console.log("Not the correct credential");
 			throw new Error("Not the correct credential");
 		}
@@ -173,7 +174,7 @@ export class PIDSupportedCredentialSdJwtVCDM_1_5 implements VCDMSupportedCredent
 			email_address: vidEntry.email_address,
 			mobile_phone_number: vidEntry.mobile_phone_number,
 			resident_address: vidEntry.resident_address,
-			resident_street_address: vidEntry.resident_street,
+			resident_street: vidEntry.resident_street,
 			resident_house_number: vidEntry.resident_house_number,
 			resident_postal_code: String(vidEntry.resident_postal_code),
 			resident_city: vidEntry.resident_city,
@@ -203,7 +204,8 @@ export class PIDSupportedCredentialSdJwtVCDM_1_5 implements VCDMSupportedCredent
 			"cnf": {
 				"jwk": holderPublicKeyJwk
 			},
-			"vct": this.getId(),
+			"vct": this.metadata().vct,
+			"vct#integrity": createSRI(this.metadata()),
 			"jti": `urn:vid:${randomUUID()}`,
 			...vid,
 		};
@@ -217,7 +219,7 @@ export class PIDSupportedCredentialSdJwtVCDM_1_5 implements VCDMSupportedCredent
 			email_address: true,
 			mobile_phone_number: true,
 			resident_address: true,
-			resident_street_address: true,
+			resident_street: true,
 			resident_house_number: true,
 			resident_postal_code: true,
 			resident_city: true,
@@ -243,7 +245,7 @@ export class PIDSupportedCredentialSdJwtVCDM_1_5 implements VCDMSupportedCredent
 			portrait: true
 		}
 		const { credential } = await this.getCredentialSigner()
-			.signSdJwtVc(payload, { typ: VerifiableCredentialFormat.VC_SDJWT, vctm: [base64url.encode(JSON.stringify(this.metadata()))] }, disclosureFrame);
+			.signSdJwtVc(payload, { typ: VerifiableCredentialFormat.DC_SDJWT, vctm: [base64url.encode(JSON.stringify(this.metadata()))] }, disclosureFrame);
 		const response = {
 			format: this.getFormat(),
 			credential: credential
@@ -254,7 +256,7 @@ export class PIDSupportedCredentialSdJwtVCDM_1_5 implements VCDMSupportedCredent
 
 	public metadata(): any {
 		return {
-			"vct": this.getId(),
+			"vct": "urn:eu.europa.ec.eudi:pid:1",
 			"name": "PID",
 			"description": "This is a PID document issued by the well known PID Issuer conforming to ARF 1.5 PID rulebook",
 			"display": [
@@ -358,7 +360,7 @@ export class PIDSupportedCredentialSdJwtVCDM_1_5 implements VCDMSupportedCredent
 	exportCredentialSupportedObject(): any {
 		return {
 			scope: this.getScope(),
-			vct: this.getId(),
+			vct: this.metadata().vct,
 			display: [this.getDisplay()],
 			format: this.getFormat(),
 			cryptographic_binding_methods_supported: ["ES256"],
