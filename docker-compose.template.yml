@@ -13,6 +13,7 @@ services:
     restart: on-failure
     ports:
       - 8003:8003
+      - 9259:9259
     depends_on:
       wallet-db:
         condition: service_healthy
