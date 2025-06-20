@@ -89,6 +89,7 @@ export const issuerSigner: CredentialSigner = {
       sub: await calculateJwkThumbprint(payload.cnf.jwk),
       cnf: payload.cnf,
       vct: payload.vct,
+      'vct#integrity': payload['vct#integrity'],
       jti: payload.jti
     };
 
