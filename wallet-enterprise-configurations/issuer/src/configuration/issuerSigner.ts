@@ -3,8 +3,10 @@ import { config } from "../../config";
 import { CredentialSigner } from "../services/interfaces";
 import fs from 'fs';
 import path from "path";
-import { HasherAlgorithm, HasherAndAlgorithm, SdJwt, SignatureAndEncryptionAlgorithm, Signer } from "@sd-jwt/core";
-import { sign, randomBytes, createHash, KeyObject } from "crypto";
+import { Jwt, SDJwt } from "@sd-jwt/core";
+import { Disclosure } from "@sd-jwt/utils";
+import { digest as hasher } from "@sd-jwt/crypto-nodejs";
+import { sign, randomBytes, KeyObject } from "crypto";
 import { importPrivateKeyPem } from '../lib/importPrivateKeyPem';
 import {  base64url, calculateJwkThumbprint, exportJWK, importX509 } from 'jose';
 import { Document } from '@auth0/mdl';
@@ -66,64 +68,52 @@ export const issuerSigner: CredentialSigner = {
 
 	},
 	signSdJwtVc: async function (payload, headers, disclosureFrame) {
-		const key = await importPrivateKeyPem(issuerPrivateKeyPem, 'ES256');
-		if (!key) {
-			throw new Error("Could not import private key");
-		}
-		const signer: Signer = (input, header) => {
-			if (header.alg !== SignatureAndEncryptionAlgorithm.ES256) {
-				throw new Error('only ES256 is supported')
-			}
-			return sign(null, Buffer.from(input), {
-				dsaEncoding: 'ieee-p1363',
-				key: key as KeyObject
-			})
-		}
-
-		const saltGenerator = () => {
-			const buffer = randomBytes(16);
-			return buffer.toString('base64')
-				.replace(/\+/g, '-')
-				.replace(/\//g, '_')
-				.replace(/=/g, '');
-		};
-
-		const hasherAndAlgorithm: HasherAndAlgorithm = {
-			hasher: (input: string) => createHash('sha256').update(input).digest(),
-			algorithm: HasherAlgorithm.Sha256
-		}
-
-
 		const issuanceDate = new Date();
-		payload.iat = Math.floor(issuanceDate.getTime() / 1000);
-
-		// set token expiration to one year
 		const expirationDate = new Date();
 		expirationDate.setFullYear(expirationDate.getFullYear() + 1);
-		payload.exp = Math.floor(expirationDate.getTime() / 1000);
-
-		payload.iss = config.url;
-
-		payload.sub = await calculateJwkThumbprint(payload.cnf.jwk);
 
 		headers.x5c = issuerX5C;
 
-		if (disclosureFrame != undefined) {
-			const sdJwt = new SdJwt({
-				header: { ...headers, alg: SignatureAndEncryptionAlgorithm.ES256 },
-				payload
-			}).withHasher(hasherAndAlgorithm)
-				.withSigner(signer)
-				.withSaltGenerator(saltGenerator)
-				.withDisclosureFrame(disclosureFrame);
-			const credential = await sdJwt.toCompact();
-			return { credential };
-		}
-		else {
+		if (!disclosureFrame) {
 			throw new Error("Could not generate signature");
 		}
 
+		const claims: {
+			[key: string]: unknown
+		} = {
+			iat: Math.floor(issuanceDate.getTime() / 1000),
+			// set token expiration to one year
+			expirationDate,
+			exp: Math.floor(expirationDate.getTime() / 1000),
+			iss: config.url,
+			sub: await calculateJwkThumbprint(payload.cnf.jwk),
+			cnf: payload.cnf,
+			vct: payload.vct,
+			'vct#integrity': payload['vct#integrity'],
+			jti: payload.jti
+		};
 
+		const disclosures = Object.keys(disclosureFrame)
+			.filter(key => disclosureFrame[key])
+			.map(key => {
+				return new Disclosure([this.saltGenerator(), key, payload[key]])
+			});
+
+		const jwt = new Jwt({
+			header: { ...headers, alg: 'ES256' },
+			payload: {
+				_sd: await Promise.all(
+					disclosures.map(disclosure => { return disclosure.digest(this.hasherAndAlgorithm) })
+				),
+				...claims
+			}
+		})
+		await jwt.sign(this.signer());
+
+		const sdJwt = new SDJwt({ jwt, disclosures });
+		const credential = await sdJwt.encodeSDJwt();
+
+		return { credential };
 	},
 	getPublicKeyJwk: async function () {
 		const publicKey = await importX509(issuerCertPem, 'ES256');
@@ -132,6 +122,33 @@ export const issuerSigner: CredentialSigner = {
 		}
 		const jwk = await exportJWK(publicKey)
 		return { jwk: { kid: issuerJwkKid, ...jwk } };
+	},
+	key: async function () {
+		const key = await importPrivateKeyPem(issuerPrivateKeyPem, 'ES256');
+		if (!key) {
+			throw new Error("Could not import private key");
+		}
+		return key as KeyObject;
+	},
+	signer: function () {
+		return async (input: string) => {
+			const result = sign(null, Buffer.from(input), {
+				dsaEncoding: 'ieee-p1363',
+				key: await this.key() as KeyObject
+			})
+			return Buffer.from(result).toString('base64url')
+		}
+	},
+	hasherAndAlgorithm: {
+		hasher,
+		alg: 'sha-256',
+	},
+	saltGenerator: () => {
+		const buffer = randomBytes(16);
+		return buffer.toString('base64')
+		.replace(/\+/g, '-')
+		.replace(/\//g, '_')
+		.replace(/=/g, '');
 	},
 }
 
