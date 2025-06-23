@@ -80,18 +80,18 @@ export const issuerSigner: CredentialSigner = {
 
 		const claims: {
 			[key: string]: unknown
-    } = {
-      iat: Math.floor(issuanceDate.getTime() / 1000),
-      // set token expiration to one year
-      expirationDate,
-      exp: Math.floor(expirationDate.getTime() / 1000),
-      iss: config.url,
-      sub: await calculateJwkThumbprint(payload.cnf.jwk),
-      cnf: payload.cnf,
-      vct: payload.vct,
-      'vct#integrity': payload['vct#integrity'],
-      jti: payload.jti
-    };
+		} = {
+			iat: Math.floor(issuanceDate.getTime() / 1000),
+			// set token expiration to one year
+			expirationDate,
+			exp: Math.floor(expirationDate.getTime() / 1000),
+			iss: config.url,
+			sub: await calculateJwkThumbprint(payload.cnf.jwk),
+			cnf: payload.cnf,
+			vct: payload.vct,
+			'vct#integrity': payload['vct#integrity'],
+			jti: payload.jti
+		};
 
 		const disclosures = Object.keys(disclosureFrame)
 			.filter(key => disclosureFrame[key])
