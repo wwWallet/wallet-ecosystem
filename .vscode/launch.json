@@ -15,6 +15,21 @@
 				"!**/node_modules/**"
 			],
 			"autoAttachChildProcesses": true
+		},
+		{
+			"type": "node",
+			"request": "attach",
+			"name": "Docker: Attach (Verifier)",
+			"port": 9260,
+			"restart": true,
+			"localRoot": "${workspaceFolder}/wallet-enterprise/src",
+			"remoteRoot": "/app/dist/src",
+			"sourceMaps": true,
+			"resolveSourceMapLocations": [
+				"${workspaceFolder}/**",
+				"!**/node_modules/**"
+			],
+			"autoAttachChildProcesses": true
 		}
 	]
 }
