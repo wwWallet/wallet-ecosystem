@@ -363,7 +363,7 @@ export class PIDSupportedCredentialSdJwtVCDM_1_5 implements VCDMSupportedCredent
 			vct: this.metadata().vct,
 			display: [this.getDisplay()],
 			format: this.getFormat(),
-			cryptographic_binding_methods_supported: ["ES256"],
+			cryptographic_binding_methods_supported: ["jwk"],
 			credential_signing_alg_values_supported: ["ES256"],
 			proof_types_supported: {
 				jwt: {

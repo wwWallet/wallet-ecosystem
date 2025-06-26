@@ -411,7 +411,7 @@ export class EHICSupportedCredentialSdJwtVCDM implements VCDMSupportedCredential
 			vct: this.metadata().vct,
 			format: this.getFormat(),
 			display: [this.getDisplay()],
-			cryptographic_binding_methods_supported: ["ES256"],
+			cryptographic_binding_methods_supported: ["jwk"],
 			credential_signing_alg_values_supported: ["ES256"],
 			proof_types_supported: {
 				jwt: {
