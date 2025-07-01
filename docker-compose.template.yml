@@ -119,8 +119,8 @@ services:
 
   wallet-frontend:
     build:
-      context: $PWD
-      dockerfile: ./docker/wallet-frontend.development.Dockerfile
+      context: ./wallet-frontend
+      target: development
     image: wallet-frontend:dev
     container_name: wallet-frontend
     hostname: wallet-frontend
