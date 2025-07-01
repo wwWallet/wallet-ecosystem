@@ -15,6 +15,11 @@ on:
         type: string
         required: true
 
+      dockerfile-target:
+        type: string
+        required: false
+        default: ''
+
       checkout-submodules:
         type: string
         required: false
@@ -40,5 +45,6 @@ jobs:
       with:
         context: .
         file: ${{ inputs.dockerfile-path }}
+        target: ${{ inputs.dockerfile-target }}
         push: ${{ inputs.docker-push }}
         tags: ${{ inputs.image-tag }}
