@@ -417,7 +417,156 @@ export class EHICSupportedCredentialSdJwtVCDM implements VCDMSupportedCredential
 				jwt: {
 					proof_signing_alg_values_supported: ["ES256"]
 				}
-			}
+			},
+			"claims": [
+				{
+					"path": [
+						"personal_administrative_number"
+					],
+					"display": [
+						{
+							"name": "Social Security PIN",
+							"locale": "en"
+						}
+					]
+				},
+				{
+					"path": [
+						"issuing_authority"
+					],
+					"display": [
+						{
+							"name": "Issuing authority",
+							"locale": "en"
+						}
+					]
+				},
+				{
+					"path": [
+						"issuing_authority",
+						"id"
+					],
+					"display": [
+						{
+							"name": "Issuing authority id",
+							"locale": "en"
+						}
+					]
+				},
+				{
+					"path": [
+						"issuing_authority",
+						"name"
+					],
+					"display": [
+						{
+							"name": "Issuing authority name",
+							"locale": "en"
+						}
+					]
+				},
+				{
+					"path": [
+						"issuing_country"
+					],
+					"display": [
+						{
+							"name": "Issuing country",
+							"locale": "en"
+						}
+					]
+				},
+				{
+					"path": [
+						"date_of_expiry"
+					],
+					"display": [
+						{
+							"name": "Expiry date",
+							"locale": "en"
+						}
+					]
+				},
+				{
+					"path": [
+						"date_of_issuance"
+					],
+					"display": [
+						{
+							"name": "Issue date",
+							"locale": "en"
+						}
+					]
+				},
+				{
+					"path": [
+						"authentic_source"
+					],
+					"display": [
+						{
+							"name": "Competent institution",
+							"locale": "en"
+						}
+					]
+				},
+				{
+					"path": [
+						"authentic_source",
+						"id"
+					],
+					"display": [
+						{
+							"name": "Competent institution id",
+							"locale": "en"
+						}
+					]
+				},
+				{
+					"path": [
+						"authentic_source",
+						"name"
+					],
+					"display": [
+						{
+							"name": "Competent institution name",
+							"locale": "en"
+						}
+					]
+				},
+				{
+					"path": [
+						"ending_date"
+					],
+					"display": [
+						{
+							"name": "Ending date",
+							"locale": "en"
+						}
+					]
+				},
+				{
+					"path": [
+						"starting_date"
+					],
+					"display": [
+						{
+							"name": "Starting date",
+							"locale": "en"
+						}
+					]
+				},
+				{
+					"path": [
+						"document_number"
+					],
+					"display": [
+						{
+							"name": "Document number",
+							"locale": "en"
+						}
+					]
+				}
+			]
 		}
 	}
 }
