@@ -13,7 +13,8 @@ on:
 
       dockerfile-path:
         type: string
-        required: true
+        required: false
+        default: ''
 
       dockerfile-target:
         type: string
