@@ -86,7 +86,6 @@ export const issuerSigner: CredentialSigner = {
 		} = {
 			iat: Math.floor(issuanceDate.getTime() / 1000),
 			// set token expiration to one year
-			expirationDate,
 			exp: Math.floor(expirationDate.getTime() / 1000),
 			iss: config.url,
 			sub: await calculateJwkThumbprint(payload.cnf.jwk),
