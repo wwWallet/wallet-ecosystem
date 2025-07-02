@@ -11,11 +11,14 @@ import { importPrivateKeyPem } from '../lib/importPrivateKeyPem';
 import {  base64url, calculateJwkThumbprint, exportJWK, importX509 } from 'jose';
 import { Document } from '@auth0/mdl';
 import { cborEncode } from "@auth0/mdl/lib/cbor";
+import { pemToBase64 } from '../util/pemToBase64';
 
-const issuerX5C: string[] = JSON.parse(fs.readFileSync(path.join(__dirname, "../../../keys/x5c.json"), 'utf-8').toString()) as string[];
 const issuerPrivateKeyPem = fs.readFileSync(path.join(__dirname, "../../../keys/pem.key"), 'utf-8').toString();
 const issuerCertPem = fs.readFileSync(path.join(__dirname, "../../../keys/pem.crt"), 'utf-8').toString() as string;;
-// const caCertPem = fs.readFileSync(path.join(__dirname, "../../../keys/ca.crt"), 'utf-8').toString() as string;;
+
+const issuerX5C = [
+	pemToBase64(issuerCertPem),
+];
 
 importPrivateKeyPem(issuerPrivateKeyPem, 'ES256') // attempt to import the key
 importX509(issuerCertPem, 'ES256'); // attempt to import the public key
@@ -83,7 +86,6 @@ export const issuerSigner: CredentialSigner = {
 		} = {
 			iat: Math.floor(issuanceDate.getTime() / 1000),
 			// set token expiration to one year
-			expirationDate,
 			exp: Math.floor(expirationDate.getTime() / 1000),
 			iss: config.url,
 			sub: await calculateJwkThumbprint(payload.cnf.jwk),
