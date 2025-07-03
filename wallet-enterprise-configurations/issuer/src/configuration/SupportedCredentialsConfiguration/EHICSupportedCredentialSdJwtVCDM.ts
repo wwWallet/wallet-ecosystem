@@ -241,8 +241,9 @@ export class EHICSupportedCredentialSdJwtVCDM implements VCDMSupportedCredential
 	public metadata(): any {
 		return {
 			"vct": "urn:eudi:ehic:1",
-			"name": "EHIC",
-			"description": "This is a European Health Insurance Card verifiable credential",
+			"name": "EHIC SD-JWT VCTM",
+			"description": "European Health Insurance Card (EHIC) SD-JWT Verifiable Credential Type Metadata, based on ietf-oauth-sd-jwt-vc (draft 09), using a single language tag (en-US).",
+			"$comment": "Implementation of the wwWallet Type Metadata may require Member State-specific clarifications to align with national policies governing the display of included claims.",
 			"display": [
 				{
 					"lang": "en-US",
@@ -255,6 +256,12 @@ export class EHICSupportedCredentialSdJwtVCDM implements VCDMSupportedCredential
 						"svg_templates": [
 							{
 								"uri": config.url + "/images/template-ehic.svg",
+								"uri#integrity": createSRI("./public/images/template-ehic.svg"),
+								"properties": {
+									"orientation": "landscape",
+									"color_scheme": "light",
+									"contrast": "normal"
+								}
 							}
 						],
 					}
@@ -266,36 +273,18 @@ export class EHICSupportedCredentialSdJwtVCDM implements VCDMSupportedCredential
 						"jti"
 					],
 					"sd": "never",
-					"display": [
-						{
-							"lang": "en-US",
-							"description": "Verifiable Credential unique identifier to prevent replay attacks."
-						}
-					],
 				},
 				{
 					"path": [
 						"sub"
 					],
 					"sd": "never",
-					"display": [
-						{
-							"lang": "en-US",
-							"description": "Subject identifier for the JWT, representing the principal that is the subject of the JWT."
-						}
-					],
 				},
 				{
 					"path": [
 						"iat"
 					],
 					"sd": "never",
-					"display": [
-						{
-							"lang": "en-US",
-							"description": "Issued at time indicating when the JWT was issued."
-						}
-					],
 				},
 				{
 					"path": [
@@ -320,9 +309,16 @@ export class EHICSupportedCredentialSdJwtVCDM implements VCDMSupportedCredential
 					"display": [
 						{
 							"lang": "en-US",
-							"description": "The issuer country of the EHIC holder"
+							"label": "Issuing country",
+							"description": "EHIC issuing country."
 						}
 					]
+				},
+				{
+					"path": [
+						"issuing_authority"
+					],
+					"sd": "never",
 				},
 				{
 					"path": [
@@ -334,7 +330,7 @@ export class EHICSupportedCredentialSdJwtVCDM implements VCDMSupportedCredential
 						{
 							"lang": "en-US",
 							"label": "Issuing authority id",
-							"description": "EHIC issuing authority unique identifier in EESSI."
+							"description": "EHIC issuing authority unique identifier."
 						}
 					]
 				},
@@ -348,7 +344,7 @@ export class EHICSupportedCredentialSdJwtVCDM implements VCDMSupportedCredential
 						{
 							"lang": "en-US",
 							"label": "Issuing authority name",
-							"description": "EHIC issuing authority name in EESSI."
+							"description": "EHIC issuing authority name."
 						}
 					]
 				},
@@ -378,6 +374,12 @@ export class EHICSupportedCredentialSdJwtVCDM implements VCDMSupportedCredential
 							"description": "EHIC validity start date."
 						}
 					]
+				},
+				{
+					"path": [
+						"authentic_source"
+					],
+					"sd": "never",
 				},
 				{
 					"path": [
@@ -453,7 +455,6 @@ export class EHICSupportedCredentialSdJwtVCDM implements VCDMSupportedCredential
 			"schema_uri": this.getSchemaId(),
 			"schema_uri#integrity": createSRI(this.schema())
 		}
-
 	}
 
 	public schema(): any {
