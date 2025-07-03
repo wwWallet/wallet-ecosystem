@@ -132,7 +132,11 @@ services:
       - ./wallet-frontend/.env:/app/.env:rw
       - ./.vscode/:/app/.vscode:rw
       - type: tmpfs
-        target: /app/node_modules/.cache
+        target: /app/node_modules/.vite
+        tmpfs:
+          mode: 01777
+      - type: tmpfs
+        target: /app/node_modules/.vite-temp
         tmpfs:
           mode: 01777
 
