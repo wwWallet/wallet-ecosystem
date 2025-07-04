@@ -20,6 +20,8 @@ import { CONSENT_ENTRYPOINT } from "../../authorization/constants";
 import { GenericLocalAuthenticationComponent } from "../../authentication/authenticationComponentTemplates/GenericLocalAuthenticationComponent";
 import { initializeCredentialEngine } from "../../lib/initializeCredentialEngine";
 import { createSRI } from "../../lib/sriGenerator";
+import { pidMetadata1_5 } from "./typeMetadata/pidMetadata";
+import { pidSchema_1_5 } from "./schema/pidSchema";
 
 const datasetName = "vid-dataset.xlsx";
 parsePidData(path.join(__dirname, `../../../../dataset/${datasetName}`)) // test parse
@@ -198,6 +200,7 @@ export class PIDSupportedCredentialSdJwtVCDM_1_5_VC implements VCDMSupportedCred
 			birth_place: vidEntry.birth_place,
 			nationality: vidEntry.nationality.split(','),
 			portrait: vidEntry.sex == '1' ? await urlToDataUrl(config.url + "/images/male_portrait.jpg") : await urlToDataUrl(config.url + "/images/female_portrait.jpg"),
+			trust_anchor: config.url + "/trust_anchor",
 		};
 
 		const payload = {
@@ -235,14 +238,15 @@ export class PIDSupportedCredentialSdJwtVCDM_1_5_VC implements VCDMSupportedCred
 			age_birth_year: true,
 			document_number: true,
 			birth_date: true, 
-			issuing_authority: true,
-			issuing_country: true,
-			issuing_jurisdiction: true,
+			issuing_authority: false,
+			issuing_country: false,
+			issuing_jurisdiction: false,
 			issuance_date: true,
-			expiry_date: true,
+			expiry_date: false,
 			birth_place: true,
 			nationality: true,
-			portrait: true
+			portrait: true,
+			trust_anchor: false
 		}
 		const { credential } = await this.getCredentialSigner()
 			.signSdJwtVc(payload, { typ: VerifiableCredentialFormat.VC_SDJWT, vctm: [base64url.encode(JSON.stringify(this.metadata()))] }, disclosureFrame);
@@ -255,106 +259,11 @@ export class PIDSupportedCredentialSdJwtVCDM_1_5_VC implements VCDMSupportedCred
 	}
 
 	public metadata(): any {
-		return {
-			"vct": "urn:eu.europa.ec.eudi:pid:1",
-			"name": "PID",
-			"description": "This is a PID document issued by the well known PID Issuer conforming to ARF 1.5 PID rulebook",
-			"display": [
-				{
-					"lang": "en-US",
-					"name": "PID",
-					"rendering": {
-						"simple": {
-							"logo": {
-								"uri": config.url + "/images/logo.png",
-								"uri#integrity": "sha256-acda3404c2cf46da192cf245ccc6b91edce8869122fa5a6636284f1a60ffcd86",
-								"alt_text": "PID Logo"
-							},
-							"background_color": "#4cc3dd",
-							"text_color": "#FFFFFF"
-						},
-						"svg_templates": [
-							{
-								"uri": config.url + "/images/template-pid.svg",
-							}
-						],
-					}
-				}
-			],
-			"claims": [
-				{
-					"path": ["given_name"],
-					"display": [
-						{
-							"lang": "en-US",
-							"label": "First name",
-							"description": "The given name of the PID holder"
-						}
-					],
-					"svg_id": "given_name"
-				},
-				{
-					"path": ["family_name"],
-					"display": [
-						{
-							"lang": "en-US",
-							"label": "Last name",
-							"description": "The family name of the PID holder"
-						}
-					],
-					"svg_id": "family_name"
-				},
-				{
-					"path": ["birth_date"],
-					"display": [
-						{
-							"lang": "en-US",
-							"label": "Date of birth",
-							"description": "Full birth date (day, month, year)."
-						}
-					],
-					"svg_id": "birth_date"
-				},
-				{
-					"path": ["issuing_authority"],
-					"display": [
-						{
-							"lang": "en-US",
-							"label": "Issuing authority",
-							"description": "Name of the issuing body or Member State (two-letter code)."
-						}
-					],
-					"svg_id": "issuing_authority"
-				},
-				{
-					"path": ["issuance_date"],
-					"display": [
-						{
-							"lang": "en-US",
-							"label": "Issue date",
-							"description": "Start date of the document’s validity."
-						}
-					],
-					"svg_id": "issuance_date"
-				},
-				{
-					"path": ["expiry_date"],
-					"display": [
-						{
-							"lang": "en-US",
-							"label": "Expiry date",
-							"description": "The date that the credential will expire"
-						}
-					],
-					"svg_id": "expiry_date"
-				},
-				{
-					"path": ["portrait"],
-					"svg_id": "picture"
-				},
-			],
-		}
+		return pidMetadata1_5;
+	}
 
+	public schema(): any {
+		return pidSchema_1_5;
 	}
 
 	exportCredentialSupportedObject(): any {
