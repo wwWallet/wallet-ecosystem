@@ -21,7 +21,7 @@ import { GenericLocalAuthenticationComponent } from "../../authentication/authen
 import { initializeCredentialEngine } from "../../lib/initializeCredentialEngine";
 import { createSRI } from "../../lib/sriGenerator";
 import { pidMetadata1_8 } from "./typeMetadata/pidMetadata";
-import { pidSchema_1_8 } from "./schema/pidschema";
+import { pidSchema_1_8 } from "./schema/pidSchema";
 
 const datasetName = "vid-dataset.xlsx";
 parsePidData(path.join(__dirname, `../../../../dataset/${datasetName}`)) // test parse

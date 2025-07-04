@@ -1,6 +1,6 @@
 import { config } from "../../../../config";
 import { createSRI } from "../../../lib/sriGenerator";
-import { pidSchema_1_5, pidSchema_1_8 } from "./../schema/pidschema";
+import { pidSchema_1_5, pidSchema_1_8 } from "../schema/pidSchema";
 
 export const pidMetadata1_5 = {
 	"vct": "urn:eu.europa.ec.eudi:pid:1",
