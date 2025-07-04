@@ -200,7 +200,7 @@ export class PIDSupportedCredentialSdJwtVCDM_1_5_VC implements VCDMSupportedCred
 			birth_place: vidEntry.birth_place,
 			nationality: vidEntry.nationality.split(','),
 			portrait: vidEntry.sex == '1' ? await urlToDataUrl(config.url + "/images/male_portrait.jpg") : await urlToDataUrl(config.url + "/images/female_portrait.jpg"),
-			trust_anchor: config.url + "/.well-known/openid-credential-issuer",
+			trust_anchor: config.url + "/trust_anchor",
 		};
 
 		const payload = {

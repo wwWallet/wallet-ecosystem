@@ -206,7 +206,7 @@ export class PIDSupportedCredentialSdJwtVCDM_VC implements VCDMSupportedCredenti
 			email: vidEntry.email_address,
 			phone_number: vidEntry.mobile_phone_number,
 			picture: vidEntry.sex == '1' ? await urlToDataUrl(config.url + "/images/male_portrait.jpg") : await urlToDataUrl(config.url + "/images/female_portrait.jpg"),
-			trust_anchor: config.url + "/.well-known/openid-credential-issuer",
+			trust_anchor: config.url + "/trust_anchor",
 		};
 
 		const payload = {
