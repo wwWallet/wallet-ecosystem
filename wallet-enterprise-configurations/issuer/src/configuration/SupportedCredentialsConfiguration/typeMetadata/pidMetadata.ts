@@ -516,6 +516,24 @@ export const pidMetadata1_8 = {
 	"claims": [
 		{
 			"path": [
+				"jti"
+			],
+			"sd": "never",
+		},
+		{
+			"path": [
+				"sub"
+			],
+			"sd": "never",
+		},
+		{
+			"path": [
+				"iat"
+			],
+			"sd": "never",
+		},
+		{
+			"path": [
 				"family_name"
 			],
 			"sd": "always",
