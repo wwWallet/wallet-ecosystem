@@ -20,6 +20,8 @@ import { CONSENT_ENTRYPOINT } from "../../authorization/constants";
 import { GenericLocalAuthenticationComponent } from "../../authentication/authenticationComponentTemplates/GenericLocalAuthenticationComponent";
 import { initializeCredentialEngine } from "../../lib/initializeCredentialEngine";
 import { createSRI } from "../../lib/sriGenerator";
+import { pidMetadata1_5 } from "./typeMetadata/pidMetadata";
+import { pidSchema_1_5 } from "./schema/pidschema";
 
 const datasetName = "vid-dataset.xlsx";
 parsePidData(path.join(__dirname, `../../../../dataset/${datasetName}`)) // test parse
@@ -255,106 +257,11 @@ export class PIDSupportedCredentialSdJwtVCDM_1_5_VC implements VCDMSupportedCred
 	}
 
 	public metadata(): any {
-		return {
-			"vct": "urn:eu.europa.ec.eudi:pid:1",
-			"name": "PID",
-			"description": "This is a PID document issued by the well known PID Issuer conforming to ARF 1.5 PID rulebook",
-			"display": [
-				{
-					"lang": "en-US",
-					"name": "PID",
-					"rendering": {
-						"simple": {
-							"logo": {
-								"uri": config.url + "/images/logo.png",
-								"uri#integrity": "sha256-acda3404c2cf46da192cf245ccc6b91edce8869122fa5a6636284f1a60ffcd86",
-								"alt_text": "PID Logo"
-							},
-							"background_color": "#4cc3dd",
-							"text_color": "#FFFFFF"
-						},
-						"svg_templates": [
-							{
-								"uri": config.url + "/images/template-pid.svg",
-							}
-						],
-					}
-				}
-			],
-			"claims": [
-				{
-					"path": ["given_name"],
-					"display": [
-						{
-							"lang": "en-US",
-							"label": "First name",
-							"description": "The given name of the PID holder"
-						}
-					],
-					"svg_id": "given_name"
-				},
-				{
-					"path": ["family_name"],
-					"display": [
-						{
-							"lang": "en-US",
-							"label": "Last name",
-							"description": "The family name of the PID holder"
-						}
-					],
-					"svg_id": "family_name"
-				},
-				{
-					"path": ["birth_date"],
-					"display": [
-						{
-							"lang": "en-US",
-							"label": "Date of birth",
-							"description": "Full birth date (day, month, year)."
-						}
-					],
-					"svg_id": "birth_date"
-				},
-				{
-					"path": ["issuing_authority"],
-					"display": [
-						{
-							"lang": "en-US",
-							"label": "Issuing authority",
-							"description": "Name of the issuing body or Member State (two-letter code)."
-						}
-					],
-					"svg_id": "issuing_authority"
-				},
-				{
-					"path": ["issuance_date"],
-					"display": [
-						{
-							"lang": "en-US",
-							"label": "Issue date",
-							"description": "Start date of the document’s validity."
-						}
-					],
-					"svg_id": "issuance_date"
-				},
-				{
-					"path": ["expiry_date"],
-					"display": [
-						{
-							"lang": "en-US",
-							"label": "Expiry date",
-							"description": "The date that the credential will expire"
-						}
-					],
-					"svg_id": "expiry_date"
-				},
-				{
-					"path": ["portrait"],
-					"svg_id": "picture"
-				},
-			],
-		}
+		return pidMetadata1_5;
+	}
 
+	public schema(): any {
+		return pidSchema_1_5;
 	}
 
 	exportCredentialSupportedObject(): any {
