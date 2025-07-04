@@ -2,7 +2,7 @@ import { config } from "../../../../config";
 
 export const ehicSchema = {
 	"$schema": "https://json-schema.org/draft/2020-12/schema",
-	$id: config.url + "/ehic-schema",
+	"$id": config.url + "/ehic-schema",
 	"title": "DC4EU EHIC SD-JWT VC Schema",
 	"$comment": "Implementation of the DC4EU schema may require Member State-specific clarifications to align with national policies governing the included attributes.",
 	"type": "object",
