@@ -249,18 +249,18 @@ export class PIDSupportedCredentialSdJwtVCDM implements VCDMSupportedCredentialP
 			},
 			age_in_years: true,
 			age_birth_year: true,
-			issuing_authority: true,
-			issuing_country: true,
-			issuing_jurisdiction: true,
+			issuing_authority: false,
+			issuing_country: false,
+			issuing_jurisdiction: false,
 			document_number: true,
 			date_of_issuance: true,
-			date_of_expiry: true,
+			date_of_expiry: false,
 			sex: true,
 			nationalities: true,
 			email: true,
 			phone_number: true,
 			picture: true,
-			trust_anchor: true
+			trust_anchor: false
 		}
 		const { credential } = await this.getCredentialSigner()
 			.signSdJwtVc(payload, { typ: VerifiableCredentialFormat.DC_SDJWT, vctm: [base64url.encode(JSON.stringify(this.metadata()))] }, disclosureFrame);
