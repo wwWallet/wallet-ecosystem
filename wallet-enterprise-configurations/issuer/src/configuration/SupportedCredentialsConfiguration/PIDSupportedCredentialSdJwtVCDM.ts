@@ -20,6 +20,8 @@ import { CONSENT_ENTRYPOINT } from "../../authorization/constants";
 import { GenericLocalAuthenticationComponent } from "../../authentication/authenticationComponentTemplates/GenericLocalAuthenticationComponent";
 import { initializeCredentialEngine } from "../../lib/initializeCredentialEngine";
 import { createSRI } from "../../lib/sriGenerator";
+import { pidMetadata1_8 } from "./typeMetadata/pidMetadata";
+import { pidSchema_1_8 } from "./schema/pidschema";
 
 const datasetName = "vid-dataset.xlsx";
 parsePidData(path.join(__dirname, `../../../../dataset/${datasetName}`)) // test parse
@@ -116,8 +118,9 @@ export class PIDSupportedCredentialSdJwtVCDM implements VCDMSupportedCredentialP
 
 				const { credentialRendering } = await initializeCredentialEngine();
 				const dataUri = await credentialRendering.renderSvgTemplate({
-					json: {...vid,
-						birthdate:vid.birth_date,
+					json: {
+						...vid,
+						birthdate: vid.birth_date,
 						date_of_expiry: undefined,
 						date_of_issuance: undefined
 					},
@@ -128,7 +131,7 @@ export class PIDSupportedCredentialSdJwtVCDM implements VCDMSupportedCredentialP
 				if (!dataUri) {
 					throw new Error("Could not render svg");
 				}
-				
+
 				return {
 					credential_id: this.getId(),
 					credential_supported_object: this.exportCredentialSupportedObject(),
@@ -203,6 +206,7 @@ export class PIDSupportedCredentialSdJwtVCDM implements VCDMSupportedCredentialP
 			email: vidEntry.email_address,
 			phone_number: vidEntry.mobile_phone_number,
 			picture: vidEntry.sex == '1' ? await urlToDataUrl(config.url + "/images/male_portrait.jpg") : await urlToDataUrl(config.url + "/images/female_portrait.jpg"),
+			trust_anchor: config.url + "/.well-known/openid-credential-issuer",
 		};
 
 		const payload = {
@@ -255,7 +259,8 @@ export class PIDSupportedCredentialSdJwtVCDM implements VCDMSupportedCredentialP
 			nationalities: true,
 			email: true,
 			phone_number: true,
-			picture: true
+			picture: true,
+			trust_anchor: true
 		}
 		const { credential } = await this.getCredentialSigner()
 			.signSdJwtVc(payload, { typ: VerifiableCredentialFormat.DC_SDJWT, vctm: [base64url.encode(JSON.stringify(this.metadata()))] }, disclosureFrame);
@@ -268,106 +273,11 @@ export class PIDSupportedCredentialSdJwtVCDM implements VCDMSupportedCredentialP
 	}
 
 	public metadata(): any {
-		return {
-			"vct": "urn:eudi:pid:1",
-			"name": "PID",
-			"description": "This is a PID document issued by the well known PID Issuer",
-			"display": [
-				{
-					"lang": "en-US",
-					"name": "PID",
-					"rendering": {
-						"simple": {
-							"logo": {
-								"uri": config.url + "/images/logo.png",
-								"uri#integrity": "sha256-acda3404c2cf46da192cf245ccc6b91edce8869122fa5a6636284f1a60ffcd86",
-								"alt_text": "PID Logo"
-							},
-							"background_color": "#4cc3dd",
-							"text_color": "#FFFFFF"
-						},
-						"svg_templates": [
-							{
-								"uri": config.url + "/images/template-pid.svg",
-							}
-						],
-					}
-				}
-			],
-			"claims": [
-				{
-					"path": ["given_name"],
-					"display": [
-						{
-							"lang": "en-US",
-							"label": "First name",
-							"description": "Current first name(s), including middle name(s) if applicable."
-						}
-					],
-					"svg_id": "given_name"
-				},
-				{
-					"path": ["family_name"],
-					"display": [
-						{
-							"lang": "en-US",
-							"label": "Last name",
-							"description": "Current last name(s) or surname(s)."
-						}
-					],
-					"svg_id": "family_name"
-				},
-				{
-					"path": ["birthdate"],
-					"display": [
-						{
-							"lang": "en-US",
-							"label": "Date of birth",
-							"description": "Full birth date (day, month, year)."
-						}
-					],
-					"svg_id": "birth_date"
-				},
-				{
-					"path": ["issuing_authority"],
-					"display": [
-						{
-							"lang": "en-US",
-							"label": "Issuing authority",
-							"description": "Name of the issuing body or Member State (two-letter code)."
-						}
-					],
-					"svg_id": "issuing_authority"
-				},
-				{
-					"path": ["date_of_issuance"],
-					"display": [
-						{
-							"lang": "en-US",
-							"label": "Issue date",
-							"description": "Start date of the document’s validity."
-						}
-					],
-					"svg_id": "issuance_date"
-				},
-				{
-					"path": ["date_of_expiry"],
-					"display": [
-						{
-							"lang": "en-US",
-							"label": "Expiry date",
-							"description": "End date of the document’s validity."
-						}
-					],
-					"svg_id": "expiry_date"
-				},
-				{
-					"path": ["picture"],
-					"svg_id": "picture"
-				},
-			],
-		}
+		return pidMetadata1_8;
+	}
 
+	public schema(): any {
+		return pidSchema_1_8;
 	}
 
 	exportCredentialSupportedObject(): any {
@@ -384,7 +294,7 @@ export class PIDSupportedCredentialSdJwtVCDM implements VCDMSupportedCredentialP
 				},
 				attestation: {
 					proof_signing_alg_values_supported: ["ES256"],
-					key_attestations_required: { },
+					key_attestations_required: {},
 				}
 			},
 		}

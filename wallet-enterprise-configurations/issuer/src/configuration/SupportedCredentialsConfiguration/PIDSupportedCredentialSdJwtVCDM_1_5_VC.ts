@@ -200,6 +200,7 @@ export class PIDSupportedCredentialSdJwtVCDM_1_5_VC implements VCDMSupportedCred
 			birth_place: vidEntry.birth_place,
 			nationality: vidEntry.nationality.split(','),
 			portrait: vidEntry.sex == '1' ? await urlToDataUrl(config.url + "/images/male_portrait.jpg") : await urlToDataUrl(config.url + "/images/female_portrait.jpg"),
+			trust_anchor: config.url + "/.well-known/openid-credential-issuer",
 		};
 
 		const payload = {
@@ -244,7 +245,8 @@ export class PIDSupportedCredentialSdJwtVCDM_1_5_VC implements VCDMSupportedCred
 			expiry_date: true,
 			birth_place: true,
 			nationality: true,
-			portrait: true
+			portrait: true,
+			trust_anchor: true
 		}
 		const { credential } = await this.getCredentialSigner()
 			.signSdJwtVc(payload, { typ: VerifiableCredentialFormat.VC_SDJWT, vctm: [base64url.encode(JSON.stringify(this.metadata()))] }, disclosureFrame);

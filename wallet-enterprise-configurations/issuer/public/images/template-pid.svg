@@ -32,13 +32,8 @@
 		font-weight="normal">{{birth_date}}</text>
 
 	<text x="320" y="370" font-family="Arial, Helvetica, sans-serif" font-size="20" fill="#2f2f2f"
-		font-weight="light">Issue date</text>
-	<text x="320" y="400" font-family="Arial, Helvetica, sans-serif" font-size="25" fill="#2f2f2f"
-		font-weight="normal">{{issuance_date}}</text>
-
-	<text x="500" y="370" font-family="Arial, Helvetica, sans-serif" font-size="20" fill="#2f2f2f"
 		font-weight="light">Expiry date</text>
-	<text x="500" y="400" font-family="Arial, Helvetica, sans-serif" font-size="25" fill="#2f2f2f"
+	<text x="320" y="400" font-family="Arial, Helvetica, sans-serif" font-size="25" fill="#2f2f2f"
 		font-weight="normal">{{expiry_date}}</text>
 
 </svg>
