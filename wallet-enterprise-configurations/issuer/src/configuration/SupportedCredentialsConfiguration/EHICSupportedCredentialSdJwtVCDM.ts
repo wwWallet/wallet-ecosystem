@@ -211,20 +211,20 @@ export class EHICSupportedCredentialSdJwtVCDM implements VCDMSupportedCredential
 
 		const disclosureFrame = {
 			personal_administrative_number: true,
-			issuing_country: true,
+			issuing_country: false,
 			issuing_authority: {
-				id: true,
-				name: true
+				id: false,
+				name: false
 			},
 			authentic_source: {
-				id: true,
-				name: true
+				id: false,
+				name: false
 			},
 			document_number: true,
-			date_of_issuance: true,
-			date_of_expiry: true,
-			starting_date: true,
-			ending_date: true
+			date_of_issuance: false,
+			date_of_expiry: false,
+			starting_date: false,
+			ending_date: false
 		}
 		const { credential } = await this.getCredentialSigner()
 			.signSdJwtVc(payload, { typ: VerifiableCredentialFormat.DC_SDJWT, vctm: [base64url.encode(JSON.stringify(this.metadata()))] }, disclosureFrame);
