@@ -20,6 +20,8 @@ import { GenericVIDAuthenticationComponent } from "../../authentication/authenti
 import { UserAuthenticationMethod } from "../../types/UserAuthenticationMethod.enum";
 import { initializeCredentialEngine } from "../../lib/initializeCredentialEngine";
 import { createSRI } from "../../lib/sriGenerator";
+import { porMetadata } from "./typeMetadata/porMetadata";
+import { porSchema } from "./schema/porSchema";
 
 const datasetName = "por-dataset.xlsx";
 parsePorData(path.join(__dirname, `../../../../dataset/${datasetName}`)) // test parse
@@ -192,91 +194,11 @@ export class PorSupportedCredentialSdJwt implements VCDMSupportedCredentialProto
 	}
 
 	public metadata(): any {
-		return {
-			"vct": "urn:eu.europa.ec.eudi:por:1",
-			"name": "Power of Representation",
-			"description": "Power of Representation (POR) SD-JWT VC",
-			"display": [
-				{
-					"lang": "en-US",
-					"name": "Power of Representation",
-					"rendering": {
-						"simple": {
-							"logo": {
-								"uri": config.url + "/images/logo.png",
-								"uri#integrity": "sha256-acda3404c2cf46da192cf245ccc6b91edce8869122fa5a6636284f1a60ffcd86",
-								"alt_text": "VID Logo"
-							},
-							"background_color": "#4cc3dd",
-							"text_color": "#FFFFFF"
-						},
-						"svg_templates": [
-							{
-								"uri": config.url + "/images/template-por.svg",
-							}
-						],
-					}
-				}
-			],
-			"claims": [
-				{
-					"path": ["legal_name"],
-					"display": [
-						{
-							"lang": "en-US",
-							"label": "Legal entity name",
-							"description": "Name of the legal entity being represented."
-						}
-					],
-					"svg_id": "legal_name"
-				},
-				{
-					"path": ["legal_person_identifier"],
-					"display": [
-						{
-							"lang": "en-US",
-							"label": "Legal entity ID",
-							"description": "Unique identifier of the legal entity being represented."
-						}
-					],
-					"svg_id": "legal_person_identifier"
-				},
-				{
-					"path": ["full_powers"],
-					"display": [
-						{
-							"lang": "en-US",
-							"label": "Full Representation Powers",
-							"description": "Indicates whether the representative is fully authorized to act on behalf of the legal entity."
-						}
-					],
-					"svg_id": "full_powers"
-				},
-				{
-					"path": ["effective_from_date"],
-					"display": [
-						{
-							"lang": "en-US",
-							"label": "Effective from",
-							"description": "Start date of valid representation (inclusive)."
-						}
-					],
-					"svg_id": "effective_from_date"
-				},
-				{
-					"path": ["effective_until_date"],
-					"display": [
-						{
-							"lang": "en-US",
-							"label": "Effective until",
-							"description": "End date of valid representation (inclusive)."
-						}
-					],
-					"svg_id": "effective_until_date"
-				},
-			],
-		}
+		return porMetadata;
+	}
 
+	public schema(): any {
+		return porSchema;
 	}
 
 	exportCredentialSupportedObject(): any {

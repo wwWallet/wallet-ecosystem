@@ -61,11 +61,11 @@ const locale = {
 			},
 			typeMetatadaExamplesHeader: "JWT VC Type Metadata Examples",
 			typeMetatadaExamples: [
-				["Pid (ARF 1.5)", "pid/person-identification-data-arf-15-vctm-example-01.json"],
-				["Pid (ARF 1.8)", "pid/person-identification-data-arf-18-vctm-example-01.json"],
-				["EHIC", "ehic/european-health-insurance-card-vctm-dc4eu-01.json"],
-				["PDA1", "pda1/portable-document-a1-vctm-dc4eu-01.json"],
-				["POR", "por/power-of-representation-vctm-potential-01.json"],
+				["Pid (ARF 1.5)", "type-metadata?vct=urn:eudi:pid:1"],
+				["Pid (ARF 1.8)", "type-metadata?vct=urn:eudi:pid:1"],
+				["EHIC", "type-metadata?vct=urn:eudi:ehic:1"],
+				["PDA1", "public/creds/pda1/portable-document-a1-vctm-dc4eu-01.json"],
+				["POR", "type-metadata?vct=urn:eu.europa.ec.eudi:por:1"],
 			],
 		},
 		VIDAuthenticationComponent: {
