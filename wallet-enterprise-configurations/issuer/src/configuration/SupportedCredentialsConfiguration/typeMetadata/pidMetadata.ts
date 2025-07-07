@@ -637,6 +637,19 @@ export const pidMetadata1_8 = {
 				}
 			]
 		},
+				{
+			"path": [
+				"nationalities"
+			],
+			"sd": "always",
+			"display": [
+				{
+					"lang": "en-US",
+					"label": "Nationality",
+					"description": "Country or countries of nationality."
+				}
+			]
+		},
 		{
 			"path": [
 				"personal_administrative_number"
