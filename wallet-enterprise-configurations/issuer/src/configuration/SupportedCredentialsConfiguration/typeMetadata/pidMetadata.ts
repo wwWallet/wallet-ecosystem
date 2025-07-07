@@ -112,7 +112,8 @@ export const pidMetadata1_5 = {
 		},
 		{
 			"path": [
-				"nationality"
+				"nationality",
+				null
 			],
 			"sd": "always",
 			"display": [
@@ -394,7 +395,7 @@ export const pidMetadata1_5 = {
 			"path": [
 				"issuing_authority"
 			],
-			"sd": "never",
+			"sd": "always",
 			"display": [
 				{
 					"lang": "en-US",
@@ -407,7 +408,7 @@ export const pidMetadata1_5 = {
 			"path": [
 				"issuing_country"
 			],
-			"sd": "never",
+			"sd": "always",
 			"display": [
 				{
 					"lang": "en-US",
@@ -460,7 +461,7 @@ export const pidMetadata1_5 = {
 			"path": [
 				"issuing_jurisdiction"
 			],
-			"sd": "never",
+			"sd": "always",
 			"display": [
 				{
 					"lang": "en-US",
@@ -624,7 +625,8 @@ export const pidMetadata1_8 = {
 		},
 		{
 			"path": [
-				"nationalities"
+				"nationalities",
+				null
 			],
 			"sd": "always",
 			"display": [
@@ -930,7 +932,7 @@ export const pidMetadata1_8 = {
 			"path": [
 				"issuing_authority"
 			],
-			"sd": "never",
+			"sd": "always",
 			"display": [
 				{
 					"lang": "en-US",
@@ -943,7 +945,7 @@ export const pidMetadata1_8 = {
 			"path": [
 				"issuing_country"
 			],
-			"sd": "never",
+			"sd": "always",
 			"display": [
 				{
 					"lang": "en-US",
