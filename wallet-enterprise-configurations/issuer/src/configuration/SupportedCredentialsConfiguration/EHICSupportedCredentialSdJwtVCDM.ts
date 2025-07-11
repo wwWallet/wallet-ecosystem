@@ -24,6 +24,7 @@ import { formatDateDDMMYYYY } from "../../lib/formatDate";
 import { createSRI } from "../../lib/sriGenerator";
 import { ehicMetadata } from "./typeMetadata/ehicMetadata";
 import { ehicSchema } from "./schema/ehicSchema";
+import { convertSdjwtvcToOpenid4vciClaims } from "../../lib/convertSdjwtvcToOpenid4vciClaims";
 
 const datasetName = "ehic-dataset.xlsx";
 parseEhicData(path.join(__dirname, `../../../../dataset/${datasetName}`)) // test parse
@@ -256,7 +257,8 @@ export class EHICSupportedCredentialSdJwtVCDM implements VCDMSupportedCredential
 				jwt: {
 					proof_signing_alg_values_supported: ["ES256"]
 				}
-			}
+			},
+			claims:convertSdjwtvcToOpenid4vciClaims(this.metadata().claims, this.schema())
 		}
 	}
 }

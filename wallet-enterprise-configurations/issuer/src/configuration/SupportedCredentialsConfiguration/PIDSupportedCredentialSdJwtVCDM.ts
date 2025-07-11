@@ -22,6 +22,7 @@ import { initializeCredentialEngine } from "../../lib/initializeCredentialEngine
 import { createSRI } from "../../lib/sriGenerator";
 import { pidMetadata1_8 } from "./typeMetadata/pidMetadata";
 import { pidSchema_1_8 } from "./schema/pidSchema";
+import { convertSdjwtvcToOpenid4vciClaims } from "../../lib/convertSdjwtvcToOpenid4vciClaims";
 
 const datasetName = "vid-dataset.xlsx";
 parsePidData(path.join(__dirname, `../../../../dataset/${datasetName}`)) // test parse
@@ -297,6 +298,7 @@ export class PIDSupportedCredentialSdJwtVCDM implements VCDMSupportedCredentialP
 					key_attestations_required: {},
 				}
 			},
+			claims:convertSdjwtvcToOpenid4vciClaims(this.metadata().claims, this.schema())
 		}
 	}
 }
