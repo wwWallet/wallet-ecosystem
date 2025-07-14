@@ -1,13 +1,13 @@
 [submodule "wallet-backend-server"]
 	path = wallet-backend-server
-	url = ../../wwwallet/wallet-backend-server.git
+	url = https://github.com/wwWallet/wallet-backend-server.git
 [submodule "wallet-frontend"]
 	path = wallet-frontend
-	url = ../../wwwallet/wallet-frontend.git
+	url = https://github.com/wwWallet/wallet-frontend.git
 [submodule "wallet-enterprise"]
 	path = wallet-enterprise
-	url = ../../wwwallet/wallet-enterprise.git
+	url = https://github.com/wwWallet/wallet-enterprise.git
 [submodule "lib/wallet-common"]
 	path = lib/wallet-common
-	url = ../../wwWallet/wallet-common.git
+	url = https://github.com/wwWallet/wallet-common.git
 	branch = master
