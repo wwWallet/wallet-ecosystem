@@ -45,15 +45,15 @@ export const issuerSigner: CredentialSigner = {
 		expirationDate.setFullYear(expirationDate.getFullYear() + 1);
 		const signedDocument = await document
 			.addValidityInfo({
-				signed: signed,
+				signed: new Date(),
 				validUntil: expirationDate,
 				validFrom: validFromDate,
 			})
-			.addDeviceKeyInfo({ deviceKey: holderPublicKeyJwk })
+			.addDeviceKeyInfo({ deviceKey: {...holderPublicKeyJwk, kid: cborEncode(holderPublicKeyJwk.kid) } as any })
 			.sign({
 				issuerPrivateKey: {
 					...issuerPrivateKeyJwk,
-					kid: issuerJwkKid, // only used to avoid undefined value on kid of the IssuerAuth
+					kid: cborEncode(issuerJwkKid) as any, // only used to avoid undefined value on kid of the IssuerAuth
 				},
 				issuerCertificate: issuerCertPem,
 				alg: 'ES256',
