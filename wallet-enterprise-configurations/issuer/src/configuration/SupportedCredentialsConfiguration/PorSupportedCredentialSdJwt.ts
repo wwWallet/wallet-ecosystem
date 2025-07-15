@@ -22,6 +22,7 @@ import { initializeCredentialEngine } from "../../lib/initializeCredentialEngine
 import { createSRI } from "../../lib/sriGenerator";
 import { porMetadata } from "./typeMetadata/porMetadata";
 import { porSchema } from "./schema/porSchema";
+import { convertSdjwtvcToOpenid4vciClaims } from "../../lib/convertSdjwtvcToOpenid4vciClaims";
 
 const datasetName = "por-dataset.xlsx";
 parsePorData(path.join(__dirname, `../../../../dataset/${datasetName}`)) // test parse
@@ -213,7 +214,8 @@ export class PorSupportedCredentialSdJwt implements VCDMSupportedCredentialProto
 				jwt: {
 					proof_signing_alg_values_supported: ["ES256"]
 				}
-			}
+			},
+			claims:convertSdjwtvcToOpenid4vciClaims(this.metadata().claims, this.schema())
 		}
 	}
 }
