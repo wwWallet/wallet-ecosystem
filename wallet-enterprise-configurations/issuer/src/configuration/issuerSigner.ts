@@ -38,7 +38,6 @@ export const issuerSigner: CredentialSigner = {
 		console.log("Cert = ", importX509(issuerCertPem, 'ES256'))
 
 		const issuerPrivateKeyJwk = await exportJWK(key);
-		const signed = new Date();
 		const validFromDate = new Date(signed.getTime() + 1000);
 		const expirationDate = new Date();
 
