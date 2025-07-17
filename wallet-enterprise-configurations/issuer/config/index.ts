@@ -3,6 +3,7 @@ export const config = {
 	url: "http://wallet-enterprise-issuer:8003",
 	port: "8003",
 	appSecret: "dsfkwfkwfwdfdsfSaSe2e34r4frwr42rAFdsf2lfmfsmklfwmer",
+	vctRegistryUri: "https://qa.wwwallet.org/public/registry/all.json",
 	db: {
 		host: "wallet-db",
 		port: "3307",
