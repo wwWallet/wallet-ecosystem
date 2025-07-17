@@ -22,6 +22,7 @@ import { initializeCredentialEngine } from "../../lib/initializeCredentialEngine
 import { createSRI } from "../../lib/sriGenerator";
 import { pidMetadata1_5 } from "./typeMetadata/pidMetadata";
 import { pidSchema_1_5 } from "./schema/pidSchema";
+import { convertSdjwtvcToOpenid4vciClaims } from "../../lib/convertSdjwtvcToOpenid4vciClaims";
 
 const datasetName = "vid-dataset.xlsx";
 parsePidData(path.join(__dirname, `../../../../dataset/${datasetName}`)) // test parse
@@ -279,7 +280,8 @@ export class PIDSupportedCredentialSdJwtVCDM_1_5 implements VCDMSupportedCredent
 				jwt: {
 					proof_signing_alg_values_supported: ["ES256"]
 				}
-			}
+			},
+			claims:convertSdjwtvcToOpenid4vciClaims(this.metadata().claims, this.schema())
 		}
 	}
 }

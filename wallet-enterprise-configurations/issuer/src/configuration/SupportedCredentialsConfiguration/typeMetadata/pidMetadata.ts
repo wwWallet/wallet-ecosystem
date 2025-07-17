@@ -112,6 +112,19 @@ export const pidMetadata1_5 = {
 		},
 		{
 			"path": [
+				"nationality"
+			],
+			"sd": "always",
+			"display": [
+				{
+					"lang": "en-US",
+					"label": "Nationalities",
+					"description": "Country or countries of nationality."
+				}
+			]
+		},
+		{
+			"path": [
 				"nationality",
 				null
 			],
@@ -580,6 +593,13 @@ export const pidMetadata1_8 = {
 				"place_of_birth"
 			],
 			"sd": "always",
+			"display": [
+				{
+					"lang": "en-US",
+					"label": "Place of birth",
+					"description": "Place where the person was born."
+				}
+			]
 		},
 		{
 			"path": [
@@ -633,11 +653,11 @@ export const pidMetadata1_8 = {
 				{
 					"lang": "en-US",
 					"label": "Nationality",
-					"description": "Country or countries of nationality."
+					"description": "Country of nationality."
 				}
 			]
 		},
-				{
+		{
 			"path": [
 				"nationalities"
 			],
@@ -645,7 +665,7 @@ export const pidMetadata1_8 = {
 			"display": [
 				{
 					"lang": "en-US",
-					"label": "Nationality",
+					"label": "Nationalities",
 					"description": "Country or countries of nationality."
 				}
 			]
@@ -740,6 +760,13 @@ export const pidMetadata1_8 = {
 				"address"
 			],
 			"sd": "always",
+			"display": [
+				{
+					"lang": "en-US",
+					"label": "Address",
+					"description": "Person's residential address."
+				}
+			]
 		},
 		{
 			"path": [
@@ -844,6 +871,13 @@ export const pidMetadata1_8 = {
 				"age_equal_or_over"
 			],
 			"sd": "always",
+			"display": [
+				{
+					"lang": "en-US",
+					"label": "Age equal or over",
+					"description": "Age threshold indicators."
+				}
+			]
 		},
 		{
 			"path": [

@@ -114,7 +114,7 @@ export class PIDSupportedCredentialMsoMdoc implements SupportedCredentialProtoco
 				if (!dataUri) {
 					throw new Error("Could not render svg");
 				}
-				
+
 				return {
 					credential_id: this.getId(),
 					credential_supported_object: this.exportCredentialSupportedObject(),
@@ -177,7 +177,8 @@ export class PIDSupportedCredentialMsoMdoc implements SupportedCredentialProtoco
 			resident_house_number: vidEntry.resident_house_number,
 			portrait: vidEntry.sex == '1' ? await urlToBstr(config.url + "/images/male_portrait.jpg") : await urlToBstr(config.url + "/images/female_portrait.jpg"),
 			email_address: vidEntry.email_address,
-			mobile_phone_number: vidEntry.mobile_phone_number
+			mobile_phone_number: vidEntry.mobile_phone_number,
+			trust_anchor: config.url + "/trust_anchor"
 		};
 
 
@@ -210,7 +211,386 @@ export class PIDSupportedCredentialMsoMdoc implements SupportedCredentialProtoco
 				jwt: {
 					proof_signing_alg_values_supported: ["ES256"]
 				}
-			}
+			},
+			"claims": [
+				{
+					"path": [
+						"eu.europa.ec.eudi.pid.1",
+						"family_name"
+					],
+					"mandatory": true,
+					"display": [
+						{
+							"name": "Family Name",
+							"locale": "en-US"
+						}
+					]
+				},
+				{
+					"path": [
+						"eu.europa.ec.eudi.pid.1",
+						"given_name"
+					],
+					"mandatory": true,
+					"display": [
+						{
+							"name": "Given Name(s)",
+							"locale": "en-US"
+						}
+					]
+				},
+				{
+					"path": [
+						"eu.europa.ec.eudi.pid.1",
+						"birth_date"
+					],
+					"mandatory": true,
+					"display": [
+						{
+							"name": "Birth Date",
+							"locale": "en-US"
+						}
+					]
+				},
+				{
+					"path": [
+						"eu.europa.ec.eudi.pid.1",
+						"birth_place"
+					],
+					"mandatory": true,
+					"display": [
+						{
+							"name": "Birth Place",
+							"locale": "en-US"
+						}
+					]
+				},
+				{
+					"path": [
+						"eu.europa.ec.eudi.pid.1",
+						"nationality"
+					],
+					"mandatory": true,
+					"display": [
+						{
+							"name": "Nationality",
+							"locale": "en-US"
+						}
+					]
+				},
+				{
+					"path": [
+						"eu.europa.ec.eudi.pid.1",
+						"resident_address"
+					],
+					"mandatory": false,
+					"display": [
+						{
+							"name": "Resident Address",
+							"locale": "en-US"
+						}
+					]
+				},
+				{
+					"path": [
+						"eu.europa.ec.eudi.pid.1",
+						"resident_country"
+					],
+					"mandatory": false,
+					"display": [
+						{
+							"name": "Resident Country",
+							"locale": "en-US"
+						}
+					]
+				},
+				{
+					"path": [
+						"eu.europa.ec.eudi.pid.1",
+						"resident_state"
+					],
+					"mandatory": false,
+					"display": [
+						{
+							"name": "Resident State",
+							"locale": "en-US"
+						}
+					]
+				},
+				{
+					"path": [
+						"eu.europa.ec.eudi.pid.1",
+						"resident_city"
+					],
+					"mandatory": false,
+					"display": [
+						{
+							"name": "Resident City",
+							"locale": "en-US"
+						}
+					]
+				},
+				{
+					"path": [
+						"eu.europa.ec.eudi.pid.1",
+						"resident_postal_code"
+					],
+					"mandatory": false,
+					"display": [
+						{
+							"name": "Resident Postal Code",
+							"locale": "en-US"
+						}
+					]
+				},
+				{
+					"path": [
+						"eu.europa.ec.eudi.pid.1",
+						"resident_street"
+					],
+					"mandatory": false,
+					"display": [
+						{
+							"name": "Resident Street",
+							"locale": "en-US"
+						}
+					]
+				},
+				{
+					"path": [
+						"eu.europa.ec.eudi.pid.1",
+						"resident_house_number"
+					],
+					"mandatory": false,
+					"display": [
+						{
+							"name": "Resident House Number",
+							"locale": "en-US"
+						}
+					]
+				},
+				{
+					"path": [
+						"eu.europa.ec.eudi.pid.1",
+						"personal_administrative_number"
+					],
+					"mandatory": false,
+					"display": [
+						{
+							"name": "Personal Administrative Number",
+							"locale": "en-US"
+						}
+					]
+				},
+				{
+					"path": [
+						"eu.europa.ec.eudi.pid.1",
+						"portrait"
+					],
+					"mandatory": false,
+					"display": [
+						{
+							"name": "Portrait Image",
+							"locale": "en-US"
+						}
+					]
+				},
+				{
+					"path": [
+						"eu.europa.ec.eudi.pid.1",
+						"family_name_birth"
+					],
+					"mandatory": false,
+					"display": [
+						{
+							"name": "Birth Family Name(s)",
+							"locale": "en-US"
+						}
+					]
+				},
+				{
+					"path": [
+						"eu.europa.ec.eudi.pid.1",
+						"given_name_birth"
+					],
+					"mandatory": false,
+					"display": [
+						{
+							"name": "Birth Given Name(s)",
+							"locale": "en-US"
+						}
+					]
+				},
+				{
+					"path": [
+						"eu.europa.ec.eudi.pid.1",
+						"sex"
+					],
+					"mandatory": false,
+					"display": [
+						{
+							"name": "Sex",
+							"locale": "en-US"
+						}
+					]
+				},
+				{
+					"path": [
+						"eu.europa.ec.eudi.pid.1",
+						"email_address"
+					],
+					"mandatory": false,
+					"display": [
+						{
+							"name": "Email Address",
+							"locale": "en-US"
+						}
+					]
+				},
+				{
+					"path": [
+						"eu.europa.ec.eudi.pid.1",
+						"mobile_phone_number"
+					],
+					"mandatory": false,
+					"display": [
+						{
+							"name": "Mobile Phone Number",
+							"locale": "en-US"
+						}
+					]
+				},
+				{
+					"path": [
+						"eu.europa.ec.eudi.pid.1",
+						"expiry_date"
+					],
+					"mandatory": true,
+					"display": [
+						{
+							"name": "Expiry Date",
+							"locale": "en-US"
+						}
+					]
+				},
+				{
+					"path": [
+						"eu.europa.ec.eudi.pid.1",
+						"issuing_authority"
+					],
+					"mandatory": true,
+					"display": [
+						{
+							"name": "Issuance Authority",
+							"locale": "en-US"
+						}
+					]
+				},
+				{
+					"path": [
+						"eu.europa.ec.eudi.pid.1",
+						"issuing_country"
+					],
+					"mandatory": true,
+					"display": [
+						{
+							"name": "Issuing Country",
+							"locale": "en-US"
+						}
+					]
+				},
+				{
+					"path": [
+						"eu.europa.ec.eudi.pid.1",
+						"document_number"
+					],
+					"mandatory": false,
+					"display": [
+						{
+							"name": "Document Number",
+							"locale": "en-US"
+						}
+					]
+				},
+				{
+					"path": [
+						"eu.europa.ec.eudi.pid.1",
+						"issuing_jurisdiction"
+					],
+					"mandatory": false,
+					"display": [
+						{
+							"name": "Issuing Jurisdiction",
+							"locale": "en-US"
+						}
+					]
+				},
+				{
+					"path": [
+						"eu.europa.ec.eudi.pid.1",
+						"issuance_date"
+					],
+					"mandatory": false,
+					"display": [
+						{
+							"name": "Issuance Date",
+							"locale": "en-US"
+						}
+					]
+				},
+				{
+					"path": [
+						"eu.europa.ec.eudi.pid.1",
+						"age_over_18"
+					],
+					"mandatory": false,
+					"display": [
+						{
+							"name": "Age Over 18",
+							"locale": "en-US"
+						}
+					]
+				},
+				{
+					"path": [
+						"eu.europa.ec.eudi.pid.1",
+						"age_in_years"
+					],
+					"mandatory": false,
+					"display": [
+						{
+							"name": "Age in Years",
+							"locale": "en-US"
+						}
+					]
+				},
+				{
+					"path": [
+						"eu.europa.ec.eudi.pid.1",
+						"age_birth_year"
+					],
+					"mandatory": false,
+					"display": [
+						{
+							"name": "Age Year of Birth",
+							"locale": "en-US"
+						}
+					]
+				},
+				{
+					"path": [
+						"eu.europa.ec.eudi.pid.1",
+						"trust_anchor"
+					],
+					"mandatory": false,
+					"display": [
+						{
+							"name": "Trust Anchor",
+							"locale": "en-US"
+						}
+					]
+				}
+			]
 		}
 	}
 }
