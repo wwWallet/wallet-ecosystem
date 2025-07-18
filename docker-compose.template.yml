@@ -18,14 +18,17 @@ services:
       wallet-db:
         condition: service_healthy
     volumes:
-      - ./wallet-enterprise:/app:rw
-      - ./wallet-enterprise-configurations/issuer/dataset:/app/dataset:rw
-      - ./wallet-enterprise-configurations/issuer/config/index.ts:/app/config/index.ts:rw
-      - ./wallet-enterprise-configurations/issuer/keys:/app/keys:rw
-      - ./wallet-enterprise-configurations/issuer/src/configuration:/app/src/configuration:rw
-      - ./wallet-enterprise-configurations/issuer/public/images:/app/public/images:rw
-      - ./wallet-enterprise-configurations/issuer/public/styles/main.css:/app/public/styles/main.css:rw
-      - ./.vscode/:/app/.vscode:rw
+      - ./wallet-enterprise/config:/app/config:ro
+      - ./wallet-enterprise/public:/app/public:ro
+      - ./wallet-enterprise/src:/app/src:ro
+      - ./wallet-enterprise/views:/app/views:ro
+      - ./wallet-enterprise-configurations/issuer/dataset:/app/dataset:ro
+      - ./wallet-enterprise-configurations/issuer/config/index.ts:/app/config/index.ts:ro
+      - ./wallet-enterprise-configurations/issuer/keys:/app/keys:ro
+      - ./wallet-enterprise-configurations/issuer/src/configuration:/app/src/configuration:ro
+      - ./wallet-enterprise-configurations/issuer/public/images:/app/public/images:ro
+      - ./wallet-enterprise-configurations/issuer/public/styles/main.css:/app/public/styles/main.css:ro
+      - ./.vscode/:/app/.vscode:ro
       - type: tmpfs
         target: /app/dist  # Not /dist here because of relative imports that assume dist/ and keys/, views/ etc. are sibling dirs
         tmpfs:
@@ -49,13 +52,16 @@ services:
       wallet-db:
         condition: service_healthy
     volumes:
-      - ./wallet-enterprise:/app:rw
-      - ./wallet-enterprise-configurations/acme-verifier/config/index.ts:/app/config/index.ts:rw
-      - ./wallet-enterprise-configurations/acme-verifier/keys:/app/keys:rw
-      - ./wallet-enterprise-configurations/acme-verifier/src/configuration:/app/src/configuration:rw
-      - ./wallet-enterprise-configurations/acme-verifier/public/styles/main.css:/app/public/styles/main.css:rw
-      - ./wallet-enterprise-configurations/acme-verifier/public/images:/app/public/images:rw
-      - ./.vscode/:/app/.vscode:rw
+      - ./wallet-enterprise/config:/app/config:ro
+      - ./wallet-enterprise/public:/app/public:ro
+      - ./wallet-enterprise/src:/app/src:ro
+      - ./wallet-enterprise/views:/app/views:ro
+      - ./wallet-enterprise-configurations/acme-verifier/config/index.ts:/app/config/index.ts:ro
+      - ./wallet-enterprise-configurations/acme-verifier/keys:/app/keys:ro
+      - ./wallet-enterprise-configurations/acme-verifier/src/configuration:/app/src/configuration:ro
+      - ./wallet-enterprise-configurations/acme-verifier/public/styles/main.css:/app/public/styles/main.css:ro
+      - ./wallet-enterprise-configurations/acme-verifier/public/images:/app/public/images:ro
+      - ./.vscode/:/app/.vscode:ro
       - type: tmpfs
         target: /app/dist
         tmpfs:
