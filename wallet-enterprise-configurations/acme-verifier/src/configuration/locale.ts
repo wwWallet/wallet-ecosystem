@@ -12,7 +12,7 @@ const locale = {
 		},
 		index: {
 			header: "wwWallet Verifier",
-			verifyCredential: "Verify Credential",
+			verifyCredential: "Request Credentials",
 			heading: "wwWallet Verifier",
 			oid4vpProfile: "OpenID4VP Interoperability Profile",
 			openid4vp: [
