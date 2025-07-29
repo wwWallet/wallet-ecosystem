@@ -1,1 +1,3 @@
-export const issuerSigner = null;
+import { signer } from '../lib/signer';
+
+export const issuerSigner = signer
