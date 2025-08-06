@@ -2,6 +2,7 @@ import { credentialConfigurationRegistryServiceEmitter } from "../services/Crede
 import { credentialConfigurationRegistryService } from "../services/instances";
 import { EdiplomasBlueprintSdJwtVCDM } from "../credentials/SupportedCredentialsConfiguration/EdiplomasBlueprintSdJwtVCDM";
 import { EHICSupportedCredentialSdJwtVCDM } from "../credentials/SupportedCredentialsConfiguration/EHICSupportedCredentialSdJwtVCDM";
+import { PIDSupportedCredentialJptVCDM } from "../credentials/SupportedCredentialsConfiguration/PIDSupportedCredentialJptVCDM";
 import { PIDSupportedCredentialMsoMdoc } from "../credentials/SupportedCredentialsConfiguration/PIDSupportedCredentialMsoMdoc";
 import { PIDSupportedCredentialSdJwtVCDM } from "../credentials/SupportedCredentialsConfiguration/PIDSupportedCredentialSdJwtVCDM";
 import { PIDSupportedCredentialSdJwtVCDM_VC } from "../credentials/SupportedCredentialsConfiguration/PIDSupportedCredentialSdJwtVCDM_VC";
@@ -10,6 +11,7 @@ import { PIDSupportedCredentialSdJwtVCDM_1_5_VC } from "../credentials/Supported
 import { PorSupportedCredentialSdJwt } from "../credentials/SupportedCredentialsConfiguration/PorSupportedCredentialSdJwt";
 
 export async function configurationExecution() {
+	credentialConfigurationRegistryService.register(new PIDSupportedCredentialJptVCDM());
 	credentialConfigurationRegistryService.register(new PIDSupportedCredentialSdJwtVCDM());
 	credentialConfigurationRegistryService.register(new PIDSupportedCredentialSdJwtVCDM_VC());
 	credentialConfigurationRegistryService.register(new PIDSupportedCredentialSdJwtVCDM_1_5());
