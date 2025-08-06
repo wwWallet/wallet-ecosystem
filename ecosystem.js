@@ -22,6 +22,7 @@ const walletClientUrl = `${walletClientOrigin}/cb`;
 let buildImageTagContext = "";
 let buildImageNames = [];
 let buildImagesTag = "latest";
+let buildImagesPushFlag = false;
 
 function help() {
 	if (action === 'up') {
@@ -88,6 +89,10 @@ for (let i = 0; i < args.length; i++) {
 
 	if (action === 'build-images' && arg === '--names' && next) {
 		buildImageNames = next.split(',');
+	}
+
+		if (action === 'build-images' && arg === '--push') {
+		buildImagesPushFlag = true;
 	}
 
 	if (action === 'build-images' && arg === '--tag' && next) {
@@ -165,23 +170,23 @@ if (action !== 'up') {
 function buildImages() {
 
 	if (buildImageNames.length == 0 || buildImageNames.includes('wallet-frontend')) {
-		execSync(`cd wallet-frontend && docker build -t ${buildImageTagContext}wallet-frontend:${buildImagesTag} .`, { stdio: 'inherit' });
+		execSync(`cd wallet-frontend && docker buildx build --platform linux/amd64 ${buildImagesPushFlag ? "--push" : "--load"} -t ${buildImageTagContext}wallet-frontend:${buildImagesTag} .`, { stdio: 'inherit' });
 	}
 
 	if (buildImageNames.length == 0 || buildImageNames.includes('wallet-backend-server')) {
-		execSync(`cd wallet-backend-server && docker build -t ${buildImageTagContext}wallet-backend-server:${buildImagesTag} .`, { stdio: 'inherit' });
+		execSync(`cd wallet-backend-server && docker buildx build --platform linux/amd64 ${buildImagesPushFlag ? "--push" : "--load"} -t ${buildImageTagContext}wallet-backend-server:${buildImagesTag} .`, { stdio: 'inherit' });
 	}
 
 	if (buildImageNames.length == 0 || buildImageNames.includes('wallet-enterprise')) {
-		execSync(`docker build -t ${buildImageTagContext}wallet-enterprise:${buildImagesTag} wallet-enterprise`, { stdio: 'inherit' });
+		execSync(`docker buildx build --platform linux/amd64 ${buildImagesPushFlag ? "--push" : "--load"} -t ${buildImageTagContext}wallet-enterprise:${buildImagesTag} wallet-enterprise`, { stdio: 'inherit' });
 	}
 
 	if (buildImageNames.length == 0 || buildImageNames.includes('issuer')) {
-		execSync(`docker build -t ${buildImageTagContext}wallet-enterprise-issuer:${buildImagesTag} -f docker/wallet-enterprise-issuer.Dockerfile .`, { stdio: 'inherit' });
+		execSync(`docker buildx build --platform linux/amd64 ${buildImagesPushFlag ? "--push" : "--load"} -t ${buildImageTagContext}wallet-enterprise-issuer:${buildImagesTag} -f docker/wallet-enterprise-issuer.Dockerfile .`, { stdio: 'inherit' });
 	}
 
 	if (buildImageNames.length == 0 || buildImageNames.includes('verifier')) {
-		execSync(`docker build -t ${buildImageTagContext}wallet-enterprise-verifier:${buildImagesTag} -f docker/wallet-enterprise-verifier.Dockerfile .`, { stdio: 'inherit' });
+		execSync(`docker buildx build --platform linux/amd64 ${buildImagesPushFlag ? "--push" : "--load"} -t ${buildImageTagContext}wallet-enterprise-verifier:${buildImagesTag} -f docker/wallet-enterprise-verifier.Dockerfile .`, { stdio: 'inherit' });
 	}
 }
 
