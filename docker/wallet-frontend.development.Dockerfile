@@ -12,7 +12,7 @@ RUN yarn install && yarn cache clean -f && yarn build
 
 WORKDIR /dependencies
 COPY ./wallet-frontend/package.json ./wallet-frontend/yarn.lock .
-RUN  yarn install && yarn cache clean -f
+RUN yarn add /dependencies/lib/wallet-common && yarn install && yarn cache clean -f
 
 FROM node:22-bullseye-slim AS development
 
