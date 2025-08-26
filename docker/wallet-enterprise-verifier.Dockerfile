@@ -2,13 +2,7 @@ FROM node:22-bullseye-slim AS builder
 
 WORKDIR /dependencies
 
-RUN apt-get update && apt-get install -y git
-
-# Install dependencies first so rebuild of these layers is only needed when dependencies change
-COPY lib/ ./lib/
-
-WORKDIR /dependencies/lib/wallet-common
-RUN yarn install && yarn cache clean -f && yarn build && mkdir -p /app/lib && mv /dependencies/lib/wallet-common /app/lib/wallet-common
+RUN apt-get update && apt-get install -y git && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
 COPY wallet-enterprise/ .
@@ -24,7 +18,6 @@ RUN yarn cache clean && yarn install && yarn build && rm -rf node_modules/ && ya
 FROM node:22-bullseye-slim AS production
 WORKDIR /app
 
-COPY --from=builder /app/lib/wallet-common/ ./lib/wallet-common/
 COPY --from=builder /app/node_modules ./node_modules
 COPY --from=builder /app/package.json .
 COPY --from=builder /app/dist ./dist

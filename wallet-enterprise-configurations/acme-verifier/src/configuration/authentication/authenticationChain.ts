@@ -1,6 +1,6 @@
 import { VERIFIER_PANEL_ENTRYPOINT } from "../../authorization/constants";
 import { AuthenticationChainBuilder } from "../../authentication/AuthenticationComponent";
-import { VerifierAuthenticationComponent } from "./VerifierAuthenticationComponent";
+import { VerifierAuthenticationComponent } from "../../authentication/VerifierAuthenticationComponent";
 
 
 

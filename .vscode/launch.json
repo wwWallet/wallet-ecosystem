@@ -30,6 +30,26 @@
 				"!**/node_modules/**"
 			],
 			"autoAttachChildProcesses": true
+		},
+		{
+			"name": "wallet-common Vitest",
+			"type": "node",
+			"request": "launch",
+			"program": "${workspaceFolder}/lib/wallet-common/node_modules/vitest/vitest.mjs",
+			"args": ["run", "--inspect-brk", "--no-file-parallelism", "lib/wallet-common"],
+			"autoAttachChildProcesses": true,
+			"skipFiles": ["<node_internals>/**"],
+			"smartStep": true,
+			"sourceMaps": true,
+			"resolveSourceMapLocations": [
+				"${workspaceFolder}/lib/wallet-common/**",
+				"!**/node_modules/**"
+			],
+			"env": {
+				"NODE_ENV": "test"
+			},
+			"console": "integratedTerminal",
+			"internalConsoleOptions": "neverOpen"
 		}
 	]
 }

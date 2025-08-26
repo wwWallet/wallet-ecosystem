@@ -128,11 +128,15 @@ services:
       - 3000:3000
     volumes:
       - ./wallet-frontend/public:/app/public:rw
-      - ./wallet-frontend/src:/app/src:rw
-      - ./wallet-frontend/.env:/app/.env:rw
+      - ./wallet-frontend/src:/app/src:ro
+      - ./wallet-frontend/.env:/app/.env:ro
       - ./.vscode/:/app/.vscode:rw
       - type: tmpfs
-        target: /app/node_modules/.cache
+        target: /app/node_modules/.vite
+        tmpfs:
+          mode: 01777
+      - type: tmpfs
+        target: /app/node_modules/.vite-temp
         tmpfs:
           mode: 01777
 
