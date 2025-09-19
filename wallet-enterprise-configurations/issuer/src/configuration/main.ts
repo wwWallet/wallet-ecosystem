@@ -8,6 +8,7 @@ import { PIDSupportedCredentialSdJwtVCDM_VC } from "../credentials/SupportedCred
 import { PIDSupportedCredentialSdJwtVCDM_1_5 } from "../credentials/SupportedCredentialsConfiguration/PIDSupportedCredentialSdJwtVCDM_1_5";
 import { PIDSupportedCredentialSdJwtVCDM_1_5_VC } from "../credentials/SupportedCredentialsConfiguration/PIDSupportedCredentialSdJwtVCDM_1_5_VC";
 import { PorSupportedCredentialSdJwt } from "../credentials/SupportedCredentialsConfiguration/PorSupportedCredentialSdJwt";
+import { PorSupportedCredentialSdJwtDeferred } from "../credentials/SupportedCredentialsConfiguration/PorSupportedCredentialSdJwtDeferred";
 
 export async function configurationExecution() {
 	credentialConfigurationRegistryService.register(new PIDSupportedCredentialSdJwtVCDM());
@@ -18,6 +19,7 @@ export async function configurationExecution() {
 	credentialConfigurationRegistryService.register(new EdiplomasBlueprintSdJwtVCDM());
 	credentialConfigurationRegistryService.register(new EHICSupportedCredentialSdJwtVCDM());
 	credentialConfigurationRegistryService.register(new PorSupportedCredentialSdJwt());
+	credentialConfigurationRegistryService.register(new PorSupportedCredentialSdJwtDeferred());
 	credentialConfigurationRegistryServiceEmitter.emit('initialized');
 }
 
