@@ -20,7 +20,7 @@ COPY --from=dependencies /dependencies/node_modules /app/node_modules
 
 WORKDIR /app
 ENV NODE_ENV=development
-CMD [ "yarn", "start-docker" ]
+CMD [ "yarn", "dev:docker" ]
 
 # src/ and public/ will be mounted from host, but we need some config files in the image for startup
 COPY ./wallet-frontend/ .
