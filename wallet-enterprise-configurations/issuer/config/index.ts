@@ -46,6 +46,7 @@ fYvvp4c4HYxsWLNa9aYpCWxxAiAGgtVdZWW19dDU1G0AGy8FTWlcKiczWyVIQtvA
 L3rT4w==
 -----END CERTIFICATE-----`
 	],
+	vctRegistryUri: "https://qa.wwwallet.org/public/registry/all.json",
 	trustedIssuers: [
 		"http://wallet-enterprise-issuer:8003"
 	],
