@@ -7,7 +7,10 @@ RUN apk add --no-cache gettext
 COPY nginx.conf /etc/nginx/nginx.conf
 
 # Our server config template (rendered at runtime)
-COPY default.conf.tpl /etc/nginx/conf.d/default.conf.tpl
+# local config is used for gateways in the docker network
+# external config is used for gateways on external networks
+COPY default.conf.tpl.local /etc/nginx/conf.d/default.conf.tpl.local
+COPY default.conf.tpl.external /etc/nginx/conf.d/default.conf.tpl.external
 
 # Render template at container start (runs before nginx launches)
 COPY docker-entrypoint.d/10-render-nginx-conf.sh /docker-entrypoint.d/10-render-nginx-conf.sh

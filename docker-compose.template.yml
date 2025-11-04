@@ -164,6 +164,7 @@ services:
     environment:
       - CORS_ALLOWED_ORIGINS=http://localhost:3000
       - GATEWAY_URL=http://gateway:4567
+      - GATEWAY_TYPE=local
 
 volumes:
   datadir:
