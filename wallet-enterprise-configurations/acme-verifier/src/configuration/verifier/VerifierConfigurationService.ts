@@ -823,6 +823,26 @@ export class VerifierConfigurationService implements VerifierConfigurationInterf
 					bachelorDescriptor
 				]
 			},
+			{ // QES Transaction data
+				"id": "MinimalPIDwithTransactionDataQES",
+				"title": "PID with QES Authorization Transaction Data",
+				"purpose": "Document Signing",
+				"description": "Format: dc+sd-jwt - Transaction Data Type: https://cloudsignatureconsortium.org/2025/qes. The user will be requested to authorize the QTSP to create QES for the document 'Personal Loan Agreement'",
+				"format": { "dc+sd-jwt": { alg: ['ES256'] } },
+				"input_descriptors": [
+					{ ...minimalVerifiableIdSdJwtDescriptor, _transaction_data_type: "https://cloudsignatureconsortium.org/2025/qes" },
+				]
+			},
+			{ // QC Request Transaction data
+				"id": "MinimalPIDwithTransactionDataQCRequest",
+				"title": "PID with QC Request Transaction Data",
+				"purpose": "Creation of Signature Certificate",
+				"description": "Format: dc+sd-jwt - Transaction Data Type: https://cloudsignatureconsortium.org/2025/qc-request. The user will be requested to give consent for the creation of signature certificates according to the Terms and Conditions (T&C) of the QTSP",
+				"format": { "dc+sd-jwt": { alg: ['ES256'] } },
+				"input_descriptors": [
+					{ ...minimalVerifiableIdSdJwtDescriptor, _transaction_data_type: "https://cloudsignatureconsortium.org/2025/qc-request" },
+				]
+			}
 			// { // example with Transaction Data
 			// 	"id": "MinimalPIDwithTransactionData",
 			// 	"title": "MinimalPID with Example Transaction Data",
