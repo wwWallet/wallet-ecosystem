@@ -189,182 +189,6 @@ const sdJwtPidFields = [
 	}
 ]
 
-const sdJwtPidFields_1_5 = [
-	{
-		"name": "VC type",
-		"path": [
-			"$.vct"
-		],
-		"filter": {
-			"type": "string",
-			"const": "urn:eu.europa.ec.eudi:pid:1"
-		}
-	},
-	{
-		"name": "First name",
-		"path": ['$.given_name'],
-		"filter": {}
-	},
-	{
-		"name": "Birth first name",
-		"path": ['$.given_name_birth'],
-		"filter": {}
-	},
-	{
-		"name": "Last name",
-		"path": ['$.family_name'],
-		"filter": {}
-	},
-	{
-		"name": "Birth last name",
-		"path": ['$.family_name_birth'],
-		"filter": {}
-	},
-	{
-		"name": "Sex",
-		"path": ['$.sex'],
-		"filter": {}
-	},
-	{
-		"name": "Email",
-		"path": ['$.email_address'],
-		"filter": {}
-	},
-	{
-		"name": "Mobile",
-		"path": ['$.mobile_phone_number'],
-		"filter": {}
-	},
-	{
-		"name": "Full address",
-		"path": ['$.resident_address'],
-		"filter": {}
-	},
-	{
-		"name": "Resident street",
-		"path": ['$.resident_street'],
-		"filter": {}
-	},
-	{
-		"name": "Resident number",
-		"path": ['$.resident_house_number'],
-		"filter": {}
-	},
-	{
-		"name": "Resident ZIP",
-		"path": ['$.resident_postal_code'],
-		"filter": {}
-	},
-	{
-		"name": "City of residence",
-		"path": ['$.resident_city'],
-		"filter": {}
-	},
-	{
-		"name": "State of residence",
-		"path": ['$.resident_state'],
-		"filter": {}
-	},
-	{
-		"name": "Country of residence",
-		"path": ['$.resident_country'],
-		"filter": {}
-	},
-	{
-		"name": "Personal ID",
-		"path": ['$.personal_administrative_number'],
-		"filter": {}
-	},
-	{
-		"name": "Nationality",
-		"path": ['$.nationality'],
-		"filter": {}
-	},
-	{
-		"name": "Place of birth",
-		"path": ['$.birth_place'],
-		"filter": {}
-	},
-	{
-		"name": "Date of Βirth",
-		"path": ['$.birth_date'],
-		"filter": {}
-	},
-	{
-		"name": "Age over 14",
-		"path": ['$.age_over_14'],
-		"filter": {}
-	},
-	{
-		"name": "Age over 16",
-		"path": ['$.age_over_16'],
-		"filter": {}
-	},
-	{
-		"name": "Age over 18",
-		"path": ['$.age_over_18'],
-		"filter": {}
-	},
-	{
-		"name": "Age over 21",
-		"path": ['$.age_over_21'],
-		"filter": {}
-	},
-	{
-		"name": "Age",
-		"path": ['$.age_in_years'],
-		"filter": {}
-	},
-	{
-		"name": "Birth year",
-		"path": ['$.age_birth_year'],
-		"filter": {}
-	},
-	{
-		"name": "Document number",
-		"path": ['$.document_number'],
-		"filter": {}
-	},
-	{
-		"name": "Issuing authority",
-		"path": ['$.issuing_authority'],
-		"filter": {}
-	},
-	{
-		"name": "Issuing country",
-		"path": ['$.issuing_country'],
-		"filter": {}
-	},
-	{
-		"name": "Issuing region",
-		"path": ['$.issuing_jurisdiction'],
-		"filter": {}
-	},
-	{
-		"name": "Issue date",
-		"path": ['$.issuance_date'],
-		"filter": {}
-	},
-	{
-		"name": "Expiry date",
-		"path": ['$.expiry_date'],
-		"filter": {}
-	},
-	{
-		"name": "Portrait",
-		"path": ['$.portrait'],
-		"filter": {}
-	}
-]
-
-const sdJwtPidDescriptor_1_5 = {
-	"id": "CustomVerifiableId1_5",
-	"format": { "dc+sd-jwt": { alg: ['ES256'] } },
-	"constraints": {
-		"fields": sdJwtPidFields_1_5
-	}
-}
-
 const minimalSdJwtPidFields = [
 	{
 		"name": "VC type",
@@ -744,7 +568,7 @@ export class VerifierConfigurationService implements VerifierConfigurationInterf
 		return [
 			{
 				"id": "CustomVerifiableId",
-				"title": "PID ARF v1.8",
+				"title": "PID",
 				"description": "Select the format and the fields you want to request",
 				_selectable: true,
 				"input_descriptors": [
@@ -764,16 +588,6 @@ export class VerifierConfigurationService implements VerifierConfigurationInterf
 				]
 			},
 			{
-				"id": "CustomVerifiableIdARF1_5",
-				"title": "PID ARF v1.5",
-				"description": "Select the fields you want to request",
-				"format": { "dc+sd-jwt": { alg: ['ES256'] } },
-				_selectable: true,
-				"input_descriptors": [
-					sdJwtPidDescriptor_1_5
-				]
-			},
-			{
 				"id": "Bachelor",
 				"title": "Bachelor Diploma",
 				"description": "Select the fields you want to request",
@@ -785,7 +599,7 @@ export class VerifierConfigurationService implements VerifierConfigurationInterf
 			},
 			{
 				"id": "EuropeanHealthInsuranceCard",
-				"title": "European Health Insurance Card",
+				"title": "EHIC",
 				"description": "Select the fields you want to request",
 				"format": { "dc+sd-jwt": { alg: ['ES256'] } },
 				_selectable: true,
@@ -795,8 +609,8 @@ export class VerifierConfigurationService implements VerifierConfigurationInterf
 			},
 			{
 				"id": "MinimalPIDAndEuropeanHealthInsuranceCard",
-				"title": "PID (ARF v1.8) + EHIC",
-				"description": "Request a PID (ARF v1.8) along with an EHIC",
+				"title": "PID + EHIC",
+				"description": "Request a PID along with an EHIC",
 				"format": { "dc+sd-jwt": { alg: ['ES256'] } },
 				"input_descriptors": [
 					minimalVerifiableIdSdJwtDescriptor,
@@ -805,8 +619,8 @@ export class VerifierConfigurationService implements VerifierConfigurationInterf
 			},
 			{
 				"id": "MinimalPIDAndPowerOfRepresentation",
-				"title": "PID (ARF v1.8) + POR",
-				"description": "Request a PID (ARF v1.8) along with a POR",
+				"title": "PID + POR",
+				"description": "Request a PID along with a POR",
 				"format": { "dc+sd-jwt": { alg: ['ES256'] } },
 				"input_descriptors": [
 					minimalVerifiableIdSdJwtDescriptor,
@@ -815,8 +629,8 @@ export class VerifierConfigurationService implements VerifierConfigurationInterf
 			},
 			{
 				"id": "MinimalPIDAndBachelorDiploma",
-				"title": "PID (ARF v1.8) + Diploma",
-				"description": "Request a PID (ARF v1.8) along with a Bachelor Diploma",
+				"title": "PID + Diploma",
+				"description": "Request a PID along with a Bachelor Diploma",
 				"format": { "dc+sd-jwt": { alg: ['ES256'] } },
 				"input_descriptors": [
 					minimalVerifiableIdSdJwtDescriptor,
