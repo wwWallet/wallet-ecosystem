@@ -140,6 +140,32 @@ services:
         tmpfs:
           mode: 01777
 
+  gateway:
+    build:
+      context: ./privacy-gateway-server-go
+      dockerfile: Dockerfile
+    ports:
+      - "4567:4567"
+    environment:
+      - LOG_FORMAT=json
+      - LOG_LEVEL=DEBUG
+      - PORT=4567
+      - SEED_SECRET_KEY=869663da4842c8cd5bca96047dd7dd09ff88a9907fd17c9fd585fa219ee987de
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost:4567/health"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+
+  relay:
+    build: ./ohttp-relay
+    ports:
+      - "4001:80"
+    environment:
+      - CORS_ALLOWED_ORIGINS=http://localhost:3000
+      - GATEWAY_URL=http://gateway:4567
+      - GATEWAY_TYPE=local # or external for production
+
 volumes:
   datadir:
   cache:

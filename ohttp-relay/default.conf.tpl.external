@@ -1,0 +1,67 @@
+# Resolve Docker service names at runtime via Docker's embedded DNS
+resolver 127.0.0.11 ipv6=off valid=10s;
+
+upstream wallet_backend {
+		server wallet-backend-server:8002 resolve;
+		keepalive 16;
+		zone wallet_backend 64k; # runtime DNS resolution must be in shared mem
+}
+
+server {
+		listen 80;
+
+		location = /health {
+				default_type application/json;
+				return 200 '{"ok":true,"service":"relay","impl":"nginx"}';
+		}
+
+		# Internal auth subrequest — checks Authorization against the backend
+		location = /_auth {
+				internal;
+				proxy_pass http://wallet_backend/helper/auth-check;
+				proxy_pass_request_body off;
+				proxy_set_header Content-Length "";
+
+				proxy_set_header Authorization $http_authorization;
+				proxy_set_header Cookie $http_cookie;
+				proxy_set_header X-Original-URI $request_uri;
+				proxy_set_header X-Real-IP        $remote_addr;
+				proxy_set_header X-Forwarded-For  $proxy_add_x_forwarded_for;
+				proxy_set_header X-Forwarded-Proto $scheme;
+		}
+
+		location ~ ^/api/relay/?$ {
+				# Preflight: answer directly
+				if ($request_method = OPTIONS) {
+						add_header 'Access-Control-Allow-Origin'  ${CORS_ALLOWED_ORIGINS} always;
+						add_header 'Access-Control-Allow-Methods' 'POST, OPTIONS' always;
+						add_header 'Access-Control-Allow-Headers' 'Content-Type, Accept, Authorization' always;
+						add_header 'Access-Control-Max-Age'       86400 always;
+						return 204;
+				}
+
+				# Gate with backend auth; 2xx allows, 401/403 denies, others -> 500
+				auth_request /_auth;
+
+				proxy_http_version 1.1;
+				proxy_request_buffering off;
+				proxy_buffering        off;
+				proxy_redirect         off;
+
+				proxy_set_header User-Agent "relay/1.0";
+				#proxy_set_header Referer "";
+				#proxy_set_header Origin "";
+
+
+				# proxy_set_header Host ohttp-gateway.gunet.gr;
+				proxy_ssl_server_name on;
+				proxy_ssl_verify off;
+
+				# CORS on all outcomes
+				add_header 'Access-Control-Allow-Origin' ${CORS_ALLOWED_ORIGINS} always;
+
+				# Regex location: rewrite path first, then proxy_pass without URI
+				rewrite ^ /gateway break;
+				proxy_pass ${GATEWAY_URL};
+		}
+}

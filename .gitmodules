@@ -11,3 +11,6 @@
 	path = lib/wallet-common
 	url = git@github.com:wwWallet/wallet-common.git
 	branch = master
+[submodule "privacy-gateway-server-go"]
+	path = privacy-gateway-server-go
+	url = https://github.com/gunet/privacy-gateway-server-go.git

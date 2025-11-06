@@ -188,6 +188,14 @@ function buildImages() {
 	if (buildImageNames.length == 0 || buildImageNames.includes('verifier')) {
 		execSync(`docker buildx build --platform linux/amd64 ${buildImagesPushFlag ? "--push" : "--load"} -t ${buildImageTagContext}wallet-enterprise-verifier:${buildImagesTag} -f docker/wallet-enterprise-verifier.Dockerfile .`, { stdio: 'inherit' });
 	}
+
+	if (buildImageNames.length == 0 || buildImageNames.includes('gateway')) {
+		execSync(`docker buildx build --platform linux/amd64 ${buildImagesPushFlag ? "--push" : "--load"} -t ${buildImageTagContext}privacy-gateway-server-go:${buildImagesTag} -f privacy-gateway-server-go/Dockerfile ./privacy-gateway-server-go`, { stdio: 'inherit' });
+	}
+
+	if (buildImageNames.length == 0 || buildImageNames.includes('relay')) {
+		execSync(`docker buildx build --platform linux/amd64 ${buildImagesPushFlag ? "--push" : "--load"} -t ${buildImageTagContext}ohttp-relay:${buildImagesTag} -f ohttp-relay/Dockerfile ./ohttp-relay`, { stdio: 'inherit' });
+	}
 }
 
 { // wallet frontend configuration
