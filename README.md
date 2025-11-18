@@ -44,18 +44,8 @@ git submodule update --init --remote --recursive
 
    The argument `-t` forces the usage of the `docker-compose.template.yml`
 
-4. Database Setup & Migrations
+4. Entities' Initilization
 
-	The backend uses TypeORM migrations with `synchronize: false`.
-	A baseline (Init) migration is included to create the full database schema for fresh environments.
-
-	Run all migrations using the helper script inside the repository:
-	```sh
-	./wallet-backend-server/run-migrations.sh
-	```
-	This script runs the equivalent of: `docker exec -it wallet-backend-server yarn typeorm migration:run`
-
-5. Entities' Initilization 
 	For demonstrative purposes, we set up a small ecosystem with:
 
 	- 1 Wallet Provider
