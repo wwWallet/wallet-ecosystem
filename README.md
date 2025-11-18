@@ -44,17 +44,29 @@ git submodule update --init --remote --recursive
 
    The argument `-t` forces the usage of the `docker-compose.template.yml`
 
-For demonstrative purposes, we set up a small ecosystem with:
+4. Database Setup & Migrations
 
-- 1 Wallet Provider
-- 1 Credential Issuer
-- 1 Verifier
+	The backend uses TypeORM migrations with `synchronize: false`.
+	A baseline (Init) migration is included to create the full database schema for fresh environments.
 
-The configuration of the issuing legal entities takes place with the following:
+	Run all migrations using the helper script inside the repository:
+	```sh
+	./wallet-backend-server/migrate.sh
+	```
+	This script runs the equivalent of: `docker exec -it wallet-backend-server yarn typeorm migration:run`
 
-```sh
-node ecosystem.js init
-```
+5. Entities' Initilization 
+	For demonstrative purposes, we set up a small ecosystem with:
+
+	- 1 Wallet Provider
+	- 1 Credential Issuer
+	- 1 Verifier
+
+	The configuration of the issuing legal entities takes place with the following:
+
+	```sh
+	node ecosystem.js init
+	```
 
 For more options, see:
 
