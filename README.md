@@ -51,7 +51,7 @@ git submodule update --init --remote --recursive
 
 	Run all migrations using the helper script inside the repository:
 	```sh
-	./wallet-backend-server/migrate.sh
+	./wallet-backend-server/run-migrations.sh
 	```
 	This script runs the equivalent of: `docker exec -it wallet-backend-server yarn typeorm migration:run`
 
