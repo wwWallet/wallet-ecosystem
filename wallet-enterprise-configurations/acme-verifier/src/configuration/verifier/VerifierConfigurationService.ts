@@ -193,23 +193,23 @@ const ehicSdJwtClaims: DcqlClaim[] = [
   { path: ["personal_administrative_number"] },
   { path: ["document_number"] },
   { path: ["issuing_country"] },
-	{ path: ["issuing_authority", "id"] },
-	{ path: ["issuing_authority", "name"] },
-	{ path: ["authentic_source", "id"] },
-	{ path: ["authentic_source", "name"] },
-	{ path: ["starting_date"] },
-	{ path: ["ending_date"] },
-	{ path: ["date_of_expiry"] },
-	{ path: ["date_of_issuance"] },
+  { path: ["issuing_authority", "id"] },
+  { path: ["issuing_authority", "name"] },
+  { path: ["authentic_source", "id"] },
+  { path: ["authentic_source", "name"] },
+  { path: ["starting_date"] },
+  { path: ["ending_date"] },
+  { path: ["date_of_expiry"] },
+  { path: ["date_of_issuance"] },
 ];
 
 const porSdJwtClaims: DcqlClaim[] = [
-	{ path: ["legal_person_identifier"] }, // Legal entity ID
-	{ path: ["legal_name"] },              // Legal entity name
-	{ path: ["full_powers"] },             // Full Representation Powers
-	{ path: ["eService"] },                // Designated eService
-	{ path: ["effective_from_date"] },
-	{ path: ["effective_until_date"] },
+  { path: ["legal_person_identifier"] }, // Legal entity ID
+  { path: ["legal_name"] },              // Legal entity name
+  { path: ["full_powers"] },             // Full Representation Powers
+  { path: ["eService"] },                // Designated eService
+  { path: ["effective_from_date"] },
+  { path: ["effective_until_date"] },
 ];
 
 
@@ -265,6 +265,12 @@ const porCredentialQuery: DcqlCredentialQuery = {
     vct_values: ["urn:eu.europa.ec.eudi:por:1"],
   },
   claims: porSdJwtClaims
+};
+
+const minimalPidQuery: DcqlQuery = {
+  credentials: [
+    minimalPidSdJwtCredentialQuery
+  ]
 };
 
 const customPidDcqlQuery: DcqlQuery = {
@@ -378,8 +384,13 @@ export class VerifierConfigurationService implements VerifierConfigurationInterf
         description:
           "Format: dc+sd-jwt - Transaction Data Type: https://cloudsignatureconsortium.org/2025/qes. " +
           "The user will be requested to authorize the QTSP to create QES for the document 'Personal Loan Agreement'",
-        dcql_query: minimalPidSdJwtCredentialQuery,
-        _transaction_data_type: "https://cloudsignatureconsortium.org/2025/qes",
+        dcql_query: {
+          ...minimalPidQuery,
+          credentials: minimalPidQuery.credentials.map(cred => ({
+            ...cred,
+            _transaction_data_type: "https://cloudsignatureconsortium.org/2025/qes",
+          })),
+        }
       },
       {
         // QC Request Transaction data
@@ -389,17 +400,29 @@ export class VerifierConfigurationService implements VerifierConfigurationInterf
         description:
           "Format: dc+sd-jwt - Transaction Data Type: https://cloudsignatureconsortium.org/2025/qc-request. " +
           "The user will be requested to give consent for the creation of signature certificates according to the T&C of the QTSP",
-        dcql_query: minimalPidSdJwtCredentialQuery,
-        _transaction_data_type: "https://cloudsignatureconsortium.org/2025/qc-request",
+         dcql_query: {
+          ...minimalPidQuery,
+          credentials: minimalPidQuery.credentials.map(cred => ({
+            ...cred,
+            _transaction_data_type:
+              "https://cloudsignatureconsortium.org/2025/qc-request",
+          }))
+        }
       },
-			// {
+      // {
       //   // example with Transaction Data
       //   id: "MinimalPIDwithTransactionData",
       //   title: "MinimalPID with Example Transaction Data",
       //   description: "PID fields: Given Name, Family Name, Birth Date, Nationality, Exp. Date, Issuing Authority, Issuing Country. Transaction Data Type: 'urn:wwwallet:example_transaction_data_type'",
       //   purpose: "Creation of Signature Certificate",
-      //   dcql_query: minimalPidSdJwtCredentialQuery,
-      //   _transaction_data_type: "urn:wwwallet:example_transaction_data_type",
+      // 	dcql_query: {
+      // 		...minimalPidQuery,
+      // 		credentials: minimalPidQuery.credentials.map(cred => ({
+      // 			...cred,
+      // 			_transaction_data_type:
+      // 				"urn:wwwallet:example_transaction_data_type",
+      // 		})),
+      // 	}
       // },
     ];
   }
