@@ -146,6 +146,7 @@ if (action === "build-images") {
 }
 
 function init() {
+	execSync(`${dockerComposeCommand} exec -t wallet-backend-server sh -c "yarn typeorm migration:run"`, { stdio: 'inherit' });
 	const cleanupCredentialIssueTable = `DELETE FROM credential_issuer`;
 	const firstIssuerInsertion = `INSERT INTO credential_issuer (credentialIssuerIdentifier, clientId, visible) VALUES ('http://wallet-enterprise-issuer:8003', '1233', 1)`;
 

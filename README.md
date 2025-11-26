@@ -44,17 +44,19 @@ git submodule update --init --remote --recursive
 
    The argument `-t` forces the usage of the `docker-compose.template.yml`
 
-For demonstrative purposes, we set up a small ecosystem with:
+4. Entities' Initilization
 
-- 1 Wallet Provider
-- 1 Credential Issuer
-- 1 Verifier
+	For demonstrative purposes, we set up a small ecosystem with:
 
-The configuration of the issuing legal entities takes place with the following:
+	- 1 Wallet Provider
+	- 1 Credential Issuer
+	- 1 Verifier
 
-```sh
-node ecosystem.js init
-```
+	The configuration of the issuing legal entities takes place with the following:
+
+	```sh
+	node ecosystem.js init
+	```
 
 For more options, see:
 
