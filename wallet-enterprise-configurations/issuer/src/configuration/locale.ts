@@ -61,7 +61,6 @@ const locale = {
 			},
 			typeMetatadaExamplesHeader: "JWT VC Type Metadata Examples",
 			typeMetatadaExamples: [
-				["Pid (ARF 1.5)", "type-metadata?vct=urn:eu.europa.ec.eudi:pid:1"],
 				["Pid (ARF 1.8)", "type-metadata?vct=urn:eudi:pid:1"],
 				["EHIC", "type-metadata?vct=urn:eudi:ehic:1"],
 				["PDA1", "public/creds/pda1/portable-document-a1-vctm-dc4eu-01.json"],
