@@ -166,6 +166,20 @@ services:
       - GATEWAY_URL=http://gateway:4567
       - GATEWAY_TYPE=local # or external for production
 
+  vct-registry:
+    container_name: vct-registry
+    build:
+      context: $PWD/vct-registry
+      dockerfile: Dockerfile
+    environment:
+      NODE_ENV: development
+    command: npm run dev
+    ports:
+      - "8097:8097"
+    volumes:
+      - ./vct-registry:/usr/src/app
+      - /usr/src/app/node_modules
+
 volumes:
   datadir:
   cache:
