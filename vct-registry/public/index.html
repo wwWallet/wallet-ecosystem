@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+	<meta charset="utf-8" />
+	<title>vct-registry</title>
+	<link rel="stylesheet" href="/style.css" />
+</head>
+
+<body>
+	<header class="header">
+		<h1>wwWallet VCT Registry</h1>
+		<p class="subtitle">
+			Local SD-JWT Verifiable Credential Type Metadata registry
+		</p>
+	</header>
+
+	<main class="container">
+		<section class="card">
+			<h2>Verifiable Credential Type Metadata</h2>
+			<p class="section-description">
+				Select a Verifiable Credential Type (VCT) to view its metadata from
+				<code>GET /type-metadata?vct=…</code>, or choose
+				<code>(All metadata)</code> to view everything from
+				<code>GET /type-metadata/all</code>.
+			</p>
+
+			<div id="vct-loading" class="status-text">Loading VCT entries…</div>
+
+			<div id="vct-controls" class="vct-controls" hidden>
+				<label for="vct-select" class="select-label">
+					Select VCT:
+					<select id="vct-select" class="vct-select"></select>
+				</label>
+
+				<!-- NEW: shows the exact URL used -->
+				<div id="vct-source" class="vct-source"></div>
+
+				<div id="vct-meta" class="vct-meta"></div>
+			</div>
+
+			<div id="vct-error" class="error" hidden></div>
+
+			<h3>Raw metadata JSON</h3>
+			<pre id="vct-data" class="vct-data"></pre>
+		</section>
+	</main>
+
+	<footer class="footer"></footer>
+
+	<script src="/app.js"></script>
+</body>
+
+</html>

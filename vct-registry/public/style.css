@@ -1,0 +1,158 @@
+/* Reset */
+*,
+*::before,
+*::after {
+	box-sizing: border-box;
+}
+
+html,
+body {
+	margin: 0;
+	padding: 0;
+	font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+		Roboto, Helvetica, Arial, sans-serif;
+	background: #f7f9fc;
+	color: #1f2937;
+}
+
+/* Header */
+.header {
+	padding: 28px 16px;
+	text-align: center;
+	background: #ffffff;
+	border-bottom: 1px solid #e5e7eb;
+}
+
+.header h1 {
+	margin: 0;
+	font-size: 1.9rem;
+	color: #111827;
+}
+
+.subtitle {
+	margin-top: 6px;
+	font-size: 0.95rem;
+	color: #6b7280;
+}
+
+/* Main layout */
+.container {
+	max-width: 960px;
+	margin: 32px auto 40px;
+	padding: 0 16px;
+}
+
+/* Card */
+.card {
+	background: #ffffff;
+	border-radius: 12px;
+	padding: 22px;
+	border: 1px solid #e5e7eb;
+	box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
+}
+
+.card h2 {
+	margin-top: 0;
+	margin-bottom: 8px;
+	font-size: 1.35rem;
+	color: #111827;
+}
+
+.section-description {
+	margin: 0 0 20px;
+	font-size: 0.9rem;
+	color: #6b7280;
+}
+
+/* Controls */
+.vct-controls {
+	display: flex;
+	flex-direction: column;
+	gap: 12px;
+	margin-bottom: 16px;
+}
+
+.select-label {
+	display: flex;
+	flex-direction: column;
+	gap: 6px;
+	font-size: 0.9rem;
+	color: #374151;
+}
+
+.vct-select {
+	padding: 8px 10px;
+	border-radius: 8px;
+	border: 1px solid #d1d5db;
+	background: #ffffff;
+	color: #111827;
+	font-size: 0.9rem;
+	transition: border-color 0.15s ease;
+}
+
+.vct-select:focus {
+	outline: none;
+	border-color: #2563eb;
+	box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.25);
+}
+
+/* Metadata summary box */
+.vct-meta {
+	font-size: 0.9rem;
+	background: #f9fafb;
+	border-radius: 8px;
+	padding: 12px;
+	border: 1px solid #e5e7eb;
+}
+
+.vct-meta div+div {
+	margin-top: 4px;
+}
+
+/* JSON output box */
+.vct-data {
+	margin-top: 8px;
+	border-radius: 8px;
+	padding: 12px;
+	background: #f9fafb;
+	border: 1px solid #e5e7eb;
+	color: #1f2937;
+	max-height: 480px;
+	overflow: auto;
+	font-size: 0.85rem;
+	line-height: 1.4;
+	font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
+		"Liberation Mono", "Courier New", monospace;
+}
+
+.vct-source {
+	font-size: 0.8rem;
+	color: #6b7280;
+}
+
+/* Error + status */
+.status-text {
+	font-size: 0.9rem;
+	color: #6b7280;
+	margin-bottom: 12px;
+}
+
+.error {
+	margin-top: 8px;
+	padding: 10px 12px;
+	background: #fee2e2;
+	color: #991b1b;
+	border: 1px solid #fecaca;
+	border-radius: 8px;
+	font-size: 0.85rem;
+}
+
+/* Code styling */
+code {
+	font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
+		"Liberation Mono", "Courier New", monospace;
+	background: #f3f4f6;
+	padding: 2px 4px;
+	border-radius: 4px;
+	font-size: 0.85em;
+}
