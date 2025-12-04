@@ -16,7 +16,7 @@
 	},
 	"scripts": {
 		"dev": "ts-node-dev --respawn --transpile-only src/server.ts",
-		"build": "tsc",
-		"start": "node dist/server.js"
+		"build": "tsc && cp -R public dist/public",
+		"start": "node dist/src/server.js"
 	}
 }
