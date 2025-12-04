@@ -1,5 +1,5 @@
 import { config } from "../../config";
-// import { createSRI } from "@src/sriGenerator";
+import { createSRI } from "../sriGenerator";
 
 export const ehicMetadata = {
 	"vct": "urn:eudi:ehic:1",
@@ -19,7 +19,7 @@ export const ehicMetadata = {
 				"svg_templates": [
 					{
 						"uri": config.url + "/images/template-ehic.svg",
-						// "uri#integrity": createSRI("./public/images/template-ehic.svg"),
+						"uri#integrity": createSRI("./public/images/template-ehic.svg"),
 						"properties": {
 							"orientation": "landscape",
 							"color_scheme": "light",

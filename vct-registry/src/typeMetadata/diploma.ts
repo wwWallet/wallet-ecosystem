@@ -1,5 +1,5 @@
 import { config } from "../../config";
-// import { createSRI } from "../sriGenerator";
+import { createSRI } from "../sriGenerator";
 
 export const diplomaMetadata = {
 	"vct": 'urn:credential:diploma',
@@ -13,7 +13,7 @@ export const diplomaMetadata = {
 				"simple": {
 					"logo": {
 						"uri": config.url + "/images/logo.png",
-						// "uri#integrity": "sha256-c7fbfe45428aa2715f01065d812c9f6fd52f99c02e4018fb5761a7cbf4894257",
+						"uri#integrity": createSRI("./public/images/template-diploma.svg"),
 						"alt_text": "Diploma Logo"
 					},
 					"background_color": "#4CC3DD",

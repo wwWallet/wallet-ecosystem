@@ -1,5 +1,5 @@
 import { config } from "../../config";
-// import { createSRI } from "@src/sriGenerator";
+ import { createSRI } from "../sriGenerator";
 
 export const pidMetadata = {
 	"vct": "urn:eudi:pid:1",
@@ -12,18 +12,13 @@ export const pidMetadata = {
 			"name": "PID",
 			"rendering": {
 				"simple": {
-					"logo": {
-						"uri": config.url + "/images/logo.png",
-						// "uri#integrity": createSRI("./public/images/logo.png"),
-						"alt_text": "PID Logo"
-					},
 					"background_color": "#4cc3dd",
 					"text_color": "#FFFFFF"
 				},
 				"svg_templates": [
 					{
 						"uri": config.url + "/images/template-pid.svg",
-						// "uri#integrity": createSRI("./public/images/template-pid.svg"),
+						"uri#integrity": createSRI("./public/images/template-pid.svg"),
 						"properties": {
 							"orientation": "landscape",
 							"color_scheme": "light",

@@ -1,5 +1,5 @@
 import { config } from "../../config";
-// import { createSRI } from "../sriGenerator";
+import { createSRI } from "../sriGenerator";
 
 export const pda1Metadata = {
 	"vct": "urn:eudi:pda1:1",
@@ -15,7 +15,7 @@ export const pda1Metadata = {
 				"svg_templates": [
 					{
 						"uri": config.url + "/images/template-pda1.svg",
-						// "uri#integrity": createSRI("./public/images/template-pda1.svg"),
+						"uri#integrity": createSRI("./public/images/template-pda1.svg"),
 						"properties": {
 							"orientation": "landscape",
 							"color_scheme": "light",

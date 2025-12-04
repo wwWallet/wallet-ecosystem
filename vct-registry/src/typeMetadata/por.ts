@@ -1,5 +1,5 @@
 import { config } from "../../config";
-// import { createSRI } from "../sriGenerator";
+import { createSRI } from "../sriGenerator";
 
 export const porMetadata = {
 	"vct": "urn:eu.europa.ec.eudi:por:1",
@@ -15,7 +15,7 @@ export const porMetadata = {
 				"svg_templates": [
 					{
 						"uri": config.url + "/images/template-por.svg",
-						// "uri#integrity": createSRI("./public/images/template-por.svg"),
+						"uri#integrity": createSRI("./public/images/template-por.svg"),
 						"properties": {
 							"orientation": "landscape",
 							"color_scheme": "light",
