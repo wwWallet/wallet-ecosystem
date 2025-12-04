@@ -98,10 +98,24 @@ app.get('/type-metadata/all', (_req, res) => {
 
 const publicPath = path.join(__dirname, '../public');
 
-app.use(express.static(publicPath));
+// 30-day immutable cache for images
+app.use(
+  '/images',
+  express.static(path.join(publicPath, 'images'), {
+    maxAge: '30d',
+    immutable: true,
+  })
+);
+
+// No caching for the rest of the UI (HTML, JS, CSS)
+app.use(
+  express.static(publicPath, {
+    maxAge: 0,
+  })
+);
 
 app.get('/', (_req, res) => {
-	res.sendFile(path.join(publicPath, 'index.html'));
+  res.sendFile(path.join(publicPath, 'index.html'));
 });
 
 // ─────────────────────────────────────────────────────────────
