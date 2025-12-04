@@ -34,6 +34,7 @@ git submodule update --init --remote --recursive
    127.0.0.1 wallet-backend-server
    127.0.0.1 wallet-enterprise-issuer
    127.0.0.1 wallet-enterprise-acme-verifier
+   127.0.0.1 vct-registry
    ```
 
 3. Start the ecosystem
