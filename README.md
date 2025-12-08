@@ -16,7 +16,7 @@ Prerequisites:
 ## Clone
 
 ```sh
-git clone git@github.com:wwwallet/wallet-ecosystem.git
+git clone https://github.com/wwwallet/wallet-ecosystem.git
 cd wallet-ecosystem/
 git submodule update --init --remote --recursive
 ```
@@ -69,6 +69,23 @@ To shut down the ecosystem run the following command:
 ```sh
 node ecosystem.js down
 ```
+
+## Using SSH for git push
+
+The submodules use HTTPS remotes by default, so if you need to push changes back to GitHub
+you may want to set the following in your [personal Git config](https://git-scm.com/docs/git-config#FILES)
+to use SSH instead for push operations:
+
+```
+[url "ssh://git@github.com/"]
+    pushInsteadOf = "https://github.com/"
+```
+
+Alternatively run `git config --global 'url.ssh://git@github.com/.pushInsteadOf' 'https://github.com'` to set this automatically.
+
+This will globally overwrite `https://github.com/` with `ssh://git@github.com/` in the remote address
+whenever you push from any local repository.
+
 
 ## Supported Flows
 
