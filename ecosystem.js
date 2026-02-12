@@ -226,18 +226,18 @@ function buildImages() {
 		const dbName = 'wallet';
 
 		let configContent = fs.readFileSync(configPath, 'utf-8');
-		configContent = configContent.replace(/SERVICE_URL/g, serviceUrl);
-		configContent = configContent.replace(/SERVICE_SECRET/g, secret);
-		configContent = configContent.replace(/SERVICE_PORT/g, servicePort);
-		configContent = configContent.replace(/DB_HOST/g, dbHost);
-		configContent = configContent.replace(/DB_PORT/g, dbPort);
-		configContent = configContent.replace(/DB_USER/g, dbUser);
-		configContent = configContent.replace(/DB_PASSWORD/g, dbPassword);
-		configContent = configContent.replace(/DB_NAME/g, dbName);
-		configContent = configContent.replace(/WALLET_CLIENT_URL/g, walletClientUrl);
+		configContent = configContent.replace(/\$\{SERVICE_URL\}/g, serviceUrl);
+		configContent = configContent.replace(/\$\{SERVICE_SECRET\}/g, secret);
+		configContent = configContent.replace(/\$\{SERVICE_PORT\}/g, servicePort);
+		configContent = configContent.replace(/\$\{DB_HOST\}/g, dbHost);
+		configContent = configContent.replace(/\$\{DB_PORT\}/g, dbPort);
+		configContent = configContent.replace(/\$\{DB_USER\}/g, dbUser);
+		configContent = configContent.replace(/\$\{DB_PASSWORD\}/g, dbPassword);
+		configContent = configContent.replace(/\$\{DB_NAME\}/g, dbName);
+		configContent = configContent.replace(/\$\{WALLET_CLIENT_URL\}/g, walletClientUrl);
 
-		configContent = configContent.replace(/WEBAUTHN_RP_ID/g, "localhost");
-		configContent = configContent.replace(/WEBAUTHN_ORIGIN/g, walletClientOrigin);
+		configContent = configContent.replace(/\$\{WEBAUTHN_RP_ID\}/g, "localhost");
+		configContent = configContent.replace(/\$\{WEBAUTHN_ORIGIN\}/g, walletClientOrigin);
 
 		fs.writeFileSync(configPath, configContent);
 	}
