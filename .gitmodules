@@ -1,15 +1,15 @@
 [submodule "wallet-backend-server"]
 	path = wallet-backend-server
-	url = git@github.com:wwwallet/wallet-backend-server.git
+	url = https://github.com/wwWallet/wallet-backend-server.git
 [submodule "wallet-frontend"]
 	path = wallet-frontend
-	url = git@github.com:wwwallet/wallet-frontend.git
+	url = https://github.com/wwWallet/wallet-frontend.git
 [submodule "wallet-enterprise"]
 	path = wallet-enterprise
-	url = git@github.com:wwwallet/wallet-enterprise.git
+	url = https://github.com/wwWallet/wallet-enterprise.git
 [submodule "lib/wallet-common"]
 	path = lib/wallet-common
-	url = git@github.com:wwWallet/wallet-common.git
+	url = https://github.com/wwWallet/wallet-common.git
 	branch = master
 [submodule "privacy-gateway-server-go"]
 	path = privacy-gateway-server-go
